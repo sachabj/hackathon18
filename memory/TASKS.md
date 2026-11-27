@@ -113,8 +113,8 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
 | 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | À TESTER (Justin) : boutons au-dessus du recentrage, zoom limité au niveau 19 ; essayé avec un faux Supabase |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
-| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | À TESTER (Justin) : « passages sur tes offres » = total des passages (pas des étudiants uniques), sans migration |
-| 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin) : en-tête (pseudo modifiable), impact, grade et Flèches, raccourcis ; essayé avec un faux Supabase |
+| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | EN COURS (Sacha) : retrait d’une partie des ajouts au profil (voir avec Justin) |
+| 64 | **Profil plus complet** | M | Justin / Sacha | EN COURS (Sacha) : retrait d’une partie des ajouts au profil (voir avec Justin) |
 | 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 | 66 | **« J'y suis allé » devient « J'en ai profité »** (boutons, fiche, Ciblés, stats commerçant, confidentialité, info-bulle, README, doc, commentaires) | P | Matteo | FAIT (Matteo) : libellé seulement (vote +1 et passage inchangés) ; historique (JOURNAL, DECISIONS) et anciennes migrations non réécrits |
 
