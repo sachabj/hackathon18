@@ -72,7 +72,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 48 | E | Affichage sur ordinateur : barre de navigation en haut, Recherche en liste + carte, offres en 2-3 colonnes, autres pages en colonne centrée plus large (étudiant et commerçant). Téléphone inchangé. Touche les pages et composants de tous | À TESTER (Justin) : vu avec un faux Supabase à 1440 et 1100 px, téléphone inchangé à 390 px ; sans migration |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
-- Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
+- Depuis la tâche 31 (Sacha) : `/` = onglets « Pour toi » / Restauration / Aides & bourses / Voyages / Culture & sport · `/recherche` = catégories, carte et liste de toutes les offres.
 - **Matteo** : le bouton « Voir sur la carte » de `PublishForm` pointe maintenant vers `/recherche` (modifié par Justin).
 - **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
 - **Anne-Lise** : `DealCard` affiche la fiabilité ; `/favoris` lit `votes(*)` ; barre du bas à 5 onglets.
@@ -106,7 +106,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 53 | **Nouvelles icônes** (réflexion ; « emojis » demandés aussi, mais la règle actuelle est : aucun emoji, `DESIGN_SHAREWOOD.md`) | P | Anne-Lise | TODO : choisir lesquelles |
 | 54 | **« Tes aides » plus générales** : la Carte Sortir est propre à Rennes, prévoir des aides valables partout en France | M | Sacha | TODO : lister les aides (inscription, conditions des offres, « Pour toi ») ; lié à la tâche 52 |
 | 55 | **« Licence de sport » → « Sport »** (pôles de dépenses et catégorie) | P | Sacha | TODO : libellé seulement (identifiant `sport` inchangé) ; README et documentation |
-| 56 | **Accueil : onglet « Restauration »** (restaurants) ; « Quotidien » ne garde que les grandes surfaces | P | Sacha | TODO : 6 onglets, vérifier la largeur à 320 px |
+| 56 | **Accueil : onglet « Restauration »** (restaurants) ; « Quotidien » ne garde que les grandes surfaces | P | Sacha | EN COURS (Sacha) : 5 onglets, « Restauration » remplace « Quotidien » |
 | 57 | **Récompenses : même gain pour « Plus dispo » et « J'en ai profité » : +10** (aujourd'hui +15 et +10) | P | Sacha | TODO : migration + `lib/arrows.ts` + `docs/ALGORITHMES.md` ; depuis la tâche 51 : +10 / +15 sur place, +3 / +5 sans lieu (migration 020 à reprendre) |
 | 58 | **Récompense d'un signalement seulement quand l'offre n'est vraiment plus disponible** | P à M | Sacha | TODO : en partie déjà fait (gain « en attente » jusqu'au 3e « Plus dispo ») ; préciser ce qui doit changer |
 | 59 | **Récompense d'une publication différée** : après un certain temps et un certain nombre d'étudiants venus sur l'offre (aujourd'hui +50 dès la publication, +30 à 3 confirmations) | M | Sacha | TODO : choisir le délai et le nombre ; migration ; depuis la tâche 51 : +50 sur place seulement, +20 sans lieu |
