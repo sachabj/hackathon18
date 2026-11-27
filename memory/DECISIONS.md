@@ -93,6 +93,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Votes** : ajoutés par Justin (tâche 7) ; masqués sur ses propres bons plans.
 - **Qui** : Justin (réponses aux questions de cadrage)
 
+## 2026-11-27 16h05 — Jeu de données de démo
+- **Décision** : remise à zéro des comptes sauf ceux de l'équipe ; 8 étudiants fictifs (`@example.com`) ; offres sourcées (web) complétées par des offres inventées sur des lieux réels, marquées « [Exemple] » ; aucun compte commerçant ; réactions (vues, passages, favoris, votes) inventées.
+- **Écarté** : créer des comptes au nom de vrais commerces ou des offres « officielles » en leur nom.
+- **Qui** : Justin (réponses aux questions de cadrage)
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

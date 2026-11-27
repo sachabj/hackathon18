@@ -93,7 +93,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
 - Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ✅ · `006_travel.sql` ✅ · `007_engagement.sql` ⏳ **à exécuter**
-- `supabase/seed_demo.sql` : bons plans d'exemple fictifs (facultatif, après 004).
+- `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
+- `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
 - `businesses` (un par compte commerçant, écriture via `register_business` seulement) : owner_id, name, address, category (restaurant | supermarket | activity | sport), zone_id, lat, lng
 - `deals.boosted_until` (mise en avant, via `boost_offer`) et `deals.ended_by` (via `set_nearby_deal_ended`) : non écrivables directement

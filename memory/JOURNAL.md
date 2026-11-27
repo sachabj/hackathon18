@@ -171,3 +171,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `/profil`, `components/deal/`, `components/profile/`, `lib/engagement.ts`, `007_engagement.sql` (+ `schema.sql`) ; petites modifications de `DealCard`, `DealsMap`, `PreferencesWizard`, `rules.ts`.
 - 005 et 006 semblent appliquées (tables / colonnes présentes côté API). **007 à exécuter.**
 - Vérifié : lint (1 avertissement connu) + build ; migration sur Postgres local (19 contrôles) ; parcours dans Chrome sans interface avec un faux Supabase. Pas testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 16h05 — Justin (script de données de démo)
+- `supabase/reset_demo.sql` (+ règle `.gitignore` pour la copie locale). Testé sur Postgres local (refus si compte à garder introuvable, relançable). **Pas exécuté sur la vraie base** ; connexion des comptes de démo non vérifiable en local.
+- Sources lues en direct : Cinéma Arvor, Grand Logis, Resto U', STAR, musée des Beaux-Arts. Autres (SNCF, TER, Cinéville, Pass'Sport, DSE, repas à 1 €) : résultats de recherche, à revérifier.
+- ⚠️ Constat : `.env.example` contient en local une clé `GEMINI_API_KEY` non committée : la déplacer dans `.env.local`.

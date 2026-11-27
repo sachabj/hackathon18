@@ -237,3 +237,6 @@ coverage/
 *.pem
 *.tsbuildinfo
 next-env.d.ts
+
+# Scripts SQL contenant des valeurs personnelles (jamais committés : dépôt public)
+supabase/*.local.sql

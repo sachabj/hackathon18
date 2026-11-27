@@ -29,7 +29,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement (page `/profil` : préférences, mes bons plans, audience) | FAIT (Justin, page `/profil`) : accès, niveau, encouragements, préférences, mes bons plans et audience ; **migration 007 à exécuter** puis test réel |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
-| 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
+| 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | EN COURS (Justin) : `supabase/reset_demo.sql` prêt, **à exécuter** ; revérifier les prix avant la démo |
 | 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
