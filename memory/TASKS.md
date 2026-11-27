@@ -9,7 +9,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 ## Base de données
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
-- ⏳ **012_requirements_links.sql à exécuter** (Matteo) : sans elle, publier avec une condition ou un lien échoue (le reste marche ; les offres « Carte Sortir » sont lues comme Activités par l'app).
+- **012 présente sur la vraie base** (colonne `link_url` détectée via l'API le 27/11).
 - Prochaine migration : numéro **013** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
@@ -35,7 +35,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 21 | C | Inscription : une question « fréquence de voyage » + moyens | À TESTER (Justin) |
 | 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | À TESTER (Justin) |
 | 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | FAIT (Matteo) : « Déjà partagé ici » dès le choix du lieu (même `place_name`), zone / partout au clic sur Publier (même catégorie + zone), « Bon plan validé » ; `findDuplicateCandidates` remplacé par `src/lib/duplicates.ts` |
-| 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | À TESTER (Matteo) : ⏳ **lancer `012_requirements_links.sql`** |
+| 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | À TESTER (Matteo) : 012 présente en base |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
@@ -71,7 +71,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | # | Tâche | Statut |
 |---|---|---|
 | 11 | Notif sur place simulée (« toujours dispo ? ») + bouton « Simuler ma position » dans `/profil` | TODO |
-| 12 | Données de démo : `reset_demo.sql` (~150 bons plans à 15 km de Bruz, 20 étudiants, 12 commerces **fictifs**) ; **à relancer après la migration 012** ; revérifier les prix sourcés avant la démo | EN COURS (Justin) : testé en local, copie locale à jour |
+| 12 | Données de démo : `reset_demo.sql` (~150 bons plans à 15 km de Bruz, 20 étudiants, 12 commerces **fictifs**) ; **à lancer** (012 déjà présente) ; revérifier les prix sourcés avant la démo | EN COURS (Justin) : testé en local, copie locale à jour |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
