@@ -94,7 +94,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
-| 17b | Crédits et badges : calculés par la base, avec règles anti-triche (voir D1) | TODO (Sacha) |
+| 17b | « Les Flèches » : points calculés par la base (barème, série, plafond, distance, archivage à 3 signalements), rangs, solde dans les en-têtes, fiche, profil, données de démo. Touche des fichiers de Matteo (réactions, fiabilité/masquage) et de Justin (fiche, profil). Récompenses ensuite | EN COURS (Sacha) : migration **016** prise |
 
 ## Codé : état des essais
 | # | Fonction | Statut |
