@@ -373,3 +373,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : à partir de 1024 px, barre de navigation en haut ; Recherche en liste + carte ; offres en 2 ou 3 colonnes ; autres pages en colonne centrée plus large ; espace commerçant compris. Téléphone inchangé.
 - **Écartés** : menu vertical à gauche ; barre en bas conservée ; carte au-dessus d'une grille ; Partager et Profil en deux colonnes.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-27 soir — Cadrage des améliorations (tâches 49 à 64)
+- **Décisions** : deux réglages au profil (désactiver la localisation ; anglais) ; réactions limitées à 500 m ; onglet « Restauration », « Quotidien » = grandes surfaces ; +10 pour « Plus dispo » comme pour « J'y suis allé ». Rien n'est encore codé.
+- **Qui** : équipe (transcrit par Justin)

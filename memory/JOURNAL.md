@@ -413,3 +413,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 22h38 — Justin (déploiement)
 - `64acebe` (affichage ordinateur) mis en ligne sur https://sharewood-ensai.vercel.app depuis un clone propre. Vérifié : pages publiques et nouveaux styles servis ; connexion non essayée.
+
+### 2026-11-27 soir — Justin (nouvelles tâches)
+- Brainstorming de l'équipe ajouté dans `TASKS.md` (tâches 49 à 64, libres) et `DECISIONS.md`. Aucun code modifié.

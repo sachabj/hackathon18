@@ -87,6 +87,28 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Justin** : `app/page.tsx` réécrit ; sur `app/recherche/page.tsx`, retrait des filtres « Pour toi / Tout » et « Tous / Commerçants / Étudiants » (les badges des cartes restent) ; catégories et carte inchangées.
 - **Matteo** : `hotScore()` conservé : il trie maintenant la liste unique de `/recherche` (sponsorisées en tête) ; pas appliqué aux onglets de l'accueil.
 
+## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 64, toutes libres
+Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les questions de `CLAUDE.md`. « Taille » est une estimation (P petite · M moyenne · G grosse) ; « Domaine » indique qui connaît le code, sans attribution.
+
+| # | Tâche | Taille | Domaine | Statut |
+|---|---|---|---|---|
+| 49 | **Profil > préférences : désactiver la localisation** (ne plus être localisé : carte, distances, réactions) | M | Sacha / Justin | TODO : préciser l'effet avec la tâche 51 (sans localisation, pas de réaction sur une offre placée) ; confidentialité à mettre à jour |
+| 50 | **Profil > préférences : application en anglais** | G | tous | TODO : tous les textes sont écrits en français dans le code ; à décider : toute l'appli ou les pages principales (les offres saisies restent dans leur langue) |
+| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | TODO : contrôle en base (migration, `react_to_deal`) ; remplace le barème de distance des Flèches et « sans position, pas de pénalité ». ⚠️ **Démo** : loin de Bruz, plus personne ne peut réagir → prévoir la tâche 11 (position simulée) ou une exception ; offres sans lieu à préciser |
+| 52 | **1re connexion : n'importe quelle ville de France** (plus seulement Bruz, Ker Lann, Rennes) | G | Justin / Sacha / Matteo | TODO : zones en base (`zones`, `zone_id`), carte, « Pour toi », publication « Une ville » ; recherche de ville possible via Photon ; migration |
+| 53 | **Nouvelles icônes** (réflexion ; « emojis » demandés aussi, mais la règle actuelle est : aucun emoji, `DESIGN_SHAREWOOD.md`) | P | Anne-Lise | TODO : choisir lesquelles |
+| 54 | **« Tes aides » plus générales** : la Carte Sortir est propre à Rennes, prévoir des aides valables partout en France | M | Sacha | TODO : lister les aides (inscription, conditions des offres, « Pour toi ») ; lié à la tâche 52 |
+| 55 | **« Licence de sport » → « Sport »** (pôles de dépenses et catégorie) | P | Sacha | TODO : libellé seulement (identifiant `sport` inchangé) ; README et documentation |
+| 56 | **Accueil : onglet « Restauration »** (restaurants) ; « Quotidien » ne garde que les grandes surfaces | P | Sacha | TODO : 6 onglets, vérifier la largeur à 320 px |
+| 57 | **Récompenses : même gain pour « Plus dispo » et « J'y suis allé » : +10** (aujourd'hui +15 et +10) | P | Sacha | TODO : migration + `lib/arrows.ts` + `docs/ALGORITHMES.md` |
+| 58 | **Récompense d'un signalement seulement quand l'offre n'est vraiment plus disponible** | P à M | Sacha | TODO : en partie déjà fait (gain « en attente » jusqu'au 3e « Plus dispo ») ; préciser ce qui doit changer |
+| 59 | **Récompense d'une publication différée** : après un certain temps et un certain nombre d'étudiants venus sur l'offre (aujourd'hui +50 dès la publication, +30 à 3 confirmations) | M | Sacha | TODO : choisir le délai et le nombre ; migration |
+| 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
+| 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | TODO |
+| 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
+| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | TODO : totaux disponibles par offre (`my_deal_audience`) ; compter un étudiant une seule fois demanderait une fonction en base. Les totaux avaient été retirés de l'Activité (tâche 47) |
+| 64 | **Profil plus complet** | M | Justin / Sacha | TODO : contenu à définir (avec les tâches 49, 50, 63) |
+
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
 
