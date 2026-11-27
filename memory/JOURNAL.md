@@ -457,3 +457,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 00h45 — Sacha (onglets de l’accueil, tâche 56)
 - `app/page.tsx` : Pour toi, Restauration (remplace Quotidien), Aides & bourses, Voyages, Culture & sport ; `Tabs.tsx` : colonne élargie pour un mot long ; README, algorithmes, mémoire.
 - Vérifié : tsc, lint (1 avertissement connu), build ; Chrome avec un faux Supabase à 320, 360, 390 et 1100 px. Pas essayé sur téléphone ni déployé.
+
+### 2026-11-28 nuit — Justin (boutons de zoom, tâche 61)
+- `DealsMap.tsx` : boutons + et − au-dessus du recentrage, grisés aux limites ; zoom maximal fixé à 19. README, TASKS.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (390 px et 1440 px). Pas testé sur la vraie base ni sur téléphone ; non déployé.

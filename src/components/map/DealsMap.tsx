@@ -145,6 +145,18 @@ export default function DealsMap({
     map.flyTo([target.lat, target.lng], Math.max(map.getZoom(), SELECT_ZOOM), { duration: 0.6 });
   }, [map, selectedId, deals]);
 
+  /** Niveau de zoom courant : un bouton est grisé quand on ne peut plus aller plus loin. */
+  const [zoom, setZoom] = useState<number | null>(null);
+  useEffect(() => {
+    if (!map) return;
+    const read = () => setZoom(map.getZoom());
+    map.on("zoomend", read);
+    map.whenReady(read);
+    return () => {
+      map.off("zoomend", read);
+    };
+  }, [map]);
+
   /** Retour à ma position GPS, sinon à la localisation choisie (le GPS est redemandé). */
   function recenter() {
     setCentered(true);
@@ -162,7 +174,7 @@ export default function DealsMap({
     // `isolate` garde les z-index de Leaflet sous la barre de navigation.
     <div className="relative isolate h-full w-full">
       {visible && (
-        <MapContainer ref={setMap} bounds={ALL_BOUNDS} zoomControl={false} className="h-full w-full">
+        <MapContainer ref={setMap} bounds={ALL_BOUNDS} zoomControl={false} maxZoom={19} className="h-full w-full">
           <BaseMap />
           {position && (
             <>
@@ -247,6 +259,27 @@ export default function DealsMap({
             Position non partagée · Activer
           </button>
         )}
+        <div className="wz-glass flex flex-col overflow-hidden rounded-full" role="group" aria-label="Zoom de la carte">
+          {(
+            [
+              { label: "Zoomer", sign: "+", run: () => map?.zoomIn(), off: zoom !== null && zoom >= (map?.getMaxZoom() ?? Infinity) },
+              { label: "Dézoomer", sign: "−", run: () => map?.zoomOut(), off: zoom !== null && zoom <= (map?.getMinZoom() ?? 0) },
+            ] as const
+          ).map((b, i) => (
+            <button
+              key={b.label}
+              type="button"
+              onClick={b.run}
+              disabled={!map || b.off}
+              aria-label={b.label}
+              title={b.label}
+              className="flex h-11 w-13 items-center justify-center text-2xl leading-none transition active:scale-90 disabled:opacity-35"
+              style={{ color: "var(--color-forest)", borderTop: i ? "1px solid var(--color-border)" : undefined }}
+            >
+              <span aria-hidden>{b.sign}</span>
+            </button>
+          ))}
+        </div>
         <button
           type="button"
           onClick={recenter}
