@@ -22,7 +22,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 5a | Carte Bruz / Ker Lann + écran d'accueil (Justin) | FAIT |
 | 5c | Localisation GPS : carte centrée sur l'utilisateur + « Autour de moi » (Justin) | FAIT |
 | 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
-| 6 | Formulaire de publication (local / zone / national) — Matteo (l'espace commerçant a son propre formulaire en attendant) | TODO |
+| 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via API (Photon/OSM) | EN COURS (Matteo) |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | TODO |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé ; **migration 004 à exécuter** puis test sur la vraie base |
