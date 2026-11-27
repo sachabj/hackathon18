@@ -403,3 +403,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 soir — Justin (mise en ligne de secours)
 - Projet Vercel `sharewood-ensai` créé, 3 variables ajoutées, `main` (`cf8e31b`) déployé : https://sharewood-ensai.vercel.app. README, TASKS, ARCHITECTURE, DECISIONS.
 - Vérifié : pages publiques et redirection vers la connexion, URL et clé publique Supabase dans le site. **Connexion, GPS et photo IA pas essayés.**
+
+### 2026-11-27 22h20 — Justin (déploiement à la demande)
+- Nouveau `vercel.json` ; règle dans `CLAUDE.md` ; README, TASKS, ARCHITECTURE, DECISIONS. Aucun code d'application modifié, aucun déploiement lancé.

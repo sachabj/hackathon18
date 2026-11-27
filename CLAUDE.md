@@ -42,6 +42,13 @@ Repo : https://github.com/sachabj/hackathon18.git · branche unique : `main`.
 - **Interdits** : `git push --force`, `git reset --hard`, réécrire l'historique de `main`, committer des secrets (`.env`, clés API).
 - Si le push échoue (droits / authentification) : le signaler clairement à l'utilisateur avec l'erreur.
 
+### 🚀 Déploiement : seulement quand on le décide
+Le quota Vercel est limité (déjà épuisé le 27/11). Le déploiement automatique au push est coupé (`vercel.json`) : ne pas le réactiver.
+- **Tester en local** (`npm run dev`, puis `npm run lint && npm run build`) ; commit et push restent systématiques.
+- **Ne jamais déployer de sa propre initiative** : seulement quand l'utilisateur le demande ou accepte la proposition.
+- **Proposer un déploiement** à la fin d'une réponse si la ligne « Dernier déploiement » de `memory/TASKS.md` date de **plus de 30 min** et que du code a changé depuis (`git diff --stat <commit déployé> HEAD -- src public next.config.ts package.json package-lock.json`), ou juste après une grosse fonction. Une ligne suffit ; pas de proposition si rien n'a changé.
+- Le déploiement se fait depuis le poste de **Justin** (procédure dans `memory/ARCHITECTURE.md`) : les autres le lui demandent. Ensuite, mettre à jour la ligne « Dernier déploiement ».
+
 ### 4. Règles de cohabitation (4 Claude sur le même repo)
 - Ne jamais réécrire/supprimer les entrées des autres dans `JOURNAL.md` / `DECISIONS.md` : **ajout uniquement**.
 - En cas de conflit git sur un fichier mémoire : garder les deux versions (fusionner), ne rien perdre.

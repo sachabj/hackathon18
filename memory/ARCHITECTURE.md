@@ -20,10 +20,17 @@ npm run build && npm run lint   # à faire passer avant chaque push
 ```
 Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run. Pour la démo, désactiver la confirmation par email (Authentication → Sign In / Providers → Email → « Confirm email » OFF).
 
-## Déploiement (Vercel)
-Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` et `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` (serveur uniquement, ⏳ **à ajouter** pour activer l'IA) → chaque push sur `main` redéploie. URL publique : **https://hackathon18-t1lb.vercel.app** ✅. Après un changement de variable d'environnement : redéployer.
+## Déploiement (Vercel) : à la demande
+`vercel.json` coupe le déploiement au push (`git.deploymentEnabled: false`). Site : **https://sharewood-ensai.vercel.app**, projet `sharewood-ensai`, équipe `hackathon-18` (compte de Justin), non relié à GitHub. Variables en production : `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `GEMINI_API_KEY` (secret) ; après un changement, redéployer.
 
-**Second déploiement (secours)** : https://sharewood-ensai.vercel.app, projet `sharewood-ensai` du compte de Justin, déployé en ligne de commande depuis un clone propre (non relié à GitHub).
+Déployer (depuis un **clone neuf** de `main`, pour ne pas envoyer de fichiers locaux) :
+```
+git clone --depth 1 https://github.com/sachabj/hackathon18.git /chemin/temporaire && cd /chemin/temporaire
+npx vercel login   # une fois
+npx vercel link --yes --scope hackathon-18 --project sharewood-ensai
+npx vercel deploy --prod --yes --scope hackathon-18
+```
+Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). Ancien projet (sachabj) : https://hackathon18-t1lb.vercel.app, figé.
 
 ## Arborescence
 ```

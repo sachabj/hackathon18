@@ -363,3 +363,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : nouveau projet `sharewood-ensai` sur le compte Vercel de Justin, déployé à la demande, car l'ancien projet refuse les déploiements (limite atteinte).
 - **Écarté pour l'instant** : attendre 24 h (après la deadline) ; passer en Pro (payant).
 - **Qui** : Justin
+
+## 2026-11-27 22h20 — Déploiement à la demande
+- **Décision** : déploiement au push coupé (`vercel.json`) ; tests en local ; Claude propose un déploiement si le dernier date de plus de 30 min et que du code a changé, et ne déploie que sur accord.
+- **Écartés** : garder l'automatique en regroupant les push ; réduire aussi les essais automatisés ; rappel toutes les heures.
+- **Qui** : Justin

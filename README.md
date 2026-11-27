@@ -69,7 +69,7 @@ Dans Supabase → SQL Editor :
 Pour la démo, désactiver « Confirm email » (Authentication → Sign In / Providers → Email).
 
 ### Mise en ligne
-https://sharewood-ensai.vercel.app est mis à jour **à la demande** (`npx vercel deploy --prod` depuis une copie propre de `main`). L'ancien projet (https://hackathon18-t1lb.vercel.app) redéploie à chaque push, quand la limite de Vercel le permet. Les variables d'environnement se règlent sur Vercel ; après un changement, redéployer.
+À la demande seulement (le déploiement au push est coupé par `vercel.json`, pour préserver le quota Vercel) : on teste en local, puis on déploie sur https://sharewood-ensai.vercel.app en suivant [la procédure](memory/ARCHITECTURE.md). Les variables d'environnement se règlent sur Vercel ; après un changement, redéployer.
 
 ## Pour en savoir plus
 - [Algorithmes de classement et de fiabilité](docs/ALGORITHMES.md)
