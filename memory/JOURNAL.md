@@ -303,3 +303,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 19h21 — Sacha (idées pour la recherche)
 - Question seulement, aucun code modifié. Constat sur les offres de démo (base locale) : « pizza pas cher », « pizza près de moi », « ciné ce soir » ne donnent aucun résultat (chaque mot est exigé dans l’offre). Pistes proposées à Sacha, à décider.
+
+### 2026-11-27 19h34 — Sacha (filtres de recherche, tâche 36)
+- Nouveaux `lib/searchFilters.ts`, `components/feed/SearchFilters.tsx` ; modifiés `app/page.tsx`, `lib/search.ts` (`tokenize` exporté), `lib/matching.ts` (`travelMinutes`). Sans migration.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 17 contrôles des filtres en script (+ essais sur les offres de démo) ; 64 contrôles dans Chrome sans interface avec un faux Supabase, à 390 et 320 px (tests adaptés à la carte de la tâche 35). **Pas testé sur la vraie base ni sur téléphone.**

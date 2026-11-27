@@ -49,6 +49,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
     │   ├── search.ts                 # recherche de l'accueil : pertinence, fautes de frappe, mots proches (offres déjà chargées)
+    │   ├── searchFilters.ts          # filtres, tri et expressions (« pas cher »…) de la recherche
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── account.ts                # mot de passe, sessions, export, suppression du compte
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
@@ -73,6 +74,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── deal/ReactionBar.tsx      # boutons « J'y suis allé (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
+    │   ├── feed/SearchFilters.tsx    # filtres sous la recherche de l'accueil (Sacha)
     │   ├── feed/DealCard.tsx         # (tâche 35 : épurée — titre, prix · lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
@@ -156,6 +158,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Accueil (`src/app/page.tsx`)
 - Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases égales sur une ligne : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu.
 - **Recherche** (`src/lib/search.ts`, locale : la saisie n'est envoyée nulle part) : formulaire avec bouton « Rechercher » (touche du clavier mobile grâce à `action` + `enterKeyHint` ; valider ferme le clavier) et croix « Annuler la recherche » (vide le champ, retour aux onglets) ; une saisie remplace les onglets par une liste de toutes les offres chargées. Tous les mots sont exigés (petits mots ignorés), sans accents ni casse, pluriels compris. Poids : titre 10, lieu 6, catégorie / activités / conditions 4, description 3, prix et zone 2 ; sponsorisées en tête de chaque groupe. « Résultats proches » (après les exacts) : mots proches (`RELATED`) ou faute de frappe (seulement si le mot n'existe dans aucune offre). Abréviations équivalentes dans `SAME`.
+- **Filtres des résultats** (`lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`) : prix (`price_level` ≤ 0 / 1 / 2), moyen (à pied, vélo, bus, voiture) + 10 / 20 / 30 min estimées à vol d'oiseau depuis la position enregistrée ou la zone principale (`travelMinutes`, `matching.ts`), condition, tri (pertinence / proximité / prix). Un filtre actif écarte les offres sans l'information. « gratuit », « pas cher », « près de moi » (et variantes) sont retirés des mots cherchés et activent le filtre ; un choix manuel l'emporte, une nouvelle expression reprend la main ; champ vidé → filtres remis à zéro.
 
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'y suis allé » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'y suis allé »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).

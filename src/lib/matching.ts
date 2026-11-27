@@ -73,15 +73,17 @@ const AID_POINTS = 36;
 /** A répondu à la question de fréquence : on connaît (et on enregistre) ses moyens de voyage. */
 export const isTraveler = (me: Pick<StudentProfile, "homeVisits">) => me.homeVisits !== null;
 
+/** Minutes estimées pour une distance à vol d'oiseau (× 1,3 : un trajet réel est plus long). */
+export const travelMinutes = (km: number, mode: TransportMode) =>
+  Math.max(1, Math.round(((km * 1.3) / TRANSPORT_MODES[mode].speedKmh) * 60));
+
 /** Durée estimée avec le premier moyen de transport de l'étudiant qui couvre la distance. */
 function travelTime(km: number, modes: TransportMode[]) {
   const mode = (Object.keys(TRANSPORT_MODES) as TransportMode[]).find(
     (m) => modes.includes(m) && km <= TRANSPORT_MODES[m].reachKm,
   );
   if (!mode) return null;
-  const { speedKmh, by } = TRANSPORT_MODES[mode];
-  // × 1,3 : un trajet réel est plus long qu'à vol d'oiseau.
-  return `≈ ${Math.max(1, Math.round(((km * 1.3) / speedKmh) * 60))} min ${by}`;
+  return `≈ ${travelMinutes(km, mode)} min ${TRANSPORT_MODES[mode].by}`;
 }
 
 export interface Match {

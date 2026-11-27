@@ -5,11 +5,20 @@
 import Link from "next/link";
 import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import DealCard from "@/components/feed/DealCard";
+import SearchFilters from "@/components/feed/SearchFilters";
 import { CloseIcon, SearchIcon } from "@/components/icons";
-import { APP_NAME } from "@/lib/constants";
+import { APP_NAME, ZONES } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { queryWords, searchDeals } from "@/lib/search";
+import {
+  applyFilters,
+  dealDistance,
+  defaultFilters,
+  readIntents,
+  travelLabel,
+  type SearchFilters as Filters,
+} from "@/lib/searchFilters";
 import type { DealCategory, DealWithVotes } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
@@ -38,6 +47,8 @@ export default function Page() {
   const [tab, setTab] = useState<TabId>("forYou");
   const [query, setQuery] = useState("");
   const searchInput = useRef<HTMLInputElement>(null);
+  /** Filtres choisis à la main : ils l'emportent sur ceux déduits de la saisie. */
+  const [chosen, setChosen] = useState<Partial<Filters>>({});
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   // Avec un profil : les plus compatibles d'abord. Sans : les plus récentes.
@@ -61,9 +72,37 @@ export default function Page() {
 
   const current = tabs.find((t) => t.id === tab)!;
   const searching = queryWords(query).length > 0;
+
+  // « pizza pas cher » : « pizza » est cherché, « pas cher » active le filtre de prix.
+  const intents = readIntents(query);
+  const defaults = defaultFilters(me?.transportModes ?? []);
+  const filters: Filters = { ...defaults, ...intents.filters, ...chosen };
+  // Point de départ des trajets : la position enregistrée, sinon le centre de la zone principale.
+  const homeZone = ZONES.find((z) => z.id === me?.homeZoneId);
+  const origin = me?.position ?? homeZone ?? null;
+  const filtering =
+    filters.price !== "any" ||
+    filters.requirement !== "any" ||
+    (origin !== null && filters.maxMinutes !== null) ||
+    (filters.sort !== "relevance" && (origin !== null || filters.sort !== "distance"));
+
+  /** Quand le trajet compte, la carte affiche la durée avec le moyen choisi. */
+  const withTravel = (items: Item[]) =>
+    items.map((item) => {
+      const km = filters.maxMinutes !== null || filters.sort === "distance" ? dealDistance(item.deal, origin) : null;
+      return km === null || !item.match
+        ? item
+        : { ...item, match: { ...item.match, distance: travelLabel(km, filters.mode) } };
+    });
+
   // La recherche porte sur toutes les offres ; à pertinence égale, les plus compatibles d'abord.
-  const results = searching ? searchDeals(ranked, query) : null;
+  const matched = searching ? searchDeals(ranked, intents.text) : null;
+  const results = matched && {
+    exact: withTravel(applyFilters(matched.exact, filters, origin)),
+    close: withTravel(applyFilters(matched.close, filters, origin)),
+  };
   const found = results ? results.exact.length + results.close.length : 0;
+  const hidden = matched ? matched.exact.length + matched.close.length - found : 0;
   const busy = loading || loadingProfile;
 
   /** Au clavier : flèches, Début et Fin passent d'un onglet à l'autre. */
@@ -84,9 +123,22 @@ export default function Page() {
     else searchInput.current?.focus();
   }
 
+  function changeQuery(value: string) {
+    setQuery(value);
+    // Champ vidé : la prochaine recherche repart sans filtre.
+    if (value === "") return setChosen({});
+    // Une nouvelle expression (« gratuit »…) l'emporte sur un choix manuel antérieur du même filtre.
+    const before = readIntents(query).filters;
+    const after = readIntents(value).filters;
+    const renewed = (Object.keys(after) as (keyof Filters)[]).filter((k) => after[k] !== before[k]);
+    if (renewed.length > 0) {
+      setChosen((c) => Object.fromEntries(Object.entries(c).filter(([k]) => !renewed.includes(k as keyof Filters))));
+    }
+  }
+
   /** La croix annule la recherche : on retrouve les onglets, clavier fermé. */
   function cancelSearch() {
-    setQuery("");
+    changeQuery("");
     searchInput.current?.blur();
   }
 
@@ -131,7 +183,7 @@ export default function Page() {
               type="search"
               enterKeyHint="search"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => changeQuery(e.target.value)}
               placeholder="Un bon plan, un lieu…"
               aria-label="Rechercher un bon plan"
               // La croix native (absente de certains navigateurs) est remplacée par la nôtre.
@@ -164,12 +216,25 @@ export default function Page() {
           !busy &&
           !error && (
             <section aria-label="Résultats de la recherche" className="space-y-3">
+              <SearchFilters
+                filters={filters}
+                hasOrigin={origin !== null}
+                originLabel={me?.position ? "ta position enregistrée" : `le centre de ${homeZone?.name}`}
+                profileHref={me ? "/onboarding?etape=zone" : "/onboarding"}
+                onChange={(patch) => setChosen((c) => ({ ...c, ...patch }))}
+                // Tout remettre à zéro, y compris les filtres venus de la saisie.
+                onReset={filtering ? () => setChosen(defaults) : undefined}
+              />
               <p role="status" className="text-sm text-[var(--color-muted)]">
-                {results.exact.length > 0
-                  ? `${results.exact.length} résultat${results.exact.length > 1 ? "s" : ""} pour « ${query.trim()} »`
-                  : found > 0
-                    ? `Rien ne contient exactement « ${query.trim()} ».`
-                    : `Aucun bon plan ne correspond à « ${query.trim()} ».`}
+                {found === 0 && hidden > 0
+                  ? `Aucun résultat avec ces filtres (${hidden} sans eux).`
+                  : results.exact.length > 0
+                    ? `${results.exact.length} résultat${results.exact.length > 1 ? "s" : ""} pour « ${query.trim()} »`
+                    : found > 0
+                      ? matched!.exact.length > 0
+                        ? "Avec ces filtres, il ne reste que des résultats proches."
+                        : `Rien ne contient exactement « ${query.trim()} ».`
+                      : `Aucun bon plan ne correspond à « ${query.trim()} ».`}
               </p>
               {results.exact.length > 0 && list(results.exact)}
               {results.close.length > 0 && (

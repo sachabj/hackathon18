@@ -278,3 +278,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande de Matteo (questions posées avant de coder) : trop d'informations par bon plan, et réagir doit être immédiat.
 - **Inchangé** : le calcul de la compatibilité (tri « Pour toi ») et de la fiabilité.
 - **Qui** : Matteo
+
+## 2026-11-27 19h34 — Filtres de la recherche (tâche 36)
+- **Décision** : sous la recherche, filtres prix, temps de trajet (moyen + durée), conditions et tri ; « gratuit », « pas cher » et « près de moi » activent les filtres. Durées estimées à vol d'oiseau (comme « Pour toi »), sans service d'itinéraire.
+- **Écartés pour l'instant** : « Ouvert maintenant » (aucune donnée d'horaires), filtres fiabilité et catégorie.
+- **Qui** : Sacha

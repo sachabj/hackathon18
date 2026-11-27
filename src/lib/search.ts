@@ -57,7 +57,7 @@ const STOP_WORDS = new Set(
 );
 
 /** Mots sans majuscules, accents ni ponctuation. */
-const tokenize = (text: string) =>
+export const tokenize = (text: string) =>
   text
     .normalize("NFD")
     .replace(/\p{M}/gu, "")
