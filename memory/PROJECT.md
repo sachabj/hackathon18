@@ -25,7 +25,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 
 ## Fonctionnalités validées ✅
 1. **Préférences** : zone principale (+ GPS facultatif) et zones suivies (Bruz, Ker Lann, Rennes), transports, budget (Serré / Équilibré / Confort), pôles de dépenses par ordre de priorité, activités préférées, longs trajets (retours chez les parents, envie de voyager) → fil **« Pour toi »** avec score de compatibilité et raisons.
-2. **Score de fiabilité** sur chaque bon plan (ex : « 87 % fiable · confirmé il y a 2 h par 6 étudiants »), calculé à partir des « J’y suis allé » (confirmation) et des « Plus dispo » (décochables), les votes récents comptant plus.
+2. **Score de fiabilité** sur chaque bon plan en code couleur (ex : pastille verte « Très fiable · confirmé il y a 2 h par 6 étudiants » ; rouge « Douteux », jaune « À vérifier », vert clair « Fiable »), calculé à partir des « J’y suis allé » (confirmation) et des « Plus dispo » (décochables), les votes récents comptant plus.
    - Le bon plan est masqué quand le score passe sous un seuil. **Le nombre de votes nécessaire s'adapte au nombre d'utilisateurs actifs dans la zone** : peu d'utilisateurs → peu de votes suffisent.
    - Si **le commerçant indique que l'offre n'existe plus** → elle est retirée immédiatement.
 3. **Accès complet pendant 7 jours après chaque contribution** (signaler ou confirmer un bon plan remet le compteur à 7 jours). Compteur visible : « 🔓 Accès complet encore 4 jours ».

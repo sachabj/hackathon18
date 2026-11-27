@@ -131,7 +131,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - Triggers : publier ou voter → `profiles.last_contribution_at = now()`
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
-- **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
+- **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). **Affichée en code couleur, sans %** (`TRUST_LEVELS`, `TrustBadge`) : vert foncé « Très fiable » ≥ 0,85 · vert clair « Fiable » ≥ 0,65 · jaune « À vérifier » ≥ 0,4 · rouge « Douteux » en dessous · « Nouveau » sans vote. Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
 - **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). ✅ 7 jours offerts à l'inscription.
 - **Niveaux** (sur 7 jours) : ≥10 Très actif · ≥3 Actif · ≥1 Peu actif · 0 Inactif (icône dédiée par niveau dans `rules.ts`, pas d'emoji).
 

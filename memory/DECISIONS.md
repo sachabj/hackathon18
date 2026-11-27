@@ -235,3 +235,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande de Matteo (questions posées avant de coder) : les deux boutons disaient la même chose, et un clic par erreur ne pouvait pas être annulé.
 - **Limite** : décocher ne retire pas les 7 jours d'accès déjà gagnés (la date de contribution n'est pas recalculée).
 - **Qui** : Matteo
+
+## 2026-11-27 18h40 — Fiabilité en code couleur (tâche 30)
+- **Décision** : plus de pourcentage de fiabilité ; un badge pastille + mot court : rouge « Douteux » (< 40 %), jaune « À vérifier » (< 65 %), vert clair « Fiable » (< 85 %), vert foncé « Très fiable » ; « Nouveau » (lilas) sans réaction. Sur les cartes du fil et dans la fiche (qui garde « Confirmé il y a … par N étudiants »).
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) ; un mot + une couleur se lit plus vite qu'un % et reste lisible pour les daltoniens et les lecteurs d'écran.
+- **Inchangé** : calcul du score et masquage sous 30 % ; fenêtre de la carte ; % de confirmations des statistiques commerçant.
+- **Qui** : Matteo

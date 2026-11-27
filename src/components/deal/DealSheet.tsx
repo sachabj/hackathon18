@@ -10,7 +10,8 @@ import { CalendarIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDown
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { fetchEngagement, recordView, setReaction, type Engagement, type Reaction } from "@/lib/engagement";
-import { reliability } from "@/lib/rules";
+import { reliability, trustLevel } from "@/lib/rules";
+import TrustBadge from "@/components/deal/TrustBadge";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal } from "@/lib/types";
 
@@ -147,11 +148,16 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
 
         {trust && data && (
           <div className="mt-4 rounded-2xl p-3" style={{ backgroundColor: "var(--color-paper)" }}>
-            <p className="text-sm font-medium">
-              {trust.score === null ? "Pas encore de vote" : `${Math.round(trust.score * 100)} % fiable`}
-              {trust.lastConfirmedAt !== null &&
-                ` · confirmé ${ago(data.at - trust.lastConfirmedAt)} par ${trust.confirmations} étudiant${trust.confirmations > 1 ? "s" : ""}`}
-            </p>
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
+              <TrustBadge level={trustLevel(trust.score)} />
+              {trust.score === null && <span>Pas encore de réaction</span>}
+              {trust.lastConfirmedAt !== null && (
+                <span>
+                  Confirmé {ago(data.at - trust.lastConfirmedAt)} par {trust.confirmations} étudiant
+                  {trust.confirmations > 1 ? "s" : ""}
+                </span>
+              )}
+            </div>
             {data.visit && (
               <p className="text-xs text-[var(--color-muted)]">
                 {data.visit.count} étudiant{data.visit.count > 1 ? "s y sont allés" : " y est allé"}

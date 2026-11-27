@@ -10,7 +10,8 @@ import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { isOwnPhotoUrl } from "@/lib/photos";
-import { trustPercent } from "@/lib/rules";
+import { trustLevelOf } from "@/lib/rules";
+import TrustBadge from "@/components/deal/TrustBadge";
 import type { DealWithVotes } from "@/lib/types";
 
 const formatDate = (iso: string) =>
@@ -35,7 +36,7 @@ export default function DealCard({
     (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
 
   const boosted = isBoosted(deal);
-  const trust = deal.votes ? trustPercent(deal.votes) : undefined;
+  const trust = deal.votes ? trustLevelOf(deal.votes) : undefined;
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(false);
   const photo = isOwnPhotoUrl(deal.photo_url) ? deal.photo_url : null;
@@ -72,18 +73,7 @@ export default function DealCard({
             {where ?? category.label}
           </p>
         </div>
-        {trust !== undefined && (
-          <span
-            className="sw-badge shrink-0"
-            style={
-              trust === null
-                ? { backgroundColor: "var(--color-lilac)", color: "var(--color-aubergine)" }
-                : { backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
-            }
-          >
-            {trust === null ? "Nouveau" : `${trust} % fiable`}
-          </span>
-        )}
+        {trust !== undefined && <TrustBadge level={trust} />}
         {onToggleFavorite && (
           <button
             type="button"

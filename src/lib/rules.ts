@@ -45,6 +45,31 @@ export function trustPercent(votes: Vote[]) {
   return score === null ? null : Math.round(score * 100);
 }
 
+export type TrustLevel = "very_reliable" | "reliable" | "to_check" | "doubtful";
+
+/**
+ * Code couleur de la fiabilité (tâche 30), du meilleur au moins bon : `min` = score minimal (0..1).
+ * Couleurs : pastille, fond et texte du badge (contraste lisible sur le fond crème).
+ */
+export const TRUST_LEVELS: Record<TrustLevel, { label: string; min: number; dot: string; bg: string; text: string }> = {
+  very_reliable: { label: "Très fiable", min: 0.85, dot: "#1E3A2F", bg: "#CFE3CA", text: "#1E3A2F" },
+  reliable: { label: "Fiable", min: 0.65, dot: "#5FA35A", bg: "#E5F2E1", text: "#2E5A2A" },
+  to_check: { label: "À vérifier", min: 0.4, dot: "#D9A400", bg: "#FBF0CC", text: "#6E5200" },
+  doubtful: { label: "Douteux", min: 0, dot: "#C0392B", bg: "#F8DDD9", text: "#8C2A20" },
+};
+
+/** Score 0..1 → niveau de couleur ; null sans vote (badge « Nouveau »). */
+export function trustLevel(score: number | null): TrustLevel | null {
+  if (score === null) return null;
+  return (Object.keys(TRUST_LEVELS) as TrustLevel[]).find((l) => score >= TRUST_LEVELS[l].min) ?? "doubtful";
+}
+
+/** Niveau de fiabilité affiché sur les cartes (même instant de référence que `trustPercent`). */
+export function trustLevelOf(votes: Vote[]) {
+  const percent = trustPercent(votes);
+  return trustLevel(percent === null ? null : percent / 100);
+}
+
 /** Nombre de votes minimum avant de pouvoir masquer un bon plan : s'adapte au nb d'utilisateurs actifs de la zone. */
 export function minVotesToHide(activeUsersInZone: number) {
   return Math.min(10, Math.max(2, Math.ceil(activeUsersInZone * 0.05)));

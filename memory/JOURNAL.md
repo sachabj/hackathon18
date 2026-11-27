@@ -262,3 +262,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 18h25 — Matteo (tâche 29 : réactions décochables)
 - Nouveau `supabase/migrations/013_unvote.sql` (+ `schema.sql`). `engagement.ts` : `removeVote`, `setReaction`. `DealSheet.tsx` (fichier de Justin) : deux boutons « J'y suis allé » / « Plus dispo », exclusifs et décochables, aide « Touche à nouveau pour décocher ». Libellés : `MyDealCard` (« Confirmé »), `commercant/statistiques`, `offerStats.ts`, `PROJECT.md`.
 - Vérifié : tsc + lint (1 avertissement connu) + build. **013 pas lancée** ; pas testé dans le navigateur ni sur la vraie base.
+
+### 2026-11-27 18h40 — Matteo (tâche 30 : fiabilité en couleurs)
+- Nouveau `src/components/deal/TrustBadge.tsx` ; `src/lib/rules.ts` (`TRUST_LEVELS`, `trustLevel`, `trustLevelOf`) ; `DealCard.tsx` et `DealSheet.tsx` (fichiers de Sacha / Justin : badge seulement).
+- Vérifié : tsc + lint (1 avertissement connu) + build ; seuils testés en script (0,39 → rouge, 0,4 → jaune, 0,65 → vert clair, 0,85 → vert foncé). Pas testé dans le navigateur.
