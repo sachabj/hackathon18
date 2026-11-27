@@ -5,6 +5,7 @@
 - **Supabase** (Postgres + auth + RLS) via `@supabase/supabase-js` + `@supabase/ssr`
 - **Leaflet** + `react-leaflet` 5 ; fond de carte vectoriel **OpenFreeMap** (sans clé) via `maplibre-gl` 6 + `@maplibre/maplibre-gl-leaflet` (secours : tuiles OpenStreetMap)
 - **Vercel** pour le déploiement
+- **Claude** (`@anthropic-ai/sdk`, modèle `claude-opus-5-5`, sorties JSON structurées) pour l'assistant de publication, via la route serveur `/api/assist`
 - ⚠️ **Next 16 a des changements cassants** (`middleware` → `proxy`, `cacheComponents` activé…) : lire `AGENTS.md` et la doc dans `node_modules/next/dist/docs/` avant d'utiliser une API Next.
 
 ## Repo
@@ -20,7 +21,7 @@ npm run build && npm run lint   # à faire passer avant chaque push
 Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run. Pour la démo, désactiver la confirmation par email (Authentication → Sign In / Providers → Email → « Confirm email » OFF).
 
 ## Déploiement (Vercel)
-Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `NEXT_PUBLIC_SUPABASE_URL` et `NEXT_PUBLIC_SUPABASE_ANON_KEY` → chaque push sur `main` redéploie. URL publique : **https://hackathon18-t1lb.vercel.app** ✅. Après un changement de variable d'environnement : redéployer.
+Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` et `ANTHROPIC_API_KEY` (serveur uniquement, ⏳ **à ajouter** pour activer l'IA) → chaque push sur `main` redéploie. URL publique : **https://hackathon18-t1lb.vercel.app** ✅. Après un changement de variable d'environnement : redéployer.
 
 ## Arborescence
 ```
@@ -42,6 +43,9 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
+    │   ├── ai/assist.ts              # SERVEUR : appels Claude (extraction photo/texte, relecture titre + modération + doublon)
+    │   ├── ai/client.ts              # navigateur : appel de /api/assist, compression photo, bons plans proches (doublons)
+    │   ├── ai/types.ts               # types partagés AssistDraft / AssistReview
     │   ├── merchant.ts               # espace commerçant : lecture / écriture, isBoosted()
     │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
     │   ├── useDashboard.ts           # hook : données de l'espace commerçant
@@ -63,6 +67,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── page.tsx                  # / carte (Justin) + fil « Pour toi » et filtres (Sacha)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
+        ├── api/assist/route.ts       # POST : assistant IA (connexion requise ; 503 « unavailable » sans clé)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
         ├── favoris/page.tsx          # favoris (Anne-Lise)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/

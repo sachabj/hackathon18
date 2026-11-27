@@ -108,3 +108,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : les étudiants rentrent souvent en train ou en avion ; demande de moins recommander plutôt que masquer.
 - **Écartés** : ville des parents (les bons plans n'ont pas de destination).
 - **Qui** : Sacha
+
+## 2026-11-27 — Assistant IA de publication (Claude)
+- **Décision** : route serveur `/api/assist` (clé `ANTHROPIC_API_KEY` jamais envoyée au navigateur, connexion Supabase exigée) avec deux actions : **extract** (photo d'affiche et/ou texte libre → champs du formulaire, l'étudiant relit) et **review** au moment de publier (titre à améliorer, contenu refusé si spam / injurieux, doublon parmi les bons plans de même catégorie à moins de 300 m ou de même zone, 60 derniers jours). Doublon → bouton « C'est le même : je le confirme » (vote 👍) au lieu d'un second bon plan.
+- **Modèle** : `claude-opus-5-5`, effort `low` (rapidité), sorties JSON structurées (schéma imposé), repli serveur `fallbacks: "default"` si le modèle décline. Photo envoyée directement (pas d'OCR), redimensionnée à 1568 px côté navigateur.
+- **Repli** : sans clé ou si l'IA est en panne, le formulaire fonctionne comme avant (pré-remplissage indisponible, publication sans relecture).
+- **Pourquoi** : contrôle qualité et anti-doublons demandés ; publier depuis une photo est plus rapide pour la démo.
+- **Qui** : Matteo

@@ -23,6 +23,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 5c | Localisation GPS : carte centrée sur l'utilisateur + « Autour de moi » (Justin) | FAIT |
 | 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
 | 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via Photon (OSM), tous les champs saisis à la main | FAIT (testé sur la vraie base) |
+| 6b | Assistant IA de publication : photo / texte → formulaire, contrôle du titre, modération, doublons (Matteo) | FAIT (testé avec réponses simulées) ; **ajouter `ANTHROPIC_API_KEY` sur Vercel** puis tester en vrai |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | FAIT (Anne-Lise) : bouton cœur sur `DealCard`, page `/favoris` triée par échéance la plus proche. Build + lint OK ; **pas testé dans un navigateur ni sur la vraie base** (aucun outil de navigateur ni script contre la vraie BDD disponible dans cette session) |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
