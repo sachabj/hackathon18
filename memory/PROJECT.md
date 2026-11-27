@@ -1,4 +1,4 @@
-# PROJECT — Waze-Etu ✅
+# PROJECT — ShareWood ✅
 
 > Le Waze des étudiants. Légende : ✅ = validé par l'équipe · 💡 = proposition, à valider
 

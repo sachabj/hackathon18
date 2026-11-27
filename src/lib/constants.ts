@@ -1,6 +1,6 @@
 import type { DealCategory, DealSubcategory } from "./types";
 
-export const APP_NAME = "Waze-Etu";
+export const APP_NAME = "ShareWood";
 
 export const CATEGORIES: Record<DealCategory, { label: string; emoji: string; color: string }> = {
   restaurant: { label: "Restaurants", emoji: "🍔", color: "#f97316" },

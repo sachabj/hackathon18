@@ -4,7 +4,7 @@ import SupabaseBanner from "@/components/SupabaseBanner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Waze-Etu — les bons plans étudiants",
+  title: "ShareWood — les bons plans étudiants",
   description: "Signale et découvre les bons plans étudiants autour de toi.",
 };
 

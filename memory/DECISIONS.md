@@ -59,5 +59,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : voir directement les bons plans autour de soi.
 - **Qui** : Justin
 
+## 2026-11-27 — Renommage Waze-Etu → ShareWood
+- **Décision** : le nom du projet devient **ShareWood** (remplace Waze-Etu partout : `package.json`, titre de la page, `APP_NAME`, README, mémoire).
+- **Pourquoi** : demande d'Anne-Lise.
+- **Qui** : Anne-Lise
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)

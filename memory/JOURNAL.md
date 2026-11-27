@@ -84,3 +84,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 14h27 — Justin (géolocalisation)
 - Nouveau hook `src/lib/useUserPosition.ts` ; `DealsMap.tsx` : point bleu + cercle de précision, centrage automatique, bouton « 📍 Autour de moi », message si refus.
 - Lint + build OK ; testé dans Chrome sans interface avec position simulée (autorisée et refusée). Pas encore testé sur un téléphone.
+
+### 2026-11-27 — Anne-Lise (renommage)
+- Projet renommé **Waze-Etu → ShareWood** : `package.json` (+ `package-lock.json` régénéré via `npm install`), titre de la page (`src/app/layout.tsx`), `APP_NAME` (`src/lib/constants.ts`), `README.md`.
+- Mémoire mise à jour : `PROJECT.md`, `TASKS.md`, `DECISIONS.md`.
+- Build (`npm run build`) OK après renommage.

@@ -16,7 +16,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | # | Tâche | Statut |
 |---|---|---|
 | 1 | Mettre en place la mémoire partagée + git | FAIT |
-| 2 | Valider la stack, le nom (Waze-Etu) et les propositions | FAIT |
+| 2 | Valider la stack, le nom (ShareWood) et les propositions | FAIT |
 | 3 | Squelette Next.js + déploiement Vercel (https://hackathon18-t1lb.vercel.app) | FAIT |
 | 4 | BDD Supabase : schéma + migrations 002 et 003, test e2e OK | FAIT |
 | 5a | Carte Bruz / Ker Lann + écran d'accueil (Justin) | FAIT |
