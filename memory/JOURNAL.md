@@ -425,3 +425,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 00h15 — Justin (diapos refaites)
 - Présentation reconstruite sur le pitch de l'équipe : captures de l'application (faux serveur, offres d'exemple « (démo) »), diapo voyage / Erasmus, annexes confiance et modèle économique. Rendu vérifié en local. Aucun code modifié.
+
+### 2026-11-28 nuit — Justin (diapos, troisième version)
+- Pitch réécrit (à la demande de Justin) et placé dans les notes ; 10 diapos animées, moins de texte, sans annexes, avec une diapo modèle économique. Rendu vérifié en local (animations non vérifiées). Aucun code modifié.
