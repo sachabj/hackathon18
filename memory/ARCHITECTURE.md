@@ -28,6 +28,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 /
 ├── CLAUDE.md, AGENTS.md, README.md   # protocole Claude, règles Next 16 (générées par next), présentation
 ├── memory/                           # mémoire partagée du projet
+├── docs/ALGORITHMES.md               # explication (équipe + jury) du classement des offres et de la fiabilité
 ├── supabase/schema.sql               # schéma complet (tables, triggers, RLS, GRANT) pour un projet neuf
 ├── supabase/migrations/              # modifs à appliquer sur la BDD existante (NNN_nom.sql)
 ├── .env.example                      # modèle de .env.local (jamais committé)

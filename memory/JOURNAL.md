@@ -324,3 +324,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 20h18 — Sacha (Les Flèches, tâche 17b)
 - Nouveaux : `016_arrows.sql` (+ `schema.sql`), `seed_arrows.sql`, `lib/arrows.ts`, `lib/useMyArrows.ts`, `components/arrows/`. Modifiés : `engagement`, `rules`, `useDeals`, `useDealReactions`, `duplicates`, `account`, `offerStats`, `types`, `ReactionBar`, `QuickReactions`, `DealSheet`, `MyDealCard`, `OfferCard`, `PublishForm`, `icons`, `layout`, accueil, recherche, favoris, profil, confidentialité, `globals.css`.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 36 contrôles de la migration et scripts de démo sur Postgres local ; 29 contrôles des Flèches et 63 de régression dans Chrome sans interface avec un faux Supabase. **016 et seed_arrows pas lancés sur la vraie base**, rien testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 21h00 — Matteo (tâche 40 : document des algorithmes)
+- Nouveau `docs/ALGORITHMES.md` (lecteurs : équipe + jury) : offres visibles, ordre par écran, sponsorisées, compatibilité « Pour toi » (barème + exemple), Hot (formule + exemples), recherche (poids, correspondances), fiabilité façon Waze (poids d'un étudiant, masse, score, couleurs, compteurs, archivage à 3 signalements de la tâche 17b, repli sans 014), limites, tableau « où régler ».
+- Écrit d'après le code à jour (après la tâche 17b de Sacha). Exemples chiffrés repris des tests en script et sur PGlite des tâches 32 et 33. Aucun code modifié.

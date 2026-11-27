@@ -49,6 +49,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 37 | E | Démo et cartes : « [Exemple] » retiré des titres (mention gardée dans la fiche, migration 015), montant () retiré de l'affichage et des formulaires (le titre dit l'avantage), flamme « Tendance » retirée | À TESTER (Matteo) : ⏳ **lancer `015_demo_titles.sql`** si `reset_demo.sql` a déjà été lancé ; sinon relancer `reset_demo.sql` (à jour). `price_info` reste en base (recherche, anciennes offres) mais n'est plus ni saisi ni affiché |
 | 38 | E | Carte d'un bon plan : lieu · distance sur une ligne pleine largeur (icône repère), sous la ligne titre / fiabilité / cœur | FAIT (Matteo) : `DealCard.tsx` ; pas vu dans le navigateur |
 | 39 | E | Plus de formule d'accueil « Bonjour <pseudo> » / « Les bons plans étudiants » en haut de l'Accueil et de Recherche (titre gardé pour les lecteurs d'écran) | FAIT (Matteo) : `app/page.tsx`, `app/recherche/page.tsx` (fichiers de Sacha / Justin) |
+| 40 | E | Document `docs/ALGORITHMES.md` : visibilité, ordre d'affichage (sponsorisées, compatibilité, Hot, recherche), fiabilité (poids, masses, score, archivage), limites, où régler | FAIT (Matteo) : **à mettre à jour à chaque changement de formule** |
 | 36 | E | Filtres sous la recherche (prix, moyen + temps de trajet, conditions, tri) ; « gratuit », « pas cher », « près de moi » compris dans la saisie. « Ouvert maintenant » remis à plus tard (aucune donnée d'horaires) | À TESTER (Sacha) : `lib/search.ts`, `lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`, `app/page.tsx` |
 | 40 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
 
@@ -123,6 +124,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement https://hackathon18-t1lb.vercel.app), 4 (base + droits testés).
 
 ## Règles à connaître avant de modifier le code
+- **Algorithmes** (tri, compatibilité, Hot, recherche, fiabilité) : expliqués dans `docs/ALGORITHMES.md` ; le mettre à jour si on change une formule ou une constante.
 - Toute nouvelle donnée ou tout nouveau service externe → mettre à jour `src/app/confidentialite/page.tsx`.
 - `deals.author_id` peut être `null` (compte supprimé) ; les profils des autres ne sont pas lisibles.
 - `boosted_until` et `ended_by` ne sont pas écrivables ; toute nouvelle colonne de `deals` ou `profiles` doit être ajoutée aux GRANT.
