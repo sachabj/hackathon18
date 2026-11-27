@@ -383,3 +383,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `next.config.ts` : `experimental.instantInsights.validationLevel: "manual-warning"` (choix de Justin).
 - Cause : `RoleGate` n'affiche pas la page avant de connaître le type de compte ; message en développement seulement, sur toutes les pages étudiantes.
 - Vérifié : message reproduit puis disparu (`next dev`, Chrome sans interface, faux Supabase) ; tsc + lint (1 avertissement connu) + build.
+
+### 2026-11-27 21h58 — Sacha (Activité allégée, tâche 47)
+- Nouveaux `components/cibles/MyDeals.tsx`, `ArrowHistory.tsx` ; modifiés `ActivityPanel`, `ActivityCard`, `MyDealCard`, profil, `lib/arrows.ts` (`fetchArrowLog`), textes de `DealSheet` et `PublishForm`, README.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 64 contrôles dans Chrome sans interface avec un faux Supabase (390 et 320 px). Sans migration. **Pas testé sur la vraie base ni sur téléphone.**

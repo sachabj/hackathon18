@@ -28,7 +28,7 @@ Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les 
 
 ### Récompenses
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
-- **Page « Ciblés »** : favoris, activité et boutique de récompenses avec bons à QR code.
+- **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
 
 ### Espace commerçant
 - Publier, modifier et retirer ses offres officielles ; statistiques.

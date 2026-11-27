@@ -226,7 +226,7 @@ export default function DealSheet({
             <ReactionBar counts={recentCounts(data.votes, data.at)} reaction={reaction} busy={busy} own={own} onReact={react} />
             <p className="mt-1.5 text-center text-xs text-[var(--color-muted)]">
               {own
-                ? "C'est ton bon plan : tu suis ses réactions dans ton profil."
+                ? "C'est ton bon plan : tu suis ses réactions dans « Ciblés », onglet Activité."
                 : reaction
                   ? "Touché par erreur ? Touche à nouveau pour décocher."
                   : "Réactions des 30 derniers jours."}

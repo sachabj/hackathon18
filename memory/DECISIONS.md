@@ -346,3 +346,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : il ne s'applique plus qu'aux pages qui exportent `instant` (`next.config.ts`). Remplace le choix d'ignorer le message (Matteo, photo de preuve).
 - **Écarté** : rendre la page avant de connaître le type de compte (un commerçant verrait l'interface étudiante).
 - **Qui** : Justin
+
+## 2026-11-27 21h58 — Activité allégée (tâche 47)
+- **Décision** : « Ciblés > Activité » = niveau sur une ligne, puis mes bons plans (déplacés du profil, lignes dépliables), puis l'historique. Chaque information à un seul endroit : les Flèches de publication et de bonus sur le bon plan, les votes et échanges dans l'historique (5 lignes, « Voir tout »).
+- **Retirés** : « Ta spécialité », compteur sur 7 jours, totaux de vues et passages, les « passages » (même geste que « J'y suis allé »).
+- **Qui** : Sacha

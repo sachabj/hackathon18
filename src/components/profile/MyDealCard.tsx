@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
-import { EditIcon, EyeIcon, HeartIcon, ProhibitedIcon, ThumbsDownIcon, ThumbsUpIcon, TrashIcon, UndoIcon, WalkIcon } from "@/components/icons";
+import { ArrowShotIcon, ChevronDownIcon, EditIcon, ProhibitedIcon, TrashIcon, UndoIcon } from "@/components/icons";
+import { DAILY_PAID_CREATIONS } from "@/lib/arrows";
 import { REQUIREMENTS } from "@/lib/constants";
 import type { MyDealInput } from "@/lib/engagement";
 import { normalizeLink } from "@/lib/links";
@@ -18,10 +19,19 @@ const sameList = (a: string[], b: string[]) => a.length === b.length && a.every(
 const actionClass = "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
 const inputClass = "sw-field mt-1 text-base";
 
-/** Un de mes bons plans : état, audience, modification, retrait et suppression. */
+/** Flèches rapportées par un de ses bons plans ; `create` à 0 : publié au-delà du plafond du jour. */
+export type DealGains = { create?: number; bonus?: number };
+
+const plural = (n: number, word: string) => `${n} ${word}${n > 1 ? "s" : ""}`;
+
+/**
+ * Un de mes bons plans, en une ligne (titre, état, Flèches) ; toucher la ligne montre l'audience,
+ * la modification, le retrait et la suppression.
+ */
 export default function MyDealCard({
   deal,
   audience,
+  gains,
   userId,
   now,
   busy,
@@ -31,6 +41,8 @@ export default function MyDealCard({
 }: {
   deal: Deal;
   audience: DealAudience | null;
+  /** Absent : pas de Flèches pour ce bon plan (ou migration 016 absente). */
+  gains?: DealGains;
   userId: string;
   now: number;
   busy: boolean;
@@ -39,6 +51,7 @@ export default function MyDealCard({
   onDelete: () => void;
 }) {
   const [mode, setMode] = useState<"view" | "edit" | "delete">("view");
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(deal.title);
   const [description, setDescription] = useState(deal.description ?? "");
   const [lastDay, setLastDay] = useState(deal.expires_at ? toDay(deal.expires_at) : "");
@@ -154,53 +167,82 @@ export default function MyDealCard({
     );
   }
 
-  return (
-    <article className="sw-card p-3">
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="flex items-center gap-1.5 font-medium leading-snug">
-          <CategoryIcon category={deal.category} size={20} /> {deal.title}
-        </h3>
-        <span
-          className="shrink-0 rounded-full px-2 py-1 text-xs font-medium"
-          style={
-            status === "En ligne"
-              ? { backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }
-              : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
-          }
-        >
-          {status}
-        </span>
-      </div>
-      <p className="text-sm text-[var(--color-muted)]">
-        {[`Publié le ${formatDate(deal.created_at)}`, deal.expires_at && `jusqu'au ${formatDate(deal.expires_at)}`]
-          .filter(Boolean)
-          .join(" · ")}
-      </p>
+  const earned = (gains?.create ?? 0) + (gains?.bonus ?? 0);
+  const panelId = `bon-plan-${deal.id}`;
 
-      {audience && (
-        <dl className="mt-2 grid grid-cols-5 gap-1 text-center">
-          {(
-            [
-              [EyeIcon, "Vues", audience.views],
-              [WalkIcon, "Passages", audience.visits],
-              [HeartIcon, "Favoris", audience.favorites],
-              [ThumbsUpIcon, "Confirmé", audience.confirmations],
-              [ThumbsDownIcon, "Plus dispo", audience.reports],
-            ] as const
-          ).map(([Icon, label, value]) => (
-            <div key={label} className="rounded-xl py-1.5" style={{ backgroundColor: "var(--color-paper)" }}>
-              <dd className="text-base font-bold">{value}</dd>
-              <dt className="text-[10px] leading-tight text-[var(--color-muted)]">
-                <Icon className="mx-auto h-3.5 w-3.5" />
-                {label}
-              </dt>
-            </div>
-          ))}
-        </dl>
-      )}
+  return (
+    <article className="sw-card">
+      <h3>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(!open);
+            setMode("view");
+          }}
+          aria-expanded={open}
+          aria-controls={panelId}
+          className="flex w-full items-center gap-2 p-3 text-left font-sans text-sm font-medium leading-snug"
+        >
+          <CategoryIcon category={deal.category} size={20} />
+          <span className="min-w-0 flex-1">{deal.title}</span>
+          <span
+            className="shrink-0 rounded-full px-2 py-0.5 text-xs"
+            style={
+              status === "En ligne"
+                ? { backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }
+                : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
+            }
+          >
+            {/* Le motif complet est donné une fois la ligne ouverte. */}
+            {deal.archived_at ? "Archivé" : byMerchant ? "Retiré" : status}
+          </span>
+          {earned > 0 && (
+            <span className="flex shrink-0 items-center gap-0.5 tabular-nums" style={{ color: "var(--color-forest)" }}>
+              +{earned}
+              <ArrowShotIcon className="h-3.5 w-3.5" />
+              <span className="sr-only">Flèches</span>
+            </span>
+          )}
+          <ChevronDownIcon className={`h-4 w-4 shrink-0 text-[var(--color-muted)] transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+      </h3>
+      {open && (
+        <div id={panelId} className="space-y-2 border-t p-3 text-sm" style={{ borderColor: "var(--color-border)" }}>
+          <p className="text-[var(--color-muted)]">
+            {[
+              `Publié le ${formatDate(deal.created_at)}`,
+              deal.expires_at && `jusqu'au ${formatDate(deal.expires_at)}`,
+              (deal.archived_at || byMerchant) && status.toLowerCase(),
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+          {audience && (
+            <p>
+              {[
+                plural(audience.views, "vue"),
+                `${audience.confirmations} « J'y suis allé »`,
+                plural(audience.favorites, "favori"),
+                audience.reports > 0 && `${audience.reports} « Plus dispo »`,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+          )}
+          {gains?.create === 0 ? (
+            <p className="text-[var(--color-muted)]">
+              Publié au-delà de {DAILY_PAID_CREATIONS} bons plans le même jour : sans Flèches.
+            </p>
+          ) : (
+            !!gains?.bonus && (
+              <p className="text-[var(--color-muted)]">
+                Flèches : {gains.create ?? 0} à la publication, {gains.bonus} grâce aux 3 confirmations.
+              </p>
+            )
+          )}
 
       {mode === "delete" ? (
-        <div className="mt-3 rounded-xl p-3 text-sm" style={{ backgroundColor: "var(--color-lilac)" }}>
+        <div className="rounded-xl p-3 text-sm" style={{ backgroundColor: "var(--color-lilac)" }}>
           <p>Supprimer définitivement ce bon plan, avec ses votes et ses favoris ?</p>
           <div className="mt-2 flex gap-2">
             <button type="button" disabled={busy} onClick={onDelete} className="sw-btn-primary" style={{ backgroundColor: "#b91c1c" }}>Supprimer</button>
@@ -208,7 +250,7 @@ export default function MyDealCard({
           </div>
         </div>
       ) : (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2">
           <button type="button" disabled={busy} onClick={startEdit} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
             <EditIcon className="h-4 w-4" /> Modifier
           </button>
@@ -228,6 +270,8 @@ export default function MyDealCard({
           <button type="button" disabled={busy} onClick={() => setMode("delete")} className={actionClass} style={{ borderColor: "#fca5a5", color: "#dc2626" }}>
             <TrashIcon className="h-4 w-4" /> Supprimer
           </button>
+        </div>
+      )}
         </div>
       )}
     </article>

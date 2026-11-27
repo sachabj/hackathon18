@@ -11,7 +11,7 @@ export const STREAK_DAYS = 3;
 export type ArrowKind = keyof typeof ARROWS;
 
 export const KIND_LABELS: Record<ArrowKind | "spend", string> = {
-  spend: "Récompense échangée",
+  spend: "Échange",
   create: "Bon plan partagé",
   bonus: "Confirmé par 3 étudiants",
   confirm: "Confirmation",
@@ -83,6 +83,47 @@ export async function fetchMyArrows(): Promise<MyArrows | null> {
     golden_badge: raw.golden_badge ?? false,
     early_access_until: raw.early_access_until ?? null,
   };
+}
+
+/** Une ligne de l'historique complet, avec l'offre concernée. */
+export type ArrowLine = ArrowEvent & { deal_id: string | null };
+
+/**
+ * Tous ses gains et ses échanges, les plus récents d'abord (lecture limitée à ses propres lignes),
+ * ou null sans la migration 016.
+ */
+export async function fetchArrowLog(): Promise<ArrowLine[] | null> {
+  const supabase = getSupabase();
+  const [gains, spends] = await Promise.all([
+    supabase
+      .from("arrow_events")
+      .select("id, deal_id, kind, amount, multiplier, paid, created_at, deals(title)")
+      .order("created_at", { ascending: false })
+      .limit(500),
+    supabase.from("user_rewards").select("id, cost, created_at, rewards(title)").order("created_at", { ascending: false }),
+  ]);
+  if (gains.error) return null;
+  type Gain = Omit<ArrowLine, "title"> & { deals: { title: string } | null };
+  type Spend = { id: string; cost: number; created_at: string; rewards: { title: string } | null };
+  const lines: ArrowLine[] = (gains.data as unknown as Gain[]).map(({ deals, ...g }) => ({
+    ...g,
+    id: `g${g.id}`,
+    title: deals?.title ?? null,
+  }));
+  // Sans la migration 017 : pas encore d'échanges.
+  for (const s of (spends.data ?? []) as unknown as Spend[]) {
+    lines.push({
+      id: `s${s.id}`,
+      deal_id: null,
+      kind: "spend",
+      amount: -s.cost,
+      multiplier: 1,
+      paid: true,
+      created_at: s.created_at,
+      title: s.rewards?.title ?? null,
+    });
+  }
+  return lines.sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
 /** Résultat d'un vote renvoyé par `react_to_deal`. */

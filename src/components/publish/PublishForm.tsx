@@ -737,7 +737,7 @@ function ExistingDeals({
             {d.description && <p className="text-xs text-[var(--color-muted)]">{d.description}</p>}
             {d.mine ? (
               <p className="text-xs font-medium" style={{ color: "var(--color-forest)" }}>
-                C&apos;est ton bon plan : tu peux le modifier depuis ton profil.
+                C&apos;est ton bon plan : tu peux le modifier depuis « Ciblés », onglet Activité.
               </p>
             ) : (
               <button

@@ -62,7 +62,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 44 | E | Carte de « Ciblés » : bloc « Grade » (Éclaireur / Chasseur de bons plans / Robin des Étudiants, un seul éclairé) à la place de « Ton influence » et de la pastille de rang | À TESTER (Sacha) : essayé avec un faux Supabase ; sans migration |
 | 45 | E | « Partager » plus rapide : seuls lieu, titre et catégorie visibles, le reste sous « Plus de détails » ; photo analysée dès qu'elle est prise. Touche `PublishForm`, `AssistPanel` (domaine de Matteo, avec son accord) | À TESTER (Justin) : essayé avec un faux Supabase et une IA simulée ; à essayer sur téléphone (appareil photo) et avec la vraie IA ; sans migration. **Matteo** : photo analysée sans bouton, « Coller un texte » devient « Texte », portée et catégories en puces, `ChoiceTile` plus utilisé ici |
 | 46 | E | Profil : retrait du bouton « Utiliser mes Flèches » et du Badge Doré (visible dans « Ciblés ») ; description de la récompense corrigée (migration **019**) | À TESTER (Sacha) : ⏳ **lancer `019_golden_badge_text.sql`** |
-| 47 | E | « Ciblés > Activité » allégé : niveau sur une ligne (sans spécialité), « Mes bons plans » (déplacés du profil, lignes dépliables avec leurs Flèches), historique sans ces gains. Touche `profil/page.tsx`, `MyDealCard`, `ActivityCard` (Justin), texte de `DealSheet` | EN COURS (Sacha) |
+| 47 | E | « Ciblés > Activité » allégé : niveau sur une ligne (sans spécialité), « Mes bons plans » (déplacés du profil, lignes dépliables avec leurs Flèches), historique sans ces gains. Touche `profil/page.tsx`, `MyDealCard`, `ActivityCard` (Justin), texte de `DealSheet` | À TESTER (Sacha) : essayé avec un faux Supabase ; sans migration |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -143,6 +143,10 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 
 ## À prendre en compte (depuis le profil sans Flèches, Sacha)
 - **Justin** : `profil/page.tsx` ne montre plus rien des Flèches (`UseArrowsLink.tsx` supprimé).
+
+## À prendre en compte (depuis l'onglet Activité, Sacha)
+- **Justin** : « Mes bons plans » quitte le profil pour « Ciblés > Activité » (`components/cibles/MyDeals.tsx`) ; `MyDealCard` devient une ligne dépliable (audience en une ligne, Flèches, totaux retirés) ; `ActivityCard` tient sur une ligne, sans spécialité.
+- **Matteo** : dans `PublishForm`, « C'est ton bon plan » renvoie vers « Ciblés, onglet Activité ».
 
 ## Codé : état des essais
 | # | Fonction | Statut |

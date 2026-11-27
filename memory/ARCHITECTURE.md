@@ -74,7 +74,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
     │   ├── NavBar.tsx                # barre du bas : Accueil / Recherche / Partager / Ciblés / Profil (icônes `icons.tsx`)
     │   ├── Tabs.tsx                  # onglets rectangulaires (accueil, Ciblés)
-    │   ├── cibles/                   # FavoritesPanel, ActivityPanel
+    │   ├── cibles/                   # FavoritesPanel, ActivityPanel (niveau, MyDeals, ArrowHistory)
     │   ├── rewards/                  # RewardsPanel, RedeemDialog, Voucher (QR), Modal
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
@@ -85,7 +85,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon` ; prop optionnel `onSelect(dealId)` : si l'offre a un lieu, toucher la carte la sélectionne sur `DealsMap` au lieu d'ouvrir sa fiche — utilisé par Recherche seulement ; prop `selected` : contour aubergine, même couleur que le repère choisi sur la carte). Offre sponsorisée : cadre doré **et** étiquette « Sponsorisé » (icône `SparklesIcon`), indépendante du surlignage de sélection.
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
-    │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
+    │   ├── profile/                  # ActivityCard (niveau sur une ligne) et MyDealCard (ligne dépliable), affichés dans « Ciblés » ; PreferencesSummary
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
@@ -102,7 +102,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
         ├── confidentialite/page.tsx  # politique de confidentialité, lisible sans compte (Sacha)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
-        └── profil/page.tsx           # préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
+        └── profil/page.tsx           # préférences et compte (Justin) ; simuler position à faire (Matteo)
 ```
 
 ## Conventions de code
