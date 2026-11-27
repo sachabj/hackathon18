@@ -4,6 +4,7 @@
 // TODO Tâche 11 (Matteo) : bouton « 📍 Simuler ma position ».
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import AccountLink from "@/components/account/AccountLink";
 import LogoutButton from "@/components/LogoutButton";
 import ActivityCard from "@/components/profile/ActivityCard";
 import MyDealCard from "@/components/profile/MyDealCard";
@@ -129,6 +130,8 @@ export default function Page() {
           </ul>
         </section>
       )}
+
+      <AccountLink />
 
       <LogoutButton />
     </div>

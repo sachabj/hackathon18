@@ -21,7 +21,8 @@ const MERCHANT_LINKS = [
 export default function NavBar() {
   const pathname = usePathname();
   const role = useRole(pathname);
-  if (!role || pathname.startsWith("/login") || pathname.startsWith("/onboarding")) return null;
+  const hidden = ["/login", "/onboarding", "/confidentialite"].some((p) => pathname.startsWith(p));
+  if (!role || hidden) return null;
   const links = role === "merchant" ? MERCHANT_LINKS : LINKS;
   return (
     <nav

@@ -33,7 +33,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
-| 17 | Profil, ajouts : compte et sécurité, mes données (RGPD), autorisations, crédits (sur la page construite par Justin) | EN COURS (Sacha) : cadrage, aucun code |
+| 17 | Profil, ajouts : compte et sécurité, mes données (RGPD), autorisations, crédits (sur la page construite par Justin) | EN COURS (Sacha) : sécurité du compte et confidentialité codées (`/compte`, `/confidentialite`), **migration 009 à exécuter** puis test réel ; crédits et badges à faire |
 | 16 | Offres immatérielles (réductions SNCF, aides, Carte Sortir) : rubrique « Réductions & aides » reliée à la homepage | TODO — 💡 proposition à valider (Sacha + Anne-Lise) |
 
 ## Pour démarrer sa tâche
@@ -86,3 +86,11 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Périmètre volontairement pas touché** (pour ne pas marcher sur votre travail en cours) : pins et commandes de la carte (Justin), `/commercant` et `/profil` (Justin), `/publier` et `/onboarding` (Matteo/Sacha), emoji de `TRANSPORT_MODES` / `BUDGET_PROFILES` dans `constants.ts` (Sacha). Dites-moi si vous voulez que j'harmonise ces pages avec `icons.tsx` ou si vous préférez vous en charger.
 - **Sacha (tâche 16, homepage)** : toujours en attente de validation, pas de conflit avec ce qui a été fait ici.
 - **Justin** : `src/app/profil/page.tsx` (lien « Partager un bon plan ») et `components/profile/ActivityCard.tsx` (« partagé », « Partages-en un ») modifiés par Matteo (renommage Signaler → Partager).
+
+## À prendre en compte (depuis le compte et la confidentialité, Sacha)
+- **Tous** : lancer dans l'ordre `007_engagement.sql`, `008_deal_photos.sql`, `009_account.sql` (celles pas encore passées). Ensuite, si 007 est relancée, relancer 009.
+- **Tous** : `deals.author_id` peut être `null` (compte supprimé) ; les profils des autres ne sont plus lisibles. Toute nouvelle donnée ou tout nouveau service externe → mettre à jour `src/app/confidentialite/page.tsx`.
+- **Justin** (accord donné) : lien vers `/compte` dans `/profil` et `/commercant/compte` ; `deleteMyDeal` efface aussi la photo ; `reset_demo.sql` efface les bons plans avant les comptes → **refaire ta copie `*.local.sql`**.
+- **Matteo** : dans `/publier`, la photo n'est publiée que si la case est cochée ; mention de l'IA ajoutée dans `AssistPanel`.
+- **Anne-Lise** : `NavBar` masquée aussi sur `/confidentialite`.
+- À remplir : `PRIVACY_CONTACT` (`src/lib/constants.ts`) pour afficher un contact.

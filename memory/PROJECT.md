@@ -55,3 +55,5 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 
 ## Compte ✅
 - **Un compte est obligatoire pour tout**, y compris pour consulter.
+- **Publications anonymes** ; page « Compte et confidentialité » (sécurité, mes données, suppression) et politique de confidentialité.
+- **Crédits et badges** (à faire) : gagnés en interagissant avec les offres (publier > confirmer) ; badges, progression, avantages d'entreprises partenaires.

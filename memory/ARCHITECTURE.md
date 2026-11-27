@@ -42,6 +42,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
     │   ├── geo.ts                    # distances, zone la plus proche
+    │   ├── account.ts                # mot de passe, sessions, export, suppression du compte
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
     │   ├── ai/assist.ts              # SERVEUR : appels Gemini ou Claude (extraction photo/texte, relecture titre + modération + doublon)
     │   ├── ai/client.ts              # navigateur : appel de /api/assist, compression photo, bons plans proches (doublons)
@@ -59,6 +60,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil (icônes `icons.tsx`)
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
+    │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
@@ -74,6 +76,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── api/assist/route.ts       # POST : assistant IA (connexion requise ; 503 « unavailable » sans clé)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
         ├── favoris/page.tsx          # favoris (Anne-Lise)
+        ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
+        ├── confidentialite/page.tsx  # politique de confidentialité, lisible sans compte (Sacha)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
         └── profil/page.tsx           # accès, niveau, préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
 ```
@@ -93,10 +97,11 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ✅ · `006_travel.sql` ✅ · `007_engagement.sql` ⏳ **à exécuter** · `008_deal_photos.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ✅ · `006_travel.sql` ✅ · `007_engagement.sql` ⏳ **à exécuter** · `008_deal_photos.sql` ⏳ **à exécuter** · `009_account.sql` ⏳ **à exécuter** (après 007)
 - `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Une adresse à garder sans compte est ignorée et listée à la fin (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
+- **Confidentialité (009)** : chacun ne lit que son profil ; `profiles.privacy_accepted_at` posée à l'inscription ; pseudo ≤ 40 ; `deals.author_id` nullable (`on delete set null`) ; RPC `my_kept_deals()` et `delete_my_account()` (garde les bons plans actifs avec plus de 👍 que de 👎 d'autres étudiants, hors offres officielles)
 - `businesses` (un par compte commerçant, écriture via `register_business` seulement) : owner_id, name, address, category (restaurant | supermarket | activity | sport), zone_id, lat, lng
 - `deals.boosted_until` (mise en avant, via `boost_offer`) et `deals.ended_by` (via `set_nearby_deal_ended`) : non écrivables directement
 - Fonctions commerçant : `my_offer_stats()`, `deals_near_my_business()` (≤ 75 m, même catégorie, bons plans d'étudiants)

@@ -30,7 +30,8 @@ export interface Deal {
   deadline_at: string | null;
   is_official: boolean;
   ended_by_merchant: boolean;
-  author_id: string;
+  /** null : l'auteur a supprimé son compte (migration 009) */
+  author_id: string | null;
   created_at: string;
   /** 0 = gratuit, 1 = €, 2 = €€, 3 = €€€ (voir PRICE_LEVELS) */
   price_level?: number | null;
@@ -66,6 +67,8 @@ export interface Profile {
   followed_zone_ids: string[];
   last_contribution_at: string | null;
   onboarded: boolean;
+  /** Acceptation de la politique de confidentialité (migration 009) */
+  privacy_accepted_at?: string | null;
   created_at: string;
 }
 

@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import { APP_NAME } from "@/lib/constants";
+import { APP_NAME, PASSWORD_MIN } from "@/lib/constants";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -10,6 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [merchant, setMerchant] = useState(false);
+  const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,9 @@ export default function LoginPage() {
         : await supabase.auth.signUp({
             email,
             password,
-            options: { data: { username, account_type: merchant ? "merchant" : "student" } },
+            options: {
+              data: { username, account_type: merchant ? "merchant" : "student", privacy_accepted: accepted },
+            },
           });
     setLoading(false);
     if (error) return setError(error.message);
@@ -62,6 +66,7 @@ export default function LoginPage() {
           <input
             className="w-full rounded-lg border px-3 py-2"
             placeholder="Pseudo"
+            maxLength={40}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -78,12 +83,30 @@ export default function LoginPage() {
         <input
           className="w-full rounded-lg border px-3 py-2"
           type="password"
-          placeholder="Mot de passe (6 caractères min.)"
-          minLength={6}
+          placeholder={mode === "signup" ? "Mot de passe (8 caractères min.)" : "Mot de passe"}
+          minLength={mode === "signup" ? PASSWORD_MIN : undefined}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {mode === "signup" && (
+          <label className="flex items-start gap-2 text-sm text-zinc-600">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4 accent-blue-600"
+              checked={accepted}
+              onChange={(e) => setAccepted(e.target.checked)}
+              required
+            />
+            <span>
+              J&apos;ai au moins 15 ans et j&apos;accepte la{" "}
+              <Link href="/confidentialite" target="_blank" className="text-blue-600 underline">
+                politique de confidentialité
+              </Link>
+              .
+            </span>
+          </label>
+        )}
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button
           disabled={loading}

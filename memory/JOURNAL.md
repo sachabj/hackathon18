@@ -199,3 +199,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 16h10 — Justin (reset_demo assoupli)
 - `supabase/reset_demo.sql` (+ copie locale) : adresses absentes ignorées et listées. Retesté sur Postgres local. Toujours **pas exécuté sur la vraie base**.
 - La clé Gemini n'est plus dans `.env.example` (présente dans `.env.local`, jamais committée).
+
+### 2026-11-27 16h25 — Sacha (sécurité du compte et confidentialité)
+- `/compte`, `/confidentialite`, `components/account/`, `lib/account.ts`, `009_account.sql` (+ `schema.sql`) ; modifiés : `login`, `proxy.ts`, `NavBar`, `PublishForm`, `AssistPanel`, `photos.ts`, `engagement.ts`, `types.ts`, `constants.ts`, `profil`, `commercant/compte`, `reset_demo.sql`.
+- Vérifié : lint (1 avertissement connu) + build ; 23 contrôles sur un Postgres local ; 21 contrôles dans Chrome sans interface avec un faux Supabase. **009 pas lancée sur la vraie base**, rien testé sur la vraie base ni sur téléphone.

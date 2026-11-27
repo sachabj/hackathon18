@@ -2,6 +2,11 @@ import type { ActivityId, BudgetProfile, DealCategory, DealSubcategory, HomeVisi
 
 export const APP_NAME = "ShareWood";
 
+/** Longueur minimale d'un nouveau mot de passe. */
+export const PASSWORD_MIN = 8;
+/** Adresse de contact affichée dans la politique de confidentialité (rien n'est affiché tant qu'elle est vide). */
+export const PRIVACY_CONTACT = "";
+
 export const CATEGORIES: Record<DealCategory, { label: string; emoji: string; color: string }> = {
   restaurant: { label: "Restaurants", emoji: "🍔", color: "#f97316" },
   supermarket: { label: "Grandes surfaces", emoji: "🛒", color: "#22c55e" },

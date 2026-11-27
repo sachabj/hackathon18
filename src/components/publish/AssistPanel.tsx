@@ -2,6 +2,7 @@
 
 // « ✨ Pré-remplir avec l'IA » : photo d'une affiche et/ou texte libre → brouillon du formulaire.
 // Responsable : Matteo.
+import Link from "next/link";
 import { useState } from "react";
 import { AssistUnavailable, extractFromInput, photoToJpeg } from "@/lib/ai/client";
 import type { AssistDraft } from "@/lib/ai/types";
@@ -59,6 +60,10 @@ export default function AssistPanel({
       <div>
         <h2 className="font-semibold text-zinc-900">✨ Pré-remplir avec l&apos;IA</h2>
         <p className="text-xs text-zinc-500">Prends l&apos;affiche en photo ou colle le texte de l&apos;offre : on remplit le formulaire pour toi.</p>
+        <p className="mt-1 text-xs text-zinc-500">
+          La photo ou le texte est envoyé à un service d&apos;IA externe.{" "}
+          <Link href="/confidentialite" target="_blank" className="underline">Confidentialité</Link>
+        </p>
       </div>
       <div className="flex gap-2">
         <label className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-xl border border-zinc-300 bg-white py-2 text-sm font-semibold active:scale-95">

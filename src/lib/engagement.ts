@@ -1,4 +1,5 @@
 // Réactions aux bons plans (vues, passages, votes) et gestion de ses propres signalements.
+import { removeDealPhoto } from "./photos";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import type { Deal, DealAudience, Vote } from "./types";
 
@@ -99,5 +100,9 @@ export async function setMyDealEnded(dealId: string, ended: boolean) {
 }
 
 export async function deleteMyDeal(dealId: string) {
+  // `*` : la colonne photo_url n'existe qu'après la migration 008.
+  const { data } = await getSupabase().from("deals").select("*").eq("id", dealId).maybeSingle();
   check(await getSupabase().from("deals").delete().eq("id", dealId));
+  const photo = (data as Deal | null)?.photo_url;
+  if (photo) await removeDealPhoto(photo);
 }

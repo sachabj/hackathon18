@@ -4,6 +4,8 @@ import { NextResponse, type NextRequest } from "next/server";
 // Compte obligatoire pour tout : toute page sauf /login redirige vers /login si pas de session.
 // Le proxy rafraîchit aussi le cookie de session Supabase à chaque requête.
 const PUBLIC_PATHS = ["/login"];
+// Lisibles avec ou sans compte (on doit pouvoir la lire avant de s'inscrire).
+const OPEN_PATHS = ["/confidentialite"];
 
 export async function proxy(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -29,6 +31,8 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (OPEN_PATHS.includes(request.nextUrl.pathname)) return response;
 
   const isPublic = PUBLIC_PATHS.some((p) => request.nextUrl.pathname.startsWith(p));
   if (!user && !isPublic) {

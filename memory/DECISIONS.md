@@ -168,3 +168,14 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 — « Signaler » devient « Partager »
 - **Décision** : publier un bon plan se dit désormais **« Partager »** (onglet de la barre du bas, titre de /publier, bouton « Partager un autre bon plan », lien du profil, textes d'ActivityCard, description du site). « Signaler 👎 » garde son sens : dire qu'une offre n'existe plus.
 - **Qui** : Matteo
+
+## 2026-11-27 — Compte et confidentialité
+- **Décision** : publications anonymes (profils lisibles par leur seul propriétaire) ; photo publiée seulement sur accord (case décochée) ; case « 15 ans + politique de confidentialité » à l'inscription ; mot de passe (actuel exigé) et déconnexion de tous les appareils, nouveau mot de passe ≥ 8 ; à la suppression du compte, seuls les bons plans actifs et confirmés par d'autres restent, sans auteur.
+- **Écartés** : changement d'email et mot de passe oublié (envois d'emails à configurer).
+- **Limite** : la confirmation par mot de passe est faite par l'app, la base ne l'impose pas.
+- **Qui** : Sacha
+
+## 2026-11-27 — Crédits et badges (à implémenter)
+- **Décision** : des crédits s'obtiennent en interagissant avec les offres, publier rapportant plus que confirmer qu'une offre existe ; ils débloquent des badges et une progression, puis éventuellement des avantages d'entreprises qui alimentent les offres.
+- **Préalable** : crédits calculés par la base, avec règles anti-triche (vote sur son propre bon plan, publication puis suppression).
+- **Qui** : Sacha

@@ -96,6 +96,8 @@ export default function PublishForm() {
   const [done, setDone] = useState<null | "published" | "confirmed">(null);
   /** Photo analysée par l'IA, jointe au bon plan comme preuve. */
   const [proofPhoto, setProofPhoto] = useState<{ data: string; preview: string } | null>(null);
+  // La photo n'est publiée que sur accord explicite (confidentialité).
+  const [sharePhoto, setSharePhoto] = useState(false);
   /** Relecture IA affichée avant publication (titre, modération, doublon). */
   const [review, setReview] = useState<{ result: AssistReview; duplicate: DuplicateCandidate | null } | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
@@ -156,7 +158,10 @@ export default function PublishForm() {
   /** Brouillon de l'IA → formulaire (seuls les champs trouvés remplacent la saisie). */
   function applyDraft(d: AssistDraft, photo: { data: string; preview: string } | null) {
     setReview(null);
-    if (photo) setProofPhoto(photo);
+    if (photo) {
+      setProofPhoto(photo);
+      setSharePhoto(false);
+    }
     if (d.title) setTitle(d.title.slice(0, 80));
     if (d.category) setCategory(d.category);
     setSubcategory(d.category === "transport" ? d.subcategory : null);
@@ -192,6 +197,7 @@ export default function PublishForm() {
     setExpiresAt("");
     setDeadlineAt("");
     setProofPhoto(null);
+    setSharePhoto(false);
     setError(null);
     setReview(null);
     setDone(null);
@@ -267,9 +273,9 @@ export default function PublishForm() {
     if (!category) return;
     setSubmitting(true);
     setError(null);
-    // Photo de preuve (celle analysée par l'IA) : si le dépôt échoue, on publie sans elle.
+    // Photo de preuve (celle analysée par l'IA), si l'étudiant l'a accepté : si le dépôt échoue, on publie sans elle.
     let photo_url: string | null = null;
-    if (proofPhoto) {
+    if (proofPhoto && sharePhoto) {
       try {
         photo_url = await uploadDealPhoto(proofPhoto.data);
       } catch (err) {
@@ -548,7 +554,15 @@ export default function PublishForm() {
         <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-2">
           {/* eslint-disable-next-line @next/next/no-img-element -- aperçu local (data URL) */}
           <img src={proofPhoto.preview} alt="Photo de preuve" className="h-14 w-14 rounded-lg object-cover" />
-          <p className="flex-1 text-sm text-zinc-700">📷 Photo jointe comme preuve, visible dans le fil.</p>
+          <label className="flex flex-1 items-start gap-2 text-sm text-zinc-700">
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4 accent-blue-600"
+              checked={sharePhoto}
+              onChange={(e) => setSharePhoto(e.target.checked)}
+            />
+            Publier cette photo comme preuve (visible par tous)
+          </label>
           <button type="button" onClick={() => setProofPhoto(null)} className="text-sm font-semibold text-zinc-500">
             Retirer
           </button>

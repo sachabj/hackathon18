@@ -1,6 +1,7 @@
 "use client";
 
 // Espace commerçant — compte (Justin)
+import AccountLink from "@/components/account/AccountLink";
 import LogoutButton from "@/components/LogoutButton";
 import MerchantPage from "@/components/merchant/MerchantPage";
 import { CATEGORIES, ZONES } from "@/lib/constants";
@@ -30,7 +31,8 @@ export default function Page() {
         )}
       </MerchantPage>
       {/* Toujours accessible, même sans commerce ou en cas d'erreur. */}
-      <div className="mx-auto w-full max-w-md px-4 pb-6">
+      <div className="mx-auto w-full max-w-md space-y-3 px-4 pb-6">
+        <AccountLink />
         <LogoutButton />
       </div>
     </>

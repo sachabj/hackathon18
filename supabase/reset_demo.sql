@@ -44,6 +44,12 @@ begin
   from unnest(keep) k;
 
   -- ---------- Nettoyage ----------
+  -- Depuis la migration 009, supprimer un compte ne supprime plus ses bons plans : on les efface d'abord
+  -- (ainsi que les bons plans restés sans auteur).
+  delete from public.deals d
+   where d.author_id is null or d.author_id in (
+     select a.id from auth.users a
+      where not exists (select 1 from unnest(keep) k where lower(trim(k)) = lower(a.email)));
   delete from auth.users a
    where not exists (select 1 from unnest(keep) k where lower(trim(k)) = lower(a.email));
   delete from public.deals where description like 'Exemple fictif (démo)%'; -- ancien seed_demo.sql
