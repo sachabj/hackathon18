@@ -5,7 +5,7 @@
 import Link from "next/link";
 import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import DealCard from "@/components/feed/DealCard";
-import { SearchIcon } from "@/components/icons";
+import { CloseIcon, SearchIcon } from "@/components/icons";
 import { APP_NAME } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -84,6 +84,12 @@ export default function Page() {
     else searchInput.current?.focus();
   }
 
+  /** La croix annule la recherche : on retrouve les onglets, clavier fermé. */
+  function cancelSearch() {
+    setQuery("");
+    searchInput.current?.blur();
+  }
+
   const list = (items: Item[]) => (
     <ul className="space-y-3">
       {items.map(({ deal, match }) => (
@@ -128,9 +134,21 @@ export default function Page() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Un bon plan, un lieu…"
               aria-label="Rechercher un bon plan"
-              className="sw-field h-full"
-              style={{ paddingLeft: "2.75rem" }}
+              // La croix native (absente de certains navigateurs) est remplacée par la nôtre.
+              className="sw-field h-full [&::-webkit-search-cancel-button]:appearance-none"
+              style={{ paddingLeft: "2.75rem", paddingRight: query ? "2.5rem" : undefined }}
             />
+            {query && (
+              <button
+                type="button"
+                onClick={cancelSearch}
+                aria-label="Annuler la recherche"
+                title="Annuler la recherche"
+                className="absolute right-0 top-0 flex h-full w-10 items-center justify-center text-[var(--color-muted)]"
+              >
+                <CloseIcon className="h-4 w-4" />
+              </button>
+            )}
           </div>
           {/* Coins identiques à ceux du champ (`.sw-btn-primary` l'emporte sur les classes Tailwind). */}
           <button type="submit" className="sw-btn-primary shrink-0 text-sm" style={{ borderRadius: 14, padding: "0 0.9rem" }}>

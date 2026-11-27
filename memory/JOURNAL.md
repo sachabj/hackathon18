@@ -291,3 +291,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 19h15 — Sacha (bouton « Rechercher »)
 - `src/app/page.tsx` : barre de recherche en formulaire, bouton « Rechercher », touche du clavier mobile ; texte du champ raccourci. Les résultats restent affichés pendant la saisie (choix de Sacha).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (320 et 390 px). **Clavier d'un vrai téléphone pas testé.**
+
+### 2026-11-27 19h19 — Sacha (croix pour annuler la recherche)
+- `src/app/page.tsx` : croix au bout du champ dès qu'il contient du texte (remplace la croix native du navigateur). Conflit dans `TASKS.md` avec la prise de la tâche 35 (Matteo) : les deux lignes gardées.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase. Pas testé sur un téléphone.
