@@ -428,3 +428,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 nuit — Justin (diapos, troisième version)
 - Pitch réécrit (à la demande de Justin) et placé dans les notes ; 10 diapos animées, moins de texte, sans annexes, avec une diapo modèle économique. Rendu vérifié en local (animations non vérifiées). Aucun code modifié.
+
+### 2026-11-28 nuit — Justin (diapos, quatrième version)
+- Introduction réunie sur une diapo, beaucoup plus de texte, 7 diapos. Rendu vérifié en local sans débordement. Aucun code modifié.
