@@ -12,6 +12,12 @@ Projet de hackathon ENSAI (équipe de 4 étudiants 3A, 4 comptes Claude Code sur
    Un hook (`.claude/settings.json`) affiche leur liste à chaque prompt : **les lire tous en entier** (outil Read), même s'ils semblent déjà connus — un coéquipier a pu les modifier.
 3. Vérifier dans `memory/TASKS.md` que la tâche demandée n'est pas déjà prise par un autre membre.
 
+### ❓ Toujours poser des questions avant d'agir
+Pour toute demande qui modifie le projet (code, base de données, design, périmètre), **poser des questions à l'utilisateur avant de coder** (outil AskUserQuestion), même si la demande paraît claire :
+- reformuler ce qui a été compris et faire préciser les points ambigus (comportement attendu, périmètre, ce qui est exclu) ;
+- signaler les recoupements avec la tâche d'un coéquipier et les migrations nécessaires ;
+- n'écrire du code qu'une fois les réponses reçues ; reposer des questions si un nouveau choix apparaît en cours de route.
+
 ### 2. APRÈS chaque requête (même petite)
 Mettre à jour la mémoire, **dans le même commit que le code** :
 - `memory/JOURNAL.md` → **ajouter** une entrée (date-heure, membre, ce qui a été fait, fichiers touchés).

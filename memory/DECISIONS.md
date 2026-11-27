@@ -82,6 +82,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Statistiques** : uniquement des données réelles (favoris, confirmations, signalements) ; pas de compteur de vues.
 - **Qui** : Justin
 
+## 2026-11-27 15h37 — Questions obligatoires avant d'agir
+- **Décision** : règle ajoutée dans `CLAUDE.md` : tout Claude pose des questions pour confirmer la demande avant de modifier le projet.
+- **Pourquoi** : être sûr de la requête avant de coder.
+- **Qui** : Justin (s'applique aux 4 comptes, le fichier étant partagé)
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

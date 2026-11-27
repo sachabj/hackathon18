@@ -150,3 +150,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 16h30 — Matteo (Gemini pour l'assistant IA)
 - `src/lib/ai/assist.ts` (fournisseur Gemini ou Claude selon la clé, revérification des champs), `src/app/api/assist/route.ts` (erreurs Gemini : quota, clé, modèle), `.env.example` ; dépendance `@google/genai`.
 - Vérifié : lint + build. **Appel réel à Gemini pas testé (pas de clé sur ce poste)** ; nom du modèle par défaut repris de la doc du SDK, modifiable via `GEMINI_MODEL`.
+
+### 2026-11-27 15h37 — Justin (règle « poser des questions »)
+- `CLAUDE.md` : nouvelle règle (questions avant toute modification). Demande suivante : page Profil (cadrage en cours).
