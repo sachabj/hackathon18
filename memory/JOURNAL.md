@@ -267,6 +267,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Nouveau `src/components/deal/TrustBadge.tsx` ; `src/lib/rules.ts` (`TRUST_LEVELS`, `trustLevel`, `trustLevelOf`) ; `DealCard.tsx` et `DealSheet.tsx` (fichiers de Sacha / Justin : badge seulement).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; seuils testés en script (0,39 → rouge, 0,4 → jaune, 0,65 → vert clair, 0,85 → vert foncé). Pas testé dans le navigateur.
 
-### 2026-11-27 19h00 — Matteo (tâche 31 : tri Hot)
+### 2026-11-27 19h00 — Matteo (tâche 32 : tri Hot)
 - Nouveau `src/lib/hot.ts` ; modifiés `src/app/recherche/page.tsx` (fichier de Sacha / Justin : tri de « Tout »), `src/components/feed/DealCard.tsx` (badge « Tendance »), `src/lib/useDeals.ts` (`loadedAt`).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; formule testée en script (neuve sans vote 0,27 ; 2 j avec 5 passages récents 0,07 + Tendance ; mêmes passages il y a 40 h 0,05 ; 2 « Plus dispo » négatif). Pas testé dans le navigateur.

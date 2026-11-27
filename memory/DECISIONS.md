@@ -242,7 +242,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Inchangé** : calcul du score et masquage sous 30 % ; fenêtre de la carte ; % de confirmations des statistiques commerçant.
 - **Qui** : Matteo
 
-## 2026-11-27 19h00 — Tri « Hot » et badge « Tendance » (tâche 31)
+## 2026-11-27 19h00 — Tri « Hot » et badge « Tendance » (tâche 32)
 - **Décision** : l'onglet « Tout » de Recherche n'est plus chronologique mais trié « Hot » (façon Reddit / Hacker News) : nombre de « J'y suis allé » (log), vitesse des réactions récentes (demi-vie 24 h, « Plus dispo » pénalise ×1,5) et fraîcheur de l'offre (exposant 1,2). Seules les offres sponsorisées restent au-dessus. Badge « Tendance » (flamme) dès 3 « J'y suis allé » en 24 h.
 - **Pourquoi** : demande de Matteo (questions posées avant de coder) ; mettre en avant ce qui marche en ce moment.
 - **Écarté** : bonus date limite proche ou offre officielle (choix de Matteo : seul le sponsoring passe devant) ; Hot sur l'accueil et sur « Pour toi ».

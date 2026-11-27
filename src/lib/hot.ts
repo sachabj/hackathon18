@@ -1,4 +1,4 @@
-// Tri « Hot » des bons plans (tâche 31), façon Reddit / Hacker News. Voir memory/ARCHITECTURE.md § Hot.
+// Tri « Hot » des bons plans (tâche 32), façon Reddit / Hacker News. Voir memory/ARCHITECTURE.md § Hot.
 // « J'y suis allé » = vote +1 et « Plus dispo » = vote -1 : tout se calcule avec les votes déjà chargés.
 import type { Deal, Vote } from "./types";
 
