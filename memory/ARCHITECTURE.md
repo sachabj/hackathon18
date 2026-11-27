@@ -37,17 +37,23 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── types.ts                  # types TS alignés sur schema.sql
     │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
+    │   ├── preferences.ts            # lecture / écriture des préférences
+    │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
+    │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
+    │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
+    │   ├── preferences/              # PreferencesWizard (parcours en 6 étapes) + ChoiceTile
     │   └── map/                      # DealsMap.tsx (Leaflet, <DealsMap deals={...}/>) + DealsMapLoader.tsx (à importer)
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / carte (Justin) + fil et filtres (Sacha)
+        ├── page.tsx                  # / carte (Justin) + fil « Pour toi » et filtres (Sacha)
         ├── login/page.tsx            # connexion / inscription (fait)
-        ├── onboarding/page.tsx       # préférences après inscription (Matteo)
+        ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── publier/page.tsx          # signaler un bon plan (Anne-Lise)
         ├── favoris/page.tsx          # favoris (Anne-Lise)
         └── profil/page.tsx           # niveau, accès, simuler position (Matteo)
@@ -68,9 +74,13 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ⏳ **à exécuter**
+- `supabase/seed_demo.sql` : bons plans d'exemple fictifs (facultatif, après 004).
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Pour créer un compte commerçant : Table Editor → profiles → `role = merchant`.
-- `zones` : id (`bruz`, `ker-lann`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
+- `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], updated_at
+- `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
+- `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités
+- `zones` : id (`bruz`, `ker-lann`, `rennes`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)
 - `deals` : id, title, description, category, subcategory (transport uniquement), scope (local | zone | national ; local ⇒ lat/lng obligatoires), zone_id, place_name, lat, lng, price_info, expires_at, deadline_at, is_official (commerçants uniquement), ended_by_merchant, author_id (= auth.uid() par défaut), created_at
 - `votes` : deal_id, user_id, value (+1 / -1), created_at — **un vote par utilisateur et par bon plan** : re-confirmer = `upsert` (created_at remis à now())
@@ -83,3 +93,9 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
 - **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). ✅ 7 jours offerts à l'inscription.
 - **Niveaux** (sur 7 jours) : ≥10 Très actif 🔥 · ≥3 Actif ✅ · ≥1 Peu actif 💤 · 0 Inactif 😴.
+
+## Personnalisation (`src/lib/matching.ts`)
+- Score sur 100 = points obtenus / points applicables (un critère non renseigné ne compte pas) : pôle de dépenses 40 (−4 par rang), localisation 25 (distance selon les transports, ou zone suivie), budget 20, activité ou transport emprunté 15.
+- **« Pour toi »** : score ≥ 55, à portée, et catégorie suivie ou activité / transport aimé. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).
+- Distances à vol d'oiseau depuis la position enregistrée, sinon le centre de la zone principale ; durées estimées.
+- ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.

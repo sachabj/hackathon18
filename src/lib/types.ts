@@ -32,6 +32,10 @@ export interface Deal {
   ended_by_merchant: boolean;
   author_id: string;
   created_at: string;
+  /** 0 = gratuit, 1 = €, 2 = €€, 3 = €€€ (voir PRICE_LEVELS) */
+  price_level?: number | null;
+  /** Activités liées (ids de ACTIVITIES) */
+  tags?: string[] | null;
 }
 
 export interface Vote {
@@ -65,4 +69,31 @@ export interface UserContribution {
   category: DealCategory;
   count_7d: number;
   count_30d: number;
+}
+
+export type TransportMode = "walk" | "bike" | "bus" | "train" | "car" | "carpool" | "plane";
+
+export type BudgetProfile = "tight" | "balanced" | "comfort";
+
+export type ActivityId =
+  | "cinema"
+  | "music"
+  | "nightlife"
+  | "games"
+  | "culture"
+  | "swimming"
+  | "fitness"
+  | "team_sport"
+  | "outdoor";
+
+/** Ligne de la table `preferences` (privée : lisible par son seul propriétaire). */
+export interface Preferences {
+  user_id: string;
+  home_zone_id: string | null;
+  lat: number | null;
+  lng: number | null;
+  transport_modes: TransportMode[];
+  budget_profile: BudgetProfile | null;
+  activities: ActivityId[];
+  updated_at: string;
 }

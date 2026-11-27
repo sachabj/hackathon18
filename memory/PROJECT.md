@@ -23,7 +23,7 @@ Un utilisateur peut **signaler** des offres et/ou **être informé** des offres 
 Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou nationaux** (dans le fil uniquement).
 
 ## Fonctionnalités validées ✅
-1. **Préférences** : catégories suivies + zones où être notifié (Bruz, Ker Lann).
+1. **Préférences** : zone principale (+ GPS facultatif) et zones suivies (Bruz, Ker Lann, Rennes), transports, budget (Serré / Équilibré / Confort), pôles de dépenses par ordre de priorité, activités préférées → fil **« Pour toi »** avec score de compatibilité et raisons.
 2. **Score de fiabilité** sur chaque bon plan (ex : « 87 % fiable · confirmé il y a 2 h par 6 étudiants »), calculé à partir des votes 👍 « toujours dispo » / 👎 « plus dispo », les votes récents comptant plus.
    - Le bon plan est masqué quand le score passe sous un seuil. **Le nombre de votes nécessaire s'adapte au nombre d'utilisateurs actifs dans la zone** : peu d'utilisateurs → peu de votes suffisent.
    - Si **le commerçant indique que l'offre n'existe plus** → elle est retirée immédiatement.

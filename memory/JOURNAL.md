@@ -89,3 +89,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Projet renommé **Waze-Etu → ShareWood** : `package.json` (+ `package-lock.json` régénéré via `npm install`), titre de la page (`src/app/layout.tsx`), `APP_NAME` (`src/lib/constants.ts`), `README.md`.
 - Mémoire mise à jour : `PROJECT.md`, `TASKS.md`, `DECISIONS.md`.
 - Build (`npm run build`) OK après renommage.
+
+### 2026-11-27 — Sacha (préférences + fil « Pour toi »)
+- Parcours `/onboarding` (`src/components/preferences/`), score (`src/lib/matching.ts`), accueil avec onglets « Pour toi » / « Tout », filtres et cartes (`src/app/page.tsx`, `src/components/feed/`).
+- BDD : `004_preferences.sql` (+ `schema.sql`) **à exécuter** ; exemples fictifs `supabase/seed_demo.sql`.
+- `DealsMap.tsx` : correction d'un plantage au retour sur l'accueil, fusion avec la géolocalisation de Justin, vue par défaut sur la zone de l'étudiant.
+- Vérifié : lint + build ; SQL et RLS sur un Postgres local (PGlite) ; parcours dans Chrome sans interface avec un faux Supabase, GPS autorisé et refusé. **Pas testé sur la vraie base ni sur téléphone.**

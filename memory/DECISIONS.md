@@ -66,3 +66,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
+
+## 2026-11-27 — Préférences et personnalisation
+- **Décision** : parcours en 6 étapes (zone + GPS facultatif, transports, budget en 3 profils, pôles de dépenses ordonnés, activités, récapitulatif) ; données personnelles dans une table `preferences` privée ; fil « Pour toi » avec score et raisons ; zone Rennes ajoutée.
+- **Pourquoi** : l'étudiant doit sentir une offre personnalisée avec une saisie rapide ; `profiles` est lisible par tous, donc budget et position n'y vont pas.
+- **Position** : contrairement au GPS de la carte (jamais enregistré), le bouton « Me localiser » du parcours enregistre une position arrondie (~100 m), seulement à la demande.
+- **Écartés** : adresse précise, budget par pôle.
+- **Qui** : Sacha

@@ -21,11 +21,11 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 4 | BDD Supabase : schéma + migrations 002 et 003, test e2e OK | FAIT |
 | 5a | Carte Bruz / Ker Lann + écran d'accueil (Justin) | FAIT |
 | 5c | Localisation GPS : carte centrée sur l'utilisateur + « Autour de moi » (Justin) | FAIT |
-| 5b | Fil + filtres par catégorie (Sacha) : section « Fil » de `src/app/page.tsx` | TODO |
+| 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | TODO |
-| 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) |
+| 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé ; **migration 004 à exécuter** puis test sur la vraie base |
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement | TODO |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
@@ -41,3 +41,9 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Ven. soir** : fonctionnalités MVP (liste, publication, votes)
 - **Sam. matin** : carte, données de démo, polish UI
 - **Sam. 11h–13h** : gel du code, pitch, répétition
+
+## À prendre en compte (depuis les préférences)
+- **Tous** : lancer dans Supabase → SQL Editor `supabase/migrations/004_preferences.sql`, puis `supabase/seed_demo.sql` (exemples fictifs ; ne remplace pas la tâche 12).
+- **Anne-Lise (tâche 6)** : le formulaire de publication doit remplir `price_level` (`PRICE_LEVELS`) et `tags` (`ACTIVITIES`), sinon le bon plan est moins bien classé dans « Pour toi ».
+- **Matteo (tâche 10)** : ajouter dans `/profil` un lien « Mes préférences » vers `/onboarding`. `usePreferences()` donne le profil et les préférences.
+- **Justin** : `DealsMap.tsx` modifié (démontage quand la page est cachée, sinon plantage au retour ; prop `homeZoneId` = vue par défaut sans GPS).
