@@ -49,5 +49,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 — Projet Supabase
 - URL : https://ilefezlnrqekmwiotnvi.supabase.co · clé publique (publishable) à mettre dans `.env.local` (pas dans git ; la demander à l'équipe).
 
+## 2026-11-27 14h20 — Carte reprise par Justin
+- **Décision** : tâche 5 scindée : **5a carte** (Justin), **5b fil + filtres** (Sacha). La carte reçoit la liste à afficher (`deals`) : les filtres n'ont qu'à la passer filtrée.
+- **Pourquoi** : Justin avait fini sa partie ; l'interface de base est attendue par les autres pages.
+- **Qui** : Justin (à confirmer avec Sacha)
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)

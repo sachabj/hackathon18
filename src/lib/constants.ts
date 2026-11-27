@@ -19,7 +19,7 @@ export const SUBCATEGORIES: Record<DealSubcategory, { label: string; emoji: stri
   carpool: { label: "Covoiturage", emoji: "🚗" },
 };
 
-/** Zones de démo (doivent correspondre à la table `zones` de supabase/schema.sql). Coordonnées à vérifier. */
+/** Zones de démo (doivent correspondre à la table `zones` de supabase/schema.sql). Coordonnées vérifiées sur OpenStreetMap. */
 export const ZONES = [
   { id: "bruz", name: "Bruz", lat: 48.0245, lng: -1.746, radiusM: 3000 },
   { id: "ker-lann", name: "Ker Lann", lat: 48.0505, lng: -1.742, radiusM: 1500 },

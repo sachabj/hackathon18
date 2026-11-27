@@ -36,13 +36,15 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── supabase/client.ts        # getSupabase() (navigateur), isSupabaseConfigured
     │   ├── types.ts                  # types TS alignés sur schema.sql
     │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
-    │   └── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   └── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     ├── components/
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
-    │   └── SupabaseBanner.tsx        # bandeau si .env.local absent
+    │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
+    │   └── map/                      # DealsMap.tsx (Leaflet, <DealsMap deals={...}/>) + DealsMapLoader.tsx (à importer)
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / carte + fil (Sacha)
+        ├── page.tsx                  # / carte (Justin) + fil et filtres (Sacha)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences après inscription (Matteo)
         ├── publier/page.tsx          # signaler un bon plan (Anne-Lise)
@@ -66,7 +68,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
 - Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Pour créer un compte commerçant : Table Editor → profiles → `role = merchant`.
-- `zones` : id (`bruz`, `ker-lann`), name, center_lat, center_lng, radius_m — coordonnées à vérifier
+- `zones` : id (`bruz`, `ker-lann`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)
 - `deals` : id, title, description, category, subcategory (transport uniquement), scope (local | zone | national ; local ⇒ lat/lng obligatoires), zone_id, place_name, lat, lng, price_info, expires_at, deadline_at, is_official (commerçants uniquement), ended_by_merchant, author_id (= auth.uid() par défaut), created_at
 - `votes` : deal_id, user_id, value (+1 / -1), created_at — **un vote par utilisateur et par bon plan** : re-confirmer = `upsert` (created_at remis à now())

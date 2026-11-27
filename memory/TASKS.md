@@ -5,12 +5,12 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 ## Équipe
 | Membre | Rôle |
 |---|---|
-| Sacha | Carte + fil + filtres (tâche 5) |
+| Sacha | Fil + filtres (tâche 5b) |
 | Anne-Lise | Publication, votes, fiabilité, favoris (6, 7, 8) |
 | Matteo | Préférences, accès 7 jours, niveaux, notif simulée (9, 10, 11) |
-| Justin | Squelette, BDD, déploiement (3, 4), puis commerçants / rappels (13, 14) |
+| Justin | Squelette, BDD, déploiement (3, 4), carte (5a), puis commerçants / rappels (13, 14) |
 
-✅ Répartition validée (ajustable) : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = carte + fil + filtres · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = préférences, accès 7 jours, niveaux, notif simulée · **tout le monde** = données de démo + pitch.
+✅ Répartition validée (ajustable) : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = fil + filtres (carte reprise par Justin) · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = préférences, accès 7 jours, niveaux, notif simulée · **tout le monde** = données de démo + pitch.
 
 ## Tâches
 | # | Tâche | Statut |
@@ -19,7 +19,8 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 2 | Valider la stack, le nom (Waze-Etu) et les propositions | FAIT |
 | 3 | Squelette Next.js + déploiement Vercel (https://hackathon18-t1lb.vercel.app) | FAIT |
 | 4 | BDD Supabase : schéma + migrations 002 et 003, test e2e OK | FAIT |
-| 5 | Carte Bruz / Ker Lann + fil + filtres par catégorie | TODO |
+| 5a | Carte Bruz / Ker Lann + écran d'accueil (Justin) | FAIT |
+| 5b | Fil + filtres par catégorie (Sacha) : section « Fil » de `src/app/page.tsx` | TODO |
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | TODO |

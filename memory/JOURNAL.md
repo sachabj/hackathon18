@@ -67,3 +67,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 — Justin (mise en ligne)
 - Site déployé sur https://hackathon18-t1lb.vercel.app. Bandeau Supabase au premier essai ; vérifié ensuite : plus de bandeau, clés présentes dans le build, `/` redirige vers `/login` → tâche 3 FAIT.
+
+### 2026-11-27 14h20 — Justin (carte + écran d'accueil)
+- Carte Leaflet de Bruz / Ker Lann (`src/components/map/`) : zones, boutons de recentrage, marqueurs par catégorie, fiches.
+- `src/lib/useDeals.ts` + nouvel écran d'accueil `src/app/page.tsx` (en-tête, carte, emplacement du fil pour Sacha).
+- Coordonnées des zones vérifiées sur OpenStreetMap (aucune migration).
+- Build + lint OK ; carte et fiches testées en local avec des données fictives temporaires (retirées). Lecture réelle depuis Supabase non testée avec un compte connecté.
