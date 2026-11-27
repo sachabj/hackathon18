@@ -19,7 +19,7 @@ const TOP_COUNT = 3;
 const SECTIONS: { id: string; label: string; categories: DealCategory[] }[] = [
   { id: "travel", label: "Voyager", categories: ["transport"] },
   { id: "aids", label: "Aides & bourses", categories: ["scholarship"] },
-  { id: "culture", label: "Culture & sport", categories: ["carte_sortir", "sport", "activity"] },
+  { id: "culture", label: "Culture & sport", categories: ["sport", "activity"] },
   { id: "daily", label: "Quotidien", categories: ["restaurant", "supermarket"] },
 ];
 

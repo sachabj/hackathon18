@@ -4,7 +4,8 @@
 //  - extractDeal : texte libre et/ou photo d'affiche → champs du formulaire (données structurées)
 import Anthropic from "@anthropic-ai/sdk";
 import { FinishReason, GoogleGenAI } from "@google/genai";
-import { ACTIVITIES, CATEGORIES, SUBCATEGORIES } from "@/lib/constants";
+import { ACTIVITIES, CATEGORIES, REQUIREMENTS, SUBCATEGORIES } from "@/lib/constants";
+import { normalizeLink } from "@/lib/links";
 import type { AssistDraft } from "./types";
 
 const CLAUDE_MODEL = "claude-opus-5-5";
@@ -47,6 +48,8 @@ const DRAFT_SCHEMA = {
     price_level: nullable({ type: "integer", enum: [0, 1, 2, 3] }),
     description: nullable(str),
     tags: { type: "array", items: { type: "string", enum: Object.keys(ACTIVITIES) } },
+    requirements: { type: "array", items: { type: "string", enum: Object.keys(REQUIREMENTS) } },
+    link_url: nullable(str),
     expires_on: nullable({ type: "string", format: "date" }),
     deadline_on: nullable({ type: "string", format: "date" }),
     confidence: { type: "string", enum: ["haute", "moyenne", "basse"] },
@@ -54,12 +57,13 @@ const DRAFT_SCHEMA = {
   },
   required: [
     "title", "category", "subcategory", "scope", "store_name", "city", "price_info", "price_level",
-    "description", "tags", "expires_on", "deadline_on", "confidence", "notes",
+    "description", "tags", "requirements", "link_url", "expires_on", "deadline_on", "confidence", "notes",
   ],
 };
 
 const CATEGORY_GUIDE = Object.entries(CATEGORIES).map(([id, c]) => `${id} = ${c.label}`).join(", ");
 const ACTIVITY_GUIDE = Object.entries(ACTIVITIES).map(([id, a]) => `${id} = ${a.label}`).join(", ");
+const REQUIREMENT_GUIDE = Object.entries(REQUIREMENTS).map(([id, r]) => `${id} = ${r.label}`).join(", ");
 
 const EXTRACT_SYSTEM = `Tu aides un étudiant à publier un bon plan sur ShareWood, une appli de bons plans étudiants (Bruz, Ker Lann, Rennes).
 On te donne une photo prise dans un commerce (affiche, ardoise, menu, flyer) et/ou un texte libre (message, post, description). Tu remplis un brouillon de formulaire que l'étudiant relira avant publication.
@@ -72,8 +76,10 @@ Règles :
 - store_name : nom du commerce tel qu'écrit (enseigne). city : ville si elle est écrite ou évidente d'après l'adresse.
 - price_info : le prix ou la réduction en clair (« 6 € au lieu de 9 € », « -20 % », « 2 pour 1 », « gratuit »).
 - price_level : ce que paie l'étudiant : 0 gratuit, 1 moins de 10 €, 2 de 10 à 25 €, 3 plus de 25 €. null si inconnu.
-- description : conditions utiles en une ou deux phrases (jours, horaires, carte étudiante obligatoire, sur place / à emporter…).
+- description : détails utiles en une ou deux phrases (jours, horaires, sur place / à emporter…), sans répéter les conditions ni le lien.
 - tags : activités liées parmi ${ACTIVITY_GUIDE}. Liste vide si aucune.
+- requirements : ce qu'il faut avoir pour en profiter, parmi ${REQUIREMENT_GUIDE}. Seulement si c'est écrit. Liste vide sinon. La Carte Sortir est une condition, pas une catégorie.
+- link_url : adresse web de l'offre si elle est écrite en entier (https://…), sinon null. N'invente jamais d'adresse.
 - expires_on : fin de l'offre (YYYY-MM-DD). deadline_on : date limite d'un dossier ou d'une inscription. Date sans année → prochaine occurrence à partir d'aujourd'hui.
 - Si l'image contient plusieurs offres, garde celle réservée aux étudiants, sinon la plus visible, et signale-le dans notes.
 - confidence : basse si l'image est floue, coupée ou le texte confus ; dans ce cas laisse à null les champs incertains.
@@ -190,6 +196,16 @@ export async function extractDeal(input: {
   return sanitizeDraft(draft);
 }
 
+/** Lien proposé par le modèle → lien http(s) valide, sinon null. */
+function safeNormalizeLink(v: unknown) {
+  if (typeof v !== "string") return null;
+  try {
+    return normalizeLink(v);
+  } catch {
+    return null;
+  }
+}
+
 /** Écarte les valeurs hors liste (un modèle peut s'écarter du schéma) : mieux vaut null qu'une valeur fausse. */
 function sanitizeDraft(d: AssistDraft): AssistDraft {
   const oneOf = <T,>(value: unknown, allowed: readonly T[]): T | null =>
@@ -207,6 +223,8 @@ function sanitizeDraft(d: AssistDraft): AssistDraft {
     price_level: oneOf(d.price_level, [0, 1, 2, 3] as const),
     description: text(d.description),
     tags: Array.isArray(d.tags) ? d.tags.filter((t) => t in ACTIVITIES) : [],
+    requirements: Array.isArray(d.requirements) ? [...new Set(d.requirements.filter((r) => r in REQUIREMENTS))] : [],
+    link_url: safeNormalizeLink(d.link_url),
     expires_on: date(d.expires_on),
     deadline_on: date(d.deadline_on),
     confidence: oneOf(d.confidence, ["haute", "moyenne", "basse"] as const) ?? "basse",

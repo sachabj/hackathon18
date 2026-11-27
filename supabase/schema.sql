@@ -5,8 +5,9 @@
 -- =====================================================================
 
 -- ---------- Types ----------
+-- « Carte Sortir » n'est plus une catégorie mais une condition (deals.requirements, migration 012).
 create type deal_category as enum
-  ('restaurant', 'supermarket', 'transport', 'scholarship', 'sport', 'carte_sortir', 'activity');
+  ('restaurant', 'supermarket', 'transport', 'scholarship', 'sport', 'activity');
 create type deal_subcategory as enum ('plane', 'train', 'bus', 'carpool');
 create type deal_scope as enum ('local', 'zone', 'national');
 
@@ -556,3 +557,17 @@ create policy "changer son vote" on public.votes for update to authenticated
   with check (
     user_id = auth.uid() and exists (select 1 from public.deals d where d.id = deal_id and d.author_id is distinct from auth.uid())
   );
+
+-- =====================================================================
+-- Conditions d'accès et lien d'un bon plan (voir migrations/012_requirements_links.sql)
+-- =====================================================================
+-- Conditions : carte étudiante, Carte Sortir (n'est plus une catégorie), boursier, moins de 26 ans.
+alter table public.deals add column if not exists requirements text[] not null default '{}';
+alter table public.deals add column if not exists link_url text;
+alter table public.deals drop constraint if exists deals_requirements_check;
+alter table public.deals add constraint deals_requirements_check
+  check (requirements <@ array['student_card', 'carte_sortir', 'scholarship', 'under_26']::text[]);
+alter table public.deals drop constraint if exists deals_link_url_check;
+alter table public.deals add constraint deals_link_url_check
+  check (link_url is null or (link_url ~* '^https?://[^[:space:]]+$' and char_length(link_url) <= 500));
+grant insert (requirements, link_url), update (requirements, link_url) on public.deals to authenticated;

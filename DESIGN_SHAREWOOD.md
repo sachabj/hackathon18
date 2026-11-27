@@ -65,7 +65,7 @@ Associe chaque catégorie existante dans le code à son icône (adapte les clés
 | Catégorie | Fond du rond | Couleur du trait | Tracés SVG |
 |---|---|---|---|
 | Grande surface | `#1E3A2F` | `#FAF9F5` | `<path d="M5 9h5l4.5 20h21l4-14H12"/><circle cx="17" cy="36" r="2.5"/><circle cx="32" cy="36" r="2.5"/>` |
-| Carte Sortir | `#4B2A63` | `#FAF9F5` | `<path d="M7 14h34v6a4 4 0 0 0 0 8v6H7v-6a4 4 0 0 0 0-8z"/><path d="M30 16v16" stroke-dasharray="3 3"/><path d="M18.5 19l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z"/>` |
+| Carte Sortir (n'est plus une catégorie depuis la tâche 28 : condition, voir `REQUIREMENTS`) | `#4B2A63` | `#FAF9F5` | `<path d="M7 14h34v6a4 4 0 0 0 0 8v6H7v-6a4 4 0 0 0 0-8z"/><path d="M30 16v16" stroke-dasharray="3 3"/><path d="M18.5 19l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z"/>` |
 | Restaurant | `#CFE3CA` | `#1E3A2F` | `<path d="M17 8v32"/><path d="M12 8v9a5 5 0 0 0 10 0V8"/><path d="M34 40V8c-4.5 3-7 9-7 16h7"/>` |
 | Bourses et aides | `#E6DFF0` | `#4B2A63` | `<circle cx="24" cy="24" r="16"/><path d="M30 17.5a8.5 8.5 0 1 0 0 13"/><path d="M15 22h11"/><path d="M15 26.5h11"/>` |
 | Transports | `#1E3A2F` | `#FAF9F5` | `<rect x="10" y="7" width="28" height="28" rx="5"/><path d="M10 21h28"/><path d="M15 35v5"/><path d="M33 35v5"/><path d="M17 28h.01"/><path d="M31 28h.01"/>` |

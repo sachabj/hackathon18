@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import CategoryIcon from "@/components/CategoryIcon";
 import ChainBadge from "@/components/ChainBadge";
+import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import { CalendarIcon, CheckBadgeIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
 import { isMajorChain } from "@/lib/chains";
 import { CATEGORIES, ZONES } from "@/lib/constants";
@@ -103,7 +104,17 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
         {isMajorChain(deal) && <ChainBadge className="mb-2" />}
         <h2 className="text-xl leading-snug">{deal.title}</h2>
         {deal.price_info && <p className="text-lg font-medium" style={{ color: "var(--color-forest)" }}>{deal.price_info}</p>}
-        {deal.description && <p className="mt-2 text-sm text-[var(--color-ink)]">{deal.description}</p>}
+        {deal.description && (
+          <p className="mt-2 text-sm text-[var(--color-ink)]">
+            <LinkedText text={deal.description} />
+          </p>
+        )}
+        {(deal.requirements?.length ?? 0) > 0 && (
+          <div className="mt-2">
+            <p className="sr-only">Conditions :</p>
+            <RequirementBadges requirements={deal.requirements} />
+          </div>
+        )}
         <p className="mt-2 flex flex-wrap gap-x-3 text-sm text-[var(--color-muted)]">
           {where && (
             <span className="flex items-center gap-1">
@@ -117,6 +128,11 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
           )}
           {deal.expires_at && <span>Jusqu&apos;au {formatDate(deal.expires_at)}</span>}
         </p>
+        {deal.link_url && (
+          <div className="mt-3">
+            <OfferLink href={deal.link_url} large />
+          </div>
+        )}
 
         {trust && data && (
           <div className="mt-4 rounded-2xl p-3" style={{ backgroundColor: "var(--color-paper)" }}>

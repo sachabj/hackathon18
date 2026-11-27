@@ -3,13 +3,17 @@
 import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { EditIcon, EyeIcon, HeartIcon, ProhibitedIcon, ThumbsDownIcon, ThumbsUpIcon, TrashIcon, UndoIcon, WalkIcon } from "@/components/icons";
+import { REQUIREMENTS } from "@/lib/constants";
 import type { MyDealInput } from "@/lib/engagement";
-import type { Deal, DealAudience } from "@/lib/types";
+import { normalizeLink } from "@/lib/links";
+import type { Deal, DealAudience, DealRequirement } from "@/lib/types";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
 /** Date ISO → valeur d'un champ date (jour local). */
 const toDay = (iso: string) => new Date(iso).toLocaleDateString("sv-SE");
+
+const sameList = (a: string[], b: string[]) => a.length === b.length && a.every((x) => b.includes(x));
 
 const actionClass = "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
 const inputClass = "sw-field mt-1 text-base";
@@ -39,6 +43,9 @@ export default function MyDealCard({
   const [description, setDescription] = useState(deal.description ?? "");
   const [price, setPrice] = useState(deal.price_info ?? "");
   const [lastDay, setLastDay] = useState(deal.expires_at ? toDay(deal.expires_at) : "");
+  const [requirements, setRequirements] = useState<DealRequirement[]>(deal.requirements ?? []);
+  const [link, setLink] = useState(deal.link_url ?? "");
+  const [linkError, setLinkError] = useState<string | null>(null);
 
   const byMerchant = !!deal.ended_by && deal.ended_by !== userId;
   const expired = !!deal.expires_at && new Date(deal.expires_at).getTime() < now;
@@ -55,11 +62,21 @@ export default function MyDealCard({
     setDescription(deal.description ?? "");
     setPrice(deal.price_info ?? "");
     setLastDay(deal.expires_at ? toDay(deal.expires_at) : "");
+    setRequirements(deal.requirements ?? []);
+    setLink(deal.link_url ?? "");
+    setLinkError(null);
     setMode("edit");
   }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    let link_url: string | null;
+    try {
+      link_url = normalizeLink(link);
+    } catch (err) {
+      return setLinkError((err as Error).message);
+    }
+    setLinkError(null);
     const saved = await onSave({
       title: title.trim(),
       description: description.trim() || null,
@@ -70,6 +87,9 @@ export default function MyDealCard({
         : deal.expires_at && toDay(deal.expires_at) === lastDay
           ? deal.expires_at
           : new Date(`${lastDay}T23:59:59`).toISOString(),
+      // Colonnes de la migration 012 : envoyées seulement si quelque chose a changé.
+      ...(!sameList(requirements, deal.requirements ?? []) && { requirements }),
+      ...(link_url !== (deal.link_url ?? null) && { link_url }),
     });
     if (saved) setMode("view");
   }
@@ -95,6 +115,44 @@ export default function MyDealCard({
             <input type="date" className={inputClass} value={lastDay} onChange={(e) => setLastDay(e.target.value)} />
           </label>
         </div>
+        <fieldset>
+          <legend className="text-sm font-medium">Conditions</legend>
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {(Object.keys(REQUIREMENTS) as DealRequirement[]).map((r) => {
+              const { Icon, label } = REQUIREMENTS[r];
+              const on = requirements.includes(r);
+              return (
+                <button
+                  key={r}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() => setRequirements(on ? requirements.filter((x) => x !== r) : [...requirements, r])}
+                  className="flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs"
+                  style={
+                    on
+                      ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)", color: "var(--color-forest)", fontWeight: 500 }
+                      : { borderColor: "var(--color-border)" }
+                  }
+                >
+                  <Icon className="h-3.5 w-3.5" /> {label}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+        <label className="block text-sm font-medium">
+          Lien vers l&apos;offre
+          <input
+            className={inputClass}
+            type="text"
+            inputMode="url"
+            placeholder="https://www.exemple.fr/offre"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            maxLength={500}
+          />
+        </label>
+        {linkError && <p className="text-sm text-red-600">{linkError}</p>}
         <div className="flex gap-2">
           <button disabled={busy} className="sw-btn-primary">Enregistrer</button>
           <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">Annuler</button>

@@ -1,5 +1,5 @@
 // Types partagés entre la route /api/assist (serveur) et le formulaire de publication (navigateur).
-import type { ActivityId, DealCategory, DealScope, DealSubcategory } from "@/lib/types";
+import type { ActivityId, DealCategory, DealRequirement, DealScope, DealSubcategory } from "@/lib/types";
 
 /** Brouillon de bon plan extrait d'un texte libre ou d'une photo (champs inconnus = null). */
 export interface AssistDraft {
@@ -13,6 +13,10 @@ export interface AssistDraft {
   price_level: 0 | 1 | 2 | 3 | null;
   description: string | null;
   tags: ActivityId[];
+  /** Conditions (carte étudiante, Carte Sortir, boursier, -26 ans) */
+  requirements: DealRequirement[];
+  /** Lien http(s) vers l'offre, écrit sur la photo ou dans le texte */
+  link_url: string | null;
   /** YYYY-MM-DD */
   expires_on: string | null;
   deadline_on: string | null;

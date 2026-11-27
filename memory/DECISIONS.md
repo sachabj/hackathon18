@@ -216,3 +216,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 18h00 — Bouton « Y aller »
 - **Décision** : dans la fiche seulement, un bouton ouvre l'itinéraire : Apple Plans sur iPhone / iPad / Mac, Google Maps ailleurs ; affiché pour les offres qui ont des coordonnées (y compris les siennes).
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-27 18h00 — Carte Sortir devient une condition, liens d'offre (tâche 28)
+- **Décision** : « Carte Sortir » n'est plus une catégorie mais une **condition** d'accès, comme la carte étudiante. Nouvelle colonne `deals.requirements` (carte étudiante, Carte Sortir, boursiers, moins de 26 ans), choisie à la publication et affichée en badges ; les offres Carte Sortir passent en **Activités**. La question « Carte Sortir ? » de l'inscription est gardée : répondu non → ces offres sortent de « Pour toi ».
+- **Liens** : champ facultatif « Lien vers l'offre » (`deals.link_url`, http(s) seulement, contrôlé en base) → bouton « Voir l'offre · site » sur la carte du fil et la fiche ; les URL écrites dans la description deviennent cliquables (nom du site affiché). Les « Source : https://… » des données de démo deviennent ce lien. L'assistant IA remplit aussi conditions et lien s'ils sont écrits.
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) ; les liens partagés n'étaient que du texte.
+- **Écarté** : retirer la valeur `carte_sortir` du type Postgres sur la vraie base (il faudrait recréer le type et ses dépendances) → interdite par une contrainte ; espace commerçant non modifié (ses offres passent par une fonction SQL).
+- **Qui** : Matteo

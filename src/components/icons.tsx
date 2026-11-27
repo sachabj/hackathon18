@@ -310,3 +310,19 @@ export function BasketballIcon({ className }: IconProps) {
 export function GraduationCapIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M2 9l10-4 10 4-10 4-10-4Z" /><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" /><path d="M22 9v6" /></Stroke>;
 }
+/** Carte étudiante : carte d'identité avec photo. */
+export function IdCardIcon({ className }: IconProps) {
+  return <Stroke className={className}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2" /><path d="M14 10h4M14 13h3" /></Stroke>;
+}
+/** Carte Sortir : billet perforé. */
+export function TicketIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4Z" /><path d="M15 8v8" strokeDasharray="2 2" /></Stroke>;
+}
+/** Lien vers un site externe. */
+export function ExternalLinkIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M14 4h6v6" /><path d="M20 4l-9 9" /><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></Stroke>;
+}
+/** Maillons de chaîne (champ « lien »). */
+export function LinkIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></Stroke>;
+}

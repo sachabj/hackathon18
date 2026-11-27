@@ -1,6 +1,7 @@
 // Compatibilité entre un bon plan et le profil d'un étudiant (voir memory/ARCHITECTURE.md § Personnalisation).
 import { ACTIVITIES, CATEGORIES, ELIGIBILITY_CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
 import { distanceKm, formatDistance } from "./geo";
+import { knownCategories } from "./legacy";
 import type {
   ActivityId,
   BudgetProfile,
@@ -32,8 +33,9 @@ export function toStudentProfile(
   prefs: Preferences | null,
 ): StudentProfile {
   return {
-    // Les anciennes priorités « bourses » / « Carte Sortir » sont remplacées par les questions d'aides.
-    categories: profile.followed_categories.filter((c) => !ELIGIBILITY_CATEGORIES.includes(c)),
+    // Les anciennes priorités « bourses » / « Carte Sortir » sont remplacées par les questions d'aides
+    // (Carte Sortir n'est plus une catégorie depuis la migration 012).
+    categories: knownCategories(profile.followed_categories).filter((c) => !ELIGIBILITY_CATEGORIES.includes(c)),
     zoneIds: profile.followed_zone_ids,
     homeZoneId: prefs?.home_zone_id ?? null,
     position: prefs?.lat != null && prefs.lng != null ? { lat: prefs.lat, lng: prefs.lng } : null,
@@ -99,12 +101,17 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   // 1. Pôle de dépenses, trajet utile, ou aide à laquelle on a droit
   const rank = me.categories.indexOf(deal.category);
   // null = catégorie ouverte à tous ; sinon, a-t-on dit y avoir droit ?
-  const eligible =
-    deal.category === "scholarship"
-      ? me.isScholar === true
-      : deal.category === "carte_sortir"
-        ? me.hasCarteSortir === true
-        : null;
+  const eligible = deal.category === "scholarship" ? me.isScholar === true : null;
+  // Conditions « Carte Sortir » / « Boursiers » : répondu non → jamais « Pour toi » ; oui → offre mise en avant.
+  const requirements = deal.requirements ?? [];
+  const rights = [
+    ...(requirements.includes("carte_sortir") ? [{ ok: me.hasCarteSortir, reason: "Avec ta Carte Sortir" }] : []),
+    ...(requirements.includes("scholarship") && deal.category !== "scholarship"
+      ? [{ ok: me.isScholar, reason: "Tu es boursier" }]
+      : []),
+  ];
+  const excluded = rights.some((r) => r.ok === false);
+  const entitled = rights.length > 0 && rights.every((r) => r.ok === true);
   // Qui voyage rarement ne voit que les trajets dans les moyens qu'il a choisis.
   const travel =
     deal.category === "transport" &&
@@ -114,12 +121,13 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     (me.homeVisits === "never"
       ? deal.subcategory !== null && me.travelModes.includes(deal.subcategory)
       : !deal.subcategory || me.travelModes.length === 0 || me.travelModes.includes(deal.subcategory));
-  if (me.categories.length > 0 || travel || eligible) {
+  if (me.categories.length > 0 || travel || eligible || entitled) {
     max += WEIGHTS.category;
     const rankPoints = rank >= 0 ? WEIGHTS.category - 4 * Math.min(rank, 3) : 0;
     const travelPoints = travel && me.homeVisits ? TRAVEL_POINTS[me.homeVisits] : 0;
-    earned += Math.max(rankPoints, travelPoints, eligible ? AID_POINTS : 0);
-    if (eligible) reasons.push(deal.category === "scholarship" ? "Tu es boursier" : "Avec ta Carte Sortir");
+    earned += Math.max(rankPoints, travelPoints, eligible || entitled ? AID_POINTS : 0);
+    if (eligible) reasons.push("Tu es boursier");
+    if (entitled) reasons.push(...rights.map((r) => r.reason).filter((r) => !reasons.includes(r)));
     if (travel) reasons.push("Pour tes voyages");
     if (rank >= 0) {
       const { label } = CATEGORIES[deal.category];
@@ -204,10 +212,13 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   const relevance = percent(earned, max); // sans le budget
   return {
     score: percent(earned + budgetEarned, max + budgetMax),
-    forYou:
-      eligible !== null
+    forYou: excluded
+      ? false
+      : eligible !== null
         ? eligible && reachable
-        : relevance !== null && relevance >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest || travel),
+        : entitled
+          ? reachable
+          : relevance !== null && relevance >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest || travel),
     reasons,
     warnings,
   };

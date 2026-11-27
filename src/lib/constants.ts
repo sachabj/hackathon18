@@ -7,6 +7,8 @@ import {
   CarIcon,
   CoinIcon,
   DiceIcon,
+  GraduationCapIcon,
+  IdCardIcon,
   DumbbellIcon,
   HandshakeIcon,
   MaskIcon,
@@ -19,10 +21,20 @@ import {
   SofaIcon,
   SparklesIcon,
   SwimIcon,
+  TicketIcon,
   TrainIcon,
+  UserIcon,
   WalkIcon,
 } from "@/components/icons";
-import type { ActivityId, BudgetProfile, DealCategory, DealSubcategory, HomeVisits, TransportMode } from "./types";
+import type {
+  ActivityId,
+  BudgetProfile,
+  DealCategory,
+  DealRequirement,
+  DealSubcategory,
+  HomeVisits,
+  TransportMode,
+} from "./types";
 import type { ComponentType } from "react";
 
 export const APP_NAME = "ShareWood";
@@ -41,7 +53,6 @@ export const CATEGORIES: Record<DealCategory, { label: string; color: string }> 
   transport: { label: "Transports", color: "#1E3A2F" },
   scholarship: { label: "Bourses & aides", color: "#E6DFF0" },
   sport: { label: "Licence de sport", color: "#CFE3CA" },
-  carte_sortir: { label: "Carte Sortir", color: "#4B2A63" },
   activity: { label: "Activités", color: "#4B2A63" },
 };
 
@@ -90,9 +101,23 @@ export const HOME_VISITS: Record<HomeVisits, { label: string; Icon: IconComponen
 
 /**
  * Catégories réservées à ceux qui y ont droit : elles ne sont pas proposées comme priorités à l'inscription,
- * et n'entrent dans « Pour toi » que selon les réponses « Boursier ? » / « Carte Sortir ? ».
+ * et n'entrent dans « Pour toi » que selon la réponse « Boursier ? ».
  */
-export const ELIGIBILITY_CATEGORIES: DealCategory[] = ["scholarship", "carte_sortir"];
+export const ELIGIBILITY_CATEGORIES: DealCategory[] = ["scholarship"];
+
+/**
+ * Conditions pour profiter d'un bon plan (colonne deals.requirements, migration 012).
+ * Les mêmes valeurs sont imposées en base : en ajouter une = migration.
+ */
+export const REQUIREMENTS: Record<DealRequirement, { label: string; Icon: IconComponent }> = {
+  student_card: { label: "Carte étudiante", Icon: IdCardIcon },
+  carte_sortir: { label: "Carte Sortir", Icon: TicketIcon },
+  scholarship: { label: "Boursiers", Icon: GraduationCapIcon },
+  under_26: { label: "Moins de 26 ans", Icon: UserIcon },
+};
+
+/** Longueur maximale d'un lien d'offre (contrainte deals_link_url_check). */
+export const LINK_MAX = 500;
 
 /** Page d'information sur la Carte Sortir. */
 export const CARTE_SORTIR_URL = "https://metropole.rennes.fr";

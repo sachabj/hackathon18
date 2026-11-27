@@ -29,7 +29,7 @@ from (values
   ('Covoiturage Bruz → Rennes', 'Départ 18 h le vendredi, 3 places.', 'transport', 'carpool', 'zone', 'bruz', null, null, null, '2 €', 1, '{}', 6, null, 3),
   ('Abonnement bus jeunes', 'Tarif réduit pour les moins de 27 ans.', 'transport', 'bus', 'zone', 'rennes', null, null, null, 'tarif réduit', 2, '{}', null, null, 90),
   ('Dossier de bourse : ne rate pas la date', 'Pense à préparer tes justificatifs.', 'scholarship', null, 'national', null, null, null, null, 'Gratuit', 0, '{}', null, 30, 96),
-  ('Carte Sortir : renouvellement', 'Réductions sur la culture et le sport.', 'carte_sortir', null, 'zone', 'rennes', null, null, null, 'Gratuit', 0, '{culture,swimming}', null, 20, 80)
+  ('Carte Sortir : renouvellement', 'Réductions sur la culture et le sport.', 'activity', null, 'zone', 'rennes', null, null, null, 'Gratuit', 0, '{culture,swimming}', null, 20, 80)
 ) as v(title, description, category, subcategory, scope, zone_id, place_name, lat, lng, price_info, price_level, tags, expires_in, deadline_in, age_hours)
 cross join (select id from public.profiles order by created_at limit 1) a
 where not exists (select 1 from public.deals d where d.title = v.title);

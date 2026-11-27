@@ -8,14 +8,15 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import ChoiceTile from "@/components/preferences/ChoiceTile";
-import { BuildingsIcon, GlobeIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
+import { BuildingsIcon, GlobeIcon, LinkIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
 import type { AssistDraft } from "@/lib/ai/types";
-import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, SUBCATEGORIES, ZONES } from "@/lib/constants";
+import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES } from "@/lib/constants";
 import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplicates";
 import { distanceKm, nearestZone } from "@/lib/geo";
+import { normalizeLink } from "@/lib/links";
 import { kindLabel, searchPlaces, suggestActivity, suggestCategory, type Place } from "@/lib/places";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import type { ActivityId, DealCategory, DealScope, DealSubcategory } from "@/lib/types";
+import type { ActivityId, DealCategory, DealRequirement, DealScope, DealSubcategory } from "@/lib/types";
 import { uploadDealPhoto } from "@/lib/photos";
 import { usePreferences } from "@/lib/usePreferences";
 import AssistPanel from "./AssistPanel";
@@ -27,7 +28,7 @@ const SCOPES: { id: DealScope; Icon: typeof PinIcon; label: string; hint: string
 ];
 
 /** Catégories où une date limite (dossier, inscription) a du sens. */
-const DEADLINE_CATEGORIES: DealCategory[] = ["scholarship", "sport", "carte_sortir", "transport"];
+const DEADLINE_CATEGORIES: DealCategory[] = ["scholarship", "sport", "transport"];
 
 /** Ville à proposer pour une zone (Ker Lann est sur la commune de Bruz). */
 const CITY_OF_ZONE: Record<string, string> = { bruz: "Bruz", "ker-lann": "Bruz", rennes: "Rennes" };
@@ -97,6 +98,9 @@ export default function PublishForm() {
   const [tags, setTags] = useState<ActivityId[]>([]);
   const [expiresAt, setExpiresAt] = useState("");
   const [deadlineAt, setDeadlineAt] = useState("");
+  /** Conditions pour en profiter (carte étudiante, Carte Sortir…) et lien vers l'offre (migration 012). */
+  const [requirements, setRequirements] = useState<DealRequirement[]>([]);
+  const [link, setLink] = useState("");
   // Envoi
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -186,6 +190,8 @@ export default function PublishForm() {
     if (d.price_level !== null) setPriceLevel(d.price_level);
     if (d.description) setDescription(d.description.slice(0, 500));
     if (d.tags.length) setTags(d.tags);
+    if (d.requirements?.length) setRequirements(d.requirements);
+    if (d.link_url) setLink(d.link_url);
     if (d.expires_on) setExpiresAt(d.expires_on);
     if (d.deadline_on) setDeadlineAt(d.deadline_on);
     if (d.scope) setScope(d.scope);
@@ -213,6 +219,8 @@ export default function PublishForm() {
     setTags([]);
     setExpiresAt("");
     setDeadlineAt("");
+    setRequirements([]);
+    setLink("");
     setProofPhoto(null);
     setSharePhoto(false);
     setError(null);
@@ -244,6 +252,11 @@ export default function PublishForm() {
     if (!title.trim()) return setError("Donne un titre au bon plan.");
     if (!category) return setError("Choisis une catégorie.");
     if (scope === "local" && !place) return setError("Choisis le lieu exact dans la liste (ou utilise ta position).");
+    try {
+      normalizeLink(link);
+    } catch (err) {
+      return setError((err as Error).message);
+    }
     if (scope === "local") return publish();
 
     setSubmitting(true);
@@ -275,6 +288,12 @@ export default function PublishForm() {
 
   async function publish() {
     if (!category) return;
+    let link_url: string | null;
+    try {
+      link_url = normalizeLink(link);
+    } catch (err) {
+      return setError((err as Error).message);
+    }
     setSubmitting(true);
     setError(null);
     // Photo de preuve (celle analysée par l'IA), si l'étudiant l'a accepté : si le dépôt échoue, on publie sans elle.
@@ -301,6 +320,9 @@ export default function PublishForm() {
         tags,
         expires_at: endOfDay(expiresAt),
         deadline_at: category && DEADLINE_CATEGORIES.includes(category) ? endOfDay(deadlineAt) : null,
+        // Colonnes de la migration 012 : envoyées seulement si remplies.
+        ...(requirements.length > 0 && { requirements }),
+        ...(link_url && { link_url }),
     };
     const supabase = getSupabase();
     let { error } = await supabase.from("deals").insert(photo_url ? { ...row, photo_url } : row);
@@ -546,14 +568,47 @@ export default function PublishForm() {
         </div>
       </Section>
 
-      <Section title="Détails et conditions" hint="Jours, horaires, carte étudiante obligatoire…">
+      <Section title="Détails" hint="Jours, horaires, comment en profiter…">
         <textarea
           className={`${inputClass} min-h-24`}
-          placeholder="Ex : du lundi au jeudi, sur présentation de la carte étudiante"
+          placeholder="Ex : du lundi au jeudi, hors supplément 3D"
           maxLength={500}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+      </Section>
+
+      <Section title="Conditions" hint="Facultatif : ce qu'il faut avoir pour en profiter.">
+        <div className="flex flex-wrap gap-2">
+          {keys(REQUIREMENTS).map((r) => {
+            const { Icon, label } = REQUIREMENTS[r];
+            return (
+              <Chip key={r} selected={requirements.includes(r)} onClick={() => setRequirements(toggle(requirements, r))}>
+                <span className="flex items-center gap-1">
+                  <Icon className="h-3.5 w-3.5" /> {label}
+                </span>
+              </Chip>
+            );
+          })}
+        </div>
+      </Section>
+
+      <Section title="Lien vers l'offre" hint="Facultatif : page du magasin, billetterie, formulaire d'inscription…">
+        <div className="relative">
+          <LinkIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
+          <input
+            className={inputClass}
+            // Texte et non « url » : « www.exemple.fr » est accepté puis complété en https://.
+            type="text"
+            inputMode="url"
+            style={{ paddingLeft: "2.25rem" }}
+            autoComplete="url"
+            placeholder="https://www.exemple.fr/offre"
+            maxLength={500}
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+          />
+        </div>
       </Section>
 
       <Section title="Activités liées" hint="Facultatif : aide à le proposer aux bons étudiants.">

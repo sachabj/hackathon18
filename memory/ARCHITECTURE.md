@@ -36,9 +36,11 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     ├── lib/
     │   ├── supabase/client.ts        # getSupabase() (navigateur), isSupabaseConfigured
     │   ├── types.ts                  # types TS alignés sur schema.sql
-    │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
+    │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, REQUIREMENTS (conditions), ZONES, MAP_CENTER
     │   ├── directions.ts             # lien d'itinéraire (Apple Plans / Google Maps) du bouton « Y aller »
     │   ├── chains.ts                 # grandes enseignes reconnues au nom du lieu → composant `ChainBadge`
+    │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
+    │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
@@ -67,6 +69,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
+    │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
     │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
@@ -103,7 +106,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ⏳ **à exécuter**
 - `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Une adresse à garder sans compte est ignorée et listée à la fin (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
@@ -114,6 +117,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], home_visits (often | sometimes | never), wants_travel, travel_modes[] (ids de sous-catégories transport), updated_at
 - `preferences.is_scholarship`, `has_carte_sortir` (010, booléens facultatifs) ; `wants_travel` n'est plus demandé
 - `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
+- `deals.requirements text[]` (012) : conditions parmi `student_card | carte_sortir | scholarship | under_26` (contrainte SQL) ; `deals.link_url` (012) : lien http(s) ≤ 500 caractères (contrainte SQL). **`carte_sortir` n'est plus une catégorie** : valeur gardée dans le type `deal_category` des bases existantes mais interdite par `deals_no_carte_sortir_category` ; retirée du type dans `schema.sql`
 - `deals.photo_url` (008) : photo de preuve, uniquement un lien vers le stockage public **`deal-photos`** (contrainte SQL) ; dépôt par l'auteur dans `<son id>/…` (policies `storage.objects`) via `src/lib/photos.ts` ; affichée dans le fil (`DealCard`)
 - `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités
 - `zones` : id (`bruz`, `ker-lann`, `rennes`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
@@ -134,7 +138,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Personnalisation (`src/lib/matching.ts`)
 - Score sur 100 = points obtenus / points applicables (un critère non renseigné ne compte pas) : pôle de dépenses 40 (−4 par rang), localisation 25 (distance selon les transports, ou zone suivie), budget 20, activité ou transport emprunté 15.
 - **Voyages** : un transport longue distance (hors bus local) compte comme un pôle suivi selon la fréquence de voyage (souvent 36, parfois 28, rarement 16 et seulement dans un mode choisi).
-- **Aides** : `scholarship` et `carte_sortir` ne sont plus des priorités ; elles sont dans « Pour toi » seulement si l'étudiant a répondu oui à « Boursier » / « Carte Sortir » (et si l'offre est à portée).
+- **Aides** : `scholarship` n'est plus une priorité ; une bourse est dans « Pour toi » seulement si l'étudiant a répondu oui à « Boursier » (et si l'offre est à portée).
+- **Conditions** (`deals.requirements`) : `carte_sortir` / `scholarship` → répondu non à la question correspondante = jamais « Pour toi » ; oui = « Pour toi » si à portée, avec la raison « Avec ta Carte Sortir » / « Tu es boursier » ; pas répondu = score normal. `student_card` / `under_26` : simple badge.
 - Cartes : badge de **fiabilité** (`trustPercent`, « Nouveau » sans vote) ; la compatibilité ne sert qu'au tri et aux raisons.
 - **Budget** : change le score et l'ordre, mais ne retire jamais un bon plan.
 - **« Pour toi »** : score hors budget ≥ 55, à portée, et catégorie suivie, activité / transport aimé ou trajet utile. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).

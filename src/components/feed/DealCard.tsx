@@ -3,6 +3,7 @@
 import { useLayoutEffect, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import ChainBadge from "@/components/ChainBadge";
+import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import DealSheet from "@/components/deal/DealSheet";
 import { CalendarIcon, CameraIcon, CheckBadgeIcon, CloseIcon, HeartIcon, StarIcon } from "@/components/icons";
 import { isMajorChain } from "@/lib/chains";
@@ -99,7 +100,16 @@ export default function DealCard({
         )}
       </div>
 
-      {deal.description && <p className="mt-2 text-sm text-[var(--color-ink)]">{deal.description}</p>}
+      {deal.description && (
+        <p className="mt-2 text-sm text-[var(--color-ink)]">
+          <LinkedText text={deal.description} />
+        </p>
+      )}
+      {(deal.requirements?.length ?? 0) > 0 && (
+        <div className="mt-2">
+          <RequirementBadges requirements={deal.requirements} />
+        </div>
+      )}
 
       {/* Photo de preuve (Matteo) : miniature, en grand au toucher. */}
       {photo && (
@@ -165,9 +175,12 @@ export default function DealCard({
           {deal.expires_at && <span>Jusqu&apos;au {formatDate(deal.expires_at)}</span>}
         </p>
       )}
-      <button type="button" onClick={() => setOpen(true)} className="mt-2 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
-        Voir et réagir ›
-      </button>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <button type="button" onClick={() => setOpen(true)} className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+          Voir et réagir ›
+        </button>
+        <OfferLink href={deal.link_url} />
+      </div>
       {open && <DealSheet deal={deal} onClose={() => setOpen(false)} />}
     </article>
   );

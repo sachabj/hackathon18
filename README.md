@@ -1,6 +1,6 @@
 # hackathon18 — ShareWood, le Waze des bons plans étudiants
 
-Projet du hackathon ENSAI (27–28 nov. 2026). Une app communautaire pour voir et signaler les bons plans étudiants (restaurants, grandes surfaces, transports, bourses, sport, Carte Sortir, activités).
+Projet du hackathon ENSAI (27–28 nov. 2026). Une app communautaire pour voir et signaler les bons plans étudiants (restaurants, grandes surfaces, transports, bourses, sport, activités ; conditions comme la carte étudiante ou la Carte Sortir).
 
 **En ligne : https://hackathon18-t1lb.vercel.app**
 

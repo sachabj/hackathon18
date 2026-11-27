@@ -1,10 +1,9 @@
+import { CATEGORIES } from "@/lib/constants";
 import type { DealCategory } from "@/lib/types";
 
 const PATHS: Record<DealCategory, string> = {
   supermarket:
     '<path d="M5 9h5l4.5 20h21l4-14H12"/><circle cx="17" cy="36" r="2.5"/><circle cx="32" cy="36" r="2.5"/>',
-  carte_sortir:
-    '<path d="M7 14h34v6a4 4 0 0 0 0 8v6H7v-6a4 4 0 0 0 0-8z"/><path d="M30 16v16" stroke-dasharray="3 3"/><path d="M18.5 19l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z"/>',
   restaurant: '<path d="M17 8v32"/><path d="M12 8v9a5 5 0 0 0 10 0V8"/><path d="M34 40V8c-4.5 3-7 9-7 16h7"/>',
   scholarship:
     '<circle cx="24" cy="24" r="16"/><path d="M30 17.5a8.5 8.5 0 1 0 0 13"/><path d="M15 22h11"/><path d="M15 26.5h11"/>',
@@ -18,7 +17,6 @@ const PATHS: Record<DealCategory, string> = {
 
 const BG: Record<DealCategory, string> = {
   supermarket: "#1E3A2F",
-  carte_sortir: "#4B2A63",
   restaurant: "#CFE3CA",
   scholarship: "#E6DFF0",
   transport: "#1E3A2F",
@@ -28,7 +26,6 @@ const BG: Record<DealCategory, string> = {
 
 const STROKE: Record<DealCategory, string> = {
   supermarket: "#FAF9F5",
-  carte_sortir: "#FAF9F5",
   restaurant: "#1E3A2F",
   scholarship: "#4B2A63",
   transport: "#FAF9F5",
@@ -60,7 +57,7 @@ export default function CategoryIcon({
   return (
     <span
       role="img"
-      aria-label={label ?? category}
+      aria-label={label ?? CATEGORIES[category]?.label ?? category}
       className={`inline-flex shrink-0 items-center justify-center rounded-full ${className}`}
       style={{ width: size, height: size, backgroundColor: BG[category] }}
     >

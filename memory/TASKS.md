@@ -9,7 +9,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 ## Base de données
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
-- Prochaine migration : numéro **012** (011 prise par Justin ; vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **012_requirements_links.sql à exécuter** (Matteo) : sans elle, publier avec une condition ou un lien échoue (le reste marche ; les offres « Carte Sortir » sont lues comme Activités par l'app).
+- Prochaine migration : numéro **013** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -34,7 +35,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 21 | C | Inscription : une question « fréquence de voyage » + moyens | À TESTER (Justin) |
 | 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | À TESTER (Justin) |
 | 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | FAIT (Matteo) : « Déjà partagé ici » dès le choix du lieu (même `place_name`), zone / partout au clic sur Publier (même catégorie + zone), « Bon plan validé » ; `findDuplicateCandidates` remplacé par `src/lib/duplicates.ts` |
-| 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | EN COURS (Matteo) |
+| 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | À TESTER (Matteo) : ⏳ **lancer `012_requirements_links.sql`** |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
@@ -60,7 +61,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | D3 | Moyenne | `/favoris` affiche les bons plans expirés ou retirés sans le signaler | TODO |
 | D4 | Moyenne | Après un vote dans la fiche, le fil et la carte ne se rafraîchissent qu'au retour sur la page (`useDeals`) | TODO |
 | D5 | Basse | Une erreur d'ajout / retrait de favori n'est affichée nulle part (`useFavorites.error`) | TODO |
-| D6 | Basse | `CategoryIcon` annonce l'identifiant anglais (`supermarket`) aux lecteurs d'écran : aucun appel ne passe `label` | TODO |
+| D6 | Basse | `CategoryIcon` annonce l'identifiant anglais (`supermarket`) aux lecteurs d'écran : aucun appel ne passe `label` | FAIT (Matteo) : libellé français par défaut |
 | D7 | Basse | Longueurs maximales différentes : publication titre 80 / prix 80, modification et offre commerçant 100 / 40 ; aucune limite en base | TODO |
 | D8 | Basse | Restes de l'ancien style : `themeColor` bleu (`layout.tsx`), gris `zinc` dans `RoleGate`, `DealsMapLoader`, `BusinessForm` | TODO |
 | D9 | Basse | `/api/assist` sans limite par utilisateur (un compte peut épuiser le quota de la clé) | TODO |
@@ -96,6 +97,8 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - Un compte commerçant ne voit pas les pages étudiantes (`RoleGate`) : tester avec un compte étudiant.
 - Pas d'emoji dans l'app : `components/icons.tsx`, `CategoryIcon`, classes `.sw-*` (`DESIGN_SHAREWOOD.md`).
 - `/profil` : prévenir Sacha avant de le modifier (ajouts en sous-pages) ; garder `LogoutButton` et `AccountLink`.
+- **Carte Sortir n'est plus une catégorie** (tâche 28) : c'est une condition (`deals.requirements`, `REQUIREMENTS` dans `constants.ts`), comme la carte étudiante. Affichage : `components/deal/DealExtras.tsx` (`RequirementBadges`, `OfferLink`, `LinkedText`). Liens : toujours passer par `src/lib/links.ts` (`normalizeLink` à l'écriture, `safeLink` à l'affichage).
+- **Justin** : `reset_demo.sql` modifié (colonnes `requirements`, `link_url` ; « Source : » retiré des descriptions) → refaire `reset_demo.local.sql` à partir de cette version (D2) et lancer 012 avant.
 - Publication : l'IA ne reçoit rien au moment de publier, seulement avec « Pré-remplir avec l'IA » ; les doublons passent par `src/lib/duplicates.ts` (plus de modération automatique).
 - Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter).
 

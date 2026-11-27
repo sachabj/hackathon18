@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ZONES } from "./constants";
+import { normalizeDeal } from "./legacy";
 import { isDealHidden } from "./rules";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import type { DealWithVotes, Vote } from "./types";
@@ -33,7 +34,9 @@ export function useDeals() {
         );
         const rows = dealsResult.data as (DealWithVotes & { votes: Vote[] })[];
         setDeals(
-          rows.filter((d) => !isDealHidden(d, d.votes, activeUsers.get(d.zone_id ?? "") ?? 0)),
+          rows
+            .filter((d) => !isDealHidden(d, d.votes, activeUsers.get(d.zone_id ?? "") ?? 0))
+            .map(normalizeDeal),
         );
       }
       setLoading(false);

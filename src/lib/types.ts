@@ -6,8 +6,13 @@ export type DealCategory =
   | "transport"
   | "scholarship"
   | "sport"
-  | "carte_sortir"
   | "activity";
+
+/**
+ * Condition pour profiter d'un bon plan (colonne deals.requirements, migration 012).
+ * « Carte Sortir » n'est plus une catégorie : c'est une condition, comme la carte étudiante.
+ */
+export type DealRequirement = "student_card" | "carte_sortir" | "scholarship" | "under_26";
 
 export type DealSubcategory = "plane" | "train" | "bus" | "carpool";
 
@@ -43,6 +48,10 @@ export interface Deal {
   boosted_until?: string | null;
   /** Commerçant qui a retiré le bon plan d'un étudiant */
   ended_by?: string | null;
+  /** Conditions pour en profiter (migration 012) */
+  requirements?: DealRequirement[] | null;
+  /** Lien vers l'offre, http(s) uniquement (migration 012) */
+  link_url?: string | null;
 }
 
 export interface Vote {

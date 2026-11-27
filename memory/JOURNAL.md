@@ -249,3 +249,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 18h00 — Justin (bouton « Y aller »)
 - Migrations 010 et 011 exécutées par Justin. Nouveau `src/lib/directions.ts` ; `DealSheet.tsx`, `icons.tsx`, `confidentialite/page.tsx`.
 - Vérifié : types + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (liens Mac / iPhone / Android / Windows, absent pour une offre nationale). Ouverture réelle de l'application de cartes non testée.
+
+### 2026-11-27 18h00 — Matteo (tâche 28 : Carte Sortir en condition, liens d'offre)
+- Nouveaux : `supabase/migrations/012_requirements_links.sql`, `src/lib/links.ts`, `src/lib/legacy.ts`, `src/components/deal/DealExtras.tsx`.
+- Modifiés : `types.ts`, `constants.ts` (`REQUIREMENTS`, catégorie retirée), `CategoryIcon.tsx` (+ libellé français par défaut, D6), `icons.tsx` (carte d'identité, billet, lien), `matching.ts`, `useDeals.ts`, `engagement.ts`, `favoris/page.tsx`, `page.tsx`, `DealCard.tsx`, `DealSheet.tsx`, `MyDealCard.tsx` (fichiers de Sacha, Justin, Anne-Lise : ajouts seulement), `PublishForm.tsx`, `lib/ai/{assist,types}.ts`, `schema.sql`, `reset_demo.sql` (fichier de Justin), `seed_demo.sql`, `README.md`, `DESIGN_SHAREWOOD.md`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; liens (vide, `www.`, `javascript:` refusé, ponctuation finale) et « Pour toi » avec condition Carte Sortir (oui / non / sans réponse) testés en script. **Migration 012 pas lancée** ; rien testé dans le navigateur ni sur la vraie base.
