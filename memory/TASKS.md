@@ -9,7 +9,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 ## Base de données
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
 - ⏳ **010_student_aids.sql à exécuter.**
-- Prochaine migration : numéro **011** (le premier qui en crée une le prend ; vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- Prochaine migration : numéro **012** (011 prise par Justin ; vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -47,8 +47,8 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 
 | # | Priorité | Défaut | Statut |
 |---|---|---|---|
-| D1 | Haute | **On peut voter sur son propre bon plan** : « C'est le même : je le confirme » ne filtre pas ses offres et la règle `voter` de la base l'autorise → fiabilité gonflée et accès 7 jours relancé à volonté. Corriger dans l'app (avec la tâche 27) **et** par une règle en base (migration) | EN PARTIE : **app corrigée** (tâche 27 : pas de bouton sur son propre bon plan) ; **règle en base à faire** (migration) |
-| D2 | Haute (Justin) | La copie locale `supabase/reset_demo.local.sql` de Justin est **périmée** (ne supprime pas les bons plans avant les comptes, depuis la 009) : la refaire à partir de `reset_demo.sql` avant tout lancement | TODO |
+| D1 | Haute | **On peut voter sur son propre bon plan** : « C'est le même : je le confirme » ne filtre pas ses offres et la règle `voter` de la base l'autorise → fiabilité gonflée et accès 7 jours relancé à volonté. Corriger dans l'app (avec la tâche 27) **et** par une règle en base (migration) | EN COURS (Justin) |
+| D2 | Haute (Justin) | La copie locale `supabase/reset_demo.local.sql` de Justin est **périmée** (ne supprime pas les bons plans avant les comptes, depuis la 009) : la refaire à partir de `reset_demo.sql` avant tout lancement | EN COURS (Justin) |
 | D3 | Moyenne | `/favoris` affiche les bons plans expirés ou retirés sans le signaler | TODO |
 | D4 | Moyenne | Après un vote dans la fiche, le fil et la carte ne se rafraîchissent qu'au retour sur la page (`useDeals`) | TODO |
 | D5 | Basse | Une erreur d'ajout / retrait de favori n'est affichée nulle part (`useFavorites.error`) | TODO |
@@ -56,7 +56,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | D7 | Basse | Longueurs maximales différentes : publication titre 80 / prix 80, modification et offre commerçant 100 / 40 ; aucune limite en base | TODO |
 | D8 | Basse | Restes de l'ancien style : `themeColor` bleu (`layout.tsx`), gris `zinc` dans `RoleGate`, `DealsMapLoader`, `BusinessForm` | TODO |
 | D9 | Basse | `/api/assist` sans limite par utilisateur (un compte peut épuiser le quota de la clé) | TODO |
-| D10 | Moyenne | Inscription : une tuile choisie ne change ni de fond ni de bordure (seule la coche s'affiche) : `.sw-card` l'emporte sur les classes Tailwind de `ChoiceTile` (vu dans le navigateur) | TODO |
+| D10 | Moyenne | Inscription : une tuile choisie ne change ni de fond ni de bordure (seule la coche s'affiche) : `.sw-card` l'emporte sur les classes Tailwind de `ChoiceTile` (vu dans le navigateur) | EN COURS (Justin) |
 
 ## Autres tâches
 | # | Tâche | Statut |
