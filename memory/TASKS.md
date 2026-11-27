@@ -13,16 +13,20 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 ## Tâches
 | # | Tâche | Statut |
 |---|---|---|
-| 1 | Mettre en place la mémoire partagée | FAIT |
-| 2 | Valider la stack + nom de l'app | TODO |
+| 1 | Mettre en place la mémoire partagée + git | FAIT |
+| 2 | Valider la stack, le nom de l'app et les propositions 💡 de PROJECT.md | TODO |
 | 3 | Initialiser le projet (squelette + déploiement) | TODO |
-| 4 | Modèle de données + BDD | TODO |
-| 5 | Page liste des bons plans + filtres catégories | TODO |
-| 6 | Formulaire de publication d'un bon plan | TODO |
-| 7 | Votes 👍/👎 (validité) | TODO |
-| 8 | Carte interactive | TODO |
-| 9 | Données de démo (bons plans réels à Rennes) | TODO |
-| 10 | Pitch / slides de présentation | TODO |
+| 4 | Modèle de données + BDD (zones, deals, votes, profiles) | TODO |
+| 5 | Carte Bruz / Ker Lann + fil des bons plans + filtres par catégorie | TODO |
+| 6 | Formulaire de publication (local / zone / national) | TODO |
+| 7 | Votes 👍/👎 + statut de fiabilité | TODO |
+| 8 | Onboarding des préférences (catégories + zones) | TODO |
+| 9 | Récompense : actif sur 7 jours → accès complet / limité | TODO |
+| 10 | Notif sur place simulée (« toujours dispo ? ») | TODO |
+| 11 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
+| 12 | Bonus : points, niveaux, classement | TODO |
+| 13 | Bonus : espace commerçant / asso | TODO |
+| 14 | Pitch / slides (avec le modèle économique commerçants) | TODO |
 
 ## Planning indicatif (deadline sam. 28/11 13h00)
 - **Ven. après-midi** : stack, squelette, BDD, déploiement

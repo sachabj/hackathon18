@@ -12,3 +12,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `.gitignore` complété (Node/Next/.env), `README.md` réécrit.
 - `CLAUDE.md` : nouvelle section Git → Claude commit + push automatiquement après chaque requête.
 - Mémoire mise à jour : `DECISIONS.md`, `ARCHITECTURE.md`.
+
+### 2026-11-27 ~12h00 — Justin
+- Brief détaillé du projet intégré dans `PROJECT.md` : 7 catégories, préférences (catégories + zones Bruz / Ker Lann), système de récompenses, piste commerçants.
+- 8 propositions de Claude ajoutées dans `PROJECT.md` (à valider).
+- `ARCHITECTURE.md` : modèle de données révisé (zones, scope local/zone/national, profiles.last_active_at) + contrainte sur la géolocalisation web.
+- `TASKS.md` : liste des tâches refaite (14 tâches).

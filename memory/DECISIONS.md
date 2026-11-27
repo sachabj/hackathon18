@@ -13,7 +13,14 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Alternatives écartées** : une branche par fonctionnalité + merge (plus lent).
 - **Qui** : Justin
 
+## 2026-11-27 — Périmètre fonctionnel
+- **Décision** : 7 catégories (restaurants, grandes surfaces, transports, bourses, licence de sport, Carte Sortir, activités) ; préférences par catégorie et par zone ; zone de démo Bruz + Ker Lann ; récompense = accès complet si actif dans les 7 derniers jours + notif sur place ; piste d'amélioration : bons plans postés par les commerçants.
+- **Pourquoi** : brief détaillé donné par l'équipe.
+- **Qui** : équipe (transcrit par Justin)
+
 ## EN ATTENTE DE VALIDATION
 - Stack technique (proposition dans ARCHITECTURE.md)
 - Web app vs app mobile
-- Nom de l'app
+- Nom de l'app (propositions dans PROJECT.md)
+- Les 8 propositions 💡 de Claude dans PROJECT.md
+- Ce que voit un utilisateur inactif
