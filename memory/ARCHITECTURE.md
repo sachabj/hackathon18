@@ -81,19 +81,19 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── deal/ReactionBar.tsx      # boutons « J'y suis allé (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
     │   ├── arrows/                   # ArrowBadge (en-têtes), ArrowToast (layout), ArrowsCard (profil)
-    │   ├── feed/SearchFilters.tsx    # filtres sous la recherche de l'accueil (Sacha)
-    │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
+    │   ├── feed/SearchFilters.tsx    # filtres sous la recherche de Recherche (Sacha ; déplacée depuis l'accueil)
+    │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon` ; prop optionnel `onSelect(dealId)` : si l'offre a un lieu, toucher la carte la sélectionne sur `DealsMap` au lieu d'ouvrir sa fiche — utilisé par Recherche seulement)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
     │   ├── profile/                  # ActivityCard, InfluenceCard (bloc affiché dans « Ciblés »), PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
-    │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
+    │   └── map/                      # DealsMap.tsx (<DealsMap deals={...} selectedId?/>, centre et met en avant — `.wz-pin-selected` — l'offre choisie dans une liste de Recherche), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / accueil : barre de recherche + onglets « Pour toi » et 4 rubriques (Sacha)
-        ├── recherche/page.tsx        # carte (Justin) + toutes les offres, filtre par catégorie (Sacha), tri Hot (Matteo)
+        ├── page.tsx                  # / accueil : onglets « Pour toi » et 4 rubriques seulement (Sacha)
+        ├── recherche/page.tsx        # carte (Justin) + barre de recherche et filtres (Sacha, déplacés depuis l'accueil) + tri Hot (Matteo) ; pas de filtre par catégorie (retiré, tâche demandée par Anne-Lise)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
@@ -167,9 +167,13 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.
 
 ## Accueil (`src/app/page.tsx`)
-- Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases égales sur une ligne : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu.
-- **Recherche** (`src/lib/search.ts`, locale : la saisie n'est envoyée nulle part) : formulaire avec bouton « Rechercher » (touche du clavier mobile grâce à `action` + `enterKeyHint` ; valider ferme le clavier) et croix « Annuler la recherche » (vide le champ, retour aux onglets) ; une saisie remplace les onglets par une liste de toutes les offres chargées. Tous les mots sont exigés (petits mots ignorés), sans accents ni casse, pluriels compris. Poids : titre 10, lieu 6, catégorie / activités / conditions 4, description 3, prix et zone 2 ; sponsorisées en tête de chaque groupe. « Résultats proches » (après les exacts) : mots proches (`RELATED`) ou faute de frappe (seulement si le mot n'existe dans aucune offre). Abréviations équivalentes dans `SAME`.
+- Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases égales sur une ligne : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu. Rien d'autre (pas de recherche ni de catégories) : demande d'Anne-Lise, voir ci-dessous.
+
+## Recherche (`src/app/recherche/page.tsx`)
+- Carte (Justin) toujours affichée avec **toutes** les offres localisées (plus de filtre par catégorie, retiré pour laisser la place à la recherche). Sous la carte : le fil « Hot » par défaut, remplacé par les résultats de recherche dès qu'on tape.
+- **Recherche** (`src/lib/search.ts`, locale : la saisie n'est envoyée nulle part ; déplacée depuis l'accueil) : formulaire avec bouton « Rechercher » (touche du clavier mobile grâce à `action` + `enterKeyHint` ; valider ferme le clavier) et croix « Annuler la recherche » (vide le champ, retour au fil « Hot ») ; une saisie remplace le fil par une liste de toutes les offres chargées. Tous les mots sont exigés (petits mots ignorés), sans accents ni casse, pluriels compris. Poids : titre 10, lieu 6, catégorie / activités / conditions 4, description 3, prix et zone 2 ; sponsorisées en tête de chaque groupe. « Résultats proches » (après les exacts) : mots proches (`RELATED`) ou faute de frappe (seulement si le mot n'existe dans aucune offre). Abréviations équivalentes dans `SAME`.
 - **Filtres des résultats** (`lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`) : prix (`price_level` ≤ 0 / 1 / 2), moyen (à pied, vélo, bus, voiture) + 10 / 20 / 30 min estimées à vol d'oiseau depuis la position enregistrée ou la zone principale (`travelMinutes`, `matching.ts`), condition, tri (pertinence / proximité / prix). Un filtre actif écarte les offres sans l'information. « gratuit », « pas cher », « près de moi » (et variantes) sont retirés des mots cherchés et activent le filtre ; un choix manuel l'emporte, une nouvelle expression reprend la main ; champ vidé → filtres remis à zéro.
+- **Sélection sur la carte** : dans une liste (recherche ou fil « Hot »), toucher une offre **avec un lieu** la sélectionne (`DealsMap selectedId`) au lieu d'ouvrir sa fiche — la carte s'y centre et la met en avant (`.wz-pin-selected`), pour comparer vite plusieurs offres par leur distance. Une offre **sans lieu** (zone / nationale) garde l'ouverture de sa fiche (repli dans `DealCard`, rien à montrer sur la carte).
 
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'y suis allé » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'y suis allé »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).

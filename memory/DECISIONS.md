@@ -301,6 +301,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix par défaut** : vote retiré ou offre supprimée → gains retirés ; pas de points rétroactifs ; solde privé ; commerçants sans Flèches.
 - **Qui** : Sacha
 
+## 2026-11-27 soir — Recherche déplacée sur Recherche, surlignage sur la carte
+- **Décision** : la barre de recherche et ses filtres quittent l'Accueil (qui ne garde que ses onglets) pour la page Recherche, à la place des puces de catégorie (retirées, gain de place). Toucher une offre **localisée** dans une liste de Recherche (recherche ou fil « Hot ») centre la carte sur elle et la met en avant (contour aubergine, rebond), sans ouvrir sa fiche, pour comparer vite plusieurs offres par leur distance. Une offre **sans lieu** (zone / nationale) garde l'ouverture de sa fiche au toucher, faute de repère à montrer.
+- **Pourquoi** : demande d'Anne-Lise (questions posées avant de coder, toutes les options recommandées retenues) ; touche des fichiers actifs de Sacha (recherche, onglets, filtres) et Justin (carte), signalé dans `TASKS.md`.
+- **Écarté** : perdre l'accès à la fiche pour les offres sans lieu (corrigé par le repli automatique sur `DealCard`) ; filtrer aussi la carte par la recherche (elle montre toujours toutes les offres localisées, pour voir le contexte complet en comparant).
+- **Qui** : Anne-Lise
+
 ## 2026-11-27 20h47 — Page « Ciblés » et boutique de récompenses (tâche 42)
 - **Décision** : l'onglet Favoris devient « Ciblés » : Flèches et influence fusionnées en haut, puis Favoris / Activité (historique, accès 7 jours, niveau) / Récompenses (solde, mes bons, boutique). Le profil les perd et renvoie vers la boutique. Solde = gains − dépenses, rang d'après les gains. 3e rang : « Robin des Étudiants ». Compte de démo : `demo.sarah` (485).
 - **Écartés** : « Mes récompenses » dans le profil ; renommer « Robin des Campus ».

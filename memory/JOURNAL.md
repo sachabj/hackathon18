@@ -348,3 +348,12 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Justin (copie locale de la démo)
 - `reset_demo.local.sql` (non versionnée) reconstruite depuis le script à jour, mêmes comptes gardés et mot de passe. Testée sur Postgres local avec le schéma jusqu'à 018 (2 passages, puis `seed_arrows.sql`, 0 échec). **Pas lancée sur la vraie base.**
+
+### 2026-11-27 soir — Anne-Lise (recherche déplacée sur Recherche + surlignage carte)
+- Questions posées (CLAUDE.md) avant de coder : contenu restant sur l'Accueil une fois la recherche partie, clic = surligner seul ou aussi ouvrir la fiche, portée du surlignage (partout sur Recherche ou seulement en cherchant), coordination avec Sacha (recherche/onglets) et Justin (carte) qui travaillent sur ces fichiers. Toutes les options recommandées retenues.
+- `src/app/page.tsx` (Accueil) : barre de recherche, filtres et calcul des résultats retirés ; ne garde que les onglets « Pour toi » + les 4 rubriques, inchangés sinon.
+- `src/app/recherche/page.tsx` : reçoit la barre de recherche + `SearchFilters` (déplacés depuis l'Accueil, logique identique) ; puces de catégorie retirées (gain de place) ; la carte montre toujours toutes les offres localisées, qu'on cherche ou pas ; sous la carte, le fil « Hot » habituel reste affiché quand le champ est vide, remplacé par les résultats de recherche (exacts + proches) pendant une saisie, comme avant sur l'Accueil.
+- `src/components/feed/DealCard.tsx` : nouveau prop optionnel `onSelect` — quand il est fourni ET que l'offre a un lieu, toucher la carte sélectionne l'offre (au lieu d'ouvrir sa fiche) ; sans lieu (offre zone/nationale) ou si `onSelect` n'est pas fourni (Accueil, Favoris…), comportement inchangé (ouvre la fiche). Fichier partagé (tâche 35, Matteo) : changement additif et optionnel seulement, aucun effet là où `onSelect` n'est pas passé.
+- `src/components/map/DealsMap.tsx` : nouveau prop `selectedId` ; un effet centre la carte (`flyTo`) sur l'offre choisie et la marque avec une icône distincte (contour aubergine, rebond) via `globals.css` (`.wz-pin-selected`) ; prend la main sur le suivi GPS comme un glissé manuel de la carte.
+- `npm install` fait (dépendance `qrcode` de la tâche 42 de Sacha, manquante après le pull, sans rapport avec cette demande).
+- Vérifié : tsc + lint (1 avertissement connu) + build OK. Pas vu dans le navigateur (toujours indisponible dans cette session) : à tester en lançant `npm run dev`, notamment le surlignage au clic et le repli « ouvre la fiche » pour une offre sans lieu.

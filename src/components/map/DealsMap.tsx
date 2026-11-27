@@ -24,13 +24,14 @@ const zoneBounds = (z: (typeof ZONES)[number]) => L.latLng(z.lat, z.lng).toBound
 const ALL_BOUNDS = ZONES.reduce((b, z) => b.extend(zoneBounds(z)), L.latLngBounds([]));
 
 // Repères façon Waze (goutte colorée + icône au trait), en HTML : styles dans globals.css (.wz-pin).
-function pins(boosted: boolean) {
+function pins(boosted: boolean, selected: boolean) {
+  const classes = ["wz-pin", boosted && "wz-pin-boosted", selected && "wz-pin-selected"].filter(Boolean).join(" ");
   return Object.fromEntries(
     (Object.keys(CATEGORIES) as DealCategory[]).map((key) => [
       key,
       L.divIcon({
         className: "wz-marker",
-        html: `<div class="wz-pin${boosted ? " wz-pin-boosted" : ""}" style="--pin:${CATEGORIES[key].color}">${categoryIconSvg(key, 20)}</div>`,
+        html: `<div class="${classes}" style="--pin:${CATEGORIES[key].color}">${categoryIconSvg(key, 20)}</div>`,
         iconSize: [40, 48],
         iconAnchor: [20, 47],
         popupAnchor: [0, -44],
@@ -38,9 +39,14 @@ function pins(boosted: boolean) {
     ]),
   ) as Record<DealCategory, L.DivIcon>;
 }
-const ICONS = pins(false);
+const ICONS = pins(false, false);
 /** Offres mises en avant par un commerçant : contour doré, au-dessus des autres. */
-const BOOSTED_ICONS = pins(true);
+const BOOSTED_ICONS = pins(true, false);
+/** Offre choisie dans une liste (recherche, fil) : contour aubergine, au-dessus de tout sauf « Tu es ici ». */
+const SELECTED_ICONS = pins(false, true);
+const SELECTED_BOOSTED_ICONS = pins(true, true);
+/** Niveau de zoom appliqué quand on sélectionne une offre depuis une liste. */
+const SELECT_ZOOM = 16;
 
 const USER_ICON = L.divIcon({
   className: "wz-marker",
@@ -56,12 +62,15 @@ export default function DealsMap({
   deals,
   homeZoneId,
   savedPosition,
+  selectedId,
 }: {
   deals: DealWithVotes[];
   /** Zone choisie à l'inscription : localisation de repli tant que le GPS n'a pas répondu (ou s'il est refusé). */
   homeZoneId?: string | null;
   /** Position enregistrée par « Me localiser » à l'inscription, préférée au centre de la zone. */
   savedPosition?: { lat: number; lng: number } | null;
+  /** Offre choisie dans une liste (recherche, fil) : la carte s'y centre et la met en avant. */
+  selectedId?: string | null;
 }) {
   const [map, setMap] = useState<L.Map | null>(null);
   const { position, error, retry } = useUserPosition();
@@ -125,6 +134,17 @@ export default function DealsMap({
     map.setView([position.lat, position.lng], USER_ZOOM, { animate: false });
   }, [map, position]);
 
+  // Une offre choisie dans une liste (recherche, fil) : on s'y centre et on quitte le suivi GPS.
+  useEffect(() => {
+    if (!map || !selectedId) return;
+    const target = deals.find((d) => d.id === selectedId);
+    if (!target || target.lat === null || target.lng === null) return;
+    viewTaken.current = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- synchro avec le choix externe (liste), pas d'alternative sans effet
+    setCentered(false);
+    map.flyTo([target.lat, target.lng], Math.max(map.getZoom(), SELECT_ZOOM), { duration: 0.6 });
+  }, [map, selectedId, deals]);
+
   /** Retour à ma position GPS, sinon à la localisation choisie (le GPS est redemandé). */
   function recenter() {
     setCentered(true);
@@ -162,8 +182,12 @@ export default function DealsMap({
               <Marker
                 key={d.id}
                 position={[d.lat, d.lng]}
-                icon={(isBoosted(d) ? BOOSTED_ICONS : ICONS)[d.category]}
-                zIndexOffset={isBoosted(d) ? 500 : 0}
+                icon={(
+                  d.id === selectedId
+                    ? isBoosted(d) ? SELECTED_BOOSTED_ICONS : SELECTED_ICONS
+                    : isBoosted(d) ? BOOSTED_ICONS : ICONS
+                )[d.category]}
+                zIndexOffset={d.id === selectedId ? 900 : isBoosted(d) ? 500 : 0}
                 title={d.title}
                 eventHandlers={{ popupopen: () => recordView(d) }}
               >

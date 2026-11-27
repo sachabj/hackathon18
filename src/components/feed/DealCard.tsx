@@ -24,12 +24,15 @@ export default function DealCard({
   match,
   favorite,
   onToggleFavorite,
+  onSelect,
 }: {
   deal: DealWithVotes;
   match?: Match;
   /** Favori ou non ; le bouton cœur n'est affiché que si ce prop (et onToggleFavorite) est fourni. */
   favorite?: boolean;
   onToggleFavorite?: (dealId: string) => void;
+  /** Fourni (recherche, fil de Recherche) : toucher la carte sélectionne l'offre sur la carte au lieu d'ouvrir sa fiche. */
+  onSelect?: (dealId: string) => void;
 }) {
   const where =
     deal.place_name ??
@@ -37,6 +40,8 @@ export default function DealCard({
     CATEGORIES[deal.category].label;
   const r = useDealReactions(deal);
   const [open, setOpen] = useState(false);
+  // Rien à mettre en avant sur la carte pour une offre sans lieu (zone / nationale) : la fiche s'ouvre comme avant.
+  const touch = () => (onSelect && deal.lat !== null && deal.lng !== null ? onSelect(deal.id) : setOpen(true));
   // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
   useLayoutEffect(() => () => setOpen(false), []);
   const deadline = deal.deadline_at
@@ -52,7 +57,7 @@ export default function DealCard({
       style={isBoosted(deal) ? { borderColor: "#d4a017", borderWidth: 2 } : undefined}
     >
       <div className="flex items-center gap-2">
-        <button type="button" onClick={() => setOpen(true)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
+        <button type="button" onClick={touch} className="flex min-w-0 flex-1 items-center gap-3 text-left">
           <CategoryIcon category={deal.category} size={40} />
           <span className="min-w-0 font-medium leading-snug">{deal.title}</span>
         </button>
@@ -75,7 +80,7 @@ export default function DealCard({
       {/* Lieu et distance sur toute la largeur, sous le titre et la fiabilité (tâche 38) ; pas de montant (tâche 37). */}
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={touch}
         className="mt-1.5 flex w-full items-start gap-1 text-left text-sm text-[var(--color-muted)]"
       >
         <PinIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
