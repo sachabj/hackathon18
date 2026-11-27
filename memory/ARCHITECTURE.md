@@ -46,7 +46,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
-    │   ├── search.ts                 # recherche par mots de l'accueil (dans les offres déjà chargées, sans accents)
+    │   ├── search.ts                 # recherche de l'accueil : pertinence, fautes de frappe, mots proches (offres déjà chargées)
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── account.ts                # mot de passe, sessions, export, suppression du compte
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
@@ -152,7 +152,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 
 ## Accueil (`src/app/page.tsx`)
 - Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases égales sur une ligne : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu.
-- La recherche filtre l'onglet affiché (titre, description, lieu, prix, zone, catégorie, conditions) ; pendant une saisie, chaque onglet montre son nombre de résultats.
+- **Recherche** (`src/lib/search.ts`, locale : la saisie n'est envoyée nulle part) : une saisie remplace les onglets par une liste de toutes les offres chargées. Tous les mots sont exigés (petits mots ignorés), sans accents ni casse, pluriels compris. Poids : titre 10, lieu 6, catégorie / activités / conditions 4, description 3, prix et zone 2 ; sponsorisées en tête de chaque groupe. « Résultats proches » (après les exacts) : mots proches (`RELATED`) ou faute de frappe (seulement si le mot n'existe dans aucune offre). Abréviations équivalentes dans `SAME`.
 
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'y suis allé » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'y suis allé »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).

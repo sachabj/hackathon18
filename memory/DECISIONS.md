@@ -267,3 +267,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : bonus selon la fiabilité de ses publications ; vote « sur place » (GPS) ; bandeau « Toujours là ? ».
 - **Repli** : sans la migration 014, même formule avec un poids de 1 pour tous.
 - **Qui** : Matteo
+
+## 2026-11-27 19h12 — Recherche de l'accueil (tâche 34)
+- **Décision** : la recherche porte sur toutes les offres (liste unique à la place des onglets), classées par pertinence ; elle tolère les fautes et les pluriels et propose des mots proches, d'après une liste écrite dans le code.
+- **Écartés** : filtrer onglet par onglet ; recherche par IA (saisie envoyée à l'extérieur, quota) ; ajouter des offres « kebab » aux données de démo.
+- **Qui** : Sacha

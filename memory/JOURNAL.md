@@ -283,3 +283,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Nouveaux : `supabase/migrations/014_voter_weights.sql` (+ `schema.sql`), `src/lib/trust.ts`, `src/components/profile/InfluenceCard.tsx`.
 - Modifiés : `rules.ts` (`voteMasses`, `trustScore`, `reliability`, `dealTrustLevel`, `isDealHidden`, `INFLUENCE_RANKS` ; `trustPercent` / `trustLevelOf` supprimés), `types.ts` (`DealTrust`), `useDeals.ts`, `engagement.ts`, `favoris/page.tsx`, `DealCard.tsx`, `DealSheet.tsx`, `profil/page.tsx`, `confidentialite/page.tsx`.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 014 sur Postgres local (PGlite, relançable ; contradicteur 0,95 contre 1,54 pour les justes, compte neuf 0,67) ; scénarios en script (10 confirmations : 7 j → Fiable, 14 j → À vérifier ; 3 anciennes + 1 « Plus dispo » frais → À vérifier ; 2 « Plus dispo » frais → masqué). **014 pas lancée** ; pas testé dans le navigateur.
+
+### 2026-11-27 19h12 — Sacha (recherche, tâche 34)
+- `src/lib/search.ts` réécrit, `src/app/page.tsx` (liste de résultats).
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 20 contrôles des règles en script ; essais sur les 151 offres de `reset_demo.sql` (Postgres local), listes de mots resserrées ensuite ; Chrome sans interface avec un faux Supabase. **Pas testé sur la vraie base ni sur téléphone.**
