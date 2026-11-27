@@ -7,10 +7,10 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 |---|---|
 | Sacha | Fil + filtres (tâche 5b) |
 | Anne-Lise | Publication, votes, fiabilité, favoris (6, 7, 8) |
-| Matteo | Préférences, accès 7 jours, niveaux, notif simulée (9, 10, 11) |
+| Matteo | Accès 7 jours, niveaux, notif simulée (10, 11) |
 | Justin | Squelette, BDD, déploiement (3, 4), carte (5a), puis commerçants / rappels (13, 14) |
 
-✅ Répartition validée (ajustable) : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = fil + filtres (carte reprise par Justin) · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = préférences, accès 7 jours, niveaux, notif simulée · **tout le monde** = données de démo + pitch.
+✅ Répartition validée (ajustable) : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = fil + filtres (carte reprise par Justin) · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = accès 7 jours, niveaux, notif simulée (préférences reprises par Sacha) · **tout le monde** = données de démo + pitch.
 
 ## Tâches
 | # | Tâche | Statut |
@@ -24,7 +24,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | TODO |
-| 9 | Onboarding des préférences (catégories + zones) | TODO |
+| 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) |
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement | TODO |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |

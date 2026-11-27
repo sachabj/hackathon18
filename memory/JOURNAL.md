@@ -76,3 +76,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 14h22 — Justin (question déploiement)
 - Redéploiement manuel inutile : Vercel redéploie à chaque push sur `main` (déploiement de `ceb8439` vérifié : réussi). Seule exception : changement de variable d’environnement.
+
+### 2026-11-27 — Sacha (préférences, cadrage)
+- Tâche 9 reprise à Matteo (avec son accord) → `TASKS.md` : EN COURS (Sacha).
+- Choix : localisation par zones + GPS, budget en 3 profils, périmètre = parcours + fil « Pour toi ».
