@@ -49,6 +49,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     ├── components/
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
+    │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
     │   ├── merchant/                 # BusinessForm, LocationPicker, OfferForm, OfferCard
     │   ├── preferences/              # PreferencesWizard (parcours en 6 étapes) + ChoiceTile

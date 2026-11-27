@@ -120,3 +120,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 15h — Matteo (formulaire de publication, tâche 6)
 - `src/app/publier/page.tsx`, nouveaux `src/components/publish/PublishForm.tsx` et `src/lib/places.ts`. Champs : portée (lieu / zone / partout), magasin + ville → lieu exact (Photon), titre, catégorie (+ sous-catégorie transport), prix + niveau de prix, conditions, activités (`tags`), fin de l'offre, date limite (bourses, sport, Carte Sortir, transports). Pas de migration.
 - Vérifié : lint + build ; test bout en bout sur la vraie base avec Playwright (inscription, recherche « Intermarché Bruz », catégorie proposée, publication, relecture des colonnes, puis suppression du bon plan). Compte de test restant : `test.claude.matteo.1795788121989@example.com` (à supprimer dans Supabase si besoin, sans bon plan rattaché). Pas testé sur un vrai téléphone.
+
+### 2026-11-27 15h02 — Justin (déconnexion)
+- `components/LogoutButton.tsx`, ajouté à `src/app/profil/page.tsx`. Lint + build OK ; testé dans Chrome sans interface avec un faux Supabase.
