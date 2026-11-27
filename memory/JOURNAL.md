@@ -453,3 +453,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (tâche 66 : « J'en ai profité »)
 - Remplacement de « J'y suis allé » (53 occurrences) dans `src/` (`ReactionBar`, `DealSheet`, `QuickReactions`, `TrustBadge`, `MyDealCard`, `ArrowHistory`, `commercant/statistiques`, `confidentialite`, commentaires de `engagement`, `hot`, `offerStats`, `useDealReactions`), `README.md`, `docs/ALGORITHMES.md`, `schema.sql`, `seed_arrows.sql`, `TASKS.md`, `ARCHITECTURE.md`, `PROJECT.md`.
 - `npm install` nécessaire après le pull (dépendance `qrcode` de la tâche 42, sinon le build échoue). Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur.
+
+### 2026-11-28 00h45 — Sacha (onglets de l’accueil, tâche 56)
+- `app/page.tsx` : Pour toi, Restauration (remplace Quotidien), Aides & bourses, Voyages, Culture & sport ; `Tabs.tsx` : colonne élargie pour un mot long ; README, algorithmes, mémoire.
+- Vérifié : tsc, lint (1 avertissement connu), build ; Chrome avec un faux Supabase à 320, 360, 390 et 1100 px. Pas essayé sur téléphone ni déployé.

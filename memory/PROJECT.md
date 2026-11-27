@@ -36,7 +36,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 8. **Espace commerçant** : les enseignes publient leurs offres avec un badge « ✔ Offre officielle », peuvent les modifier et les déclarer terminées, voient leurs statistiques, retirent les signalements d'étudiants périmés près de chez eux (≤ 75 m, même catégorie) et payent pour une mise en avant (9,90 € / 7 jours, paiement simulé ; = **modèle économique** du pitch). Compte commerçant choisi à l'inscription.
 
 ## Évolutions décidées (tâches 18 à 26 codées, 27 en cours : voir `TASKS.md`) ✅
-- Accueil avec barre de recherche et onglets « Pour toi », Voyager, Aides & bourses, Culture & sport, Quotidien ; carte et toutes les offres dans un onglet « Recherche ».
+- Accueil avec barre de recherche et onglets « Pour toi », Restauration, Aides & bourses, Voyages, Culture & sport ; carte et toutes les offres dans un onglet « Recherche ».
 - Cartes : % de fiabilité à la place du % de compatibilité.
 - Inscription : localisation ou pays → ville-campus, fréquence de voyage + moyens, « Boursier ? ».
 - Publication : pré-remplissage IA conservé, doublons cherchés sans IA (« Bon plan validé »), plus de relecture IA.

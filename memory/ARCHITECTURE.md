@@ -178,7 +178,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.
 
 ## Accueil (`src/app/page.tsx`)
-- Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases égales sur une ligne : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu. Rien d'autre (pas de recherche ni de catégories) : demande d'Anne-Lise, voir ci-dessous.
+- Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases sur une ligne (élargies si un mot ne tient pas) : « Pour toi » (offres compatibles ; sinon les plus récentes) · Restauration (`restaurant`, `supermarket`) · Aides & bourses (`scholarship`) · Voyages (`transport`) · Culture & sport (`sport`, `activity`). Les rubriques contiennent les offres sur la carte et sans lieu. Rien d'autre (pas de recherche ni de catégories) : demande d'Anne-Lise, voir ci-dessous.
 
 ## Recherche (`src/app/recherche/page.tsx`)
 - Carte (Justin) toujours affichée avec **toutes** les offres localisées (plus de filtre par catégorie, retiré pour laisser la place à la recherche). Sous la carte : le fil « Hot » par défaut, remplacé par les résultats de recherche dès qu'on tape.

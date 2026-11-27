@@ -15,12 +15,12 @@ import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
 
-/** Rubriques déduites de la catégorie : chaque catégorie appartient à une seule rubrique. */
+/** Rubriques déduites de la catégorie, dans l'ordre des onglets : chaque catégorie appartient à une seule rubrique. */
 const SECTIONS = [
-  { id: "travel", label: "Voyager", categories: ["transport"] },
+  { id: "food", label: "Restauration", categories: ["restaurant", "supermarket"] },
   { id: "aids", label: "Aides & bourses", categories: ["scholarship"] },
+  { id: "travel", label: "Voyages", categories: ["transport"] },
   { id: "culture", label: "Culture & sport", categories: ["sport", "activity"] },
-  { id: "daily", label: "Quotidien", categories: ["restaurant", "supermarket"] },
 ] as const satisfies readonly { id: string; label: string; categories: readonly DealCategory[] }[];
 
 type TabId = "forYou" | (typeof SECTIONS)[number]["id"];

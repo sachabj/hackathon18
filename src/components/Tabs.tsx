@@ -1,6 +1,6 @@
 "use client";
 
-// Onglets rectangulaires (accueil, Ciblés) : cases égales sur une ligne, flèches du clavier.
+// Onglets rectangulaires (accueil, Ciblés) : cases sur une ligne (égales, élargies si un mot ne tient pas), flèches du clavier.
 import type { KeyboardEvent } from "react";
 
 export default function Tabs<T extends string>({
@@ -34,7 +34,7 @@ export default function Tabs<T extends string>({
       aria-label={label}
       onKeyDown={move}
       className="grid border-b-2"
-      style={{ borderColor: "var(--color-forest)", gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+      style={{ borderColor: "var(--color-forest)", gridTemplateColumns: `repeat(${tabs.length}, minmax(min-content, 1fr))` }}
     >
       {tabs.map((t) => {
         const on = selected === t.id;

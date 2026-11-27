@@ -410,3 +410,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : le bouton de confirmation s'appelle « J'en ai profité » partout (interface, README, `docs/ALGORITHMES.md`, commentaires). Comportement inchangé : vote +1 et passage, exclusif de « Plus dispo », décochable. Les entrées passées de JOURNAL / DECISIONS et les migrations déjà lancées gardent l'ancien libellé.
 - **Pourquoi** : demande de Matteo (portée confirmée avant de coder) ; « y aller » ne convient pas aux offres sans lieu (aides, cartes de réduction, offres en ligne).
 - **Qui** : Matteo
+
+## 2026-11-28 — Onglets de l'accueil (tâche 56)
+- **Décision** : Pour toi, Restauration, Aides & bourses, Voyages, Culture & sport ; « Restauration » remplace « Quotidien » et garde les grandes surfaces ; « Voyager » devient « Voyages ».
+- **Écarté** : un 6e onglet pour les grandes surfaces.
+- **Qui** : Sacha
