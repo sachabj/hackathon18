@@ -2,7 +2,7 @@
 // Si vous changez une constante ou une formule ici, mettez à jour ARCHITECTURE.md.
 import { BedIcon, CheckCircleIcon, FlameIcon, MoonIcon } from "@/components/icons";
 import type { ComponentType } from "react";
-import type { Deal, DealTrust, Profile, Vote } from "./types";
+import type { Deal, DealTrust, Vote } from "./types";
 
 const HOUR = 3600_000;
 const DAY = 24 * HOUR;
@@ -112,18 +112,7 @@ export const INFLUENCE_RANKS = [
 ] as const;
 export const influenceRank = (weight: number) => INFLUENCE_RANKS.find((r) => weight >= r.min) ?? INFLUENCE_RANKS[2];
 
-// ---------- Récompenses (Matteo) ----------
-export const FULL_ACCESS_DAYS = 7;
-/** Retard d'affichage des nouveaux bons plans pour un utilisateur inactif (appliqué aussi en RLS). */
-export const INACTIVE_DELAY_HOURS = 24;
-
-export function fullAccess(profile: Pick<Profile, "last_contribution_at">, now = Date.now()) {
-  if (!profile.last_contribution_at) return { active: false, daysLeft: 0 };
-  const until = new Date(profile.last_contribution_at).getTime() + FULL_ACCESS_DAYS * DAY;
-  const msLeft = until - now;
-  return { active: msLeft > 0, daysLeft: Math.max(0, Math.ceil(msLeft / DAY)) };
-}
-
+// ---------- Niveaux d'activité ----------
 export type ActivityLevel = "tres_actif" | "actif" | "peu_actif" | "inactif";
 
 export const LEVELS: Record<ActivityLevel, { label: string; Icon: ComponentType<{ className?: string }> }> = {

@@ -5,6 +5,7 @@ import type { Point } from "./geo";
 
 export const ARROWS = { create: 50, bonus: 30, confirm: 10, report: 15 } as const;
 export const DAILY_PAID_VOTES = 5;
+export const DAILY_PAID_CREATIONS = 3;
 export const STREAK_DAYS = 3;
 
 export type ArrowKind = keyof typeof ARROWS;
@@ -147,13 +148,17 @@ export function onArrows(listener: (notice: ArrowNotice | null) => void) {
 export async function announceCreation() {
   const created = (await fetchMyArrows())?.history.find((e) => e.kind === "create");
   const recent = created && Date.now() - new Date(created.created_at).getTime() < 120_000;
+  if (!recent) return announce();
   announce(
-    recent
+    created.amount === 0
       ? {
+          title: "Bon plan publié, sans Flèches",
+          detail: `Tes ${DAILY_PAID_CREATIONS} publications récompensées du jour sont atteintes.`,
+        }
+      : {
           title: `+${created.amount} Flèches`,
           detail: `Bon plan partagé${created.multiplier > 1 ? " · série : gains × 1,5" : ""}`,
-        }
-      : null,
+        },
   );
 }
 

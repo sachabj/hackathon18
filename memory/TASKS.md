@@ -16,7 +16,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **015_demo_titles.sql** (Matteo, données seulement) : retire « [Exemple] » des titres déjà en base.
 - ⏳ **016_arrows.sql à exécuter** (Sacha, après 013 et 014) : Flèches et archivage à 3 signalements ; puis, pour la démo, `reset_demo.sql` et `seed_arrows.sql` (**le jour de la démo** ; demande 016 et 017).
 - ⏳ **017_rewards.sql à exécuter** (Sacha, après 016) : boutique de récompenses.
-- Prochaine migration : numéro **018** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **018_no_access_limit.sql à exécuter** (Sacha, après 017) : accès ouvert à tous et 3 publications récompensées par jour. Relancer 018 si 009 ou 016 sont relancées.
+- Prochaine migration : numéro **019** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -55,7 +56,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 36 | E | Filtres sous la recherche (prix, moyen + temps de trajet, conditions, tri) ; « gratuit », « pas cher », « près de moi » compris dans la saisie. « Ouvert maintenant » remis à plus tard (aucune donnée d'horaires) | À TESTER (Sacha) : `lib/search.ts`, `lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`, `app/page.tsx` |
 | 41 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
 | 42 | E | Onglet « Ciblés » (à la place de Favoris) : carte Flèches + influence, onglets Favoris / Activité / Récompenses ; boutique, échanges, bons avec QR code (migration **017**) ; profil allégé. Touche `favoris/page.tsx` (Anne-Lise), `NavBar`, `profil/page.tsx` (Justin), `InfluenceCard` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `017_rewards.sql`** ; `npm install` après le pull (nouvelle dépendance `qrcode`) ; testé sur Postgres local et faux Supabase seulement |
-| 43 | E | Plus d'accès limité selon l'activité (ni 7 jours, ni retard de 24 h) ; 3 publications récompensées par jour (migration **018**). Niveaux d'activité conservés. Touche `ActivityCard` (Justin), `PublishForm` et `docs/ALGORITHMES.md` (Matteo) | EN COURS (Sacha) |
+| 43 | E | Plus d'accès limité selon l'activité (ni 7 jours, ni retard de 24 h) ; 3 publications récompensées par jour (migration **018**). Niveaux d'activité conservés. Touche `ActivityCard` (Justin), `PublishForm` et `docs/ALGORITHMES.md` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `018_no_access_limit.sql`** ; testé sur Postgres local et faux Supabase seulement |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -105,7 +106,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 
 ## Les Flèches : à régler (Sacha)
 - **Sans position, pas de pénalité** (décision provisoire, à revoir) : refuser la localisation, ou voter hors de l'app, contourne le barème de distance ; une position peut aussi être falsifiée.
-- **Publication non plafonnée** : +50 par offre, des offres bidon en série rapportent sans limite (plafond à décider).
+- Publications récompensées plafonnées à 3 par jour (018) ; des comptes complices peuvent encore confirmer des offres bidon.
 - 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
 - **Récompenses** (tâche 42) : partenaires fictifs ; « Avant-Première » seulement enregistrée (aucune offre flash n'existe) ; aucun tirage de tombola codé ; le commerçant ne peut pas vérifier un code (c'est l'étudiant qui marque le bon utilisé).
 
@@ -120,6 +121,10 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 - **Justin** : le profil perd la carte Flèches, l'influence et `ActivityCard` (déplacée dans « Ciblés > Activité ») et gagne « Utiliser mes Flèches ».
 - **Matteo** : `InfluenceCard.tsx` devient un bloc sans carte, affiché sous les Flèches dans « Ciblés » ; `docs/ALGORITHMES.md` corrigé (emplacement du rang). Onglets rectangulaires partagés : `components/Tabs.tsx`.
 
+## À prendre en compte (depuis la fin de l'accès limité, Sacha)
+- **Justin** : `ActivityCard` ne montre plus que le niveau (props réduites à `contributions`) ; la ligne de `reset_demo.sql` qui rend trois comptes inactifs ne sert plus à rien (sans effet).
+- **Matteo** : phrase « 7 jours d'accès complet » retirée de `PublishForm` ; `docs/ALGORITHMES.md` mis à jour ; `active_users_in_zone` supprimée.
+
 ## Codé : état des essais
 | # | Fonction | Statut |
 |---|---|---|
@@ -128,7 +133,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | 7 | Votes, fiabilité, masquage | À TESTER |
 | 8 | Favoris par catégorie | À TESTER |
 | 9 | Préférences et parcours d'inscription | À TESTER |
-| 10 | Profil : accès 7 jours, niveaux, mes bons plans et audience | À TESTER |
+| 10 | Profil et « Ciblés » : niveaux, mes bons plans et audience (accès 7 jours abandonné, tâche 43) | À TESTER |
 | 13 | Espace commerçant : offres, retrait, statistiques, mise en avant | À TESTER |
 
 Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement https://hackathon18-t1lb.vercel.app), 4 (base + droits testés).

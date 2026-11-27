@@ -27,7 +27,7 @@ Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 2. **elle a été retirée** par son auteur (« Plus dispo » dans son profil) ou par un commerçant voisin (offre d'étudiant à moins de 75 m, même catégorie) ;
 3. **elle est archivée** : **3 étudiants différents** (hors auteur) l'ont signalée « Plus dispo ». C'est automatique et réversible : si l'un d'eux décoche son signalement, l'offre réapparaît.
 
-Règle d'accès en plus : un étudiant **inactif depuis plus de 7 jours** ne voit les nouvelles offres qu'**après 24 h** (il récupère l'accès complet dès qu'il publie ou réagit). Cette règle est appliquée par la base de données, elle ne peut pas être contournée depuis l'application.
+**Aucune limite selon l'activité** : tous les étudiants voient toutes les offres, dès leur publication. Ne pas contribuer a une seule conséquence : on ne gagne pas de Flèches, donc pas de récompenses.
 
 ---
 
@@ -232,4 +232,3 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 | Rangs d'influence (0,9 / 1,3) | | `src/lib/rules.ts` (`INFLUENCE_RANKS`) |
 | Fenêtre des compteurs (30 jours) | | `src/lib/rules.ts` (`COUNT_WINDOW_DAYS`) |
 | Archivage (3 signalements) | | `src/lib/rules.ts` (`ARCHIVE_REPORTS`) **et** `supabase/migrations/016_arrows.sql` |
-| Retard des inactifs (24 h), accès complet (7 jours) | | `src/lib/rules.ts` et la règle de lecture des offres dans `supabase/schema.sql` |

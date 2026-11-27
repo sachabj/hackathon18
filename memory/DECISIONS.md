@@ -311,3 +311,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : le README présente l'appli (jury d'abord, puis installation), avec une courte section de limites ; tout changement visible le met à jour dans le même commit (règle dans `CLAUDE.md`).
 - **Écartés** : mise à jour à chaque commit de code (conflits à 4) ; taire les limites.
 - **Qui** : Justin
+
+## 2026-11-27 21h20 — Fin de l'accès limité, publications plafonnées (tâche 43)
+- **Décision** : plus d'accès complet 7 jours ni de retard de 24 h : tout le monde voit tout ; l'inactif ne gagne simplement pas de Flèches. La date de dernière contribution n'est plus relevée et est effacée. 3 publications récompensées par jour (au-delà : publiées, sans création ni bonus). Niveaux d'activité conservés.
+- **Remplace** : les décisions « Compte, inactifs » et « 7 jours offerts à l'inscription ».
+- **Qui** : Sacha

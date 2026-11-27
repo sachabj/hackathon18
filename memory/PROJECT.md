@@ -28,8 +28,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 2. **Score de fiabilité façon Waze** (l'avis des étudiants fiables et actifs pèse plus, la confiance s'érode sans confirmation récente, un « Plus dispo » récent pèse plus lourd ; rang Débutant / Confirmé / Expert dans le profil) sur chaque bon plan en code couleur (ex : pastille verte « Très fiable · confirmé il y a 2 h par 6 étudiants » ; rouge « Douteux », jaune « À vérifier », vert clair « Fiable »), calculé à partir des « J’y suis allé » (confirmation) et des « Plus dispo » (décochables), les votes récents comptant plus.
    - Le bon plan est **archivé** (masqué) quand 3 étudiants le signalent « Plus dispo ».
    - Si **le commerçant indique que l'offre n'existe plus** → elle est retirée immédiatement.
-3. **Accès complet pendant 7 jours après chaque contribution** (signaler ou confirmer un bon plan remet le compteur à 7 jours). Compteur visible : « 🔓 Accès complet encore 4 jours ».
-   - Accès limité pour un inactif ✅ : les nouveaux bons plans ne lui sont visibles qu'**après 24 h**.
+3. **Aucune limite selon l'activité** ✅ : tout le monde voit toutes les offres. Ne pas contribuer a une seule conséquence : pas de Flèches, donc pas de récompenses (l'ancien accès complet 7 jours et le retard de 24 h sont abandonnés).
 4. **Niveaux d'utilisateur selon l'activité** (ex : 🔥 Très actif · ✅ Actif · 💤 Peu actif · 😴 Inactif) avec des **messages d'encouragement par catégorie** (ex : « Tu es le roi des bons plans transport 🚆, encore 2 signalements pour passer Très actif ! »).
 5. **Favoris ❤️** : liker un bon plan pour l'enregistrer et ne pas le perdre.
 6. **Rappels de dates limites** pour les bons plans à échéance (dossier CROUS, renouvellement de la Carte Sortir, inscriptions au sport), en particulier ceux mis en favori.
@@ -51,7 +50,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 - [ ] Publier un bon plan (localisé / zone / national)
 - [ ] Votes 👍/👎 + score de fiabilité
 - [ ] Onboarding des préférences (catégories + zones)
-- [ ] Accès 7 jours après chaque contribution + niveau d'utilisateur + messages d'encouragement
+- [ ] Niveau d'utilisateur + messages d'encouragement
 - [ ] Favoris ❤️
 - [ ] Notification sur place simulée
 

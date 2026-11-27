@@ -347,9 +347,6 @@ export default function PublishForm() {
             Ta confirmation rend l&apos;offre plus fiable pour les autres étudiants.
           </p>
         )}
-        <p className="mt-2 text-sm text-[var(--color-muted)]">
-          Ta contribution te donne 7 jours d&apos;accès complet aux nouveaux bons plans.
-        </p>
         <div className="mt-8 flex w-full flex-col gap-3">
           <Link href="/recherche" className="sw-btn-primary">
             Voir sur la carte

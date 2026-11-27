@@ -86,6 +86,7 @@ export interface Profile {
   role: "student" | "merchant";
   followed_categories: DealCategory[];
   followed_zone_ids: string[];
+  /** Plus relevée depuis la migration 018 */
   last_contribution_at: string | null;
   onboarded: boolean;
   /** Acceptation de la politique de confidentialité (migration 009) */

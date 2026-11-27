@@ -338,3 +338,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Justin (README)
 - `README.md` réécrit (fonctions, limites, installation) ; règle de mise à jour ajoutée dans `CLAUDE.md` ; `TASKS.md`, `DECISIONS.md`. Aucun code modifié. Décrit l'application avant la tâche 43 de Sacha (en cours).
+
+### 2026-11-27 21h20 — Sacha (fin de l'accès limité, tâche 43)
+- Nouveau `018_no_access_limit.sql` (+ `schema.sql`). Modifiés : `rules.ts`, `ActivityCard`, `ActivityPanel`, `arrows.ts`, `PublishForm`, confidentialité, `types.ts`, `seed_arrows.sql`, `docs/ALGORITHMES.md`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 67 contrôles base et scénario de démo sur Postgres local ; 50 + 63 contrôles dans Chrome sans interface avec un faux Supabase. **018 pas lancée**, rien testé sur la vraie base ni sur téléphone.

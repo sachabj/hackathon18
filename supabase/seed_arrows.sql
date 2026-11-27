@@ -117,9 +117,6 @@ begin
       insert into public.activity_days (user_id, day)
         values (uid, public.arrow_day(now()) - day_back) on conflict do nothing;
     end loop;
-    if p.streak > 0 then
-      update public.profiles set last_contribution_at = now() - interval '1 day' where id = uid;
-    end if;
   end loop;
 
   -- Signalements déjà faits sur l'offre à archiver en direct : en attente du 3e.
