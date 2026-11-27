@@ -59,6 +59,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 43 | E | Plus d'accès limité selon l'activité (ni 7 jours, ni retard de 24 h) ; 3 publications récompensées par jour (migration **018**). Niveaux d'activité conservés. Touche `ActivityCard` (Justin), `PublishForm` et `docs/ALGORITHMES.md` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `018_no_access_limit.sql`** ; testé sur Postgres local et faux Supabase seulement |
 | 44 | E | Carte de « Ciblés » : bloc « Grade » (Éclaireur / Chasseur de bons plans / Robin des Étudiants, un seul éclairé) à la place de « Ton influence » et de la pastille de rang | À TESTER (Sacha) : essayé avec un faux Supabase ; sans migration |
 | 45 | E | « Partager » plus rapide : seuls lieu, titre et catégorie visibles, le reste sous « Plus de détails » ; photo analysée dès qu'elle est prise. Touche `PublishForm`, `AssistPanel` (domaine de Matteo, avec son accord) | EN COURS (Justin) |
+| 46 | E | Profil : retrait du bouton « Utiliser mes Flèches » et du Badge Doré (visible dans « Ciblés ») ; description de la récompense corrigée (migration **019**) | EN COURS (Sacha) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
