@@ -2,47 +2,63 @@
 // Si vous changez une constante ou une formule ici, mettez à jour ARCHITECTURE.md.
 import { BedIcon, CheckCircleIcon, FlameIcon, MoonIcon } from "@/components/icons";
 import type { ComponentType } from "react";
-import type { Deal, Profile, Vote } from "./types";
+import type { Deal, DealTrust, Profile, Vote } from "./types";
 
 const HOUR = 3600_000;
 const DAY = 24 * HOUR;
 
-// ---------- Fiabilité (Anne-Lise) ----------
-/** Demi-vie d'un vote : un vote de 48 h compte deux fois moins qu'un vote tout neuf. */
+// ---------- Fiabilité façon Waze (tâche 33 ; voir supabase/migrations/014_voter_weights.sql) ----------
+// Chaque réaction a une masse = poids de l'étudiant × fraîcheur ; un « Plus dispo » plus récent que la dernière
+// confirmation compte davantage. Les poids sont calculés par la base (`deal_trust`) ; sans la migration 014,
+// on retombe sur un poids de 1 pour tout le monde (`voteMasses`). Constantes à garder identiques en SQL.
+
+/** Demi-vie d'une réaction : une réaction de 48 h compte deux fois moins qu'une réaction toute neuve. */
 export const VOTE_HALF_LIFE_HOURS = 48;
-/** En dessous de ce score, le bon plan est masqué (si assez de votes). */
+/** « Le dernier mot compte » : un « Plus dispo » postérieur à la dernière confirmation pèse ×1,5. */
+export const LATEST_REPORT_BOOST = 1.5;
+/**
+ * Confiance qui s'érode : score = (confirmations + a priori × poids) / (toutes les réactions + poids).
+ * Sans réaction récente, le score redescend vers 0,5 (« À vérifier »).
+ */
+export const TRUST_PRIOR = 0.5;
+export const TRUST_PRIOR_WEIGHT = 1;
+/** En dessous de ce score, le bon plan est masqué (si les « Plus dispo » pèsent assez lourd). */
 export const HIDE_BELOW_SCORE = 0.3;
 
-export function reliability(votes: Vote[], now = Date.now()) {
+/** Masses pondérées des réactions d'une offre ; poids de 1 pour tous (repli sans la migration 014). */
+export function voteMasses(votes: Vote[], now: number): DealTrust {
+  const lastOk = Math.max(-Infinity, ...votes.filter((v) => v.value === 1).map((v) => new Date(v.created_at).getTime()));
   let pos = 0;
-  let total = 0;
+  let neg = 0;
+  for (const v of votes) {
+    const t = new Date(v.created_at).getTime();
+    const fresh = Math.pow(0.5, Math.max(0, now - t) / HOUR / VOTE_HALF_LIFE_HOURS);
+    if (v.value === 1) pos += fresh;
+    else neg += fresh * (t > lastOk ? LATEST_REPORT_BOOST : 1);
+  }
+  return { pos, neg };
+}
+
+/** Score 0..1 à partir des masses (a priori inclus). */
+export const trustScore = ({ pos, neg }: DealTrust) =>
+  (pos + TRUST_PRIOR * TRUST_PRIOR_WEIGHT) / (pos + neg + TRUST_PRIOR_WEIGHT);
+
+/** `trust` : masses calculées par la base (poids des étudiants) ; sinon calcul local. */
+export function reliability(votes: Vote[], now = Date.now(), trust?: DealTrust | null) {
   let lastConfirmedAt: number | null = null;
   for (const v of votes) {
     const t = new Date(v.created_at).getTime();
-    const w = Math.pow(0.5, (now - t) / HOUR / VOTE_HALF_LIFE_HOURS);
-    total += w;
-    if (v.value === 1) {
-      pos += w;
-      if (lastConfirmedAt === null || t > lastConfirmedAt) lastConfirmedAt = t;
-    }
+    if (v.value === 1 && (lastConfirmedAt === null || t > lastConfirmedAt)) lastConfirmedAt = t;
   }
+  const masses = trust ?? voteMasses(votes, now);
   return {
-    /** 0..1, ou null s'il n'y a aucun vote */
-    score: total > 0 ? pos / total : null,
+    /** 0..1, ou null s'il n'y a aucune réaction */
+    score: votes.length > 0 ? trustScore(masses) : null,
+    masses,
     confirmations: votes.filter((v) => v.value === 1).length,
     reports: votes.filter((v) => v.value === -1).length,
     lastConfirmedAt,
   };
-}
-
-/**
- * Fiabilité en %, ou null sans vote. Le rapport pondéré ne dépend pas de l'instant choisi : on prend celui
- * du vote le plus récent, ce qui évite `Date.now()` pendant l'affichage.
- */
-export function trustPercent(votes: Vote[]) {
-  const latest = Math.max(0, ...votes.map((v) => new Date(v.created_at).getTime()));
-  const { score } = reliability(votes, latest);
-  return score === null ? null : Math.round(score * 100);
 }
 
 export type TrustLevel = "very_reliable" | "reliable" | "to_check" | "doubtful";
@@ -64,23 +80,40 @@ export function trustLevel(score: number | null): TrustLevel | null {
   return (Object.keys(TRUST_LEVELS) as TrustLevel[]).find((l) => score >= TRUST_LEVELS[l].min) ?? "doubtful";
 }
 
-/** Niveau de fiabilité affiché sur les cartes (même instant de référence que `trustPercent`). */
-export function trustLevelOf(votes: Vote[]) {
-  const percent = trustPercent(votes);
-  return trustLevel(percent === null ? null : percent / 100);
+/** Niveau de fiabilité d'une offre affiché sur les cartes. */
+export function dealTrustLevel(votes: Vote[], now: number, trust?: DealTrust | null) {
+  return trustLevel(reliability(votes, now, trust).score);
 }
 
-/** Nombre de votes minimum avant de pouvoir masquer un bon plan : s'adapte au nb d'utilisateurs actifs de la zone. */
+/** Masse de « Plus dispo » nécessaire pour masquer un bon plan : s'adapte au nb d'utilisateurs actifs de la zone. */
 export function minVotesToHide(activeUsersInZone: number) {
   return Math.min(10, Math.max(2, Math.ceil(activeUsersInZone * 0.05)));
 }
 
-export function isDealHidden(deal: Deal, votes: Vote[], activeUsersInZone: number, now = Date.now()) {
+/**
+ * Masquage façon Waze : la somme pondérée des « Plus dispo » récents doit atteindre le seuil de la zone
+ * (deux étudiants expérimentés suffisent là où il faudrait plus de débutants) et le score passer sous 0,3.
+ */
+export function isDealHidden(
+  deal: Deal,
+  votes: Vote[],
+  activeUsersInZone: number,
+  now = Date.now(),
+  trust?: DealTrust | null,
+) {
   if (deal.ended_by_merchant) return true;
   if (deal.expires_at && new Date(deal.expires_at).getTime() < now) return true;
-  const { score } = reliability(votes, now);
-  return votes.length >= minVotesToHide(activeUsersInZone) && score !== null && score < HIDE_BELOW_SCORE;
+  const { score, masses } = reliability(votes, now, trust);
+  return score !== null && masses.neg >= minVotesToHide(activeUsersInZone) && score < HIDE_BELOW_SCORE;
 }
+
+/** Rang d'influence d'un étudiant (fonction `my_influence`), comme les niveaux Waze. Du plus haut au plus bas. */
+export const INFLUENCE_RANKS = [
+  { id: "expert", label: "Expert", min: 1.3 },
+  { id: "confirmed", label: "Confirmé", min: 0.9 },
+  { id: "beginner", label: "Débutant", min: 0 },
+] as const;
+export const influenceRank = (weight: number) => INFLUENCE_RANKS.find((r) => weight >= r.min) ?? INFLUENCE_RANKS[2];
 
 // ---------- Récompenses (Matteo) ----------
 export const FULL_ACCESS_DAYS = 7;

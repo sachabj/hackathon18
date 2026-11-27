@@ -1,7 +1,8 @@
 // Réactions aux bons plans (vues, passages, votes) et gestion de ses propres signalements.
 import { removeDealPhoto } from "./photos";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
-import type { Deal, DealAudience, Vote } from "./types";
+import { fetchDealTrust } from "./trust";
+import type { Deal, DealAudience, DealTrust, Vote } from "./types";
 import { normalizeDeal } from "./legacy";
 
 type DbError = { code?: string; message: string };
@@ -38,21 +39,25 @@ export interface Engagement {
   votes: Vote[];
   /** null tant que la migration 007 n'est pas lancée : le bouton « J'y suis allé » est masqué. */
   visit: { mine: boolean; count: number } | null;
+  /** Masses pondérées par le poids des étudiants (migration 014), null → calcul local. */
+  trust: DealTrust | null;
 }
 
 export async function fetchEngagement(dealId: string): Promise<Engagement> {
   const supabase = getSupabase();
   const userId = await currentUserId();
   if (!userId) throw new Error("Session expirée : reconnecte-toi.");
-  const [votes, mine, count] = await Promise.all([
+  const [votes, mine, count, trust] = await Promise.all([
     supabase.from("votes").select("*").eq("deal_id", dealId),
     supabase.from("deal_visits").select("deal_id").eq("deal_id", dealId).eq("user_id", userId),
     supabase.rpc("deal_visit_count", { p_deal_id: dealId }),
+    fetchDealTrust([dealId]),
   ]);
   return {
     userId,
     votes: check(votes) as Vote[],
     visit: mine.error || count.error ? null : { mine: (mine.data ?? []).length > 0, count: Number(count.data) },
+    trust: trust ? (trust.get(dealId) ?? { pos: 0, neg: 0 }) : null,
   };
 }
 

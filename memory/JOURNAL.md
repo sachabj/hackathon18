@@ -278,3 +278,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 19h01 — Sacha (onglets rectangulaires)
 - `src/app/page.tsx` : les pastilles deviennent une barre de 5 onglets rectangulaires (icône de « Pour toi » retirée).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase, à 390 et 320 px (une ligne, texte qui tient, clavier). **Pas testé sur la vraie base ni sur téléphone.** Défaut D11 noté (barre du bas à 320 px).
+
+### 2026-11-27 19h45 — Matteo (tâche 33 : fiabilité façon Waze)
+- Nouveaux : `supabase/migrations/014_voter_weights.sql` (+ `schema.sql`), `src/lib/trust.ts`, `src/components/profile/InfluenceCard.tsx`.
+- Modifiés : `rules.ts` (`voteMasses`, `trustScore`, `reliability`, `dealTrustLevel`, `isDealHidden`, `INFLUENCE_RANKS` ; `trustPercent` / `trustLevelOf` supprimés), `types.ts` (`DealTrust`), `useDeals.ts`, `engagement.ts`, `favoris/page.tsx`, `DealCard.tsx`, `DealSheet.tsx`, `profil/page.tsx`, `confidentialite/page.tsx`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 014 sur Postgres local (PGlite, relançable ; contradicteur 0,95 contre 1,54 pour les justes, compte neuf 0,67) ; scénarios en script (10 confirmations : 7 j → Fiable, 14 j → À vérifier ; 3 anciennes + 1 « Plus dispo » frais → À vérifier ; 2 « Plus dispo » frais → masqué). **014 pas lancée** ; pas testé dans le navigateur.

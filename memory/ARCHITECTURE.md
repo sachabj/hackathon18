@@ -41,6 +41,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   ├── trust.ts                  # fiabilité pondérée : withTrust() (rpc deal_trust), fetchMyInfluence() (rpc my_influence)
     │   ├── hot.ts                    # tri « Hot » de l'onglet « Tout » + badge « Tendance » (réglages : HOT)
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
@@ -72,7 +73,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
-    │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
+    │   ├── profile/                  # ActivityCard, InfluenceCard (rang Waze), PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
@@ -108,7 +109,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ **à exécuter**
 - `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste « [Exemple] » sur des lieux OpenStreetMap, ODbL). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
@@ -133,7 +134,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - Triggers : publier ou voter → `profiles.last_contribution_at = now()`
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
-- **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). **Affichée en code couleur, sans %** (`TRUST_LEVELS`, `TrustBadge`) : vert foncé « Très fiable » ≥ 0,85 · vert clair « Fiable » ≥ 0,65 · jaune « À vérifier » ≥ 0,4 · rouge « Douteux » en dessous · « Nouveau » sans vote. Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
+- **Fiabilité façon Waze (tâche 33)** : masse d'une réaction = poids de l'étudiant × 0,5^(âge / 48 h), un « Plus dispo » postérieur à la dernière confirmation × 1,5. Score = (masse des « J'y suis allé » + 0,5) / (masse totale + 1) : sans réaction récente il redescend vers 0,5 (« À vérifier »). Affiché en couleur (`TRUST_LEVELS`, `TrustBadge`) : vert foncé ≥ 0,85 · vert clair ≥ 0,65 · jaune ≥ 0,4 · rouge · « Nouveau » sans réaction. **Masqué** si masse des « Plus dispo » ≥ `minVotesToHide` (2 à 10 selon la zone) et score < 0,3, ou si retiré / expiré.
+- **Poids d'un étudiant** (`voter_stats()`, SQL, jamais exposé un par un ; 0,5 à 2) = (0,4 + 0,9 × justesse lissée (a+2)/(n+3)) × (1 + 0,5 × activité 30 j) × 0,6 si compte < 3 jours. `deal_trust(ids)` renvoie les masses par offre ; `my_influence()` son propre poids → rang Débutant < 0,9 ≤ Confirmé < 1,3 ≤ Expert (profil). Sans 014 : poids 1 pour tous.
 - **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). ✅ 7 jours offerts à l'inscription.
 - **Niveaux** (sur 7 jours) : ≥10 Très actif · ≥3 Actif · ≥1 Peu actif · 0 Inactif (icône dédiée par niveau dans `rules.ts`, pas d'emoji).
 

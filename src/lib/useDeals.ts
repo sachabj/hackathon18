@@ -5,6 +5,7 @@ import { ZONES } from "./constants";
 import { normalizeDeal } from "./legacy";
 import { isDealHidden } from "./rules";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
+import { withTrust } from "./trust";
 import type { DealWithVotes, Vote } from "./types";
 
 /** Bons plans visibles (RLS + règles de masquage), du plus récent au plus ancien. */
@@ -34,10 +35,13 @@ export function useDeals() {
         const activeUsers = new Map<string, number>(
           ZONES.map((z, i) => [z.id, Number(zoneResults[i].data ?? 0)]),
         );
-        const rows = dealsResult.data as (DealWithVotes & { votes: Vote[] })[];
+        // Fiabilité pondérée par le poids des étudiants (migration 014) ; sans elle, calcul local à poids égal.
+        const rows = await withTrust(dealsResult.data as (DealWithVotes & { votes: Vote[] })[]);
+        if (cancelled) return;
+        const now = Date.now();
         setDeals(
           rows
-            .filter((d) => !isDealHidden(d, d.votes, activeUsers.get(d.zone_id ?? "") ?? 0))
+            .filter((d) => !isDealHidden(d, d.votes, activeUsers.get(d.zone_id ?? "") ?? 0, now, d.trust))
             .map(normalizeDeal),
         );
       }

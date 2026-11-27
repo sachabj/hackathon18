@@ -65,7 +65,7 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
   }
 
   const own = data?.userId === deal.author_id;
-  const trust = data ? reliability(data.votes, data.at) : null;
+  const trust = data ? reliability(data.votes, data.at, data.trust) : null;
   const myVote = data?.votes.find((v) => v.user_id === data.userId)?.value;
   // « J'y suis allé » vaut confirmation : actif s'il y a un passage ou une confirmation (« C'est la même offre »).
   const reaction: Reaction = myVote === -1 ? "gone" : myVote === 1 || data?.visit?.mine ? "visited" : null;

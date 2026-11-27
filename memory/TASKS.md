@@ -11,7 +11,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
 - **012 présente sur la vraie base** (colonne `link_url` détectée via l'API le 27/11).
 - ⏳ **013_unvote.sql à exécuter** (Matteo) : sans elle, décocher une réaction affiche « base pas à jour » (cocher marche).
-- Prochaine migration : numéro **015** (014 prise par Matteo) (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **014_voter_weights.sql à exécuter** (Matteo, après 013) : poids des étudiants pour la fiabilité.
+- Prochaine migration : numéro **015** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -40,7 +41,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 29 | E | Réactions : « Toujours dispo » retiré (« J'y suis allé » = passage + confirmation) ; « J'y suis allé » et « Plus dispo » exclusifs et décochables (migration 013 : retirer son vote) | À TESTER (Matteo) : ⏳ **lancer `013_unvote.sql`** |
 | 30 | E | Fiabilité en code couleur (rouge / jaune / vert clair / vert foncé + mot court) à la place du % sur les cartes et la fiche | FAIT (Matteo) : `TRUST_LEVELS` / `trustLevel()` dans `rules.ts`, `components/deal/TrustBadge.tsx` ; fenêtre de la carte et stats commerçant inchangées |
 | 32 | E | Tri « Hot » de l'onglet « Tout » (réactions récentes, nombre de « J'y suis allé », fraîcheur) + badge « Tendance » | FAIT (Matteo) : `src/lib/hot.ts` (réglages dans `HOT`), `recherche/page.tsx`, `DealCard.tsx`, `useDeals.ts` (`loadedAt`) ; sans migration. ⚠️ **Sacha (tâche 31)** : le tri Hot est dans l'onglet « Tout » de `recherche/page.tsx` ; si cet onglet disparaît, garder `hotScore()` pour trier la liste restante (ou les rubriques de l'accueil) |
-| 33 | E | Fiabilité façon Waze : poids par utilisateur (justesse passée, ancienneté / activité), confiance qui s'érode, « Plus dispo » récent ×1,5, masquage selon le poids, rang dans le profil (migration 014) | EN COURS (Matteo) |
+| 33 | E | Fiabilité façon Waze : poids par utilisateur (justesse passée, ancienneté / activité), confiance qui s'érode, « Plus dispo » récent ×1,5, masquage selon le poids, rang dans le profil (migration 014) | À TESTER (Matteo) : ⏳ **lancer `014_voter_weights.sql`** (sans elle : calcul local à poids égal, pas de rang) |
 | 34 | E | Recherche de l'accueil : toutes les offres, les plus pertinentes d'abord, fautes de frappe, pluriels et mots proches | EN COURS (Sacha) : `lib/search.ts`, `app/page.tsx` |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
@@ -111,6 +112,7 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - `/profil` : prévenir Sacha avant de le modifier (ajouts en sous-pages) ; garder `LogoutButton` et `AccountLink`.
 - **Carte Sortir n'est plus une catégorie** (tâche 28) : c'est une condition (`deals.requirements`, `REQUIREMENTS` dans `constants.ts`), comme la carte étudiante. Affichage : `components/deal/DealExtras.tsx` (`RequirementBadges`, `OfferLink`, `LinkedText`). Liens : toujours passer par `src/lib/links.ts` (`normalizeLink` à l'écriture, `safeLink` à l'affichage).
 - **Réactions (tâche 29)** : plus de « Toujours dispo ». « J'y suis allé » = passage (`deal_visits`) + vote +1 ; « Plus dispo » = vote −1 ; exclusifs, recliquer décoche (`setReaction` dans `engagement.ts`). **Justin** : `DealSheet.tsx`, `engagement.ts`, libellés de `MyDealCard` (« Confirmé ») et des statistiques commerçant modifiés.
+- **Fiabilité (tâche 33)** : toujours passer par `reliability()` / `dealTrustLevel()` / `isDealHidden()` de `rules.ts` avec `deal.trust` (masses pondérées, `withTrust()` de `lib/trust.ts`). Constantes en double dans `014_voter_weights.sql` : modifier aux deux endroits. **Justin** : `profil/page.tsx` (+ `InfluenceCard`), `DealSheet`, `engagement.ts`, `useDeals.ts` modifiés. **Sacha** : `confidentialite` (poids des réactions) et `favoris` modifiés.
 - Publication : l'IA ne reçoit rien au moment de publier, seulement avec « Pré-remplir avec l'IA » ; les doublons passent par `src/lib/duplicates.ts` (plus de modération automatique).
 - Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter).
 

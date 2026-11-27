@@ -11,7 +11,7 @@ import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { isOwnPhotoUrl } from "@/lib/photos";
 import { isTrending } from "@/lib/hot";
-import { trustLevelOf } from "@/lib/rules";
+import { dealTrustLevel } from "@/lib/rules";
 import TrustBadge from "@/components/deal/TrustBadge";
 import type { DealWithVotes } from "@/lib/types";
 
@@ -37,9 +37,10 @@ export default function DealCard({
     (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
 
   const boosted = isBoosted(deal);
-  const trust = deal.votes ? trustLevelOf(deal.votes) : undefined;
   // Instant fixé à l'affichage de la carte (pas de Date.now() pendant le rendu).
   const [now] = useState(Date.now);
+  // Fiabilité pondérée (poids des étudiants, migration 014) si la base l'a fournie, sinon calcul local.
+  const trust = deal.votes ? dealTrustLevel(deal.votes, now, deal.trust) : undefined;
   const trending = isTrending(deal.votes, now);
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(false);

@@ -6,6 +6,7 @@ import DealCard from "@/components/feed/DealCard";
 import { ChevronDownIcon } from "@/components/icons";
 import { APP_NAME, CATEGORIES } from "@/lib/constants";
 import { normalizeDeal } from "@/lib/legacy";
+import { withTrust } from "@/lib/trust";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
 import { useFavorites } from "@/lib/useFavorites";
@@ -61,7 +62,11 @@ export default function Page() {
       const { data, error } = await supabase.from("deals").select("*, votes(*)").in("id", [...favoriteIds]);
       if (cancelled) return;
       if (error) setError(error.message);
-      else setDeals(((data ?? []) as DealWithVotes[]).map(normalizeDeal));
+      else {
+        const rows = await withTrust((data ?? []) as DealWithVotes[]);
+        if (cancelled) return;
+        setDeals(rows.map(normalizeDeal));
+      }
       setLoading(false);
     }
 

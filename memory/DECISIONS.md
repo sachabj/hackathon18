@@ -259,3 +259,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : de vrais onglets rectangulaires, les 5 visibles sur une ligne (libellés sur deux lignes si besoin), l'onglet choisi rempli en vert et relié à la liste.
 - **Écartés** : pastilles rondes, icônes au-dessus des noms, barre qui défile.
 - **Qui** : Sacha
+
+## 2026-11-27 19h45 — Fiabilité façon Waze, poids par étudiant (tâche 33)
+- **Décision** : chaque réaction pèse selon son auteur (comme les rangs Waze), de 0,5 à 2 : **justesse passée** (ses réactions vont-elles dans le sens des autres sur les mêmes offres ? lissée pour les nouveaux) × **activité** sur 30 jours × **ancienneté** (compte de moins de 3 jours × 0,6, anti faux comptes). Calcul **dans la base** (`voter_stats`, `deal_trust`), jamais exposé utilisateur par utilisateur ; chacun voit seulement son rang (Débutant / Confirmé / Expert) dans son profil.
+- **Temps et « Plus dispo »** : demi-vie 48 h ; **confiance qui s'érode** (a priori 0,5 : sans confirmation récente, une offre redescend vers « À vérifier ») ; **le dernier mot compte** (« Plus dispo » plus récent que la dernière confirmation × 1,5) ; **masquage selon le poids** (somme pondérée des « Plus dispo » ≥ seuil de la zone).
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) : un vieux vote ou un compte jetable ne doit pas peser autant qu'un étudiant fiable et récent.
+- **Écartés** : bonus selon la fiabilité de ses publications ; vote « sur place » (GPS) ; bandeau « Toujours là ? ».
+- **Repli** : sans la migration 014, même formule avec un poids de 1 pour tous.
+- **Qui** : Matteo

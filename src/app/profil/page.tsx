@@ -8,6 +8,7 @@ import AccountLink from "@/components/account/AccountLink";
 import LogoutButton from "@/components/LogoutButton";
 import { TargetIcon } from "@/components/icons";
 import ActivityCard from "@/components/profile/ActivityCard";
+import InfluenceCard from "@/components/profile/InfluenceCard";
 import MyDealCard from "@/components/profile/MyDealCard";
 import PreferencesSummary from "@/components/profile/PreferencesSummary";
 import { deleteMyDeal, fetchMyDeals, setMyDealEnded, updateMyDeal } from "@/lib/engagement";
@@ -83,6 +84,9 @@ export default function Page() {
       </div>
 
       {account && <ActivityCard profile={account.profile} contributions={account.contributions} now={account.fetchedAt} />}
+
+      {/* Rang d'influence façon Waze (tâche 33, Matteo) */}
+      {account && <InfluenceCard />}
 
       {account && (
         <section>
