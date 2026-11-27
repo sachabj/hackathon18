@@ -111,7 +111,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 58 | **Récompense d'un signalement seulement quand l'offre n'est vraiment plus disponible** | P à M | Sacha | TODO : en partie déjà fait (gain « en attente » jusqu'au 3e « Plus dispo ») ; préciser ce qui doit changer |
 | 59 | **Récompense d'une publication différée** : après un certain temps et un certain nombre d'étudiants venus sur l'offre (aujourd'hui +50 dès la publication, +30 à 3 confirmations) | M | Sacha | TODO : choisir le délai et le nombre ; migration ; depuis la tâche 51 : +50 sur place seulement, +20 sans lieu |
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
-| 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | TODO |
+| 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | EN COURS (Justin) |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
 | 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | À TESTER (Justin) : « passages sur tes offres » = total des passages (pas des étudiants uniques), sans migration |
 | 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin) : en-tête (pseudo modifiable), impact, grade et Flèches, raccourcis ; essayé avec un faux Supabase |
