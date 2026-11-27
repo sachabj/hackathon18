@@ -21,25 +21,3 @@ export async function withTrust<T extends DealWithVotes>(deals: T[]): Promise<T[
   if (!map) return deals;
   return deals.map((d) => ({ ...d, trust: map.get(d.id) ?? { pos: 0, neg: 0 } }));
 }
-
-export interface Influence {
-  weight: number;
-  accuracy: number;
-  judged: number;
-  contributions_30d: number;
-  account_days: number;
-}
-
-/** Son propre poids (page « Ciblés »), ou null sans la migration 014. */
-export async function fetchMyInfluence(): Promise<Influence | null> {
-  const { data, error } = await getSupabase().rpc("my_influence");
-  if (error || !data || (data as Influence[]).length === 0) return null;
-  const row = (data as Influence[])[0];
-  return {
-    weight: Number(row.weight),
-    accuracy: Number(row.accuracy),
-    judged: row.judged,
-    contributions_30d: row.contributions_30d,
-    account_days: row.account_days,
-  };
-}

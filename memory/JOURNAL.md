@@ -357,3 +357,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `src/components/map/DealsMap.tsx` : nouveau prop `selectedId` ; un effet centre la carte (`flyTo`) sur l'offre choisie et la marque avec une icône distincte (contour aubergine, rebond) via `globals.css` (`.wz-pin-selected`) ; prend la main sur le suivi GPS comme un glissé manuel de la carte.
 - `npm install` fait (dépendance `qrcode` de la tâche 42 de Sacha, manquante après le pull, sans rapport avec cette demande).
 - Vérifié : tsc + lint (1 avertissement connu) + build OK. Pas vu dans le navigateur (toujours indisponible dans cette session) : à tester en lançant `npm run dev`, notamment le surlignage au clic et le repli « ouvre la fiche » pour une offre sans lieu.
+
+### 2026-11-27 21h32 — Sacha (bloc « Grade », tâche 44)
+- `ArrowsCard` (bloc Grade, pastille retirée), `InfluenceCard.tsx` supprimé, `rules.ts`, `trust.ts`, `RedeemDialog`, confidentialité, README, `docs/ALGORITHMES.md`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 54 contrôles dans Chrome sans interface avec un faux Supabase (avant la fusion avec la recherche déplacée d'Anne-Lise, puis relancés). Pas testé sur la vraie base ni sur téléphone.

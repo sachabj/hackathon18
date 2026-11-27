@@ -68,7 +68,7 @@ export default function RedeemDialog({
             <div className="flex justify-between"><dt>Coût</dt><dd className="tabular-nums">- {reward.cost}</dd></div>
             <div className="flex justify-between font-medium"><dt>Il te restera</dt><dd className="tabular-nums">{before - reward.cost}</dd></div>
           </dl>
-          <p className="text-xs text-[var(--color-muted)]">Un échange est définitif. Ton rang ne baisse pas.</p>
+          <p className="text-xs text-[var(--color-muted)]">Un échange est définitif. Ton grade ne baisse pas.</p>
           {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
           <button type="button" onClick={confirm} disabled={busy} className="sw-btn-primary w-full">
             <ArrowShotIcon className="h-4 w-4" /> {busy ? "Échange en cours…" : `Confirmer pour ${reward.cost} Flèches`}

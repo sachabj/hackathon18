@@ -1,64 +1,84 @@
 "use client";
 
-// Haut de la page « Ciblés » : Flèches (solde, rang, progression, série) et influence (Matteo), en une carte.
-import { useEffect, useState } from "react";
+// Haut de la page « Ciblés » : Flèches (solde, progression, série) et grade, en une carte.
 import { ArrowShotIcon, FlameIcon, StarIcon } from "@/components/icons";
-import InfluenceBlock from "@/components/profile/InfluenceCard";
-import { rankFor, STREAK_DAYS } from "@/lib/arrows";
-import { isSupabaseConfigured } from "@/lib/supabase/client";
-import { fetchMyInfluence, type Influence } from "@/lib/trust";
+import { rankFor, RANKS, STREAK_DAYS } from "@/lib/arrows";
 import { useMyArrows } from "@/lib/useMyArrows";
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
 
 export default function ArrowsCard() {
   const arrows = useMyArrows();
-  const [influence, setInfluence] = useState<Influence | null>(null);
-
-  useEffect(() => {
-    if (!isSupabaseConfigured) return;
-    let cancelled = false;
-    fetchMyInfluence().then((i) => !cancelled && setInfluence(i));
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // Sans les migrations 016 (Flèches) et 014 (influence), rien à montrer.
-  if (!arrows && !influence) return null;
+  // Sans la migration 016 (Flèches), rien à montrer.
+  if (!arrows) return null;
 
   return (
     <section className="sw-card space-y-3 p-4" aria-label="Mes Flèches">
-      {arrows && <Arrows arrows={arrows} />}
-      {influence && (
-        <div className={arrows ? "border-t pt-3" : undefined} style={{ borderColor: "var(--color-border)" }}>
-          <InfluenceBlock me={influence} />
-        </div>
-      )}
+      <Arrows arrows={arrows} />
+      <div className="border-t pt-3" style={{ borderColor: "var(--color-border)" }}>
+        <Grade earned={arrows.total_arrows_earned} />
+      </div>
     </section>
+  );
+}
+
+/** Les trois grades, seul celui de l'étudiant éclairé ; il dépend des Flèches gagnées. */
+function Grade({ earned }: { earned: number }) {
+  const { rank } = rankFor(earned);
+  return (
+    <div>
+      <h2 className="text-base">Grade</h2>
+      <ol className="mt-2 grid grid-cols-3 gap-1.5" aria-label="Grades">
+        {RANKS.map((r) => {
+          const mine = r.label === rank.label;
+          return (
+            <li
+              key={r.label}
+              aria-current={mine ? "true" : undefined}
+              className="flex items-center justify-center rounded-lg px-1 py-1.5 text-center text-xs font-medium leading-tight"
+              style={
+                mine
+                  ? { backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
+                  : { backgroundColor: "var(--color-paper)", color: "var(--color-muted)" }
+              }
+            >
+              {r.label}
+            </li>
+          );
+        })}
+      </ol>
+      <details className="mt-2 text-sm">
+        <summary className="cursor-pointer font-medium" style={{ color: "var(--color-forest)" }}>Comment ça marche ?</summary>
+        <p className="mt-1 text-[var(--color-muted)]">
+          Ton grade dépend des Flèches gagnées au total : les dépenser ne le fait jamais baisser.
+        </p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          {RANKS.map((r) => (
+            <li key={r.label}>
+              {r.label} : dès {r.min} Flèche{r.min > 1 ? "s" : ""}
+            </li>
+          ))}
+        </ul>
+      </details>
+    </div>
   );
 }
 
 function Arrows({ arrows }: { arrows: NonNullable<ReturnType<typeof useMyArrows>> }) {
   const earned = arrows.total_arrows_earned;
-  const { rank, next, missing, progress } = rankFor(earned);
+  const { next, missing, progress } = rankFor(earned);
   const { streak } = arrows;
   const days = `${streak} jour${streak > 1 ? "s" : ""}`;
 
   return (
     <>
       <div>
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="sw-eyebrow">Tes Flèches</p>
-          <span className="sw-badge whitespace-nowrap" style={{ backgroundColor: "var(--color-aubergine)", color: "var(--color-surface)" }}>
-            {rank.label}
-          </span>
-        </div>
+        <p className="sw-eyebrow">Tes Flèches</p>
         <p className="flex items-center gap-2 text-3xl font-medium tabular-nums" style={{ color: "var(--color-forest)" }}>
           <ArrowShotIcon className="h-7 w-7" /> {Math.max(0, arrows.current_arrows_balance)}
           <span className="text-sm font-normal text-[var(--color-muted)]">disponibles</span>
         </p>
-        <p className="text-sm text-[var(--color-muted)]">{earned} gagnées au total (elles fixent ton rang)</p>
+        <p className="text-sm text-[var(--color-muted)]">{earned} gagnées au total (elles fixent ton grade)</p>
       </div>
 
       {(arrows.golden_badge || arrows.early_access_until) && (
@@ -79,7 +99,7 @@ function Arrows({ arrows }: { arrows: NonNullable<ReturnType<typeof useMyArrows>
       <div>
         <div
           role="progressbar"
-          aria-label="Progression vers le rang suivant"
+          aria-label="Progression vers le grade suivant"
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(progress * 100)}
@@ -89,7 +109,7 @@ function Arrows({ arrows }: { arrows: NonNullable<ReturnType<typeof useMyArrows>
           <div className="h-full rounded-full transition-all" style={{ width: `${progress * 100}%`, backgroundColor: "var(--color-forest)" }} />
         </div>
         <p className="mt-1 text-sm text-[var(--color-muted)]">
-          {next ? `Encore ${missing} Flèches pour devenir ${next.label}` : "Rang le plus haut atteint, merci pour la communauté !"}
+          {next ? `Encore ${missing} Flèches pour devenir ${next.label}` : "Grade le plus haut atteint, merci pour la communauté !"}
         </p>
       </div>
 

@@ -104,14 +104,6 @@ export function isDealHidden(deal: Deal, votes: Vote[], now = Date.now()) {
   return votes.filter((v) => v.value === -1 && v.user_id !== deal.author_id).length >= ARCHIVE_REPORTS;
 }
 
-/** Rang d'influence d'un étudiant (fonction `my_influence`), comme les niveaux Waze. Du plus haut au plus bas. */
-export const INFLUENCE_RANKS = [
-  { id: "expert", label: "Expert", min: 1.3 },
-  { id: "confirmed", label: "Confirmé", min: 0.9 },
-  { id: "beginner", label: "Débutant", min: 0 },
-] as const;
-export const influenceRank = (weight: number) => INFLUENCE_RANKS.find((r) => weight >= r.min) ?? INFLUENCE_RANKS[2];
-
 // ---------- Niveaux d'activité ----------
 export type ActivityLevel = "tres_actif" | "actif" | "peu_actif" | "inactif";
 

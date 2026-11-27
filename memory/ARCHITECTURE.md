@@ -43,10 +43,10 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, archivage, niveaux d'activité
     │   ├── rewards.ts                # boutique : catalogue, échanges, bons
-    │   ├── arrows.ts                 # Flèches : barème affiché, rangs, messages de gain, position au vote (+ useMyArrows.ts)
+    │   ├── arrows.ts                 # Flèches : barème affiché, grades, messages de gain, position au vote (+ useMyArrows.ts)
     │   ├── useDealReactions.ts       # réagir en un geste depuis une carte (vote + passage, relecture des votes et masses)
     │   ├── useCurrentUserId.ts       # id de l'utilisateur connecté (session locale)
-    │   ├── trust.ts                  # fiabilité pondérée : withTrust() (rpc deal_trust), fetchMyInfluence() (rpc my_influence)
+    │   ├── trust.ts                  # fiabilité pondérée : withTrust() (rpc deal_trust)
     │   ├── hot.ts                    # tri « Hot » de l'onglet « Tout » + badge « Tendance » (réglages : HOT)
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
@@ -85,7 +85,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon` ; prop optionnel `onSelect(dealId)` : si l'offre a un lieu, toucher la carte la sélectionne sur `DealsMap` au lieu d'ouvrir sa fiche — utilisé par Recherche seulement)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
-    │   ├── profile/                  # ActivityCard, InfluenceCard (bloc affiché dans « Ciblés »), PreferencesSummary, MyDealCard
+    │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
@@ -98,7 +98,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
-        ├── favoris/page.tsx          # « Ciblés » : carte Flèches + influence, onglets Favoris / Activité / Récompenses (`?onglet=`)
+        ├── favoris/page.tsx          # « Ciblés » : carte Flèches + grade, onglets Favoris / Activité / Récompenses (`?onglet=`)
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
         ├── confidentialite/page.tsx  # politique de confidentialité, lisible sans compte (Sacha)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
@@ -151,7 +151,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Règles métier (`src/lib/rules.ts` + RLS)
 - **Fiabilité façon Waze (tâche 33)** : masse d'une réaction = poids de l'étudiant × 0,5^(âge / 48 h), un « Plus dispo » postérieur à la dernière confirmation × 1,5. Score = (masse des « J'y suis allé » + 0,5) / (masse totale + 1) : sans réaction récente il redescend vers 0,5 (« À vérifier »). Affiché en couleur (`TRUST_LEVELS`, `TrustBadge`) : vert foncé ≥ 0,85 · vert clair ≥ 0,65 · jaune ≥ 0,4 · rouge · « Nouveau » sans réaction. La fiabilité ne masque plus rien : une offre est **masquée** si 3 étudiants la signalent « Plus dispo » (archivée, `ARCHIVE_REPORTS`), si elle est retirée ou expirée.
 - **Flèches** : voir « Base de données » ; rangs (`RANKS`) : Éclaireur < 150 ≤ Chasseur de bons plans < 500 ≤ Robin des Étudiants. Gains × 1,5 dès 3 jours d'activité d'affilée (heure de Paris), 5 votes payés par jour, distance connue : ≤ 500 m tout, ≤ 2 km moitié, au-delà rien ; sans position, plein gain.
-- **Poids d'un étudiant** (`voter_stats()`, SQL, jamais exposé un par un ; 0,5 à 2) = (0,4 + 0,9 × justesse lissée (a+2)/(n+3)) × (1 + 0,5 × activité 30 j) × 0,6 si compte < 3 jours. `deal_trust(ids)` renvoie les masses par offre ; `my_influence()` son propre poids → rang Débutant < 0,9 ≤ Confirmé < 1,3 ≤ Expert (profil). Sans 014 : poids 1 pour tous.
+- **Poids d'un étudiant** (`voter_stats()`, SQL, jamais exposé un par un ; 0,5 à 2) = (0,4 + 0,9 × justesse lissée (a+2)/(n+3)) × (1 + 0,5 × activité 30 j) × 0,6 si compte < 3 jours. `deal_trust(ids)` renvoie les masses par offre  (le poids n'est affiché nulle part depuis la tâche 44 ; la RPC `my_influence()` n'est plus appelée). Sans 014 : poids 1 pour tous.
 - **Aucun accès limité** selon l'activité (018). Seules les **publications récompensées** sont plafonnées : 3 par jour (au-delà, ligne à 0 Flèche dans `arrow_events`, sans bonus).
 - **Niveaux** (sur 7 jours) : ≥10 Très actif · ≥3 Actif · ≥1 Peu actif · 0 Inactif (icône dédiée par niveau dans `rules.ts`, pas d'emoji).
 

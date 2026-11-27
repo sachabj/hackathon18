@@ -57,7 +57,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 41 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
 | 42 | E | Onglet « Ciblés » (à la place de Favoris) : carte Flèches + influence, onglets Favoris / Activité / Récompenses ; boutique, échanges, bons avec QR code (migration **017**) ; profil allégé. Touche `favoris/page.tsx` (Anne-Lise), `NavBar`, `profil/page.tsx` (Justin), `InfluenceCard` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `017_rewards.sql`** ; `npm install` après le pull (nouvelle dépendance `qrcode`) ; testé sur Postgres local et faux Supabase seulement |
 | 43 | E | Plus d'accès limité selon l'activité (ni 7 jours, ni retard de 24 h) ; 3 publications récompensées par jour (migration **018**). Niveaux d'activité conservés. Touche `ActivityCard` (Justin), `PublishForm` et `docs/ALGORITHMES.md` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `018_no_access_limit.sql`** ; testé sur Postgres local et faux Supabase seulement |
-| 44 | E | Carte de « Ciblés » : bloc « Grade » (Éclaireur / Chasseur de bons plans / Robin des Étudiants, un seul éclairé) à la place de « Ton influence » et de la pastille de rang | EN COURS (Sacha) |
+| 44 | E | Carte de « Ciblés » : bloc « Grade » (Éclaireur / Chasseur de bons plans / Robin des Étudiants, un seul éclairé) à la place de « Ton influence » et de la pastille de rang | À TESTER (Sacha) : essayé avec un faux Supabase ; sans migration |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -131,6 +131,9 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 ## À prendre en compte (depuis la fin de l'accès limité, Sacha)
 - **Justin** : `ActivityCard` ne montre plus que le niveau (props réduites à `contributions`) ; la ligne de `reset_demo.sql` qui rend trois comptes inactifs ne sert plus à rien (sans effet).
 - **Matteo** : phrase « 7 jours d'accès complet » retirée de `PublishForm` ; `docs/ALGORITHMES.md` mis à jour ; `active_users_in_zone` supprimée.
+
+## À prendre en compte (depuis le bloc « Grade », Sacha)
+- **Matteo** : le rang d'influence n'est plus affiché : `InfluenceCard.tsx`, `INFLUENCE_RANKS`, `influenceRank` et `fetchMyInfluence` supprimés (la RPC `my_influence` reste en base, inutilisée). Le calcul de fiabilité ne change pas ; `docs/ALGORITHMES.md` corrigé.
 
 ## Codé : état des essais
 | # | Fonction | Statut |

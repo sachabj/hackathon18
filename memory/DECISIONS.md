@@ -322,3 +322,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : plus d'accès complet 7 jours ni de retard de 24 h : tout le monde voit tout ; l'inactif ne gagne simplement pas de Flèches. La date de dernière contribution n'est plus relevée et est effacée. 3 publications récompensées par jour (au-delà : publiées, sans création ni bonus). Niveaux d'activité conservés.
 - **Remplace** : les décisions « Compte, inactifs » et « 7 jours offerts à l'inscription ».
 - **Qui** : Sacha
+
+## 2026-11-27 21h32 — Un seul « Grade » sur la page Ciblés (tâche 44)
+- **Décision** : la carte montre un bloc « Grade » (Éclaireur, Chasseur de bons plans, Robin des Étudiants, seul le sien éclairé, seuils expliqués) ; la pastille de rang en haut et « Ton influence » disparaissent (pas d'information en double).
+- **Remplace** : l'affichage Débutant / Confirmé / Expert (tâche 33) ; le poids reste calculé pour la fiabilité.
+- **Qui** : Sacha

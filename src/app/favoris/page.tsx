@@ -1,6 +1,6 @@
 "use client";
 
-// Page « Ciblés » : Flèches et influence, puis Favoris / Activité / Récompenses.
+// Page « Ciblés » : Flèches et grade, puis Favoris / Activité / Récompenses.
 // L'adresse reste /favoris ; `?onglet=recompenses` ou `activite` ouvre directement un onglet.
 import { useEffect, useState } from "react";
 import ArrowBadge from "@/components/arrows/ArrowBadge";

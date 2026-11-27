@@ -74,7 +74,7 @@ export default function Page() {
         {!account && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">Chargement…</p>}
       </div>
 
-      {/* Flèches, influence et activité sont sur la page « Ciblés ». */}
+      {/* Flèches, grade et activité sont sur la page « Ciblés ». */}
       {account && <UseArrowsLink />}
 
       {account && (
