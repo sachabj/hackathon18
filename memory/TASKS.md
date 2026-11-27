@@ -33,6 +33,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
+| 17 | Profil, ajouts : compte et sécurité, mes données (RGPD), autorisations, crédits (sur la page construite par Justin) | EN COURS (Sacha) : cadrage, aucun code |
 | 16 | Offres immatérielles (réductions SNCF, aides, Carte Sortir) : rubrique « Réductions & aides » reliée à la homepage | TODO — 💡 proposition à valider (Sacha + Anne-Lise) |
 
 ## Pour démarrer sa tâche
@@ -75,3 +76,7 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 ## À prendre en compte (depuis la photo de preuve, Matteo)
 - **Tous** : lancer `supabase/migrations/008_deal_photos.sql` dans le SQL Editor (colonne `deals.photo_url` + stockage `deal-photos`). Sans elle, les bons plans sont publiés sans photo.
 - **Sacha** : `src/components/feed/DealCard.tsx` modifié par Matteo (miniature de la photo de preuve + affichage en grand), à conserver.
+
+## Profil, ajouts (tâche 17, cadrage)
+- À prévoir : mot de passe et déconnexion de tous les appareils · export et suppression du compte · information sur les données (dont envois à l'IA et à Photon) · position enregistrée effaçable · crédits calculés par la base, avec règles anti-abus.
+- Justin / Matteo : prévenir Sacha avant de modifier `/profil` ; les ajouts viseront des sous-pages pour limiter les conflits.

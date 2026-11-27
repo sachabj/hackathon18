@@ -181,3 +181,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Nouveaux `supabase/migrations/008_deal_photos.sql` (+ `schema.sql`), `src/lib/photos.ts` ; modifiés `src/lib/types.ts` (`photo_url`), `PublishForm.tsx` + `AssistPanel.tsx` (photo analysée gardée, aperçu « Photo jointe comme preuve », dépôt à la publication), `src/components/feed/DealCard.tsx` (fichier de Sacha : miniature + photo en grand).
 - Avertissement Next « Instant navigation » signalé par Matteo : contrôle de développement seulement, laissé tel quel (son choix).
 - Vérifié : lint + build ; test Playwright sur la vraie base **sans la migration 008** : aperçu affiché, publication OK sans photo (« Bucket not found » ignoré), bon plan de test supprimé. **Affichage de la photo dans le fil à tester après la migration 008.**
+
+### 2026-11-27 16h06 — Sacha (profil, état des lieux)
+- Relecture de `/profil`, des droits en base et des envois de données externes ; liste des besoins (tâche 17). Aucun code modifié.
