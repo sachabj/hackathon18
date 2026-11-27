@@ -10,6 +10,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
 - **012 présente sur la vraie base** (colonne `link_url` détectée via l'API le 27/11).
+- **Sonde de la vraie base (Justin, 27/11 au soir, lecture seule)** : objets de **014 et 016 présents**, tables de **017 absentes** ; 013 et 015 non vérifiables avec la clé publique (à confirmer par qui les a lancées). Les lignes ⏳ ci-dessous datent d'avant cette sonde.
 - ⏳ **013_unvote.sql à exécuter** (Matteo) : sans elle, décocher une réaction affiche « base pas à jour » (cocher marche).
 - ⏳ **014_voter_weights.sql à exécuter** (Matteo, après 013) : poids des étudiants pour la fiabilité.
 - ⏳ **015_demo_titles.sql** (Matteo, données seulement) : retire « [Exemple] » des titres déjà en base.

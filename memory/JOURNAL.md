@@ -332,3 +332,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 20h47 — Sacha (« Ciblés » et récompenses, tâche 42)
 - Nouveaux : `017_rewards.sql` (+ `schema.sql`), `lib/rewards.ts`, `components/{Tabs,cibles,rewards}`, `arrows/UseArrowsLink`. Modifiés : `favoris/page.tsx`, accueil (onglets partagés), `NavBar`, `ArrowsCard`, `ArrowBadge`, `InfluenceCard`, profil, `icons`, `arrows.ts`, `account.ts`, confidentialité, `globals.css`, `seed_arrows.sql`, `docs/ALGORITHMES.md` ; dépendance `qrcode`.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 57 contrôles base et scénario de démo sur Postgres local ; 48 + 63 contrôles dans Chrome sans interface avec un faux Supabase. **017 pas lancée**, rien testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 soir — Justin (récapitulatif du projet)
+- Récapitulatif demandé, aucun code modifié. Sonde en lecture seule de la vraie base : 014 et 016 présentes, 017 absente (013, 015 non vérifiables) ; `TASKS.md` annoté. Copie locale `reset_demo.local.sql` de Justin plus ancienne que `reset_demo.sql` (à refaire avant lancement).
