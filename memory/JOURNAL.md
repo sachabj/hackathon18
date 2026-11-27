@@ -166,3 +166,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 17h — Matteo (test réel de l'assistant avec Gemini)
 - Clé Gemini ajoutée par Matteo dans son `.env.local` (pas dans git). `src/lib/ai/assist.ts` : repli automatique entre modèles Gemini, délai de 20 s par essai, modèle par défaut `gemini-3.5-flash` ; `.env.example`.
 - Vérifié **en vrai** (Playwright, vraie base, vrai Gemini) avec une affiche générée « Intermarché Bruz -20 % pâtes et riz, jusqu'au 20/12 » : champs bien remplis (titre, prix, conditions, catégorie Grandes surfaces, date, lieu Intermarché retrouvé) en 4,5 à 5,5 s ; relecture en 4,5 à 7,6 s ; doublon détecté au 2e envoi ; titre « SUPER PROMO!!!! 🔥🔥🔥 » → suggestion « Carte Avantage Jeune SNCF : 30 % de réduction ». Bons plans de test supprimés.
+
+### 2026-11-27 15h47 — Justin (profil, audience, votes)
+- `/profil`, `components/deal/`, `components/profile/`, `lib/engagement.ts`, `007_engagement.sql` (+ `schema.sql`) ; petites modifications de `DealCard`, `DealsMap`, `PreferencesWizard`, `rules.ts`.
+- 005 et 006 semblent appliquées (tables / colonnes présentes côté API). **007 à exécuter.**
+- Vérifié : lint (1 avertissement connu) + build ; migration sur Postgres local (19 contrôles) ; parcours dans Chrome sans interface avec un faux Supabase. Pas testé sur la vraie base ni sur téléphone.

@@ -50,6 +50,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
     │   ├── useDashboard.ts           # hook : données de l'espace commerçant
     │   ├── offerStats.ts             # calculs des statistiques d'offres
+    │   ├── engagement.ts             # vues, passages, votes ; gestion de ses propres bons plans
     │   ├── useFavorites.ts           # hook : favoris de l'utilisateur (table `favorites`), ajout/retrait optimiste
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
@@ -58,6 +59,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`)
+    │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
+    │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
@@ -71,7 +74,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
         ├── favoris/page.tsx          # favoris (Anne-Lise)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
-        └── profil/page.tsx           # niveau, accès, simuler position (Matteo)
+        └── profil/page.tsx           # accès, niveau, préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
 ```
 
 ## Conventions de code
@@ -89,7 +92,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ⏳ **à exécuter** · `006_travel.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ✅ · `006_travel.sql` ✅ · `007_engagement.sql` ⏳ **à exécuter**
 - `supabase/seed_demo.sql` : bons plans d'exemple fictifs (facultatif, après 004).
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
 - `businesses` (un par compte commerçant, écriture via `register_business` seulement) : owner_id, name, address, category (restaurant | supermarket | activity | sport), zone_id, lat, lng
@@ -103,6 +106,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - `deals` : id, title, description, category, subcategory (transport uniquement), scope (local | zone | national ; local ⇒ lat/lng obligatoires), zone_id, place_name, lat, lng, price_info, expires_at, deadline_at, is_official (commerçants uniquement), ended_by_merchant, author_id (= auth.uid() par défaut), created_at
 - `votes` : deal_id, user_id, value (+1 / -1), created_at — **un vote par utilisateur et par bon plan** : re-confirmer = `upsert` (created_at remis à now())
 - `favorites` : (user_id, deal_id)
+- `deal_views` / `deal_visits` : (deal_id, user_id) — fiche ouverte / « J'y suis allé », auteur exclu, lecture limitée à ses propres lignes ; totaux via `deal_visit_count()` et `my_deal_audience()`
 - Vue `user_contributions` : contributions (bons plans + votes) par utilisateur et catégorie, `count_7d` / `count_30d`
 - Fonctions RPC : `has_full_access()`, `is_merchant()`, `active_users_in_zone(z)`
 - Triggers : publier ou voter → `profiles.last_contribution_at = now()`

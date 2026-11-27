@@ -1,0 +1,103 @@
+// Réactions aux bons plans (vues, passages, votes) et gestion de ses propres signalements.
+import { getSupabase, isSupabaseConfigured } from "./supabase/client";
+import type { Deal, DealAudience, Vote } from "./types";
+
+type DbError = { code?: string; message: string };
+
+function check<T>(result: { data: T; error: DbError | null }): T {
+  const { error } = result;
+  if (!error) return result.data;
+  // Table ou fonction absente : la migration n'a pas encore été lancée sur la base.
+  if (["PGRST205", "PGRST202", "42P01"].includes(error.code ?? "")) {
+    throw new Error("La base de données n'est pas à jour : lancer supabase/migrations/007_engagement.sql.");
+  }
+  throw new Error(error.message);
+}
+
+export async function currentUserId() {
+  const {
+    data: { session },
+  } = await getSupabase().auth.getSession();
+  return session?.user.id ?? null;
+}
+
+/** Fiche ouverte : compte une seule vue par étudiant (jamais l'auteur). Sans effet en cas d'erreur. */
+export async function recordView(deal: Pick<Deal, "id" | "author_id">) {
+  if (!isSupabaseConfigured) return;
+  const userId = await currentUserId();
+  if (!userId || userId === deal.author_id) return;
+  await getSupabase()
+    .from("deal_views")
+    .upsert({ deal_id: deal.id, user_id: userId }, { onConflict: "deal_id,user_id", ignoreDuplicates: true });
+}
+
+export interface Engagement {
+  userId: string;
+  votes: Vote[];
+  /** null tant que la migration 007 n'est pas lancée : le bouton « J'y suis allé » est masqué. */
+  visit: { mine: boolean; count: number } | null;
+}
+
+export async function fetchEngagement(dealId: string): Promise<Engagement> {
+  const supabase = getSupabase();
+  const userId = await currentUserId();
+  if (!userId) throw new Error("Session expirée : reconnecte-toi.");
+  const [votes, mine, count] = await Promise.all([
+    supabase.from("votes").select("*").eq("deal_id", dealId),
+    supabase.from("deal_visits").select("deal_id").eq("deal_id", dealId).eq("user_id", userId),
+    supabase.rpc("deal_visit_count", { p_deal_id: dealId }),
+  ]);
+  return {
+    userId,
+    votes: check(votes) as Vote[],
+    visit: mine.error || count.error ? null : { mine: (mine.data ?? []).length > 0, count: Number(count.data) },
+  };
+}
+
+/** Un vote par étudiant et par bon plan ; revoter (même valeur comprise) le rafraîchit. */
+export async function vote(dealId: string, value: 1 | -1) {
+  check(await getSupabase().from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));
+}
+
+export async function setVisited(dealId: string, userId: string, visited: boolean) {
+  const table = getSupabase().from("deal_visits");
+  check(
+    visited
+      ? await table.insert({ deal_id: dealId, user_id: userId })
+      : await table.delete().eq("deal_id", dealId).eq("user_id", userId),
+  );
+}
+
+// ---------- Mes bons plans ----------
+export async function fetchMyDeals() {
+  const supabase = getSupabase();
+  const userId = await currentUserId();
+  if (!userId) throw new Error("Session expirée : reconnecte-toi.");
+  const [deals, audience] = await Promise.all([
+    supabase.from("deals").select("*").eq("author_id", userId).order("created_at", { ascending: false }),
+    supabase.rpc("my_deal_audience"),
+  ]);
+  let stats: Record<string, DealAudience> | null = null;
+  let statsError: string | null = null;
+  try {
+    stats = Object.fromEntries((check(audience) as DealAudience[]).map((a) => [a.deal_id, a]));
+  } catch (e) {
+    // Sans les chiffres, la liste reste utilisable.
+    statsError = (e as Error).message;
+  }
+  return { userId, deals: check(deals) as Deal[], stats, statsError, fetchedAt: Date.now() };
+}
+
+export type MyDealInput = Pick<Deal, "title" | "description" | "price_info" | "expires_at">;
+
+export async function updateMyDeal(dealId: string, input: MyDealInput) {
+  check(await getSupabase().from("deals").update(input).eq("id", dealId));
+}
+
+export async function setMyDealEnded(dealId: string, ended: boolean) {
+  check(await getSupabase().from("deals").update({ ended_by_merchant: ended }).eq("id", dealId));
+}
+
+export async function deleteMyDeal(dealId: string) {
+  check(await getSupabase().from("deals").delete().eq("id", dealId));
+}

@@ -127,3 +127,13 @@ export interface OfferStats {
   reports: number;
   favorites: number;
 }
+
+/** Résultat de la fonction `my_deal_audience` (migration 007) */
+export interface DealAudience {
+  deal_id: string;
+  views: number;
+  visits: number;
+  favorites: number;
+  confirmations: number;
+  reports: number;
+}

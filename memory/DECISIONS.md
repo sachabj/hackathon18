@@ -87,6 +87,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : être sûr de la requête avant de coder.
 - **Qui** : Justin (s'applique aux 4 comptes, le fichier étant partagé)
 
+## 2026-11-27 15h47 — Profil, audience et votes
+- **Audience** : vues (fiche ouverte sur la carte ou dans le fil, une par étudiant), « J'y suis allé » (ne compte pas comme contribution), favoris, votes. L'auteur n'est jamais compté et ne voit que des totaux.
+- **Profil** : préférences modifiables rubrique par rubrique ; mes bons plans : consulter, modifier, « plus dispo » / remettre, supprimer ; niveau et accès 7 jours inclus (tâche 10).
+- **Votes** : ajoutés par Justin (tâche 7) ; masqués sur ses propres bons plans.
+- **Qui** : Justin (réponses aux questions de cadrage)
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

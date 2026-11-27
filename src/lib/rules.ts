@@ -73,3 +73,10 @@ export function activityLevel(contributions7d: number): ActivityLevel {
   if (contributions7d >= 1) return "peu_actif";
   return "inactif";
 }
+
+/** Prochain palier d'activité à atteindre, ou null au niveau maximal. */
+export function nextLevel(contributions7d: number): { level: ActivityLevel; missing: number } | null {
+  const steps: [ActivityLevel, number][] = [["peu_actif", 1], ["actif", 3], ["tres_actif", 10]];
+  const next = steps.find(([, min]) => contributions7d < min);
+  return next ? { level: next[0], missing: next[1] - contributions7d } : null;
+}

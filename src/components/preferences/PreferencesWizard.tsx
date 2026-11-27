@@ -57,6 +57,8 @@ export default function PreferencesWizard() {
   const router = useRouter();
   const { deals } = useDeals();
   const [step, setStep] = useState(0);
+  /** Ouvert depuis le profil sur une seule rubrique : on enregistre et on y retourne. */
+  const [single, setSingle] = useState(false);
   const [me, setMe] = useState<StudentProfile>(EMPTY);
   const [user, setUser] = useState<{ id: string; name: string | null; editing: boolean } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +75,10 @@ export default function PreferencesWizard() {
         if (cancelled) return;
         setUser({ id: profile.id, name: profile.username, editing: profile.onboarded });
         setMe(toStudentProfile(profile, preferences));
-        setStep(0);
+        const wanted = new URLSearchParams(window.location.search).get("etape");
+        const index = profile.onboarded ? STEPS.findIndex((s) => s.id === wanted) : -1;
+        setSingle(index >= 0);
+        setStep(Math.max(0, index));
         setSaving(false);
         setError(null);
         setGpsMessage(null);
@@ -131,7 +136,7 @@ export default function PreferencesWizard() {
     setError(null);
     try {
       await saveMyPreferences(user.id, me);
-      router.push("/");
+      router.push(single ? "/profil" : "/");
     } catch (e) {
       setError((e as Error).message);
       setSaving(false);
@@ -156,7 +161,7 @@ export default function PreferencesWizard() {
         <button
           type="button"
           onClick={() => setStep(step - 1)}
-          disabled={step === 0}
+          disabled={step === 0 || single}
           aria-label="Étape précédente"
           className="h-9 w-9 rounded-full text-xl text-zinc-600 disabled:invisible"
         >
@@ -177,7 +182,7 @@ export default function PreferencesWizard() {
         {user?.editing ? (
           <button
             type="button"
-            onClick={() => router.push("/")}
+            onClick={() => router.push(single ? "/profil" : "/")}
             aria-label="Fermer sans enregistrer"
             className="h-9 w-9 rounded-full text-xl text-zinc-600"
           >
@@ -430,11 +435,19 @@ export default function PreferencesWizard() {
           )}
           <button
             type="button"
-            onClick={last ? finish : () => setStep(step + 1)}
+            onClick={last || single ? finish : () => setStep(step + 1)}
             disabled={missing || saving || (last && !user)}
             className="w-full rounded-2xl bg-blue-600 py-3 font-semibold text-white disabled:opacity-40"
           >
-            {last ? (saving ? "Enregistrement…" : "Voir mes bons plans") : skippable ? "Passer" : "Continuer"}
+            {saving
+              ? "Enregistrement…"
+              : single
+                ? "Enregistrer"
+                : last
+                  ? "Voir mes bons plans"
+                  : skippable
+                    ? "Passer"
+                    : "Continuer"}
           </button>
         </div>
       </div>

@@ -1,3 +1,7 @@
+"use client";
+
+import { useLayoutEffect, useState } from "react";
+import DealSheet from "@/components/deal/DealSheet";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -25,6 +29,9 @@ export default function DealCard({
     (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
 
   const boosted = isBoosted(deal);
+  const [open, setOpen] = useState(false);
+  // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
+  useLayoutEffect(() => () => setOpen(false), []);
 
   return (
     <article className={`rounded-2xl border bg-white p-3 shadow-sm ${boosted ? "border-amber-400" : "border-zinc-200"}`}>
@@ -38,7 +45,11 @@ export default function DealCard({
           {category.emoji}
         </span>
         <div className="min-w-0 flex-1">
-          <h3 className="font-semibold leading-snug">{deal.title}</h3>
+          <h3 className="font-semibold leading-snug">
+            <button type="button" onClick={() => setOpen(true)} className="text-left">
+              {deal.title}
+            </button>
+          </h3>
           <p className="text-sm text-zinc-500">
             {deal.price_info && <span className="font-semibold text-zinc-800">{deal.price_info} · </span>}
             {where ?? category.label}
@@ -87,6 +98,10 @@ export default function DealCard({
           {deal.expires_at && <span>Jusqu&apos;au {formatDate(deal.expires_at)}</span>}
         </p>
       )}
+      <button type="button" onClick={() => setOpen(true)} className="mt-2 text-sm font-semibold text-blue-600">
+        Voir et réagir ›
+      </button>
+      {open && <DealSheet deal={deal} onClose={() => setOpen(false)} />}
     </article>
   );
 }

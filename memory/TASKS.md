@@ -24,10 +24,10 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
 | 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via Photon (OSM), tous les champs saisis à la main | FAIT (testé sur la vraie base) |
 | 6b | Assistant IA de publication : photo / texte → formulaire, contrôle du titre, modération, doublons (Matteo) | FAIT : **testé en vrai avec Gemini** en local (clé de Matteo) ; **reste à ajouter `GEMINI_API_KEY` sur Vercel (Sacha)** + redéployer |
-| 7 | Votes 👍/👎 + score de fiabilité | EN COURS (Justin, repris d'Anne-Lise : à confirmer avec elle) |
+| 7 | Votes 👍/👎 + score de fiabilité | FAIT (Justin) : boutons de vote sur la fiche + score de fiabilité ; à signaler à Anne-Lise ; **pas testé sur la vraie base** |
 | 8 | Favoris ❤️ | FAIT (Anne-Lise) : bouton cœur sur `DealCard`, page `/favoris` regroupée par catégorie (triée par échéance dans chaque groupe). Build + lint OK ; **pas testé dans un navigateur ni sur la vraie base** (aucun outil de navigateur ni script contre la vraie BDD disponible dans cette session) |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
-| 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement (page `/profil` : préférences, mes bons plans, audience) | EN COURS (Justin, repris de Matteo) |
+| 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement (page `/profil` : préférences, mes bons plans, audience) | FAIT (Justin, page `/profil`) : accès, niveau, encouragements, préférences, mes bons plans et audience ; **migration 007 à exécuter** puis test réel |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
 | 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |
@@ -65,3 +65,9 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - Rubriques déduites de `category` : 🚆 Voyager (transport) · 🎓 Aides & bourses (scholarship) · 🎟️ Culture & sport (carte_sortir, sport, activity) · 🛒 Quotidien (restaurant, supermarket).
 - Homepage proposée : 3 meilleurs « Pour toi » (`rankDeals`), puis deux entrées « 📍 Autour de moi » (carte) et « 💳 Réductions & aides ».
 - ⚠️ `src/app/page.tsx` contient la carte, le fil « Pour toi » et les favoris : prévenir Sacha avant de le déplacer.
+
+## À prendre en compte (depuis le profil)
+- **Tous** : lancer `supabase/migrations/007_engagement.sql` (vues et « J'y suis allé »).
+- **Anne-Lise** : votes faits (`components/deal/DealSheet.tsx`) ; `DealCard` ouvre désormais cette fiche (cœur favori inchangé).
+- **Matteo** : `/profil` est construit ; reste la tâche 11 (« Simuler ma position »).
+- **Sacha** : le parcours accepte `/onboarding?etape=<id>` (une seule rubrique, bouton « Enregistrer », retour au profil).

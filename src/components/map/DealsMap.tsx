@@ -4,7 +4,9 @@
 import L from "leaflet";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
+import DealSheet from "@/components/deal/DealSheet";
 import { CATEGORIES, ZONES } from "@/lib/constants";
+import { recordView } from "@/lib/engagement";
 import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useUserPosition } from "@/lib/useUserPosition";
@@ -61,6 +63,8 @@ export default function DealsMap({
   const home = ZONES.find((z) => z.id === homeZoneId);
   const selected = choice ?? (position ? "me" : (home?.id ?? "all"));
   const [visible, setVisible] = useState(false);
+  /** Bon plan dont la fiche est ouverte */
+  const [detail, setDetail] = useState<Deal | null>(null);
   /** Vrai dès que la vue ne doit plus être recentrée automatiquement. */
   const viewTaken = useRef(false);
 
@@ -73,6 +77,7 @@ export default function DealsMap({
       setVisible(false);
       setMap(null);
       setChoice(null);
+      setDetail(null);
       viewTaken.current = false;
     };
   }, []);
@@ -152,6 +157,7 @@ export default function DealsMap({
                 icon={(isBoosted(d) ? BOOSTED_ICONS : ICONS)[d.category]}
                 zIndexOffset={isBoosted(d) ? 500 : 0}
                 title={d.title}
+                eventHandlers={{ popupopen: () => recordView(d) }}
               >
                 {/* Marges : la fiche ne doit pas passer sous les boutons de zone. */}
                 <Popup autoPanPaddingTopLeft={[16, 60]} autoPanPaddingBottomRight={[16, 24]} maxHeight={180}>
@@ -173,6 +179,13 @@ export default function DealsMap({
                     {d.expires_at && (
                       <span className="text-xs text-zinc-500">Jusqu&apos;au {formatDate(d.expires_at)}</span>
                     )}
+                    <button
+                      type="button"
+                      onClick={() => setDetail(d)}
+                      className="mt-1 rounded-full bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white"
+                    >
+                      Voir et réagir
+                    </button>
                   </div>
                 </Popup>
               </Marker>
@@ -180,6 +193,8 @@ export default function DealsMap({
           )}
         </MapContainer>
       )}
+
+      {detail && <DealSheet deal={detail} onClose={() => setDetail(null)} />}
 
       {/* Choix de la zone, flottant au-dessus de la carte. */}
       <div className="pointer-events-none absolute inset-x-1 top-1 z-[1000] flex justify-center">
