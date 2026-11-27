@@ -431,3 +431,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 nuit — Justin (diapos, quatrième version)
 - Introduction réunie sur une diapo, beaucoup plus de texte, 7 diapos. Rendu vérifié en local sans débordement. Aucun code modifié.
+
+### 2026-11-28 nuit — Justin (diapos allégées)
+- Petites mentions retirées, textes raccourcis et agrandis, mise en page conservée ; note de la diapo démo adaptée à une vidéo de 1 min max (pas encore fournie). Mentions gardées dans le texte : « bientôt » (Erasmus), « tarif envisagé ». Aucun code modifié.
