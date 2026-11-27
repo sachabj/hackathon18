@@ -39,3 +39,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 ~14h30 — Justin
 - 7 jours offerts à l'inscription validés. Clés Supabase reçues → `.env.local` (non versionné).
 - Test API : le projet répond mais les tables n'existent pas → schéma à exécuter dans le SQL Editor.
+
+### 2026-11-27 ~15h00 — Justin
+- Schéma exécuté par l'équipe. Test e2e : inscription OK, mais « permission denied » sur toutes les tables → pas de GRANT par défaut pour `authenticated`.
+- Ajout de `supabase/migrations/002_grants.sql` (et des GRANT en fin de `schema.sql`) + convention migrations dans `ARCHITECTURE.md`.
+- Un compte de test `test.claude.<timestamp>@gmail.com` a été créé dans Supabase (à supprimer dans Authentication → Users).

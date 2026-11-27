@@ -24,7 +24,8 @@ Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run.
 /
 ├── CLAUDE.md, AGENTS.md, README.md   # protocole Claude, règles Next 16 (générées par next), présentation
 ├── memory/                           # mémoire partagée du projet
-├── supabase/schema.sql               # tables, triggers, RLS (source de vérité de la BDD)
+├── supabase/schema.sql               # schéma complet (tables, triggers, RLS, GRANT) pour un projet neuf
+├── supabase/migrations/              # modifs à appliquer sur la BDD existante (NNN_nom.sql)
 ├── .env.example                      # modèle de .env.local (jamais committé)
 └── src/
     ├── proxy.ts                      # auth obligatoire : redirige vers /login sans session + rafraîchit le cookie
@@ -57,6 +58,9 @@ Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run.
 - Notif « sur place » : impossible de suivre la position en arrière-plan sur le web → démo avec une **position simulée** (ou `navigator.geolocation` quand l'app est ouverte).
 
 ## Base de données (`supabase/schema.sql`)
+- **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
+- ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ⏳
 - `zones` : id (`bruz`, `ker-lann`), name, center_lat, center_lng, radius_m — coordonnées à vérifier
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)
 - `deals` : id, title, description, category, subcategory (transport uniquement), scope (local | zone | national ; local ⇒ lat/lng obligatoires), zone_id, place_name, lat, lng, price_info, expires_at, deadline_at, is_official (commerçants uniquement), ended_by_merchant, author_id (= auth.uid() par défaut), created_at

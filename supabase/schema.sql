@@ -173,3 +173,13 @@ create policy "changer son vote" on public.votes for update to authenticated
 
 create policy "ses favoris" on public.favorites for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- ---------- Droits (GRANT) ----------
+grant usage on schema public to authenticated;
+grant select on public.zones to authenticated;
+grant select, update on public.profiles to authenticated;
+grant select, insert, update, delete on public.deals to authenticated;
+grant select, insert, update on public.votes to authenticated;
+grant select, insert, delete on public.favorites to authenticated;
+grant select on public.user_contributions to authenticated;
+grant execute on function public.has_full_access(), public.is_merchant(), public.active_users_in_zone(text) to authenticated;
