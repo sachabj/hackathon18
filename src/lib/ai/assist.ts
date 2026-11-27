@@ -10,7 +10,9 @@ import type { AssistDraft, AssistReview, DuplicateCandidate, ReviewInput } from 
 
 const CLAUDE_MODEL = "claude-opus-5-5";
 /** Modifiable avec la variable GEMINI_MODEL. */
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash";
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash";
+/** Essayés dans l'ordre si le modèle principal est surchargé. */
+const GEMINI_BACKUP_MODELS = ["gemini-3.5-flash-lite", "gemini-3.8-flash"];
 
 type Provider = "gemini" | "claude";
 
@@ -150,21 +152,32 @@ async function askGemini(prompt: Prompt, schema: Record<string, unknown>): Promi
   const parts: { text?: string; inlineData?: { mimeType: string; data: string } }[] = [];
   if (prompt.image) parts.push({ inlineData: { mimeType: prompt.image.media_type, data: prompt.image.data } });
   parts.push({ text: prompt.text });
+  // Modèle surchargé (503), quota atteint (429) ou retiré (404) : on passe au suivant de la liste.
+  const models = [...new Set([GEMINI_MODEL, ...GEMINI_BACKUP_MODELS])];
   let response;
-  try {
-    response = await ai.models.generateContent({
-      model: GEMINI_MODEL,
-      contents: [{ role: "user", parts }],
-      config: {
-        systemInstruction: prompt.system,
-        responseMimeType: "application/json",
-        responseJsonSchema: schema,
-      },
-    });
-  } catch (e) {
-    const status = typeof (e as { status?: unknown }).status === "number" ? (e as { status: number }).status : 0;
-    throw new GeminiHttpError(status, (e as Error).message);
+  let lastError: GeminiHttpError | null = null;
+  for (const model of models) {
+    try {
+      response = await ai.models.generateContent({
+        model,
+        contents: [{ role: "user", parts }],
+        config: {
+          systemInstruction: prompt.system,
+          responseMimeType: "application/json",
+          responseJsonSchema: schema,
+          // Un essai par modèle, 20 s max : l'étudiant attend devant le formulaire.
+          httpOptions: { timeout: 20_000, retryOptions: { attempts: 1 } },
+        },
+      });
+      break;
+    } catch (e) {
+      const status = typeof (e as { status?: unknown }).status === "number" ? (e as { status: number }).status : 0;
+      lastError = new GeminiHttpError(status, (e as Error).message);
+      if (![0, 404, 429, 500, 503, 504].includes(status)) throw lastError;
+      console.warn(`api/assist : ${model} indisponible (${status || "délai dépassé"}), modèle suivant`);
+    }
   }
+  if (!response) throw lastError ?? new GeminiHttpError(0, "Gemini indisponible");
   const finish = response.candidates?.[0]?.finishReason;
   if (finish === FinishReason.SAFETY || response.promptFeedback?.blockReason)
     throw new AssistError("L'assistant n'a pas pu traiter ce contenu.");

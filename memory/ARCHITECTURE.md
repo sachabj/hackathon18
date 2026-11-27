@@ -5,7 +5,7 @@
 - **Supabase** (Postgres + auth + RLS) via `@supabase/supabase-js` + `@supabase/ssr`
 - **Leaflet** + `react-leaflet` 5 ; fond de carte vectoriel **OpenFreeMap** (sans clé) via `maplibre-gl` 6 + `@maplibre/maplibre-gl-leaflet` (secours : tuiles OpenStreetMap)
 - **Vercel** pour le déploiement
-- **Assistant de publication** via la route serveur `/api/assist` : **Gemini** (`@google/genai`, `gemini-3.8-flash` par défaut, variable `GEMINI_MODEL`) si `GEMINI_API_KEY` est définie, sinon **Claude** (`@anthropic-ai/sdk`, `claude-opus-5-5`) si `ANTHROPIC_API_KEY` l'est ; réponses JSON imposées par schéma
+- **Assistant de publication** via la route serveur `/api/assist` : **Gemini** (`@google/genai`, `gemini-3.5-flash` par défaut, variable `GEMINI_MODEL` ; secours automatiques `gemini-3.5-flash-lite` puis `gemini-3.8-flash` si surcharge 503 / quota 429 / 404, 20 s max par essai) si `GEMINI_API_KEY` est définie, sinon **Claude** (`@anthropic-ai/sdk`, `claude-opus-5-5`) si `ANTHROPIC_API_KEY` l'est ; réponses JSON imposées par schéma
 - ⚠️ **Next 16 a des changements cassants** (`middleware` → `proxy`, `cacheComponents` activé…) : lire `AGENTS.md` et la doc dans `node_modules/next/dist/docs/` avant d'utiliser une API Next.
 
 ## Repo

@@ -130,3 +130,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : l'assistant `/api/assist` utilise **Gemini** quand `GEMINI_API_KEY` est définie (prioritaire), sinon Claude. Même prompt et même schéma JSON pour les deux ; les valeurs renvoyées sont revérifiées (listes de catégories, dates…) avant d'arriver dans le formulaire.
 - **Pourquoi** : l'API Claude est payante et un abonnement Claude Pro ne donne pas de clé API ; Google propose une clé API Gemini avec une offre gratuite (Google AI Studio). L'abonnement Gemini Pro grand public ne donne pas non plus de clé API.
 - **Qui** : Matteo
+
+## 2026-11-27 — Modèle Gemini par défaut : gemini-3.5-flash
+- **Décision** : modèle par défaut `gemini-3.5-flash`, avec repli automatique sur `gemini-3.5-flash-lite` puis `gemini-3.8-flash`.
+- **Pourquoi** : au test réel, `gemini-3.8-flash` et `3.7-flash` renvoyaient « high demand » (503) à chaque appel, parfois après 25 s d'attente ; `gemini-2.5-flash` n'est plus ouvert aux nouveaux comptes (404). `gemini-3.5-flash` répond en 4 à 8 s.
+- **Qui** : Matteo
