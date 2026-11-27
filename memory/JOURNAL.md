@@ -446,3 +446,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 00h40 — Justin (profil complet, tâches 63 et 64)
 - Nouveaux `components/profile/{ProfileHeader,ImpactCard,ArrowsSummary,ProfileShortcuts}.tsx` ; `app/profil/page.tsx` ; README, mémoire. Sans migration.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (390, 320 et 1440 px, pseudo modifié, raccourcis). **Pas testé sur la vraie base ni sur téléphone ; non déployé.** Sonde en lecture : 020 présente sur la vraie base.
+
+### 2026-11-28 00h39 — Justin (déploiement)
+- 021 exécutée par Justin ; `a75ecf1` (profil complet, localisation) mis en ligne sur https://sharewood-ensai.vercel.app. Vérifié : pages publiques et redirections ; connexion non essayée.
