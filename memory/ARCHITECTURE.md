@@ -68,5 +68,5 @@ Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run.
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
 - **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
-- **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). 💡 7 jours offerts à l'inscription.
+- **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). ✅ 7 jours offerts à l'inscription.
 - **Niveaux** (sur 7 jours) : ≥10 Très actif 🔥 · ≥3 Actif ✅ · ≥1 Peu actif 💤 · 0 Inactif 😴.

@@ -41,5 +41,13 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Police système** au lieu de Google Fonts (le build échoue sans réseau).
 - **Qui** : Justin
 
+## 2026-11-27 — 7 jours offerts à l'inscription
+- **Décision** : un nouvel inscrit a 7 jours d'accès complet (trigger `handle_new_user` → `last_contribution_at = now()`).
+- **Pourquoi** : sinon il ne voit pas les bons plans des dernières 24 h, ce qui gâche la première impression et la démo.
+- **Qui** : équipe (transcrit par Justin)
+
+## 2026-11-27 — Projet Supabase
+- URL : https://ilefezlnrqekmwiotnvi.supabase.co · clé publique (publishable) à mettre dans `.env.local` (pas dans git ; la demander à l'équipe).
+
 ## EN ATTENTE DE VALIDATION
-- 💡 7 jours d'accès complet offerts à l'inscription (sinon un nouvel inscrit ne voit pas les bons plans des dernières 24 h)
+- (rien pour l'instant)

@@ -35,3 +35,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `src/lib/` : client Supabase, types, constantes (catégories, zones), règles métier (fiabilité, accès 7 j, niveaux).
 - `supabase/schema.sql` : tables, triggers, RLS (retard 24 h des inactifs), vue `user_contributions`.
 - `npm run build` + `npm run lint` OK. `ARCHITECTURE.md` réécrit (arborescence, conventions, BDD).
+
+### 2026-11-27 ~14h30 — Justin
+- 7 jours offerts à l'inscription validés. Clés Supabase reçues → `.env.local` (non versionné).
+- Test API : le projet répond mais les tables n'existent pas → schéma à exécuter dans le SQL Editor.
