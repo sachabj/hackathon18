@@ -17,8 +17,8 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 |---|---|---|
 | 1 | Mettre en place la mémoire partagée + git | FAIT |
 | 2 | Valider la stack, le nom (Waze-Etu) et les propositions | FAIT |
-| 3 | Squelette Next.js (auth, pages vides, règles métier) — FAIT · déploiement Vercel — TODO | EN COURS (Justin) |
-| 4 | BDD Supabase : schéma + GRANT appliqués, test e2e OK ✅ ; reste à exécuter `003_column_grants.sql` (failles) | BLOQUÉ (exécuter `supabase/migrations/003_column_grants.sql`) |
+| 3 | Squelette Next.js FAIT ✅ · déploiement Vercel : import du repo à faire par sachabj | BLOQUÉ (import Vercel) |
+| 4 | BDD Supabase : schéma + migrations 002 et 003, test e2e OK | FAIT |
 | 5 | Carte Bruz / Ker Lann + fil + filtres par catégorie | TODO |
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |

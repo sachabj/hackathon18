@@ -19,6 +19,9 @@ npm run build && npm run lint   # à faire passer avant chaque push
 ```
 Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run. Pour la démo, désactiver la confirmation par email (Authentication → Sign In / Providers → Email → « Confirm email » OFF).
 
+## Déploiement (Vercel)
+Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `NEXT_PUBLIC_SUPABASE_URL` et `NEXT_PUBLIC_SUPABASE_ANON_KEY` → chaque push sur `main` redéploie. URL publique : _à noter ici_.
+
 ## Arborescence
 ```
 /
@@ -60,7 +63,7 @@ Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run.
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ⏳
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Pour créer un compte commerçant : Table Editor → profiles → `role = merchant`.
 - `zones` : id (`bruz`, `ker-lann`), name, center_lat, center_lng, radius_m — coordonnées à vérifier
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)
