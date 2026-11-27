@@ -365,3 +365,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 21h46 — Sacha (profil sans Flèches, tâche 46)
 - `profil/page.tsx`, `UseArrowsLink.tsx` supprimé, `019_golden_badge_text.sql` (+ texte dans `017` et `schema.sql`). Numéro de tâche 45 pris en même temps par Justin : le mien passé à 46, les deux lignes gardées.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 68 contrôles base sur Postgres local ; 53 contrôles dans Chrome sans interface avec un faux Supabase. **019 pas lancée**, rien testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 soir — Justin (« Partager » plus rapide, tâche 45)
+- `PublishForm.tsx`, `AssistPanel.tsx`, `confidentialite/page.tsx` (envoi de la photo à l'IA dès son choix), `README.md`, mémoire.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase, IA et recherche de lieu simulées (publication à la main, photo, détails, lien invalide, réessai, texte, 320 px ; bouton « Publier » visible sans défiler à 390 × 844). **Pas testé sur la vraie base, la vraie IA ni un téléphone.**

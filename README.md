@@ -15,8 +15,8 @@ Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les 
 - **Favoris** pour garder une offre sous la main.
 
 ### Partager et vérifier
-- **Publier** une offre à un endroit précis, sur une zone ou partout.
-- **Pré-remplissage par IA** à partir d'une photo ou d'un texte ; la photo peut servir de preuve.
+- **Partager en quelques gestes** : le lieu, un titre, une catégorie, et c'est publié (à un endroit précis, dans une ville ou partout) ; le reste est facultatif.
+- **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve.
 - **Doublons** repérés avant la publication.
 - **Réactions** « J'y suis allé » et « Plus dispo », annulables, impossibles sur ses propres offres.
 

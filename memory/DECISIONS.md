@@ -331,3 +331,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 21h46 — Profil sans Flèches (tâche 46)
 - **Décision** : le bouton « Utiliser mes Flèches » et le Badge Doré quittent le profil ; Flèches, badge et boutique sont réunis dans « Ciblés ».
 - **Qui** : Sacha
+
+## 2026-11-27 soir — « Partager » plus rapide (tâche 45)
+- **Décision** : même formulaire, allégé : lieu, titre, catégorie visibles ; prix, détails, conditions, lien, activités et dates sous « Plus de détails » (replié, nombre de champs remplis affiché) ; photo analysée dès qu'elle est prise ; accord pour publier la photo inchangé (case à cocher).
+- **Écartés** : liste des commerces autour de soi ; parcours « photo d'abord » ; champs en 2e étape ou supprimés.
+- **Qui** : Justin (réponses aux questions de cadrage ; accord de Matteo indiqué par Justin)

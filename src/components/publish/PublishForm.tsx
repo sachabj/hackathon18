@@ -1,14 +1,14 @@
 "use client";
 
 // Formulaire « Partager un bon plan » (tâche 6). Responsable : Matteo.
+// Saisie rapide (tâche 45) : lieu, titre et catégorie ; le reste est replié sous « Plus de détails ».
 // Lieu précis : nom du magasin + ville → recherche Photon (OpenStreetMap) → choix du lieu exact.
 // Doublons sans IA (tâche 27) : offres déjà partagées au même établissement, affichées dès le choix du
 // lieu ; pour une zone / partout, offres de même catégorie vérifiées au clic sur « Publier ».
 import Link from "next/link";
 import { useRef, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
-import ChoiceTile from "@/components/preferences/ChoiceTile";
-import { BuildingsIcon, GlobeIcon, LinkIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
+import { BuildingsIcon, ChevronDownIcon, GlobeIcon, LinkIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
 import type { AssistDraft } from "@/lib/ai/types";
 import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES } from "@/lib/constants";
 import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplicates";
@@ -23,10 +23,10 @@ import { uploadDealPhoto } from "@/lib/photos";
 import { usePreferences } from "@/lib/usePreferences";
 import AssistPanel from "./AssistPanel";
 
-const SCOPES: { id: DealScope; Icon: typeof PinIcon; label: string; hint: string }[] = [
-  { id: "local", Icon: PinIcon, label: "Dans un lieu", hint: "Un magasin, un resto… (sur la carte)" },
-  { id: "zone", Icon: BuildingsIcon, label: "Sur une zone", hint: "Valable dans toute une ville" },
-  { id: "national", Icon: GlobeIcon, label: "Partout", hint: "Offre nationale, en ligne…" },
+const SCOPES: { id: DealScope; Icon: typeof PinIcon; label: string }[] = [
+  { id: "local", Icon: PinIcon, label: "Dans un lieu" },
+  { id: "zone", Icon: BuildingsIcon, label: "Une ville" },
+  { id: "national", Icon: GlobeIcon, label: "Partout" },
 ];
 
 /** Catégories où une date limite (dossier, inscription) a du sens. */
@@ -102,6 +102,8 @@ export default function PublishForm() {
   /** Conditions pour en profiter (carte étudiante, Carte Sortir…) et lien vers l'offre (migration 012). */
   const [requirements, setRequirements] = useState<DealRequirement[]>([]);
   const [link, setLink] = useState("");
+  /** Champs facultatifs, repliés par défaut. */
+  const [showDetails, setShowDetails] = useState(false);
   // Envoi
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -220,6 +222,7 @@ export default function PublishForm() {
     setDeadlineAt("");
     setRequirements([]);
     setLink("");
+    setShowDetails(false);
     setProofPhoto(null);
     setSharePhoto(false);
     setError(null);
@@ -254,6 +257,7 @@ export default function PublishForm() {
     try {
       normalizeLink(link);
     } catch (err) {
+      setShowDetails(true); // le champ en cause est replié
       return setError((err as Error).message);
     }
     if (scope === "local") return publish();
@@ -337,6 +341,16 @@ export default function PublishForm() {
     announceCreation();
   }
 
+  const filledDetails = [
+    priceLevel !== null,
+    description.trim(),
+    requirements.length,
+    link.trim(),
+    tags.length,
+    expiresAt,
+    category && DEADLINE_CATEGORIES.includes(category) && deadlineAt,
+  ].filter(Boolean).length;
+
   if (done) {
     return (
       <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-12 text-center">
@@ -360,34 +374,30 @@ export default function PublishForm() {
   }
 
   return (
-    <form onSubmit={submit} className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 pb-8 pt-6">
-      <div>
-        <h1 className="text-2xl">Partager un bon plan</h1>
-        <p className="mt-1 text-sm text-[var(--color-muted)]">Les autres étudiants pourront le confirmer ou le signaler.</p>
-      </div>
+    <form onSubmit={submit} className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 pb-8 pt-4">
+      <h1 className="text-2xl">Partager un bon plan</h1>
 
       <AssistPanel onDraft={applyDraft} />
 
-      <Section title="Où ça se passe ?">
-        <div className="grid grid-cols-3 gap-2">
-          {SCOPES.map((s) => (
-            <ChoiceTile
-              key={s.id}
-              icon={<s.Icon className="h-7 w-7" />}
-              label={s.label}
-              selected={scope === s.id}
-              onClick={() => {
-                setScope(s.id);
-                setSimilar(null);
-              }}
-            />
-          ))}
-        </div>
-        <p className="text-xs text-[var(--color-muted)]">{SCOPES.find((s) => s.id === scope)?.hint}</p>
-      </Section>
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Où l'offre est-elle valable ?">
+        {SCOPES.map((s) => (
+          <Chip
+            key={s.id}
+            selected={scope === s.id}
+            onClick={() => {
+              setScope(s.id);
+              setSimilar(null);
+            }}
+          >
+            <span className="flex items-center gap-1">
+              <s.Icon className="h-4 w-4" /> {s.label}
+            </span>
+          </Chip>
+        ))}
+      </div>
 
       {scope === "local" && (
-        <Section title="Le lieu" hint="Nom du magasin et ville, puis choisis le bon lieu dans la liste.">
+        <Section title="Le lieu">
           {place ? (
             <div className="flex items-start gap-3 rounded-2xl border-2 p-3" style={{ borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)" }}>
               <PinIcon className="h-6 w-6 shrink-0 text-[var(--color-forest)]" />
@@ -506,10 +516,11 @@ export default function PublishForm() {
         </Section>
       )}
 
-      <Section title="Titre" hint="Dis l'avantage et son montant : c'est la seule ligne lue sur la carte.">
+      <Section title="Titre">
         <input
           className={inputClass}
-          placeholder="Ex : -20 % sur le menu étudiant"
+          placeholder="L'avantage, ex : -20 % sur le menu"
+          aria-label="Titre : l'avantage et son montant"
           maxLength={80}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -518,15 +529,13 @@ export default function PublishForm() {
       </Section>
 
       <Section title="Catégorie" hint={place && category ? "Proposée d'après le lieu, modifiable." : undefined}>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex flex-wrap gap-2">
           {keys(CATEGORIES).map((c) => (
-            <ChoiceTile
-              key={c}
-              icon={<CategoryIcon category={c} size={32} />}
-              label={CATEGORIES[c].label}
-              selected={category === c}
-              onClick={() => setCategory(c)}
-            />
+            <Chip key={c} selected={category === c} onClick={() => setCategory(c)}>
+              <span className="flex items-center gap-1.5">
+                <CategoryIcon category={c} size={20} /> {CATEGORIES[c].label}
+              </span>
+            </Chip>
           ))}
         </div>
         {category === "transport" && (
@@ -545,90 +554,109 @@ export default function PublishForm() {
         )}
       </Section>
 
-      <Section title="Niveau de prix" hint="Ce que l'étudiant paie : sert aux filtres de la recherche.">
-        <div className="flex flex-wrap gap-2">
-          {PRICE_LEVELS.map((p) => (
-            <Chip
-              key={p.value}
-              selected={priceLevel === p.value}
-              onClick={() => setPriceLevel(priceLevel === p.value ? null : p.value)}
-            >
-              {p.label}
-            </Chip>
-          ))}
-        </div>
-      </Section>
+      <div className="space-y-6">
+        <button
+          type="button"
+          onClick={() => setShowDetails(!showDetails)}
+          aria-expanded={showDetails}
+          className="flex w-full items-center justify-between gap-2 rounded-2xl border px-4 py-3 text-sm font-medium"
+          style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)", color: "var(--color-forest)" }}
+        >
+          <span>
+            Plus de détails
+            {filledDetails > 0 && <span className="font-normal text-[var(--color-muted)]"> · {filledDetails} rempli{filledDetails > 1 ? "s" : ""}</span>}
+          </span>
+          <ChevronDownIcon className={`h-4 w-4 transition-transform ${showDetails ? "rotate-180" : ""}`} />
+        </button>
+        {showDetails && (
+          <>
+          <Section title="Niveau de prix" hint="Ce que l'étudiant paie : sert aux filtres de la recherche.">
+            <div className="flex flex-wrap gap-2">
+              {PRICE_LEVELS.map((p) => (
+                <Chip
+                  key={p.value}
+                  selected={priceLevel === p.value}
+                  onClick={() => setPriceLevel(priceLevel === p.value ? null : p.value)}
+                >
+                  {p.label}
+                </Chip>
+              ))}
+            </div>
+          </Section>
 
-      <Section title="Détails" hint="Jours, horaires, comment en profiter…">
-        <textarea
-          className={`${inputClass} min-h-24`}
-          placeholder="Ex : du lundi au jeudi, hors supplément 3D"
-          maxLength={500}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </Section>
+          <Section title="Détails" hint="Jours, horaires, comment en profiter…">
+            <textarea
+              className={`${inputClass} min-h-24`}
+              placeholder="Ex : du lundi au jeudi, hors supplément 3D"
+              maxLength={500}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Section>
 
-      <Section title="Conditions" hint="Facultatif : ce qu'il faut avoir pour en profiter.">
-        <div className="flex flex-wrap gap-2">
-          {keys(REQUIREMENTS).map((r) => {
-            const { Icon, label } = REQUIREMENTS[r];
-            return (
-              <Chip key={r} selected={requirements.includes(r)} onClick={() => setRequirements(toggle(requirements, r))}>
-                <span className="flex items-center gap-1">
-                  <Icon className="h-3.5 w-3.5" /> {label}
-                </span>
-              </Chip>
-            );
-          })}
-        </div>
-      </Section>
+          <Section title="Conditions" hint="Facultatif : ce qu'il faut avoir pour en profiter.">
+            <div className="flex flex-wrap gap-2">
+              {keys(REQUIREMENTS).map((r) => {
+                const { Icon, label } = REQUIREMENTS[r];
+                return (
+                  <Chip key={r} selected={requirements.includes(r)} onClick={() => setRequirements(toggle(requirements, r))}>
+                    <span className="flex items-center gap-1">
+                      <Icon className="h-3.5 w-3.5" /> {label}
+                    </span>
+                  </Chip>
+                );
+              })}
+            </div>
+          </Section>
 
-      <Section title="Lien vers l'offre" hint="Facultatif : page du magasin, billetterie, formulaire d'inscription…">
-        <div className="relative">
-          <LinkIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
-          <input
-            className={inputClass}
-            // Texte et non « url » : « www.exemple.fr » est accepté puis complété en https://.
-            type="text"
-            inputMode="url"
-            style={{ paddingLeft: "2.25rem" }}
-            autoComplete="url"
-            placeholder="https://www.exemple.fr/offre"
-            maxLength={500}
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-          />
-        </div>
-      </Section>
+          <Section title="Lien vers l'offre" hint="Facultatif : page du magasin, billetterie, formulaire d'inscription…">
+            <div className="relative">
+              <LinkIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted)]" />
+              <input
+                className={inputClass}
+                // Texte et non « url » : « www.exemple.fr » est accepté puis complété en https://.
+                type="text"
+                inputMode="url"
+                style={{ paddingLeft: "2.25rem" }}
+                autoComplete="url"
+                placeholder="https://www.exemple.fr/offre"
+                maxLength={500}
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
+              />
+            </div>
+          </Section>
 
-      <Section title="Activités liées" hint="Facultatif : aide à le proposer aux bons étudiants.">
-        <div className="flex flex-wrap gap-2">
-          {keys(ACTIVITIES).map((a) => {
-            const { Icon, label } = ACTIVITIES[a];
-            return (
-              <Chip key={a} selected={tags.includes(a)} onClick={() => setTags(toggle(tags, a))}>
-                <span className="flex items-center gap-1">
-                  <Icon className="h-3.5 w-3.5" /> {label}
-                </span>
-              </Chip>
-            );
-          })}
-        </div>
-      </Section>
+          <Section title="Activités liées" hint="Facultatif : aide à le proposer aux bons étudiants.">
+            <div className="flex flex-wrap gap-2">
+              {keys(ACTIVITIES).map((a) => {
+                const { Icon, label } = ACTIVITIES[a];
+                return (
+                  <Chip key={a} selected={tags.includes(a)} onClick={() => setTags(toggle(tags, a))}>
+                    <span className="flex items-center gap-1">
+                      <Icon className="h-3.5 w-3.5" /> {label}
+                    </span>
+                  </Chip>
+                );
+              })}
+            </div>
+          </Section>
 
-      <Section title="Dates" hint="Facultatif.">
-        <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
-          Fin de l&apos;offre
-          <input type="date" className={`${inputClass} mt-1`} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
-        </label>
-        {category && DEADLINE_CATEGORIES.includes(category) && (
-          <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
-            Date limite pour en profiter (dossier, inscription…)
-            <input type="date" className={`${inputClass} mt-1`} value={deadlineAt} onChange={(e) => setDeadlineAt(e.target.value)} />
-          </label>
+          <Section title="Dates" hint="Facultatif.">
+            <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
+              Fin de l&apos;offre
+              <input type="date" className={`${inputClass} mt-1`} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
+            </label>
+            {category && DEADLINE_CATEGORIES.includes(category) && (
+              <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
+                Date limite pour en profiter (dossier, inscription…)
+                <input type="date" className={`${inputClass} mt-1`} value={deadlineAt} onChange={(e) => setDeadlineAt(e.target.value)} />
+              </label>
+            )}
+          </Section>
+          </>
         )}
-      </Section>
+      </div>
 
       {proofPhoto && (
         <div className="flex items-center gap-3 rounded-2xl border p-2" style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)" }}>

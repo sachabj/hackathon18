@@ -97,7 +97,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
-        ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
+        ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx (lieu, titre, catégorie ; le reste sous « Plus de détails ») + AssistPanel.tsx (photo analysée dès qu'elle est choisie)
         ├── favoris/page.tsx          # « Ciblés » : carte Flèches + grade, onglets Favoris / Activité / Récompenses (`?onglet=`)
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
         ├── confidentialite/page.tsx  # politique de confidentialité, lisible sans compte (Sacha)
