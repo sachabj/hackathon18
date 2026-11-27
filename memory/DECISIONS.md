@@ -254,3 +254,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : onglets « Offres dématérialisées » et « Commerçants ».
 - **Remplace** : la section « Réductions & aides » (offres sans lieu seulement) et la bascule automatique de la tâche 25. Le badge « Commerçant / Étudiant » reste sur les cartes.
 - **Qui** : Sacha
+
+## 2026-11-27 19h01 — Forme des onglets de l'accueil
+- **Décision** : de vrais onglets rectangulaires, les 5 visibles sur une ligne (libellés sur deux lignes si besoin), l'onglet choisi rempli en vert et relié à la liste.
+- **Écartés** : pastilles rondes, icônes au-dessus des noms, barre qui défile.
+- **Qui** : Sacha

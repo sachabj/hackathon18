@@ -274,3 +274,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 19h15 — Sacha (accueil en onglets, tâche 31)
 - `src/app/page.tsx` réécrit (recherche + onglets), nouveau `src/lib/search.ts`, `src/app/recherche/page.tsx` (filtres « Pour toi / Tout » et auteur retirés). Fusion avec le tri Hot de Matteo (tâche 32) : conservé sur la liste de Recherche.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (onglets, recherche, page carte, tri Hot, badge Tendance, profil non rempli). **Pas testé sur la vraie base ni sur téléphone.**
+
+### 2026-11-27 19h01 — Sacha (onglets rectangulaires)
+- `src/app/page.tsx` : les pastilles deviennent une barre de 5 onglets rectangulaires (icône de « Pour toi » retirée).
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase, à 390 et 320 px (une ligne, texte qui tient, clavier). **Pas testé sur la vraie base ni sur téléphone.** Défaut D11 noté (barre du bas à 320 px).

@@ -74,13 +74,14 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | D8 | Basse | Restes de l'ancien style : `themeColor` bleu (`layout.tsx`), gris `zinc` dans `RoleGate`, `DealsMapLoader`, `BusinessForm` | TODO |
 | D9 | Basse | `/api/assist` sans limite par utilisateur (un compte peut épuiser le quota de la clé) | TODO |
 | D10 | Moyenne | Inscription : une tuile choisie ne change ni de fond ni de bordure (seule la coche s'affiche) : `.sw-card` l'emporte sur les classes Tailwind de `ChoiceTile` (vu dans le navigateur) | FAIT (Justin) : tuile choisie en bordure vert forêt + fond sauge |
+| D11 | Basse | Sur un écran de 320 px de large, la barre du bas dépasse : « Profil » est coupé (`NavBar.tsx`, vu dans le navigateur) | TODO |
 
 ## Autres tâches
 | # | Tâche | Statut |
 |---|---|---|
 | 11 | Notif sur place simulée (« toujours dispo ? ») + bouton « Simuler ma position » dans `/profil` | TODO |
 | 12 | Données de démo : `reset_demo.sql` (~150 bons plans à 15 km de Bruz, 20 étudiants, 12 commerces **fictifs**) ; **à lancer** (012 déjà présente) ; revérifier les prix sourcés avant la démo | EN COURS (Justin) : testé en local, copie locale à jour |
-| 31 | Accueil en onglets (« Pour toi » + les 4 rubriques) avec barre de recherche ; filtres « Pour toi / Tout » et « Commerçant / Étudiant » retirés de la page carte | EN COURS (Sacha) : onglets rectangulaires ; codé et essayé avec un faux Supabase ; à voir sur la vraie base et sur téléphone ; sans migration |
+| 31 | Accueil en onglets (« Pour toi » + les 4 rubriques) avec barre de recherche ; filtres « Pour toi / Tout » et « Commerçant / Étudiant » retirés de la page carte | À TESTER (Sacha) : onglets rectangulaires ; codé et essayé avec un faux Supabase ; à voir sur la vraie base et sur téléphone ; sans migration |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |

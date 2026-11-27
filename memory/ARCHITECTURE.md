@@ -149,7 +149,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.
 
 ## Accueil (`src/app/page.tsx`)
-- Onglets : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu.
+- Onglets rectangulaires (`role="tablist"`, flèches du clavier), 5 cases égales sur une ligne : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu.
 - La recherche filtre l'onglet affiché (titre, description, lieu, prix, zone, catégorie, conditions) ; pendant une saisie, chaque onglet montre son nombre de résultats.
 
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
