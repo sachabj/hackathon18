@@ -5,7 +5,6 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import AccountLink from "@/components/account/AccountLink";
-import UseArrowsLink from "@/components/arrows/UseArrowsLink";
 import LogoutButton from "@/components/LogoutButton";
 import { TargetIcon } from "@/components/icons";
 import MyDealCard from "@/components/profile/MyDealCard";
@@ -73,9 +72,6 @@ export default function Page() {
         )}
         {!account && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">Chargement…</p>}
       </div>
-
-      {/* Flèches, grade et activité sont sur la page « Ciblés ». */}
-      {account && <UseArrowsLink />}
 
       {account && (
         <section>

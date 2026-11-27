@@ -17,7 +17,9 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **016_arrows.sql à exécuter** (Sacha, après 013 et 014) : Flèches et archivage à 3 signalements ; puis, pour la démo, `reset_demo.sql` et `seed_arrows.sql` (**le jour de la démo** ; demande 016 et 017).
 - ⏳ **017_rewards.sql à exécuter** (Sacha, après 016) : boutique de récompenses.
 - ⏳ **018_no_access_limit.sql à exécuter** (Sacha, après 017) : accès ouvert à tous et 3 publications récompensées par jour. Relancer 018 si 009 ou 016 sont relancées.
-- Prochaine migration : numéro **019** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- **Sonde en lecture (Sacha, 27/11 au soir)** : table de **017 présente** et fonction supprimée par **018 absente** → 017 et 018 appliquées.
+- ⏳ **019_golden_badge_text.sql à exécuter** (Sacha) : texte du Badge Doré dans la boutique.
+- Prochaine migration : numéro **020** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -59,7 +61,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 43 | E | Plus d'accès limité selon l'activité (ni 7 jours, ni retard de 24 h) ; 3 publications récompensées par jour (migration **018**). Niveaux d'activité conservés. Touche `ActivityCard` (Justin), `PublishForm` et `docs/ALGORITHMES.md` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `018_no_access_limit.sql`** ; testé sur Postgres local et faux Supabase seulement |
 | 44 | E | Carte de « Ciblés » : bloc « Grade » (Éclaireur / Chasseur de bons plans / Robin des Étudiants, un seul éclairé) à la place de « Ton influence » et de la pastille de rang | À TESTER (Sacha) : essayé avec un faux Supabase ; sans migration |
 | 45 | E | « Partager » plus rapide : seuls lieu, titre et catégorie visibles, le reste sous « Plus de détails » ; photo analysée dès qu'elle est prise. Touche `PublishForm`, `AssistPanel` (domaine de Matteo, avec son accord) | EN COURS (Justin) |
-| 46 | E | Profil : retrait du bouton « Utiliser mes Flèches » et du Badge Doré (visible dans « Ciblés ») ; description de la récompense corrigée (migration **019**) | EN COURS (Sacha) |
+| 46 | E | Profil : retrait du bouton « Utiliser mes Flèches » et du Badge Doré (visible dans « Ciblés ») ; description de la récompense corrigée (migration **019**) | À TESTER (Sacha) : ⏳ **lancer `019_golden_badge_text.sql`** |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -136,6 +138,9 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 
 ## À prendre en compte (depuis le bloc « Grade », Sacha)
 - **Matteo** : le rang d'influence n'est plus affiché : `InfluenceCard.tsx`, `INFLUENCE_RANKS`, `influenceRank` et `fetchMyInfluence` supprimés (la RPC `my_influence` reste en base, inutilisée). Le calcul de fiabilité ne change pas ; `docs/ALGORITHMES.md` corrigé.
+
+## À prendre en compte (depuis le profil sans Flèches, Sacha)
+- **Justin** : `profil/page.tsx` ne montre plus rien des Flèches (`UseArrowsLink.tsx` supprimé).
 
 ## Codé : état des essais
 | # | Fonction | Statut |

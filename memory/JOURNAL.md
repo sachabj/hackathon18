@@ -361,3 +361,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 21h32 — Sacha (bloc « Grade », tâche 44)
 - `ArrowsCard` (bloc Grade, pastille retirée), `InfluenceCard.tsx` supprimé, `rules.ts`, `trust.ts`, `RedeemDialog`, confidentialité, README, `docs/ALGORITHMES.md`.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 54 contrôles dans Chrome sans interface avec un faux Supabase (avant la fusion avec la recherche déplacée d'Anne-Lise, puis relancés). Pas testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 21h46 — Sacha (profil sans Flèches, tâche 46)
+- `profil/page.tsx`, `UseArrowsLink.tsx` supprimé, `019_golden_badge_text.sql` (+ texte dans `017` et `schema.sql`). Numéro de tâche 45 pris en même temps par Justin : le mien passé à 46, les deux lignes gardées.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 68 contrôles base sur Postgres local ; 53 contrôles dans Chrome sans interface avec un faux Supabase. **019 pas lancée**, rien testé sur la vraie base ni sur téléphone.

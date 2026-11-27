@@ -55,7 +55,7 @@ insert into public.rewards (id, category, title, partner, description, cost, eff
   ('early', 'app', 'Accès Avant-Première', 'ShareWood',
    'Pendant 7 jours, les offres flash ou limitées 1 h avant tout le monde.', 200, 'early_access', 4),
   ('golden', 'app', 'Badge Doré', 'ShareWood',
-   'Un badge doré sur ton profil, pour toujours.', 300, 'golden_badge', 5),
+   'Un badge doré sur ta page « Ciblés », pour toujours.', 300, 'golden_badge', 5),
   ('tombola', 'raffle', 'Ticket tombola : 2 places de ciné ou 20 €', 'Tirage ShareWood (démo)',
    'Un ticket par échange, autant de tickets que tu veux.', 50, null, 6)
 on conflict (id) do update set

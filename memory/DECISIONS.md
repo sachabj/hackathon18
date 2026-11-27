@@ -327,3 +327,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : la carte montre un bloc « Grade » (Éclaireur, Chasseur de bons plans, Robin des Étudiants, seul le sien éclairé, seuils expliqués) ; la pastille de rang en haut et « Ton influence » disparaissent (pas d'information en double).
 - **Remplace** : l'affichage Débutant / Confirmé / Expert (tâche 33) ; le poids reste calculé pour la fiabilité.
 - **Qui** : Sacha
+
+## 2026-11-27 21h46 — Profil sans Flèches (tâche 46)
+- **Décision** : le bouton « Utiliser mes Flèches » et le Badge Doré quittent le profil ; Flèches, badge et boutique sont réunis dans « Ciblés ».
+- **Qui** : Sacha

@@ -80,7 +80,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── deal/ReactionBar.tsx      # boutons « J'y suis allé (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
-    │   ├── arrows/                   # ArrowBadge (en-têtes), ArrowToast (layout), ArrowsCard (profil)
+    │   ├── arrows/                   # ArrowBadge (en-têtes), ArrowToast (layout), ArrowsCard (page « Ciblés »)
     │   ├── feed/SearchFilters.tsx    # filtres sous la recherche de Recherche (Sacha ; déplacée depuis l'accueil)
     │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon` ; prop optionnel `onSelect(dealId)` : si l'offre a un lieu, toucher la carte la sélectionne sur `DealsMap` au lieu d'ouvrir sa fiche — utilisé par Recherche seulement)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
@@ -102,7 +102,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
         ├── confidentialite/page.tsx  # politique de confidentialité, lisible sans compte (Sacha)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
-        └── profil/page.tsx           # « Utiliser mes Flèches », préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
+        └── profil/page.tsx           # préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
 ```
 
 ## Conventions de code
@@ -121,7 +121,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ · `015_demo_titles.sql` ⏳ · `016_arrows.sql` ⏳ · `017_rewards.sql` ⏳ · `018_no_access_limit.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ · `015_demo_titles.sql` ⏳ · `016_arrows.sql` ⏳ · `017_rewards.sql` ⏳ · `018_no_access_limit.sql` ⏳ · `019_golden_badge_text.sql` ⏳ **à exécuter** · le 27/11 au soir, 017 et 018 détectées sur la vraie base (sonde en lecture)
 - `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste inventé sur des lieux OpenStreetMap, ODbL : titre normal, description « Exemple fictif (démo) … »). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Récompenses (017)** : `rewards` (catalogue de 6, inséré par la migration ; partenaires fictifs « (démo) ») et `user_rewards` (prix payé, code `SW-XXXXXX`, `used_at`), en lecture seule pour l'app. RPC `redeem_reward(id)` (verrou par étudiant, vérifie le solde, dépense et active l'avantage) et `use_reward(id)` (bon commerçant, une fois). **Double compteur** calculé, non stocké : `total_arrows_earned` (gains → rang) et `current_arrows_balance` (gains − dépenses), renvoyés par `my_arrows()`. `profiles.golden_badge` et `early_access_until` non écrivables.
