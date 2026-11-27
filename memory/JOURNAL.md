@@ -387,3 +387,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 21h58 — Sacha (Activité allégée, tâche 47)
 - Nouveaux `components/cibles/MyDeals.tsx`, `ArrowHistory.tsx` ; modifiés `ActivityPanel`, `ActivityCard`, `MyDealCard`, profil, `lib/arrows.ts` (`fetchArrowLog`), textes de `DealSheet` et `PublishForm`, README.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 64 contrôles dans Chrome sans interface avec un faux Supabase (390 et 320 px). Sans migration. **Pas testé sur la vraie base ni sur téléphone.**
+
+### 2026-11-27 soir — Justin (adresse du site)
+- Question seulement : site en ligne vérifié (page de connexion : réponse 200). Aucun code modifié.
