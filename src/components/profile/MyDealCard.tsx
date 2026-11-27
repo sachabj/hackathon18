@@ -221,7 +221,7 @@ export default function MyDealCard({
             <p>
               {[
                 plural(audience.views, "vue"),
-                `${audience.confirmations} « J'y suis allé »`,
+                `${audience.confirmations} « J'en ai profité »`,
                 plural(audience.favorites, "favori"),
                 audience.reports > 0 && `${audience.reports} « Plus dispo »`,
               ]

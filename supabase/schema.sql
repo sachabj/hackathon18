@@ -1184,7 +1184,7 @@ end $$;
 --                                    offre sur la carte          offre sans lieu précis
 --   publier ......................... +50 (sur place)             +20
 --   3 confirmations reçues .......... +30                         +10
---   « J'y suis allé » ............... +10 (sur place)             +3
+--   « J'en ai profité » ............... +10 (sur place)             +3
 --   « Plus dispo » .................. +15 (sur place)             +5
 --
 -- « Sur place » : position partagée à 500 m au plus de l'offre. Sans elle, la réaction ou la publication
@@ -1377,7 +1377,7 @@ grant execute on function public.claim_creation_arrows(uuid, float8, float8) to 
 
 -- ShareWood — « Plus dispo » se signale sur place (à exécuter après 020_location_rules.sql ; relançable sans risque).
 -- Sur une offre placée sur la carte, le signalement n'est accepté qu'avec une position à 500 m au plus :
--- impossible d'archiver une offre depuis chez soi. Inchangé : « J'y suis allé » (permis partout, sans Flèches
+-- impossible d'archiver une offre depuis chez soi. Inchangé : « J'en ai profité » (permis partout, sans Flèches
 -- loin ou sans position), les offres sans lieu précis, et le retrait de son propre signalement.
 
 create or replace function public.require_presence_to_report() returns trigger

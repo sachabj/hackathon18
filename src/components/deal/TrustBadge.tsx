@@ -18,7 +18,7 @@ export default function TrustBadge({ level, className = "" }: { level: TrustLeve
     <span
       className={`sw-badge shrink-0 ${className}`}
       style={{ backgroundColor: bg, color: text }}
-      title="Fiabilité d'après les « J'y suis allé » et « Plus dispo » récents"
+      title="Fiabilité d'après les « J'en ai profité » et « Plus dispo » récents"
     >
       <span aria-hidden className="inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: dot }} />
       {label}

@@ -449,3 +449,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 00h39 — Justin (déploiement)
 - 021 exécutée par Justin ; `a75ecf1` (profil complet, localisation) mis en ligne sur https://sharewood-ensai.vercel.app. Vérifié : pages publiques et redirections ; connexion non essayée.
+
+### 2026-11-28 — Matteo (tâche 66 : « J'en ai profité »)
+- Remplacement de « J'y suis allé » (53 occurrences) dans `src/` (`ReactionBar`, `DealSheet`, `QuickReactions`, `TrustBadge`, `MyDealCard`, `ArrowHistory`, `commercant/statistiques`, `confidentialite`, commentaires de `engagement`, `hot`, `offerStats`, `useDealReactions`), `README.md`, `docs/ALGORITHMES.md`, `schema.sql`, `seed_arrows.sql`, `TASKS.md`, `ARCHITECTURE.md`, `PROJECT.md`.
+- `npm install` nécessaire après le pull (dépendance `qrcode` de la tâche 42, sinon le build échoue). Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur.

@@ -51,7 +51,7 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
             Partager un bon plan : +{ARROWS.create}, puis +{ARROWS.bonus} quand 3 étudiants le confirment (
             {DAILY_PAID_CREATIONS} publications récompensées par jour).
           </li>
-          <li>« J&apos;y suis allé » : +{ARROWS.confirm}.</li>
+          <li>« J&apos;en ai profité » : +{ARROWS.confirm}.</li>
           <li>« Plus dispo » : +{ARROWS.report}, versées quand 3 étudiants l&apos;ont signalée.</li>
           <li>
             Pour une offre sur la carte, il faut partager ta position à moins de {NEARBY_M} m d&apos;elle : sinon aucune
@@ -59,7 +59,7 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
           </li>
           <li>
             Offre sans lieu précis : +{ARROWS_NO_PLACE.create} à la publication, +{ARROWS_NO_PLACE.bonus} aux 3
-            confirmations, +{ARROWS_NO_PLACE.confirm} « J&apos;y suis allé », +{ARROWS_NO_PLACE.report} « Plus dispo ».
+            confirmations, +{ARROWS_NO_PLACE.confirm} « J&apos;en ai profité », +{ARROWS_NO_PLACE.report} « Plus dispo ».
           </li>
           <li>3 jours d&apos;activité d&apos;affilée : gains × 1,5.</li>
         </ul>

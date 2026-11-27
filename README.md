@@ -20,7 +20,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Partager en quelques gestes** : le lieu, un titre, une catégorie, et c'est publié (à un endroit précis, dans une ville ou partout) ; le reste est facultatif.
 - **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve.
 - **Doublons** repérés avant la publication.
-- **Réactions** « J'y suis allé » et « Plus dispo », annulables, impossibles sur ses propres offres.
+- **Réactions** « J'en ai profité » et « Plus dispo », annulables, impossibles sur ses propres offres.
 
 ### Faire confiance
 - **Fiabilité façon Waze**, de « Douteux » à « Très fiable » : les avis récents et ceux des étudiants les plus justes et actifs pèsent davantage.

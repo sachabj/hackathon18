@@ -28,7 +28,7 @@ export function useDealReactions(deal: DealWithVotes) {
     setBusy(true);
     setError(null);
     try {
-      // « J'y suis allé » = vote +1 et passage ; le passage est retiré quand on décoche ou passe à « Plus dispo ».
+      // « J'en ai profité » = vote +1 et passage ; le passage est retiré quand on décoche ou passe à « Plus dispo ».
       await setReaction(deal.id, userId, reaction === next ? null : next, {
         vote: myVote,
         visited: myVote === 1,

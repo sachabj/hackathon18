@@ -11,7 +11,7 @@ Ce document explique, sans avoir à lire le code, **dans quel ordre les bons pla
 | Terme | Signification |
 |---|---|
 | **Réaction** | Ce qu'un étudiant dit d'une offre. Il y en a deux, et un étudiant n'a qu'**une** réaction par offre. |
-| **« J'y suis allé »** | Confirmation : l'offre existe. Enregistrée comme un vote **+1** (et un passage). |
+| **« J'en ai profité »** | Confirmation : l'offre existe. Enregistrée comme un vote **+1** (et un passage). |
 | **« Plus dispo »** | Signalement : l'offre n'existe plus. Enregistré comme un vote **−1**. |
 | **Décocher** | Toucher à nouveau sa réaction la retire. Les deux réactions s'excluent. |
 | **Auteur** | Celui qui a publié l'offre. Il **ne peut pas** réagir à sa propre offre (règle imposée par la base). |
@@ -95,8 +95,8 @@ Inspiré de Reddit et Hacker News : il fait monter ce qui **marche en ce moment*
 Hot = (1 + élan + quantité) / (âge en heures + 2) ^ 1,2
 ```
 
-- **Élan (vitesse)** : chaque « J'y suis allé » ajoute +1, chaque « Plus dispo » retire 1,5 ; une réaction perd la moitié de son poids **toutes les 24 h**. Dix passages aujourd'hui valent bien plus que dix passages il y a une semaine.
-- **Quantité (popularité)** : log2(1 + nombre total de « J'y suis allé »). Le logarithme évite qu'une vieille offre très confirmée écrase tout : passer de 1 à 3 passages compte autant que de 3 à 7.
+- **Élan (vitesse)** : chaque « J'en ai profité » ajoute +1, chaque « Plus dispo » retire 1,5 ; une réaction perd la moitié de son poids **toutes les 24 h**. Dix passages aujourd'hui valent bien plus que dix passages il y a une semaine.
+- **Quantité (popularité)** : log2(1 + nombre total de « J'en ai profité »). Le logarithme évite qu'une vieille offre très confirmée écrase tout : passer de 1 à 3 passages compte autant que de 3 à 7.
 - **Âge** : heures depuis la publication. L'exposant 1,2 règle la vitesse à laquelle une offre descend.
 
 | Offre | Score Hot |
@@ -171,12 +171,12 @@ masse = poids de l'étudiant × 0,5 ^ (âge en heures / 48)  × 1,5 si c'est un 
 ```
 
 - **Le temps compte** : une réaction perd la moitié de sa masse **toutes les 48 h**.
-- **Le dernier mot compte** : un « Plus dispo » arrivé **après** le dernier « J'y suis allé » pèse 1,5 fois plus. Une offre qui vient de se terminer tombe vite, même si elle a beaucoup de vieilles confirmations.
+- **Le dernier mot compte** : un « Plus dispo » arrivé **après** le dernier « J'en ai profité » pèse 1,5 fois plus. Une offre qui vient de se terminer tombe vite, même si elle a beaucoup de vieilles confirmations.
 
 ### 3.3 Le score
 
 ```
-score = (masse des « J'y suis allé » + 0,5) / (masse totale + 1)
+score = (masse des « J'en ai profité » + 0,5) / (masse totale + 1)
 ```
 
 Le « + 0,5 / + 1 » est un **a priori** : sans information, on considère l'offre à 50 % (« À vérifier »). Comme les masses fondent avec le temps, une offre qui n'est plus confirmée **redescend d'elle-même** vers « À vérifier » : c'est la **confiance qui s'érode**.
@@ -185,18 +185,18 @@ Exemples (poids 1 pour tous, pour simplifier) :
 
 | Situation | Score | Pastille |
 |---|---|---|
-| 1 « J'y suis allé » il y a 1 h | 0,75 | Fiable |
-| 5 « J'y suis allé » dans les 5 dernières heures | 0,91 | Très fiable |
-| 10 « J'y suis allé », tous il y a 7 jours | 0,73 | Fiable |
+| 1 « J'en ai profité » il y a 1 h | 0,75 | Fiable |
+| 5 « J'en ai profité » dans les 5 dernières heures | 0,91 | Très fiable |
+| 10 « J'en ai profité », tous il y a 7 jours | 0,73 | Fiable |
 | Les mêmes 10, il y a 14 jours | 0,54 | À vérifier |
-| 3 « J'y suis allé » il y a 3 jours, puis 1 « Plus dispo » il y a 1 h | 0,44 | À vérifier |
+| 3 « J'en ai profité » il y a 3 jours, puis 1 « Plus dispo » il y a 1 h | 0,44 | À vérifier |
 | 2 « Plus dispo » dans les 2 dernières heures | 0,13 | Douteux |
 
 Avec les poids réels : sur une offre confirmée par deux étudiants « Experts » et contredite par un étudiant souvent dans l'erreur, la confirmation l'emporte nettement plus qu'avec un simple décompte.
 
 ### 3.4 Les compteurs des boutons
 
-Les boutons affichent **« J'y suis allé (12) »** et **« Plus dispo (2) »** : ce sont les **nombres bruts de réactions des 30 derniers jours**, sans pondération, pour rester compréhensibles. La couleur de la pastille, elle, est pondérée (poids + temps) : les deux peuvent donc différer légèrement.
+Les boutons affichent **« J'en ai profité (12) »** et **« Plus dispo (2) »** : ce sont les **nombres bruts de réactions des 30 derniers jours**, sans pondération, pour rester compréhensibles. La couleur de la pastille, elle, est pondérée (poids + temps) : les deux peuvent donc différer légèrement.
 
 ### 3.5 Disparition d'une offre
 
@@ -214,7 +214,7 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 - Le score « Hot » utilise les réactions **sans le poids** des étudiants.
 - La fiabilité n'intervient pas dans l'ordre des offres (seulement dans la couleur).
 - Une offre toute neuve passe devant une offre de 2 jours très confirmée sur la page carte (2.4).
-- La position ne pondère pas la fiabilité. Un « J'y suis allé » fait loin ou sans position compte autant qu'un autre ; un « Plus dispo » sur une offre de la carte n'est accepté que sur place (section 6).
+- La position ne pondère pas la fiabilité. Un « J'en ai profité » fait loin ou sans position compte autant qu'un autre ; un « Plus dispo » sur une offre de la carte n'est accepté que sur place (section 6).
 
 ---
 
@@ -240,10 +240,10 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 |---|---|---|
 | Publier un bon plan | +50, **sur place** | +20 |
 | 3 confirmations reçues (si la publication a rapporté) | +30 | +10 |
-| « J'y suis allé » | +10, **sur place** | +3 |
+| « J'en ai profité » | +10, **sur place** | +3 |
 | « Plus dispo » (versées au 3e signalement) | +15, **sur place** | +5 |
 
-- **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : la publication et « J'y suis allé » sont enregistrés sans Flèches, et « Plus dispo » est **refusé** sur une offre de la carte.
+- **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : la publication et « J'en ai profité » sont enregistrés sans Flèches, et « Plus dispo » est **refusé** sur une offre de la carte.
 - Publication : la vérification se fait dans les 15 minutes qui suivent, une seule fois.
 - Série de 3 jours ou plus : gains × 1,5 (arrondi). Au plus 5 votes et 3 publications récompensés par jour.
 - La position n'est jamais enregistrée par ces calculs.

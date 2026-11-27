@@ -1,6 +1,6 @@
 "use client";
 
-// Fiche d'un bon plan : détail, fiabilité, votes et « J'y suis allé » (Justin).
+// Fiche d'un bon plan : détail, fiabilité, votes et « J'en ai profité » (Justin).
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import AuthorBadge from "@/components/AuthorBadge";
@@ -83,7 +83,7 @@ export default function DealSheet({
   const own = data?.userId === deal.author_id;
   const trust = data ? reliability(data.votes, data.at, data.trust) : null;
   const myVote = data?.votes.find((v) => v.user_id === data.userId)?.value;
-  // « J'y suis allé » vaut confirmation : actif s'il y a un passage ou une confirmation (« C'est la même offre »).
+  // « J'en ai profité » vaut confirmation : actif s'il y a un passage ou une confirmation (« C'est la même offre »).
   const reaction: Reaction = myVote === -1 ? "gone" : myVote === 1 || data?.visit?.mine ? "visited" : null;
   /** Recliquer sur la réaction active la décoche ; l'autre bouton la remplace. */
   function react(next: Exclude<Reaction, null>) {

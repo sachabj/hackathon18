@@ -405,3 +405,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Remplace en partie** : le retrait des Flèches du profil (tâche 46).
 - **Écartés** : compter les étudiants uniques (migration) ; onglets.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 — « J'en ai profité » à la place de « J'y suis allé » (tâche 66)
+- **Décision** : le bouton de confirmation s'appelle « J'en ai profité » partout (interface, README, `docs/ALGORITHMES.md`, commentaires). Comportement inchangé : vote +1 et passage, exclusif de « Plus dispo », décochable. Les entrées passées de JOURNAL / DECISIONS et les migrations déjà lancées gardent l'ancien libellé.
+- **Pourquoi** : demande de Matteo (portée confirmée avant de coder) ; « y aller » ne convient pas aux offres sans lieu (aides, cartes de réduction, offres en ligne).
+- **Qui** : Matteo

@@ -1,6 +1,6 @@
 "use client";
 
-// Boutons « J'y suis allé (n) » / « Plus dispo (n) » autonomes, pour la fenêtre d'un repère sur la carte.
+// Boutons « J'en ai profité (n) » / « Plus dispo (n) » autonomes, pour la fenêtre d'un repère sur la carte.
 import ReactionBar from "@/components/deal/ReactionBar";
 import type { DealWithVotes } from "@/lib/types";
 import { useDealReactions } from "@/lib/useDealReactions";

@@ -40,7 +40,7 @@ export async function recordView(deal: Pick<Deal, "id" | "author_id">) {
 export interface Engagement {
   userId: string;
   votes: Vote[];
-  /** null tant que la migration 007 n'est pas lancée : le bouton « J'y suis allé » est masqué. */
+  /** null tant que la migration 007 n'est pas lancée : le bouton « J'en ai profité » est masqué. */
   visit: { mine: boolean; count: number } | null;
   /** Masses pondérées par le poids des étudiants (migration 014), null → calcul local. */
   trust: DealTrust | null;
@@ -116,7 +116,7 @@ export async function removeVote(dealId: string, userId: string) {
 export type Reaction = "visited" | "gone" | null;
 
 /**
- * Réaction d'un étudiant (tâche 29) : « J'y suis allé » = passage + confirmation (vote +1),
+ * Réaction d'un étudiant (tâche 29) : « J'en ai profité » = passage + confirmation (vote +1),
  * « Plus dispo » = vote -1. Les deux s'excluent ; null retire tout.
  * `visitsAvailable` : false tant que la migration 007 manque (on ne touche alors qu'aux votes).
  * `placed` : offre située sur la carte, la position est alors demandée pour les Flèches.
@@ -141,7 +141,7 @@ export async function setVisited(dealId: string, userId: string, visited: boolea
   const table = getSupabase().from("deal_visits");
   check(
     visited
-      ? // Déjà déclaré (ancien « J'y suis allé » sans vote) : rien à faire.
+      ? // Déjà déclaré (ancien « J'en ai profité » sans vote) : rien à faire.
         await table.upsert({ deal_id: dealId, user_id: userId }, { onConflict: "deal_id,user_id", ignoreDuplicates: true })
       : await table.delete().eq("deal_id", dealId).eq("user_id", userId),
   );

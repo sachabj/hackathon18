@@ -15,7 +15,7 @@
 --   demo.tom     Éclaireur                 60
 --
 -- En direct, connecté en demo.sarah (la série passe à 3 jours : gains × 1,5) :
---   1. « Carte Avantage Jeune » : J'y suis allé → +5, elle passe Robin des Étudiants (500) ;
+--   1. « Carte Avantage Jeune » : J'en ai profité → +5, elle passe Robin des Étudiants (500) ;
 --      3e confirmation, son auteur (demo.hugo) gagne le bonus (+10).
 --   2. « Covoiturage Bruz → Rennes » : Plus dispo → 3e signalement, +8 (508), offre archivée.
 --   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 358 disponibles,

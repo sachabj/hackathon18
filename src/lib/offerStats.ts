@@ -35,7 +35,7 @@ export function summarize(offers: Deal[], stats: Record<string, OfferStats>, now
     rows,
     totals,
     online: rows.filter((r) => r.online).length,
-    /** Part des confirmations (« J’y suis allé », vote +1), ou null sans aucun vote. */
+    /** Part des confirmations (« J’en ai profité », vote +1), ou null sans aucun vote. */
     trust: votes > 0 ? Math.round((totals.confirmations / votes) * 100) : null,
   };
 }
