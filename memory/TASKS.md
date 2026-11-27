@@ -57,6 +57,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 41 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
 | 42 | E | Onglet « Ciblés » (à la place de Favoris) : carte Flèches + influence, onglets Favoris / Activité / Récompenses ; boutique, échanges, bons avec QR code (migration **017**) ; profil allégé. Touche `favoris/page.tsx` (Anne-Lise), `NavBar`, `profil/page.tsx` (Justin), `InfluenceCard` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `017_rewards.sql`** ; `npm install` après le pull (nouvelle dépendance `qrcode`) ; testé sur Postgres local et faux Supabase seulement |
 | 43 | E | Plus d'accès limité selon l'activité (ni 7 jours, ni retard de 24 h) ; 3 publications récompensées par jour (migration **018**). Niveaux d'activité conservés. Touche `ActivityCard` (Justin), `PublishForm` et `docs/ALGORITHMES.md` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `018_no_access_limit.sql`** ; testé sur Postgres local et faux Supabase seulement |
+| 44 | E | Carte de « Ciblés » : bloc « Grade » (Éclaireur / Chasseur de bons plans / Robin des Étudiants, un seul éclairé) à la place de « Ton influence » et de la pastille de rang | EN COURS (Sacha) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
