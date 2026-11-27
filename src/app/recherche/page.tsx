@@ -8,9 +8,10 @@ import DealCard from "@/components/feed/DealCard";
 import { TargetIcon } from "@/components/icons";
 import DealsMap from "@/components/map/DealsMapLoader";
 import { APP_NAME, CATEGORIES } from "@/lib/constants";
+import { hotScore } from "@/lib/hot";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
-import type { Deal, DealCategory } from "@/lib/types";
+import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
@@ -21,7 +22,7 @@ type AuthorFilter = keyof typeof AUTHORS;
 const byAuthor = (deal: Deal, a: AuthorFilter) => a === "all" || deal.is_official === (a === "merchant");
 
 export default function Page() {
-  const { deals, loading, error } = useDeals();
+  const { deals, loading, error, loadedAt } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [chosenTab, setTab] = useState<"forYou" | "all" | null>(null);
@@ -30,16 +31,21 @@ export default function Page() {
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   const tab = me ? (chosenTab ?? "forYou") : "all";
-  const ranked: { deal: Deal; match?: Match }[] = me
+  const ranked: { deal: DealWithVotes; match?: Match }[] = me
     ? rankDeals(deals, me)
     : deals.map((deal) => ({ deal }));
   const forYouCount = ranked.filter((r) => r.match?.forYou).length;
 
-  // « Tout » reste chronologique ; « Pour toi » est trié par compatibilité.
+  // « Tout » est trié par « Hot » (réactions, vitesse, fraîcheur : lib/hot.ts) ; « Pour toi » par compatibilité.
+  const hot = new Map(deals.map((d) => [d.id, hotScore(d, d.votes ?? [], loadedAt)]));
   const inTab =
     tab === "forYou"
       ? ranked.filter((r) => r.match?.forYou)
-      : [...ranked].sort((a, b) => b.deal.created_at.localeCompare(a.deal.created_at));
+      : [...ranked].sort(
+          (a, b) =>
+            (hot.get(b.deal.id) ?? 0) - (hot.get(a.deal.id) ?? 0) ||
+            b.deal.created_at.localeCompare(a.deal.created_at),
+        );
   const filtered = inTab.filter((r) => (!category || r.deal.category === category) && byAuthor(r.deal, author));
   // Offres mises en avant en tête (sans les ajouter à « Pour toi » si elles ne correspondent pas).
   const shown = [...filtered].sort((a, b) => Number(isBoosted(b.deal)) - Number(isBoosted(a.deal)));

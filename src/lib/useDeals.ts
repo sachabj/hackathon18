@@ -12,6 +12,8 @@ export function useDeals() {
   const [deals, setDeals] = useState<DealWithVotes[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
+  /** Instant du chargement : référence du tri Hot (évite Date.now() pendant l'affichage). */
+  const [loadedAt, setLoadedAt] = useState(0);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -39,6 +41,7 @@ export function useDeals() {
             .map(normalizeDeal),
         );
       }
+      setLoadedAt(Date.now());
       setLoading(false);
     }
 
@@ -48,5 +51,5 @@ export function useDeals() {
     };
   }, []);
 
-  return { deals, loading, error };
+  return { deals, loading, error, loadedAt };
 }

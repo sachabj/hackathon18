@@ -41,6 +41,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   ├── hot.ts                    # tri « Hot » de l'onglet « Tout » + badge « Tendance » (réglages : HOT)
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
@@ -145,3 +146,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - **« Pour toi »** : score hors budget ≥ 55, à portée, et catégorie suivie, activité / transport aimé ou trajet utile. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).
 - Distances à vol d'oiseau depuis la position enregistrée, sinon le centre de la zone principale ; durées estimées.
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.
+
+## Tri « Hot » (`src/lib/hot.ts`, onglet « Tout » de Recherche)
+- Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'y suis allé » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'y suis allé »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).
+- Sponsorisés toujours en tête (aucun autre bonus). « Pour toi » reste trié par compatibilité ; l'accueil n'est pas concerné.
+- Badge « Tendance » (`DealCard`) : ≥ 3 « J'y suis allé » dans les dernières 24 h.

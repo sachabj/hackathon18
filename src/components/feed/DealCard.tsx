@@ -5,11 +5,12 @@ import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import DealSheet from "@/components/deal/DealSheet";
-import { CalendarIcon, CameraIcon, CloseIcon, HeartIcon, StarIcon } from "@/components/icons";
+import { CalendarIcon, CameraIcon, CloseIcon, FlameIcon, HeartIcon, StarIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { isOwnPhotoUrl } from "@/lib/photos";
+import { isTrending } from "@/lib/hot";
 import { trustLevelOf } from "@/lib/rules";
 import TrustBadge from "@/components/deal/TrustBadge";
 import type { DealWithVotes } from "@/lib/types";
@@ -37,6 +38,9 @@ export default function DealCard({
 
   const boosted = isBoosted(deal);
   const trust = deal.votes ? trustLevelOf(deal.votes) : undefined;
+  // Instant fixé à l'affichage de la carte (pas de Date.now() pendant le rendu).
+  const [now] = useState(Date.now);
+  const trending = isTrending(deal.votes, now);
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(false);
   const photo = isOwnPhotoUrl(deal.photo_url) ? deal.photo_url : null;
@@ -57,6 +61,12 @@ export default function DealCard({
       {boosted && (
         <p className="mb-1 flex items-center gap-1 text-xs font-medium" style={{ color: "#92700c" }}>
           <StarIcon className="h-3.5 w-3.5" filled /> Sponsorisé
+        </p>
+      )}
+      {trending && (
+        <p className="mb-1 flex items-center gap-1 text-xs font-medium" style={{ color: "var(--color-aubergine)" }}>
+          <FlameIcon className="h-3.5 w-3.5" /> Tendance
+          <span className="font-normal text-[var(--color-muted)]">· beaucoup d&apos;étudiants y sont allés aujourd&apos;hui</span>
         </p>
       )}
       <AuthorBadge deal={deal} className="mb-2" />
