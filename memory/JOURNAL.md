@@ -24,3 +24,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Stack validée ; modèle de données complété (favorites, role merchant, last_contribution_at) + règles métier dans `ARCHITECTURE.md`.
 - Équipe renseignée + répartition proposée dans `TASKS.md`.
 - Hook mémoire modifié : il affiche la liste des .md à lire au lieu de leur contenu (au-delà de ~10 Ko, la sortie d'un hook est tronquée).
+
+### 2026-11-27 ~13h00 — Justin
+- Décisions : compte obligatoire pour tout, 24 h de retard pour les inactifs, répartition validée → `PROJECT.md`, `DECISIONS.md`, `TASKS.md`.
+- Démarrage du squelette Next.js (tâche 3). BDD en attente des clés Supabase.

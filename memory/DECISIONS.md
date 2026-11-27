@@ -26,7 +26,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Équipe** : Sacha, Anne-Lise, Matteo, Justin.
 - **Qui** : équipe (transcrit par Justin)
 
+## 2026-11-27 — Compte, inactifs, répartition
+- **Compte obligatoire pour tout** (y compris consulter).
+- **Inactif** (> 7 jours sans contribution) : voit les nouveaux bons plans avec 24 h de retard.
+- **Répartition** validée (voir TASKS.md), ajustable entre nous.
+- **Supabase** : le projet est créé par l'équipe, qui fournira les clés (à mettre dans `.env.local`, jamais sur git).
+- **Qui** : équipe (transcrit par Justin)
+
 ## EN ATTENTE DE VALIDATION
-- Accès limité d'un inactif (24 h de retard ?)
-- Compte obligatoire pour consulter ?
-- Répartition des tâches (proposition dans TASKS.md)
+- (rien pour l'instant)

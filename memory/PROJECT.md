@@ -28,7 +28,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
    - Le bon plan est masqué quand le score passe sous un seuil. **Le nombre de votes nécessaire s'adapte au nombre d'utilisateurs actifs dans la zone** : peu d'utilisateurs → peu de votes suffisent.
    - Si **le commerçant indique que l'offre n'existe plus** → elle est retirée immédiatement.
 3. **Accès complet pendant 7 jours après chaque contribution** (signaler ou confirmer un bon plan remet le compteur à 7 jours). Compteur visible : « 🔓 Accès complet encore 4 jours ».
-   - 💡 Accès limité pour un inactif : nouveaux bons plans visibles avec 24 h de retard (à confirmer).
+   - Accès limité pour un inactif ✅ : les nouveaux bons plans ne lui sont visibles qu'**après 24 h**.
 4. **Niveaux d'utilisateur selon l'activité** (ex : 🔥 Très actif · ✅ Actif · 💤 Peu actif · 😴 Inactif) avec des **messages d'encouragement par catégorie** (ex : « Tu es le roi des bons plans transport 🚆, encore 2 signalements pour passer Très actif ! »).
 5. **Favoris ❤️** : liker un bon plan pour l'enregistrer et ne pas le perdre.
 6. **Rappels de dates limites** pour les bons plans à échéance (dossier CROUS, renouvellement de la Carte Sortir, inscriptions au sport), en particulier ceux mis en favori.
@@ -53,6 +53,5 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 - [ ] Rappels de dates limites
 - [ ] Vraies notifications push (PWA)
 
-## Questions ouvertes
-- Accès limité d'un inactif : 24 h de retard ? floutage ? (voir 💡 au point 3)
-- Faut-il un compte pour simplement consulter ? (💡 non pour consulter, oui pour signaler / voter / liker)
+## Compte ✅
+- **Un compte est obligatoire pour tout**, y compris pour consulter.

@@ -5,20 +5,20 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 ## Équipe
 | Membre | Rôle |
 |---|---|
-| Sacha | _à définir_ |
-| Anne-Lise | _à définir_ |
-| Matteo | _à définir_ |
-| Justin | _à définir_ |
+| Sacha | Carte + fil + filtres (tâche 5) |
+| Anne-Lise | Publication, votes, fiabilité, favoris (6, 7, 8) |
+| Matteo | Préférences, accès 7 jours, niveaux, notif simulée (9, 10, 11) |
+| Justin | Squelette, BDD, déploiement (3, 4), puis commerçants / rappels (13, 14) |
 
-💡 Répartition proposée : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = carte + fil + filtres · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = préférences, accès 7 jours, niveaux, notif simulée · **tout le monde** = données de démo + pitch.
+✅ Répartition validée (ajustable) : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = carte + fil + filtres · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = préférences, accès 7 jours, niveaux, notif simulée · **tout le monde** = données de démo + pitch.
 
 ## Tâches
 | # | Tâche | Statut |
 |---|---|---|
 | 1 | Mettre en place la mémoire partagée + git | FAIT |
 | 2 | Valider la stack, le nom (Waze-Etu) et les propositions | FAIT |
-| 3 | Initialiser le projet Next.js (squelette + déploiement Vercel) | TODO |
-| 4 | BDD Supabase (zones, deals, votes, favorites, profiles) | TODO |
+| 3 | Initialiser le projet Next.js (squelette + déploiement Vercel) | EN COURS (Justin) |
+| 4 | BDD Supabase (zones, deals, votes, favorites, profiles) | BLOQUÉ (attente des clés Supabase de l'équipe) |
 | 5 | Carte Bruz / Ker Lann + fil + filtres par catégorie | TODO |
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
