@@ -109,3 +109,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 — Matteo (idée : publication par photo)
 - Relecture d'un prompt d'extraction (photo d'affiche en magasin → champs du bon plan). Aucun code écrit ; à discuter avec Anne-Lise (tâche 6) avant intégration.
+
+### 2026-11-27 — Justin (espace commerçant, démarrage)
+- Tâche 13 prise ; tâche 6 (formulaire de publication) attribuée à Matteo (info Justin).

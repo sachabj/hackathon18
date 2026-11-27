@@ -6,8 +6,8 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | Membre | Rôle |
 |---|---|
 | Sacha | Fil + filtres (tâche 5b) |
-| Anne-Lise | Publication, votes, fiabilité, favoris (6, 7, 8) |
-| Matteo | Accès 7 jours, niveaux, notif simulée (10, 11) |
+| Anne-Lise | Votes, fiabilité, favoris (7, 8) |
+| Matteo | Publication (6), accès 7 jours, niveaux, notif simulée (10, 11) |
 | Justin | Squelette, BDD, déploiement (3, 4), carte (5a), puis commerçants / rappels (13, 14) |
 
 ✅ Répartition validée (ajustable) : **Justin** = squelette, BDD Supabase, déploiement · **Sacha** = fil + filtres (carte reprise par Justin) · **Anne-Lise** = publication, votes, fiabilité, favoris · **Matteo** = accès 7 jours, niveaux, notif simulée (préférences reprises par Sacha) · **tout le monde** = données de démo + pitch.
@@ -22,14 +22,14 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 5a | Carte Bruz / Ker Lann + écran d'accueil (Justin) | FAIT |
 | 5c | Localisation GPS : carte centrée sur l'utilisateur + « Autour de moi » (Justin) | FAIT |
 | 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
-| 6 | Formulaire de publication (local / zone / national) | TODO |
+| 6 | Formulaire de publication (local / zone / national) — Matteo (l'espace commerçant a son propre formulaire en attendant) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | TODO |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé ; **migration 004 à exécuter** puis test sur la vraie base |
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement | TODO |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
-| 13 | Espace commerçant (badge officiel, « n'existe plus ») | TODO |
+| 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 
