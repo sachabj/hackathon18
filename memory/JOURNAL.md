@@ -195,3 +195,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 17h45 — Matteo (renommage « Partager »)
 - « Signaler » → « Partager » pour la publication : `NavBar.tsx`, `PublishForm.tsx`, `src/app/layout.tsx`, et fichiers de Justin `src/app/profil/page.tsx` (lien) et `components/profile/ActivityCard.tsx` (deux phrases). Lint + build OK.
 - Offre « -20 % sur les pâtes et le riz » (Intermarché Bruz, publiée par Matteo) : à supprimer par Matteo depuis /profil (seul l'auteur peut supprimer, RLS).
+
+### 2026-11-27 16h10 — Justin (reset_demo assoupli)
+- `supabase/reset_demo.sql` (+ copie locale) : adresses absentes ignorées et listées. Retesté sur Postgres local. Toujours **pas exécuté sur la vraie base**.
+- La clé Gemini n'est plus dans `.env.example` (présente dans `.env.local`, jamais committée).

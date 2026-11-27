@@ -5,6 +5,9 @@
 -- 1. Remplir ci-dessous les comptes à GARDER et le mot de passe des comptes de démo
 --    (ne jamais committer ces valeurs : le dépôt est public).
 -- 2. Tout compte absent de la liste est effacé, avec ses bons plans, votes, favoris et commerce.
+--    Une adresse de la liste sans compte est ignorée (la personne pourra s'inscrire plus tard) et affichée
+--    à la fin. ⚠️ Vérifie l'orthographe : une faute de frappe efface le vrai compte. Pour comparer avant :
+--    select email from auth.users order by email;
 -- Le script est « tout ou rien » : à la moindre erreur, rien n'est modifié. Relançable.
 --
 -- Données : « Source : … » = offre trouvée sur le web le 27/11/2026 (prix à revérifier avant la démo).
@@ -18,8 +21,6 @@ declare
     'EMAIL_A_GARDER_2'
   ];
   demo_password text := 'CHOISIR_UN_MOT_DE_PASSE';
-  missing text;
-  existing text;
   u record;
   new_id uuid;
 begin
@@ -27,18 +28,24 @@ begin
   if demo_password = 'CHOISIR_UN_MOT_DE_PASSE' or length(demo_password) < 8 then
     raise exception 'Choisis un mot de passe de démo (8 caractères minimum) en haut du script.';
   end if;
-  select string_agg(k, ', ') into missing from unnest(keep) k
-   where not exists (select 1 from auth.users a where lower(a.email) = lower(k));
-  if missing is not null then
-    select string_agg(email, ', ' order by email) into existing from auth.users where email not like '%@example.com';
-    raise exception 'RIEN N''A ÉTÉ EFFACÉ. Compte(s) à garder introuvable(s) : %. Comptes existants : %', missing, existing;
+  if exists (select 1 from unnest(keep) k where k like 'EMAIL_A_GARDER%') then
+    raise exception 'Remplace les EMAIL_A_GARDER en haut du script par les adresses à conserver.';
   end if;
   if to_regclass('public.deal_views') is null then
     raise exception 'Lance d''abord supabase/migrations/007_engagement.sql.';
   end if;
 
+  -- Bilan des comptes de la liste, établi avant la suppression et affiché à la fin.
+  drop table if exists reset_report;
+  create temporary table reset_report as
+  select k as compte_a_garder,
+    case when exists (select 1 from auth.users a where lower(a.email) = lower(trim(k)))
+      then 'conservé' else 'pas encore de compte (ignoré)' end as etat
+  from unnest(keep) k;
+
   -- ---------- Nettoyage ----------
-  delete from auth.users where lower(email) not in (select lower(k) from unnest(keep) k);
+  delete from auth.users a
+   where not exists (select 1 from unnest(keep) k where lower(trim(k)) = lower(a.email));
   delete from public.deals where description like 'Exemple fictif (démo)%'; -- ancien seed_demo.sql
 
   -- ---------- Étudiants de démo ----------
@@ -169,10 +176,11 @@ begin
 end
 $reset$;
 
--- Contrôle après exécution.
-select
+-- Contrôle après exécution : un compte de la liste par ligne, puis les totaux.
+select r.compte_a_garder, r.etat,
   (select count(*) from auth.users) as comptes,
   (select count(*) from public.deals) as bons_plans,
   (select count(*) from public.deals where description like '%Source : %') as sources,
   (select count(*) from public.deals where title like '[Exemple]%') as exemples,
-  (select count(*) from public.votes) as votes;
+  (select count(*) from public.votes) as votes
+from reset_report r order by r.compte_a_garder;

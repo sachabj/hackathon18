@@ -98,6 +98,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écarté** : créer des comptes au nom de vrais commerces ou des offres « officielles » en leur nom.
 - **Qui** : Justin (réponses aux questions de cadrage)
 
+## 2026-11-27 16h10 — reset_demo : comptes à garder facultatifs
+- **Décision** : une adresse à garder sans compte est ignorée (signalée à la fin) ; le script ne s'arrête plus. Il refuse toujours si la liste ou le mot de passe n'est pas rempli.
+- **Pourquoi** : certains coéquipiers s'inscriront plus tard.
+- **Écarté** : créer ces comptes avec le mot de passe de démo.
+- **Qui** : Justin
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 
