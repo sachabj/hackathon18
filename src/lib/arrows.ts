@@ -9,7 +9,8 @@ export const STREAK_DAYS = 3;
 
 export type ArrowKind = keyof typeof ARROWS;
 
-export const KIND_LABELS: Record<ArrowKind, string> = {
+export const KIND_LABELS: Record<ArrowKind | "spend", string> = {
+  spend: "Récompense échangée",
   create: "Bon plan partagé",
   bonus: "Confirmé par 3 étudiants",
   confirm: "Confirmation",
@@ -37,8 +38,9 @@ export function rankFor(total: number) {
 }
 
 export interface ArrowEvent {
-  id: number;
-  kind: ArrowKind;
+  id: string | number;
+  /** "spend" : récompense échangée (montant négatif, migration 017) */
+  kind: ArrowKind | "spend";
   amount: number;
   multiplier: number;
   /** false : signalement en attente de deux autres étudiants */
@@ -49,7 +51,13 @@ export interface ArrowEvent {
 }
 
 export interface MyArrows {
-  total: number;
+  /** Flèches gagnées : fixent le rang, une dépense ne les change pas */
+  total_arrows_earned: number;
+  /** Gagnées moins dépensées : sert à échanger (négatif si des gains sont retirés après un échange) */
+  current_arrows_balance: number;
+  /** Avantages activés dans l'application (migration 017) */
+  golden_badge: boolean;
+  early_access_until: string | null;
   pending: number;
   /** Jours consécutifs d'activité */
   streak: number;
@@ -64,7 +72,16 @@ export async function fetchMyArrows(): Promise<MyArrows | null> {
     if (error.code !== "PGRST202") console.warn("Flèches indisponibles :", error.message);
     return null;
   }
-  return data as MyArrows;
+  // Avec la seule migration 016 : pas encore de boutique, le solde est le total gagné.
+  const raw = data as Partial<MyArrows> & Pick<MyArrows, "pending" | "streak" | "today_votes" | "history"> & { total: number };
+  const earned = raw.total_arrows_earned ?? raw.total;
+  return {
+    ...raw,
+    total_arrows_earned: earned,
+    current_arrows_balance: raw.current_arrows_balance ?? earned,
+    golden_badge: raw.golden_badge ?? false,
+    early_access_until: raw.early_access_until ?? null,
+  };
 }
 
 /** Résultat d'un vote renvoyé par `react_to_deal`. */

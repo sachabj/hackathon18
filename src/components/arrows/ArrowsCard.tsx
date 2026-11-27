@@ -1,33 +1,80 @@
 "use client";
 
-// Profil : solde de Flèches, rang, progression, série et historique récent.
-import { ArrowShotIcon, FlameIcon } from "@/components/icons";
-import { ARROWS, DAILY_PAID_VOTES, KIND_LABELS, rankFor, STREAK_DAYS } from "@/lib/arrows";
+// Haut de la page « Ciblés » : Flèches (solde, rang, progression, série) et influence (Matteo), en une carte.
+import { useEffect, useState } from "react";
+import { ArrowShotIcon, FlameIcon, StarIcon } from "@/components/icons";
+import InfluenceBlock from "@/components/profile/InfluenceCard";
+import { rankFor, STREAK_DAYS } from "@/lib/arrows";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { fetchMyInfluence, type Influence } from "@/lib/trust";
 import { useMyArrows } from "@/lib/useMyArrows";
 
-const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
 
 export default function ArrowsCard() {
   const arrows = useMyArrows();
-  // Sans la migration 016, rien à montrer.
-  if (!arrows) return null;
-  const { rank, next, missing, progress } = rankFor(arrows.total);
+  const [influence, setInfluence] = useState<Influence | null>(null);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    let cancelled = false;
+    fetchMyInfluence().then((i) => !cancelled && setInfluence(i));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Sans les migrations 016 (Flèches) et 014 (influence), rien à montrer.
+  if (!arrows && !influence) return null;
+
+  return (
+    <section className="sw-card space-y-3 p-4" aria-label="Mes Flèches">
+      {arrows && <Arrows arrows={arrows} />}
+      {influence && (
+        <div className={arrows ? "border-t pt-3" : undefined} style={{ borderColor: "var(--color-border)" }}>
+          <InfluenceBlock me={influence} />
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Arrows({ arrows }: { arrows: NonNullable<ReturnType<typeof useMyArrows>> }) {
+  const earned = arrows.total_arrows_earned;
+  const { rank, next, missing, progress } = rankFor(earned);
   const { streak } = arrows;
   const days = `${streak} jour${streak > 1 ? "s" : ""}`;
 
   return (
-    <section className="sw-card space-y-3 p-4" aria-label="Mes Flèches">
-      <div className="flex items-end justify-between gap-2">
-        <div>
+    <>
+      <div>
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="sw-eyebrow">Tes Flèches</p>
-          <p className="flex items-center gap-2 text-3xl font-medium tabular-nums" style={{ color: "var(--color-forest)" }}>
-            <ArrowShotIcon className="h-7 w-7" /> {arrows.total}
-          </p>
+          <span className="sw-badge whitespace-nowrap" style={{ backgroundColor: "var(--color-aubergine)", color: "var(--color-surface)" }}>
+            {rank.label}
+          </span>
         </div>
-        <span className="sw-badge text-right" style={{ backgroundColor: "var(--color-aubergine)", color: "var(--color-surface)" }}>
-          {rank.label}
-        </span>
+        <p className="flex items-center gap-2 text-3xl font-medium tabular-nums" style={{ color: "var(--color-forest)" }}>
+          <ArrowShotIcon className="h-7 w-7" /> {Math.max(0, arrows.current_arrows_balance)}
+          <span className="text-sm font-normal text-[var(--color-muted)]">disponibles</span>
+        </p>
+        <p className="text-sm text-[var(--color-muted)]">{earned} gagnées au total (elles fixent ton rang)</p>
       </div>
+
+      {(arrows.golden_badge || arrows.early_access_until) && (
+        <ul className="flex flex-wrap gap-1.5" aria-label="Mes avantages">
+          {arrows.golden_badge && (
+            <li className="sw-badge" style={{ background: "#d4a017", color: "#2b1f00" }}>
+              <StarIcon className="h-3.5 w-3.5" filled /> Badge Doré
+            </li>
+          )}
+          {arrows.early_access_until && (
+            <li className="sw-badge" style={{ backgroundColor: "var(--color-lilac)", color: "var(--color-aubergine)" }}>
+              Avant-Première jusqu&apos;au {formatDate(arrows.early_access_until)}
+            </li>
+          )}
+        </ul>
+      )}
 
       <div>
         <div
@@ -56,44 +103,6 @@ export default function ArrowsCard() {
               : <><strong>Série : {days}</strong> · × 1,5 à partir de {STREAK_DAYS} jours d&apos;affilée</>}
         </span>
       </p>
-      <p className="text-sm text-[var(--color-muted)]">
-        Votes récompensés aujourd&apos;hui : {Math.min(arrows.today_votes, DAILY_PAID_VOTES)} sur {DAILY_PAID_VOTES}.
-        {arrows.pending > 0 && ` En attente : ${arrows.pending} Flèches (signalements à corroborer).`}
-      </p>
-
-      <details className="text-sm">
-        <summary className="cursor-pointer font-medium" style={{ color: "var(--color-forest)" }}>Comment en gagner ?</summary>
-        <ul className="mt-2 list-disc space-y-1 pl-5">
-          <li>Partager un bon plan : +{ARROWS.create}, puis +{ARROWS.bonus} quand 3 étudiants le confirment.</li>
-          <li>« J&apos;y suis allé » : +{ARROWS.confirm}.</li>
-          <li>« Plus dispo » : +{ARROWS.report}, versées quand 3 étudiants l&apos;ont signalée.</li>
-          <li>Loin d&apos;une offre sur la carte : la moitié au-delà de 500 m, rien au-delà de 2 km.</li>
-        </ul>
-      </details>
-
-      <div>
-        <h3 className="text-base">Historique récent</h3>
-        {arrows.history.length === 0 ? (
-          <p className="mt-1 text-sm text-[var(--color-muted)]">Rien pour l&apos;instant : ta première Flèche est à un geste.</p>
-        ) : (
-          <ul className="mt-1 divide-y" style={{ borderColor: "var(--color-border)" }}>
-            {arrows.history.map((e) => (
-              <li key={e.id} className="flex items-center justify-between gap-3 py-2" style={{ borderColor: "var(--color-border)" }}>
-                <span className="min-w-0">
-                  <span className="block text-sm font-medium">{KIND_LABELS[e.kind]}</span>
-                  <span className="block truncate text-xs text-[var(--color-muted)]">
-                    {formatDate(e.created_at)} · {e.title ?? "offre supprimée"}
-                    {Number(e.multiplier) > 1 && " · série"}
-                  </span>
-                </span>
-                <span className="shrink-0 text-sm font-medium tabular-nums" style={{ color: e.paid ? "var(--color-forest)" : "var(--color-muted)" }}>
-                  {e.paid ? `+${e.amount}` : `${e.amount} en attente`}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </section>
+    </>
   );
 }

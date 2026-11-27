@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChartIcon, HeartIcon, HomeIcon, PlusIcon, SearchIcon, StoreIcon, TagIcon, UserIcon } from "@/components/icons";
+import { ChartIcon, HeartArrowIcon, HomeIcon, PlusIcon, SearchIcon, StoreIcon, TagIcon, UserIcon } from "@/components/icons";
 import { useRole } from "@/lib/useRole";
 
 const LINKS = [
   { href: "/", label: "Accueil", Icon: HomeIcon },
   { href: "/recherche", label: "Recherche", Icon: SearchIcon },
   { href: "/publier", label: "Partager", Icon: PlusIcon },
-  { href: "/favoris", label: "Favoris", Icon: HeartIcon },
+  { href: "/favoris", label: "Ciblés", Icon: HeartArrowIcon },
   { href: "/profil", label: "Profil", Icon: UserIcon },
 ];
 

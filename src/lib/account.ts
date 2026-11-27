@@ -84,6 +84,7 @@ export async function exportMyData() {
     ["business", "businesses", "owner_id"],
     ["arrows", "arrow_events", "user_id"],
     ["activity_days", "activity_days", "user_id"],
+    ["rewards", "user_rewards", "user_id"],
   ] as const;
   const results = await Promise.all(
     tables.map(([, table, column]) => supabase.from(table).select("*").eq(column, user.id)),

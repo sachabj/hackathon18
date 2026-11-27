@@ -30,7 +30,7 @@ export interface Influence {
   account_days: number;
 }
 
-/** Son propre poids (page profil), ou null sans la migration 014. */
+/** Son propre poids (page « Ciblés »), ou null sans la migration 014. */
 export async function fetchMyInfluence(): Promise<Influence | null> {
   const { data, error } = await getSupabase().rpc("my_influence");
   if (error || !data || (data as Influence[]).length === 0) return null;

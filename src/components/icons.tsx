@@ -170,6 +170,15 @@ export function ArrowShotIcon({ className }: IconProps) {
     </Stroke>
   );
 }
+/** Cœur traversé d'une flèche : l'onglet « Ciblés ». */
+export function HeartArrowIcon({ className }: IconProps) {
+  return (
+    <Stroke className={className}>
+      <path d="M12 19.5 6.3 13.9c-1.6-1.6-1.6-4.1 0-5.6 1.5-1.5 3.9-1.5 5.4 0l.3.4.3-.4c1.5-1.5 3.9-1.5 5.4 0 1.6 1.5 1.6 4 0 5.6L12 19.5Z" />
+      <path d="M2.5 21.5 7 17M17 7l4.5-4.5M17.5 2.5h4v4M2.5 18H6v3.5" />
+    </Stroke>
+  );
+}
 export function FlameIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c1.5 2 1 4 1 5a6 6 0 0 1-12 0c0-4 2-5 3-8 .5 1 1 2 1 3 0-3 1-5 2-7Z" /></Stroke>;
 }

@@ -1,22 +1,25 @@
 -- =====================================================================
--- ShareWood — données de démo « Les Flèches ».
--- Prérequis : migration 016_arrows.sql, puis reset_demo.sql (comptes demo.…@example.com).
+-- ShareWood — données de démo « Les Flèches » et récompenses.
+-- Prérequis : migrations 016_arrows.sql et 017_rewards.sql, puis reset_demo.sql (comptes demo.…@example.com).
+-- ⚠️ À lancer le jour de la démo : les séries sont calculées à partir de la date d'exécution.
 -- À coller dans Supabase → SQL Editor → Run. Ne touche qu'aux comptes de démo et à trois de leurs offres.
 -- Relançable : remet les scénarios à zéro (utile après une répétition). Historique INVENTÉ.
 --
--- Rangs préparés (mot de passe : celui choisi dans reset_demo.sql) :
---   demo.lea     Robin des Étudiants      680 Flèches, série 5 jours
+-- Comptes préparés (mot de passe : celui choisi dans reset_demo.sql) ; Flèches gagnées, qui fixent le rang :
+--   demo.lea     Robin des Étudiants      680, série 5 jours ; 430 disponibles, un bon actif et un utilisé
 --   demo.hugo    Robin des Étudiants      520
+--   demo.sarah   Chasseur de bons plans   485, série 2 jours  → compte conseillé pour la démo en direct
 --   demo.ines    Chasseur de bons plans   310, série 3 jours
 --   demo.malo    Chasseur de bons plans   150
---   demo.sarah   Éclaireur                135, série 2 jours  → compte conseillé pour la démo en direct
 --   demo.tom     Éclaireur                 60
 --
 -- En direct, connecté en demo.sarah (la série passe à 3 jours : gains × 1,5) :
---   1. « Carte Avantage Jeune » : J'y suis allé → +15, elle passe Chasseur de bons plans (150) ;
+--   1. « Carte Avantage Jeune » : J'y suis allé → +15, elle passe Robin des Étudiants (500) ;
 --      3e confirmation, son auteur (demo.hugo) gagne le bonus.
---   2. « Covoiturage Bruz → Rennes » : Plus dispo → 3e signalement, +23, offre archivée.
--- Ces deux offres sont sans lieu précis : la position ne change rien aux gains.
+--   2. « Covoiturage Bruz → Rennes » : Plus dispo → 3e signalement, +23 (523), offre archivée.
+--   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 373 disponibles,
+--      le rang ne bouge pas ; montrer le bon, puis « Marquer comme utilisé en caisse ».
+-- Les offres des étapes 1 et 2 sont sans lieu précis : la position ne change rien aux gains.
 -- =====================================================================
 do $seed$
 declare
@@ -35,8 +38,8 @@ declare
   used_own int;
   used_other int;
 begin
-  if to_regclass('public.arrow_events') is null then
-    raise exception 'Lance d''abord supabase/migrations/016_arrows.sql.';
+  if to_regclass('public.arrow_events') is null or to_regclass('public.user_rewards') is null then
+    raise exception 'Lance d''abord supabase/migrations/016_arrows.sql puis 017_rewards.sql.';
   end if;
   if not exists (select 1 from auth.users where email = 'demo.sarah@example.com') then
     raise exception 'Lance d''abord supabase/reset_demo.sql (comptes de démo absents).';
@@ -67,6 +70,9 @@ begin
   -- ---------- Historique des six comptes ----------
   delete from public.arrow_events where user_id in (select id from auth.users where email like 'demo.%@example.com');
   delete from public.activity_days where user_id in (select id from auth.users where email like 'demo.%@example.com');
+  delete from public.user_rewards where user_id in (select id from auth.users where email like 'demo.%@example.com');
+  update public.profiles set golden_badge = false, early_access_until = null
+   where id in (select id from auth.users where email like 'demo.%@example.com');
 
   for p in
     select * from (values
@@ -75,7 +81,7 @@ begin
       ('demo.hugo@example.com',   8, 0,  9, 2, 1),
       ('demo.ines@example.com',   4, 0,  8, 2, 3),
       ('demo.malo@example.com',   2, 0,  5, 0, 0),
-      ('demo.sarah@example.com',  2, 0,  2, 1, 2),
+      ('demo.sarah@example.com',  5, 3, 13, 1, 2),
       ('demo.tom@example.com',    1, 0,  1, 0, 0)
     ) as t(email, creates, bonuses, confirms, reports, streak)
   loop
@@ -120,11 +126,21 @@ begin
   insert into public.arrow_events (user_id, deal_id, kind, base, amount, paid, created_at)
   select a.id, report_deal, 'report', 15, 15, false, now() - interval '2 days'
   from auth.users a where a.email in ('demo.lea@example.com', 'demo.ines@example.com');
+
+  -- Deux bons de demo.lea : un déjà utilisé, un à présenter.
+  insert into public.user_rewards (user_id, reward_id, cost, code, created_at, used_at)
+  select a.id, v.reward, v.cost, v.code, now() - v.since, now() - v.used
+  from (values
+    ('cafe', 100, 'SW-DEMO01', interval '6 days', interval '5 days'),
+    ('kebab', 150, 'SW-DEMO02', interval '2 days', null::interval)
+  ) as v(reward, cost, code, since, used)
+  join auth.users a on a.email = 'demo.lea@example.com';
 end
 $seed$;
 
--- Contrôle : solde et série de chaque compte préparé.
+-- Contrôle : Flèches gagnées, solde disponible et série de chaque compte préparé.
 select a.email, coalesce(sum(e.amount) filter (where e.paid), 0) as fleches,
+       public.arrows_balance(a.id) as disponibles,
        coalesce(sum(e.amount) filter (where not e.paid), 0) as en_attente,
        public.arrow_streak(a.id, public.arrow_day(now())) as serie
 from auth.users a left join public.arrow_events e on e.user_id = a.id

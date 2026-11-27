@@ -42,8 +42,9 @@ export default function Page() {
           <li><strong>Position approximative (~100 m)</strong>, seulement si tu touches « Me localiser » : calculer les distances. La carte, elle, suit ta position sans l&apos;enregistrer.</li>
           <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager. Avec « Utiliser ma position actuelle », le lieu publié est ta position précise.</li>
           <li><strong>Votes, favoris, vues, « J&apos;y suis allé », date de ta dernière contribution</strong> : fiabilité des offres, tes favoris, ton accès et ton niveau.</li>
-          <li><strong>Poids de tes réactions</strong>, calculé à partir de l&apos;ancienneté de ton compte, de ton activité sur 30 jours et de l&apos;accord de tes réactions avec celles des autres : rendre la fiabilité des offres plus juste. Il n&apos;est pas enregistré, et toi seul vois ton rang dans ton profil.</li>
+          <li><strong>Poids de tes réactions</strong>, calculé à partir de l&apos;ancienneté de ton compte, de ton activité sur 30 jours et de l&apos;accord de tes réactions avec celles des autres : rendre la fiabilité des offres plus juste. Il n&apos;est pas enregistré, et toi seul vois ton rang, sur la page « Ciblés ».</li>
           <li><strong>Tes Flèches</strong> (gains, offre concernée, date) et les jours où tu as partagé ou réagi : ton solde, ton rang et ta série. Toi seul les vois.</li>
+          <li><strong>Tes échanges de récompenses</strong> (récompense, code du bon, dates d&apos;échange et d&apos;utilisation) et tes avantages actifs : te redonner tes bons. Rien n&apos;est transmis aux partenaires, tu leur montres toi-même ton bon.</li>
           <li><strong>Position au moment d&apos;une réaction</strong> à une offre placée sur la carte, si tu l&apos;autorises : calculer les Flèches selon la distance. Elle n&apos;est pas enregistrée.</li>
           <li><strong>Pour un commerçant</strong> : nom, adresse, activité et emplacement du commerce.</li>
         </ul>

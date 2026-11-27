@@ -300,3 +300,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : renommer les boutons « Toujours dispo » / « Offre expirée » ; refuser le vote à distance ; emojis (règle de l'équipe : icônes dessinées).
 - **Choix par défaut** : vote retiré ou offre supprimée → gains retirés ; pas de points rétroactifs ; solde privé ; commerçants sans Flèches.
 - **Qui** : Sacha
+
+## 2026-11-27 20h47 — Page « Ciblés » et boutique de récompenses (tâche 42)
+- **Décision** : l'onglet Favoris devient « Ciblés » : Flèches et influence fusionnées en haut, puis Favoris / Activité (historique, accès 7 jours, niveau) / Récompenses (solde, mes bons, boutique). Le profil les perd et renvoie vers la boutique. Solde = gains − dépenses, rang d'après les gains. 3e rang : « Robin des Étudiants ». Compte de démo : `demo.sarah` (485).
+- **Écartés** : « Mes récompenses » dans le profil ; renommer « Robin des Campus ».
+- **Choix par défaut** : partenaires fictifs ; Avant-Première sans effet sur les offres pour l'instant ; pas de tirage codé ; QR code dessiné dans le navigateur (bibliothèque `qrcode`).
+- **Qui** : Sacha

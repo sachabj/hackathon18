@@ -328,3 +328,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 21h00 — Matteo (tâche 40 : document des algorithmes)
 - Nouveau `docs/ALGORITHMES.md` (lecteurs : équipe + jury) : offres visibles, ordre par écran, sponsorisées, compatibilité « Pour toi » (barème + exemple), Hot (formule + exemples), recherche (poids, correspondances), fiabilité façon Waze (poids d'un étudiant, masse, score, couleurs, compteurs, archivage à 3 signalements de la tâche 17b, repli sans 014), limites, tableau « où régler ».
 - Écrit d'après le code à jour (après la tâche 17b de Sacha). Exemples chiffrés repris des tests en script et sur PGlite des tâches 32 et 33. Aucun code modifié.
+
+### 2026-11-27 20h47 — Sacha (« Ciblés » et récompenses, tâche 42)
+- Nouveaux : `017_rewards.sql` (+ `schema.sql`), `lib/rewards.ts`, `components/{Tabs,cibles,rewards}`, `arrows/UseArrowsLink`. Modifiés : `favoris/page.tsx`, accueil (onglets partagés), `NavBar`, `ArrowsCard`, `ArrowBadge`, `InfluenceCard`, profil, `icons`, `arrows.ts`, `account.ts`, confidentialité, `globals.css`, `seed_arrows.sql`, `docs/ALGORITHMES.md` ; dépendance `qrcode`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 57 contrôles base et scénario de démo sur Postgres local ; 48 + 63 contrôles dans Chrome sans interface avec un faux Supabase. **017 pas lancée**, rien testé sur la vraie base ni sur téléphone.

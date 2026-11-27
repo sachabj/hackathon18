@@ -139,7 +139,7 @@ La fiabilité est affichée par une **pastille de couleur avec un mot**, jamais 
 
 ### 3.1 Le poids d'un étudiant
 
-Chaque étudiant a un **poids entre 0,5 et 2** : sa réaction compte d'autant plus qu'il est fiable. Il est calculé **par la base de données** et n'est jamais montré aux autres (chacun voit seulement son propre rang dans son profil).
+Chaque étudiant a un **poids entre 0,5 et 2** : sa réaction compte d'autant plus qu'il est fiable. Il est calculé **par la base de données** et n'est jamais montré aux autres (chacun voit seulement son propre rang, sur la page « Ciblés »).
 
 ```
 poids = justesse × activité × ancienneté      (borné entre 0,5 et 2)
@@ -160,7 +160,7 @@ Exemples (calculés sur une base de test) :
 | Ancien, 5 avis jugés, 1 seul dans le sens des autres | (1+2)/(5+3) = 0,375 | 5 | 60 j | **0,95** |
 | Compte créé hier, 1 réaction | neutre | 1 | 1 j | **0,67** |
 
-**Rang affiché dans le profil** : Débutant (poids < 0,9), Confirmé (< 1,3), Expert (≥ 1,3), avec des conseils pour progresser.
+**Rang affiché sur la page « Ciblés »** : Débutant (poids < 0,9), Confirmé (< 1,3), Expert (≥ 1,3), avec des conseils pour progresser.
 
 ### 3.2 La masse d'une réaction
 
@@ -204,7 +204,7 @@ La fiabilité ne masque rien. Une offre disparaît seulement quand **3 étudiant
 
 ### 3.6 Si la base n'est pas à jour
 
-Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'application applique **exactement la même formule avec un poids de 1 pour tout le monde**, et le rang n'apparaît pas dans le profil.
+Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'application applique **exactement la même formule avec un poids de 1 pour tout le monde**, et le rang n'est pas affiché.
 
 ---
 

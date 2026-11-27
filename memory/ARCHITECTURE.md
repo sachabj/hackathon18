@@ -42,6 +42,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   ├── rewards.ts                # boutique : catalogue, échanges, bons
     │   ├── arrows.ts                 # Flèches : barème affiché, rangs, messages de gain, position au vote (+ useMyArrows.ts)
     │   ├── useDealReactions.ts       # réagir en un geste depuis une carte (vote + passage, relecture des votes et masses)
     │   ├── useCurrentUserId.ts       # id de l'utilisateur connecté (session locale)
@@ -71,7 +72,10 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── icons.tsx                 # ~60 icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
     │   ├── AuthorBadge.tsx           # badge « Commerçant » (offre officielle) / « Étudiant »
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
-    │   ├── NavBar.tsx                # barre du bas : Accueil / Recherche / Partager / Favoris / Profil (icônes `icons.tsx`)
+    │   ├── NavBar.tsx                # barre du bas : Accueil / Recherche / Partager / Ciblés / Profil (icônes `icons.tsx`)
+    │   ├── Tabs.tsx                  # onglets rectangulaires (accueil, Ciblés)
+    │   ├── cibles/                   # FavoritesPanel, ActivityPanel
+    │   ├── rewards/                  # RewardsPanel, RedeemDialog, Voucher (QR), Modal
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
@@ -81,7 +85,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
-    │   ├── profile/                  # ActivityCard, InfluenceCard (rang Waze), PreferencesSummary, MyDealCard
+    │   ├── profile/                  # ActivityCard, InfluenceCard (bloc affiché dans « Ciblés »), PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
@@ -94,11 +98,11 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
-        ├── favoris/page.tsx          # favoris (Anne-Lise)
+        ├── favoris/page.tsx          # « Ciblés » : carte Flèches + influence, onglets Favoris / Activité / Récompenses (`?onglet=`)
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
         ├── confidentialite/page.tsx  # politique de confidentialité, lisible sans compte (Sacha)
         ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
-        └── profil/page.tsx           # accès, niveau, préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
+        └── profil/page.tsx           # « Utiliser mes Flèches », préférences, mes bons plans (Justin) ; simuler position à faire (Matteo)
 ```
 
 ## Conventions de code
@@ -117,9 +121,10 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ · `015_demo_titles.sql` ⏳ · `016_arrows.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ · `015_demo_titles.sql` ⏳ · `016_arrows.sql` ⏳ · `017_rewards.sql` ⏳ **à exécuter**
 - `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste inventé sur des lieux OpenStreetMap, ODbL : titre normal, description « Exemple fictif (démo) … »). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
+- **Récompenses (017)** : `rewards` (catalogue de 6, inséré par la migration ; partenaires fictifs « (démo) ») et `user_rewards` (prix payé, code `SW-XXXXXX`, `used_at`), en lecture seule pour l'app. RPC `redeem_reward(id)` (verrou par étudiant, vérifie le solde, dépense et active l'avantage) et `use_reward(id)` (bon commerçant, une fois). **Double compteur** calculé, non stocké : `total_arrows_earned` (gains → rang) et `current_arrows_balance` (gains − dépenses), renvoyés par `my_arrows()`. `profiles.golden_badge` et `early_access_until` non écrivables.
 - `supabase/seed_arrows.sql` (après 016 et `reset_demo.sql`, relançable) : historique inventé donnant des rangs différents à six comptes de démo + trois offres scénarisées (3e confirmation, 3e signalement, déjà archivée) ; démo conseillée en `demo.sarah`.
 - **Les Flèches (016)** : `arrow_events` (journal : create 50, bonus 30, confirm 10, report 15 ; `paid` false = signalement en attente) et `activity_days` (série), lisibles par leur seul propriétaire, **écrits uniquement par des triggers** sur `deals` et `votes`. `deals.archived_at` (non écrivable) posé au 3e « Plus dispo ». RPC `react_to_deal(deal, value, lat?, lng?)` (invoker : droits de `votes` ; position non enregistrée) et `my_arrows()`. Un vote retiré ou une offre supprimée retire les gains correspondants (les votants d'une offre supprimée gardent les leurs). Barème en double dans `src/lib/arrows.ts`.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).

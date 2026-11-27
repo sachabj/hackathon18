@@ -4,9 +4,10 @@
 // Pendant une recherche, une seule liste de résultats remplace les onglets.
 import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
-import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import DealCard from "@/components/feed/DealCard";
 import SearchFilters from "@/components/feed/SearchFilters";
+import Tabs from "@/components/Tabs";
 import { CloseIcon, SearchIcon } from "@/components/icons";
 import { APP_NAME, ZONES } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
@@ -105,17 +106,6 @@ export default function Page() {
   const found = results ? results.exact.length + results.close.length : 0;
   const hidden = matched ? matched.exact.length + matched.close.length - found : 0;
   const busy = loading || loadingProfile;
-
-  /** Au clavier : flèches, Début et Fin passent d'un onglet à l'autre. */
-  function moveTab(e: KeyboardEvent<HTMLDivElement>) {
-    const i = tabs.findIndex((t) => t.id === tab);
-    const keys: Record<string, number> = { ArrowLeft: i - 1, ArrowRight: i + 1, Home: 0, End: tabs.length - 1 };
-    if (!(e.key in keys)) return;
-    e.preventDefault();
-    const next = (keys[e.key] + tabs.length) % tabs.length;
-    setTab(tabs[next].id);
-    e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next].focus();
-  }
 
   /** Les résultats s'affichent déjà pendant la saisie : valider ferme le clavier pour les voir. */
   function submitSearch(e: FormEvent<HTMLFormElement>) {
@@ -250,37 +240,7 @@ export default function Page() {
           )
         ) : (
           <div>
-            <div
-              role="tablist"
-              aria-label="Rubriques"
-              onKeyDown={moveTab}
-              className="grid grid-cols-5 border-b-2"
-              style={{ borderColor: "var(--color-forest)" }}
-            >
-              {tabs.map((t) => {
-                const selected = tab === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    id={`tab-${t.id}`}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    aria-controls="tab-panel"
-                    tabIndex={selected ? 0 : -1}
-                    onClick={() => setTab(t.id)}
-                    className="flex min-h-14 items-center justify-center rounded-t border border-b-0 px-0.5 py-1.5 text-center text-[11px] font-medium leading-tight min-[360px]:text-xs"
-                    style={
-                      selected
-                        ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
-                        : { borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)", color: "var(--color-ink)" }
-                    }
-                  >
-                    {t.label}
-                  </button>
-                );
-              })}
-            </div>
+            <Tabs label="Rubriques" idPrefix="tab" tabs={tabs} selected={tab} onSelect={setTab} />
 
             <div id="tab-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="space-y-3 pt-3">
               {!busy && !error && (

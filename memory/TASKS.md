@@ -13,8 +13,9 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **013_unvote.sql à exécuter** (Matteo) : sans elle, décocher une réaction affiche « base pas à jour » (cocher marche).
 - ⏳ **014_voter_weights.sql à exécuter** (Matteo, après 013) : poids des étudiants pour la fiabilité.
 - ⏳ **015_demo_titles.sql** (Matteo, données seulement) : retire « [Exemple] » des titres déjà en base.
-- ⏳ **016_arrows.sql à exécuter** (Sacha, après 013 et 014) : Flèches et archivage à 3 signalements ; puis, pour la démo, `reset_demo.sql` et `seed_arrows.sql`.
-- Prochaine migration : numéro **017** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **016_arrows.sql à exécuter** (Sacha, après 013 et 014) : Flèches et archivage à 3 signalements ; puis, pour la démo, `reset_demo.sql` et `seed_arrows.sql` (**le jour de la démo** ; demande 016 et 017).
+- ⏳ **017_rewards.sql à exécuter** (Sacha, après 016) : boutique de récompenses.
+- Prochaine migration : numéro **018** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -52,7 +53,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 40 | E | Document `docs/ALGORITHMES.md` : visibilité, ordre d'affichage (sponsorisées, compatibilité, Hot, recherche), fiabilité (poids, masses, score, archivage), limites, où régler | FAIT (Matteo) : **à mettre à jour à chaque changement de formule** |
 | 36 | E | Filtres sous la recherche (prix, moyen + temps de trajet, conditions, tri) ; « gratuit », « pas cher », « près de moi » compris dans la saisie. « Ouvert maintenant » remis à plus tard (aucune donnée d'horaires) | À TESTER (Sacha) : `lib/search.ts`, `lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`, `app/page.tsx` |
 | 41 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
-| 42 | E | Onglet « Ciblés » (à la place de Favoris) : carte Flèches + influence, onglets Favoris / Activité / Récompenses ; boutique, échanges, bons avec QR code (migration **017**) ; profil allégé. Touche `favoris/page.tsx` (Anne-Lise), `NavBar`, `profil/page.tsx` (Justin), `InfluenceCard` (Matteo) | EN COURS (Sacha) |
+| 42 | E | Onglet « Ciblés » (à la place de Favoris) : carte Flèches + influence, onglets Favoris / Activité / Récompenses ; boutique, échanges, bons avec QR code (migration **017**) ; profil allégé. Touche `favoris/page.tsx` (Anne-Lise), `NavBar`, `profil/page.tsx` (Justin), `InfluenceCard` (Matteo) | À TESTER (Sacha) : ⏳ **lancer `017_rewards.sql`** ; `npm install` après le pull (nouvelle dépendance `qrcode`) ; testé sur Postgres local et faux Supabase seulement |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -104,12 +105,18 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 - **Sans position, pas de pénalité** (décision provisoire, à revoir) : refuser la localisation, ou voter hors de l'app, contourne le barème de distance ; une position peut aussi être falsifiée.
 - **Publication non plafonnée** : +50 par offre, des offres bidon en série rapportent sans limite (plafond à décider).
 - 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
-- **Récompenses** : prochaine étape, à cadrer.
+- **Récompenses** (tâche 42) : partenaires fictifs ; « Avant-Première » seulement enregistrée (aucune offre flash n'existe) ; aucun tirage de tombola codé ; le commerçant ne peut pas vérifier un code (c'est l'étudiant qui marque le bon utilisé).
 
 ## À prendre en compte (depuis les Flèches, Sacha)
 - **Matteo** : le masquage pondéré (tâche 33) est remplacé par l'archivage à 3 signalements (`isDealHidden(deal, votes, now)` ; `minVotesToHide` supprimé) ; la fiabilité pondérée ne sert plus qu'à la couleur. `vote()` passe par la RPC `react_to_deal` (toujours l'utiliser, y compris dans `PublishForm`) ; « +10 / +15 » ajoutés sur les boutons de réaction ; `DealSheet`, `ReactionBar`, `duplicates.ts` modifiés.
 - **Justin** : `profil/page.tsx` (carte Flèches en haut, le reste conservé), statut « Archivé » dans `MyDealCard` / `OfferCard` / `offerStats` ; après `reset_demo.sql`, lancer `seed_arrows.sql` (rien à changer dans ton script).
 - **Anne-Lise** : solde de Flèches ajouté dans l'en-tête des favoris ; nouvelle icône `ArrowShotIcon`.
+
+## À prendre en compte (depuis « Ciblés », Sacha)
+- **Tous** : `npm install` (dépendance `qrcode`).
+- **Anne-Lise** : l'onglet « Favoris » devient « Ciblés » (même adresse `/favoris`) ; ta liste est dans `components/cibles/FavoritesPanel.tsx`, comportement inchangé ; `NavBar` et `icons.tsx` (`HeartArrowIcon`) modifiés.
+- **Justin** : le profil perd la carte Flèches, l'influence et `ActivityCard` (déplacée dans « Ciblés > Activité ») et gagne « Utiliser mes Flèches ».
+- **Matteo** : `InfluenceCard.tsx` devient un bloc sans carte, affiché sous les Flèches dans « Ciblés » ; `docs/ALGORITHMES.md` corrigé (emplacement du rang). Onglets rectangulaires partagés : `components/Tabs.tsx`.
 
 ## Codé : état des essais
 | # | Fonction | Statut |

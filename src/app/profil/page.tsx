@@ -1,32 +1,22 @@
 "use client";
 
-// Profil étudiant (Justin) : activité et accès, préférences, mes bons plans et leur audience.
+// Profil étudiant (Justin) : préférences, mes bons plans et leur audience.
 // TODO Tâche 11 (Matteo) : bouton « 📍 Simuler ma position ».
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import AccountLink from "@/components/account/AccountLink";
-import ArrowsCard from "@/components/arrows/ArrowsCard";
+import UseArrowsLink from "@/components/arrows/UseArrowsLink";
 import LogoutButton from "@/components/LogoutButton";
 import { TargetIcon } from "@/components/icons";
-import ActivityCard from "@/components/profile/ActivityCard";
-import InfluenceCard from "@/components/profile/InfluenceCard";
 import MyDealCard from "@/components/profile/MyDealCard";
 import PreferencesSummary from "@/components/profile/PreferencesSummary";
 import { deleteMyDeal, fetchMyDeals, setMyDealEnded, updateMyDeal } from "@/lib/engagement";
 import { toStudentProfile } from "@/lib/matching";
 import { fetchMyPreferences } from "@/lib/preferences";
-import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import type { UserContribution } from "@/lib/types";
-
-async function fetchAccount() {
-  const mine = await fetchMyPreferences();
-  const { data, error } = await getSupabase().from("user_contributions").select("*").eq("user_id", mine.profile.id);
-  if (error) throw new Error(error.message);
-  return { ...mine, contributions: data as UserContribution[], fetchedAt: Date.now() };
-}
+import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 export default function Page() {
-  const [account, setAccount] = useState<Awaited<ReturnType<typeof fetchAccount>> | null>(null);
+  const [account, setAccount] = useState<Awaited<ReturnType<typeof fetchMyPreferences>> | null>(null);
   const [mine, setMine] = useState<Awaited<ReturnType<typeof fetchMyDeals>> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -36,7 +26,7 @@ export default function Page() {
       const fail = (e: Error) => !isCancelled() && setError(e.message);
       // Deux chargements séparés : un souci sur l'un n'empêche pas d'afficher l'autre.
       return Promise.all([
-        fetchAccount().then((a) => !isCancelled() && setAccount(a)).catch(fail),
+        fetchMyPreferences().then((a) => !isCancelled() && setAccount(a)).catch(fail),
         fetchMyDeals().then((d) => !isCancelled() && setMine(d)).catch(fail),
       ]);
     },
@@ -84,12 +74,8 @@ export default function Page() {
         {!account && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">Chargement…</p>}
       </div>
 
-      {account && <ArrowsCard />}
-
-      {account && <ActivityCard profile={account.profile} contributions={account.contributions} now={account.fetchedAt} />}
-
-      {/* Rang d'influence façon Waze (tâche 33, Matteo) */}
-      {account && <InfluenceCard />}
+      {/* Flèches, influence et activité sont sur la page « Ciblés ». */}
+      {account && <UseArrowsLink />}
 
       {account && (
         <section>
