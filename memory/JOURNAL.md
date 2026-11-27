@@ -419,3 +419,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 23h25 — Justin (pitch et vraies offres)
 - `TASKS.md` : tâche 15 précisée et passée en priorité, tâche 65 ajoutée ; `DECISIONS.md`. Aucun code modifié.
+
+### 2026-11-27 23h40 — Justin (diapos du pitch, tâche 15)
+- Présentation « ShareWood — pitch » (claude.ai, privée) : couverture, problème, idée, démo, confiance, modèle économique, suite ; notes d'orateur minutées (3 min). Aucun code modifié. Prénoms, aucun chiffre de marché. **Pas encore relue ni répétée.**
