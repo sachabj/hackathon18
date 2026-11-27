@@ -316,3 +316,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 20h35 — Matteo (tâche 38 : ligne du lieu pleine largeur)
 - `src/components/feed/DealCard.tsx` : le lieu et la distance quittent la colonne du titre pour une ligne pleine largeur (icône repère) sous la ligne titre / fiabilité / cœur, sans espace vide sous le badge. Choix de Matteo (aperçus proposés avant de coder).
 - Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur.
+
+### 2026-11-27 20h45 — Matteo (tâche 39 : sans « Bonjour »)
+- `src/app/page.tsx` et `src/app/recherche/page.tsx` : titre « Bonjour <pseudo> » remplacé par un titre invisible (lecteurs d'écran) ; sur Recherche, le bloc d'en-tête n'est affiché que s'il contient l'invitation à personnaliser ou une erreur.
+- Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur.

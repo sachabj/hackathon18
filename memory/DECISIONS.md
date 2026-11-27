@@ -289,3 +289,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande de Matteo (questions posées avant de coder) : redondance titre / montant, carte encore trop chargée.
 - **Écarté** : supprimer toute mention de fiction (fausses promos de vrais commerces présentées comme vraies sur un site en ligne).
 - **Qui** : Matteo
+
+## 2026-11-27 20h45 — Pas de formule d'accueil (tâche 39)
+- **Décision** : plus de « Bonjour <pseudo> » (ni « Les bons plans étudiants ») en haut de l'Accueil et de Recherche : la page commence par la recherche ou la carte ; un titre `sr-only` reste pour les lecteurs d'écran. Règle pour la suite : pas de mots de politesse ou de remplissage dans l'interface.
+- **Pourquoi** : demande de Matteo (« mots superflus »), portée confirmée avant de coder ; « Fil des bons plans », le compteur de Recherche et « Mes favoris » sont gardés.
+- **Qui** : Matteo

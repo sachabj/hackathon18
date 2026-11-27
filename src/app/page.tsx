@@ -164,7 +164,8 @@ export default function Page() {
       </header>
 
       <div className="space-y-4 px-4 py-4">
-        <h1 className="text-2xl">{profile?.username ? `Bonjour ${profile.username}` : "Les bons plans étudiants"}</h1>
+        {/* Pas de formule d'accueil (« Bonjour … ») : la page commence par la recherche. Titre pour les lecteurs d'écran. */}
+        <h1 className="sr-only">Les bons plans étudiants</h1>
         {profile && !profile.onboarded && (
           <Link href="/onboarding" className="block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
             <span className="block font-medium">Personnalise tes bons plans</span>

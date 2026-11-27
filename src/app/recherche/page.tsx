@@ -59,20 +59,22 @@ export default function Page() {
         <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
       </header>
 
-      <div className="px-4 py-3">
-        <h1 className="text-sm font-medium text-[var(--color-muted)]">
-          {profile?.username ? `Bonjour ${profile.username}` : "Les bons plans étudiants"}
-        </h1>
-        {profile && !profile.onboarded && (
-          <Link href="/onboarding" className="mt-2 block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
-            <span className="block font-medium">Personnalise tes bons plans</span>
-            <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
-              1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
-            </span>
-          </Link>
-        )}
-        {profileError && <p className="mt-2 text-sm text-red-600">{profileError}</p>}
-      </div>
+      {/* Pas de formule d'accueil (« Bonjour … ») ; titre pour les lecteurs d'écran. */}
+      <h1 className="sr-only">Carte des bons plans</h1>
+      {/* Bloc affiché seulement s'il a quelque chose à dire (pas d'espace vide). */}
+      {((profile && !profile.onboarded) || profileError) && (
+        <div className="px-4 py-3">
+          {profile && !profile.onboarded && (
+            <Link href="/onboarding" className="block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
+              <span className="block font-medium">Personnalise tes bons plans</span>
+              <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
+                1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
+              </span>
+            </Link>
+          )}
+          {profileError && <p className="mt-2 text-sm text-red-600">{profileError}</p>}
+        </div>
+      )}
 
       <div className="flex shrink-0 gap-2 overflow-x-auto px-4 py-3">
         {[null, ...categories].map((c) => (
