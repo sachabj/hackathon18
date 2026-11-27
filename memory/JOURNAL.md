@@ -287,3 +287,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 19h12 — Sacha (recherche, tâche 34)
 - `src/lib/search.ts` réécrit, `src/app/page.tsx` (liste de résultats).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 20 contrôles des règles en script ; essais sur les 151 offres de `reset_demo.sql` (Postgres local), listes de mots resserrées ensuite ; Chrome sans interface avec un faux Supabase. **Pas testé sur la vraie base ni sur téléphone.**
+
+### 2026-11-27 19h15 — Sacha (bouton « Rechercher »)
+- `src/app/page.tsx` : barre de recherche en formulaire, bouton « Rechercher », touche du clavier mobile ; texte du champ raccourci. Les résultats restent affichés pendant la saisie (choix de Sacha).
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (320 et 390 px). **Clavier d'un vrai téléphone pas testé.**

@@ -3,7 +3,7 @@
 // Accueil : barre de recherche, puis les offres rangées en onglets (« Pour toi » et les rubriques).
 // Pendant une recherche, une seule liste de résultats remplace les onglets.
 import Link from "next/link";
-import { useState, type KeyboardEvent } from "react";
+import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import DealCard from "@/components/feed/DealCard";
 import { SearchIcon } from "@/components/icons";
 import { APP_NAME } from "@/lib/constants";
@@ -37,6 +37,7 @@ export default function Page() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [tab, setTab] = useState<TabId>("forYou");
   const [query, setQuery] = useState("");
+  const searchInput = useRef<HTMLInputElement>(null);
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   // Avec un profil : les plus compatibles d'abord. Sans : les plus récentes.
@@ -76,6 +77,13 @@ export default function Page() {
     e.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next].focus();
   }
 
+  /** Les résultats s'affichent déjà pendant la saisie : valider ferme le clavier pour les voir. */
+  function submitSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (searching) searchInput.current?.blur();
+    else searchInput.current?.focus();
+  }
+
   const list = (items: Item[]) => (
     <ul className="space-y-3">
       {items.map(({ deal, match }) => (
@@ -108,18 +116,27 @@ export default function Page() {
           </Link>
         )}
 
-        <div role="search" className="relative">
-          <SearchIcon className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-forest)]" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher un bon plan"
-            aria-label="Rechercher un bon plan"
-            className="sw-field"
-            style={{ paddingLeft: "2.75rem" }}
-          />
-        </div>
+        {/* `action` : sans formulaire avec cet attribut, le clavier iPhone n'affiche pas la touche « Rechercher ». */}
+        <form role="search" action="/" onSubmit={submitSearch} className="flex gap-2">
+          <div className="relative min-w-0 flex-1">
+            <SearchIcon className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--color-forest)]" />
+            <input
+              ref={searchInput}
+              type="search"
+              enterKeyHint="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Un bon plan, un lieu…"
+              aria-label="Rechercher un bon plan"
+              className="sw-field h-full"
+              style={{ paddingLeft: "2.75rem" }}
+            />
+          </div>
+          {/* Coins identiques à ceux du champ (`.sw-btn-primary` l'emporte sur les classes Tailwind). */}
+          <button type="submit" className="sw-btn-primary shrink-0 text-sm" style={{ borderRadius: 14, padding: "0 0.9rem" }}>
+            Rechercher
+          </button>
+        </form>
 
         {profileError && <p className="text-sm text-red-600">{profileError}</p>}
         {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
