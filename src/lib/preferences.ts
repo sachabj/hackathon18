@@ -1,5 +1,5 @@
 // Lecture et écriture des préférences : `profiles` (catégories, zones) + `preferences` (privé).
-import type { StudentProfile } from "./matching";
+import { isTraveler, type StudentProfile } from "./matching";
 import { getSupabase } from "./supabase/client";
 import type { Preferences, Profile } from "./types";
 
@@ -21,7 +21,7 @@ export async function fetchMyPreferences() {
 
 export async function saveMyPreferences(userId: string, me: StudentProfile) {
   const supabase = getSupabase();
-  const privatePart = await supabase.from("preferences").upsert({
+  const base = {
     user_id: userId,
     home_zone_id: me.homeZoneId,
     lat: me.position?.lat ?? null,
@@ -30,7 +30,15 @@ export async function saveMyPreferences(userId: string, me: StudentProfile) {
     budget_profile: me.budget,
     activities: me.activities,
     updated_at: new Date().toISOString(),
-  });
+  };
+  const travel = {
+    home_visits: me.homeVisits,
+    wants_travel: me.wantsTravel,
+    travel_modes: isTraveler(me) ? me.travelModes : [],
+  };
+  let privatePart = await supabase.from("preferences").upsert({ ...base, ...travel });
+  // Colonnes voyage absentes (migration 006 pas encore lancée) : on enregistre au moins le reste.
+  if (privatePart.error?.code === "PGRST204") privatePart = await supabase.from("preferences").upsert(base);
   if (privatePart.error) throw new Error(readableError(privatePart.error));
 
   const publicPart = await supabase

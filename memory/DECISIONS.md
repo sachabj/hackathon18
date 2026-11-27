@@ -92,3 +92,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : simple et fiable pour la démo ; Photon accepte les appels navigateur (CORS) et la recherche par nom de commerce, contrairement à l'API Adresse (adresses seulement).
 - **Écartés** : extraction depuis une photo par IA (clé API, temps) ; Nominatim (pas fait pour la recherche répétée côté client) ; Google Places (clé payante).
 - **Qui** : Matteo
+
+## 2026-11-27 — Voyages et budget
+- **Décision** : étape « longs trajets » (retours chez les parents : souvent / parfois / rarement ; envie de voyager ; train, avion, bus, covoiturage). L'avion quitte les transports du quotidien. Le budget ne retire plus d'offre de « Pour toi » : il la fait seulement descendre.
+- **Pourquoi** : les étudiants rentrent souvent en train ou en avion ; demande de moins recommander plutôt que masquer.
+- **Écartés** : ville des parents (les bons plans n'ont pas de destination).
+- **Qui** : Sacha

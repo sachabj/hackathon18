@@ -1,4 +1,4 @@
-import type { ActivityId, BudgetProfile, DealCategory, DealSubcategory, TransportMode } from "./types";
+import type { ActivityId, BudgetProfile, DealCategory, DealSubcategory, HomeVisits, TransportMode } from "./types";
 
 export const APP_NAME = "ShareWood";
 
@@ -48,6 +48,15 @@ export const BUDGET_PROFILES: Record<BudgetProfile, { label: string; emoji: stri
   balanced: { label: "Équilibré", emoji: "⚖️", hint: "Je me fais plaisir, en faisant attention." },
   comfort: { label: "Confort", emoji: "✨", hint: "La qualité avant tout, si l'offre vaut le coup." },
 };
+
+export const HOME_VISITS: Record<HomeVisits, { label: string; emoji: string; hint: string }> = {
+  often: { label: "Souvent", emoji: "🔁", hint: "Plusieurs fois par mois" },
+  sometimes: { label: "Parfois", emoji: "📅", hint: "Surtout aux vacances" },
+  never: { label: "Rarement", emoji: "🛋️", hint: "Ou presque jamais" },
+};
+
+/** Moyens proposés pour les longs trajets (mêmes ids que deals.subcategory). */
+export const TRAVEL_MODES: DealSubcategory[] = ["train", "plane", "bus", "carpool"];
 
 /** Niveau de prix d'un bon plan (colonne deals.price_level), à proposer dans le formulaire de publication. */
 export const PRICE_LEVELS = [

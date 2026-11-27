@@ -4,12 +4,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ACTIVITIES, BUDGET_PROFILES, CATEGORIES, TRANSPORT_MODES, ZONES } from "@/lib/constants";
+import {
+  ACTIVITIES,
+  BUDGET_PROFILES,
+  CATEGORIES,
+  HOME_VISITS,
+  SUBCATEGORIES,
+  TRANSPORT_MODES,
+  TRAVEL_MODES,
+  ZONES,
+} from "@/lib/constants";
 import { formatDistance, nearestZone } from "@/lib/geo";
-import { rankDeals, type StudentProfile } from "@/lib/matching";
+import { isTraveler, rankDeals, toStudentProfile, type StudentProfile } from "@/lib/matching";
 import { fetchMyPreferences, saveMyPreferences } from "@/lib/preferences";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
-import type { ActivityId, BudgetProfile, DealCategory, TransportMode } from "@/lib/types";
+import type { ActivityId, BudgetProfile, DealCategory, HomeVisits, TransportMode } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
 import ChoiceTile from "./ChoiceTile";
 
@@ -24,11 +33,15 @@ const EMPTY: StudentProfile = {
   transportModes: [],
   budget: null,
   activities: [],
+  homeVisits: null,
+  wantsTravel: null,
+  travelModes: [],
 };
 
 const STEPS = [
   { id: "zone", title: "Où es-tu ?", subtitle: "Choisis ta zone principale, là où tu passes le plus de temps." },
-  { id: "transport", title: "Comment tu te déplaces ?", subtitle: "Pour ne te proposer que ce qui est à ta portée. Plusieurs choix possibles." },
+  { id: "transport", title: "Au quotidien, tu te déplaces comment ?", subtitle: "Pour ne te proposer que ce qui est à ta portée. Plusieurs choix possibles." },
+  { id: "travel", title: "Et les longs trajets ?", subtitle: "Pour repérer les billets et les covoiturages qui te serviront." },
   { id: "budget", title: "Ton budget ?", subtitle: "Visible uniquement par toi." },
   { id: "categories", title: "Tes pôles de dépenses", subtitle: "Touche-les dans l'ordre d'importance : les 3 premiers sont tes priorités." },
   { id: "activities", title: "Qu'est-ce que tu aimes faire ?", subtitle: "On mettra ces sorties en avant." },
@@ -59,18 +72,7 @@ export default function PreferencesWizard() {
       .then(({ profile, preferences }) => {
         if (cancelled) return;
         setUser({ id: profile.id, name: profile.username, editing: profile.onboarded });
-        setMe({
-          categories: profile.followed_categories,
-          zoneIds: profile.followed_zone_ids,
-          homeZoneId: preferences?.home_zone_id ?? null,
-          position:
-            preferences?.lat != null && preferences.lng != null
-              ? { lat: preferences.lat, lng: preferences.lng }
-              : null,
-          transportModes: preferences?.transport_modes ?? [],
-          budget: preferences?.budget_profile ?? null,
-          activities: preferences?.activities ?? [],
-        });
+        setMe(toStudentProfile(profile, preferences));
         setStep(0);
         setSaving(false);
         setError(null);
@@ -143,6 +145,7 @@ export default function PreferencesWizard() {
     current.id === "zone" ? !me.homeZoneId : current.id === "categories" ? me.categories.length === 0 : false;
   const skippable =
     (current.id === "transport" && me.transportModes.length === 0) ||
+    (current.id === "travel" && !me.homeVisits && me.wantsTravel === null) ||
     (current.id === "budget" && !me.budget) ||
     (current.id === "activities" && me.activities.length === 0);
   const matches = rankDeals(deals, me).filter((r) => r.match.forYou).length;
@@ -245,7 +248,7 @@ export default function PreferencesWizard() {
 
         {current.id === "transport" && (
           <div className="grid grid-cols-3 gap-2">
-            {keys<TransportMode>(TRANSPORT_MODES).map((m) => (
+            {keys<TransportMode>(TRANSPORT_MODES).filter((m) => m !== "plane").map((m) => (
               <ChoiceTile
                 key={m}
                 emoji={TRANSPORT_MODES[m].emoji}
@@ -254,6 +257,56 @@ export default function PreferencesWizard() {
                 onClick={() => update({ transportModes: toggle(me.transportModes, m) })}
               />
             ))}
+          </div>
+        )}
+
+        {current.id === "travel" && (
+          <div className="space-y-5">
+            <fieldset>
+              <legend className="mb-2 text-sm font-semibold">🏠 Tu rentres chez tes parents ?</legend>
+              <div className="grid grid-cols-3 gap-2">
+                {keys<HomeVisits>(HOME_VISITS).map((v) => (
+                  <ChoiceTile
+                    key={v}
+                    {...HOME_VISITS[v]}
+                    selected={me.homeVisits === v}
+                    onClick={() => update({ homeVisits: me.homeVisits === v ? null : v })}
+                  />
+                ))}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend className="mb-2 text-sm font-semibold">🧳 Envie de voyager de temps en temps ?</legend>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { value: true, emoji: "🌍", label: "Oui, ça me tente" },
+                  { value: false, emoji: "🙂", label: "Pas pour l'instant" },
+                ].map(({ value, ...tile }) => (
+                  <ChoiceTile
+                    key={tile.label}
+                    {...tile}
+                    selected={me.wantsTravel === value}
+                    onClick={() => update({ wantsTravel: me.wantsTravel === value ? null : value })}
+                  />
+                ))}
+              </div>
+            </fieldset>
+            {isTraveler(me) && (
+              <fieldset>
+                <legend className="mb-2 text-sm font-semibold">Avec quoi ? (plusieurs choix possibles)</legend>
+                <div className="grid grid-cols-4 gap-2">
+                  {TRAVEL_MODES.map((m) => (
+                    <ChoiceTile
+                      key={m}
+                      emoji={SUBCATEGORIES[m].emoji}
+                      label={m === "carpool" ? "Covoit’" : SUBCATEGORIES[m].label}
+                      selected={me.travelModes.includes(m)}
+                      onClick={() => update({ travelModes: toggle(me.travelModes, m) })}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+            )}
           </div>
         )}
 
@@ -312,8 +365,19 @@ export default function PreferencesWizard() {
                   .join(" · "),
               },
               {
-                label: "Transports",
+                label: "Quotidien",
                 value: me.transportModes.map((m) => `${TRANSPORT_MODES[m].emoji} ${TRANSPORT_MODES[m].label}`).join(" · "),
+              },
+              {
+                label: "Voyages",
+                value: [
+                  me.homeVisits && `🏠 Chez les parents : ${HOME_VISITS[me.homeVisits].label.toLowerCase()}`,
+                  me.wantsTravel !== null && (me.wantsTravel ? "🌍 Envie de voyager" : "Pas de voyage prévu"),
+                  isTraveler(me) &&
+                    me.travelModes.map((m) => `${SUBCATEGORIES[m].emoji} ${SUBCATEGORIES[m].label}`).join(", "),
+                ]
+                  .filter(Boolean)
+                  .join(" · "),
               },
               {
                 label: "Budget",

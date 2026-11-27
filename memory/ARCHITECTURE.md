@@ -52,7 +52,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
     │   ├── merchant/                 # BusinessForm, LocationPicker, OfferForm, OfferCard
-    │   ├── preferences/              # PreferencesWizard (parcours en 6 étapes) + ChoiceTile
+    │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
@@ -80,13 +80,13 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ⏳ **à exécuter** · `006_travel.sql` ⏳ **à exécuter**
 - `supabase/seed_demo.sql` : bons plans d'exemple fictifs (facultatif, après 004).
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
 - `businesses` (un par compte commerçant, écriture via `register_business` seulement) : owner_id, name, address, category (restaurant | supermarket | activity | sport), zone_id, lat, lng
 - `deals.boosted_until` (mise en avant, via `boost_offer`) et `deals.ended_by` (via `set_nearby_deal_ended`) : non écrivables directement
 - Fonctions commerçant : `my_offer_stats()`, `deals_near_my_business()` (≤ 75 m, même catégorie, bons plans d'étudiants)
-- `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], updated_at
+- `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], home_visits (often | sometimes | never), wants_travel, travel_modes[] (ids de sous-catégories transport), updated_at
 - `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
 - `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités
 - `zones` : id (`bruz`, `ker-lann`, `rennes`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
@@ -105,6 +105,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 
 ## Personnalisation (`src/lib/matching.ts`)
 - Score sur 100 = points obtenus / points applicables (un critère non renseigné ne compte pas) : pôle de dépenses 40 (−4 par rang), localisation 25 (distance selon les transports, ou zone suivie), budget 20, activité ou transport emprunté 15.
-- **« Pour toi »** : score ≥ 55, à portée, et catégorie suivie ou activité / transport aimé. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).
+- **Voyages** : un transport longue distance (hors bus local) dans un mode choisi compte comme un pôle suivi (36 points si retours fréquents, sinon 28) pour qui rentre chez ses parents ou veut voyager.
+- **Budget** : change le score et l'ordre, mais ne retire jamais un bon plan.
+- **« Pour toi »** : score hors budget ≥ 55, à portée, et catégorie suivie, activité / transport aimé ou trajet utile. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).
 - Distances à vol d'oiseau depuis la position enregistrée, sinon le centre de la zone principale ; durées estimées.
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.

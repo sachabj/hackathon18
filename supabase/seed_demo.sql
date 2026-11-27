@@ -24,6 +24,8 @@ from (values
   ('Salle de sport : 1er mois offert', 'Sans frais d''inscription pour les étudiants.', 'sport', null, 'local', 'bruz', 'Salle de fitness (exemple)', 48.0289, -1.7479, 'puis 19 €/mois', 2, '{fitness}', 25, null, 36),
   ('Licence multisport à prix réduit', 'Foot, basket, volley : inscriptions ouvertes.', 'sport', null, 'zone', 'ker-lann', null, null, null, '25 € l''année', 2, '{team_sport}', null, 14, 60),
   ('Billets de train jeunes à -30 %', 'Sur les trajets du week-end.', 'transport', 'train', 'national', null, null, null, null, '-30 %', 2, '{}', 21, null, 48),
+  ('Vols étudiants dès 29 €', 'Tarif jeunes sur une sélection de destinations.', 'transport', 'plane', 'national', null, null, null, null, 'dès 29 €', 3, '{}', 14, null, 18),
+  ('Car longue distance à 9 €', 'Tarif jeunes au départ de Rennes.', 'transport', 'bus', 'national', null, null, null, null, '9 €', 1, '{}', 18, null, 12),
   ('Covoiturage Bruz → Rennes', 'Départ 18 h le vendredi, 3 places.', 'transport', 'carpool', 'zone', 'bruz', null, null, null, '2 €', 1, '{}', 6, null, 3),
   ('Abonnement bus jeunes', 'Tarif réduit pour les moins de 27 ans.', 'transport', 'bus', 'zone', 'rennes', null, null, null, 'tarif réduit', 2, '{}', null, null, 90),
   ('Dossier de bourse : ne rate pas la date', 'Pense à préparer tes justificatifs.', 'scholarship', null, 'national', null, null, null, null, 'Gratuit', 0, '{}', null, 30, 96),

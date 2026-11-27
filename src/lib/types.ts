@@ -79,6 +79,8 @@ export type TransportMode = "walk" | "bike" | "bus" | "train" | "car" | "carpool
 
 export type BudgetProfile = "tight" | "balanced" | "comfort";
 
+export type HomeVisits = "often" | "sometimes" | "never";
+
 export type ActivityId =
   | "cinema"
   | "music"
@@ -99,6 +101,10 @@ export interface Preferences {
   transport_modes: TransportMode[];
   budget_profile: BudgetProfile | null;
   activities: ActivityId[];
+  /** Retours chez les parents, envies de voyage (migration 006) */
+  home_visits?: HomeVisits | null;
+  wants_travel?: boolean | null;
+  travel_modes?: DealSubcategory[] | null;
   updated_at: string;
 }
 

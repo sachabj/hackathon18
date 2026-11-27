@@ -1,7 +1,16 @@
 // Compatibilité entre un bon plan et le profil d'un étudiant (voir memory/ARCHITECTURE.md § Personnalisation).
 import { ACTIVITIES, BUDGET_PROFILES, CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
 import { distanceKm, formatDistance } from "./geo";
-import type { ActivityId, BudgetProfile, Deal, DealCategory, Preferences, TransportMode } from "./types";
+import type {
+  ActivityId,
+  BudgetProfile,
+  Deal,
+  DealCategory,
+  DealSubcategory,
+  HomeVisits,
+  Preferences,
+  TransportMode,
+} from "./types";
 
 /** Ce que le score utilise : catégories et zones (profiles) + préférences privées. */
 export interface StudentProfile {
@@ -12,6 +21,9 @@ export interface StudentProfile {
   transportModes: TransportMode[];
   budget: BudgetProfile | null;
   activities: ActivityId[];
+  homeVisits: HomeVisits | null;
+  wantsTravel: boolean | null;
+  travelModes: DealSubcategory[];
 }
 
 export function toStudentProfile(
@@ -23,7 +35,16 @@ export function toStudentProfile(
     zoneIds: profile.followed_zone_ids,
     homeZoneId: prefs?.home_zone_id ?? null,
     position: prefs?.lat != null && prefs.lng != null ? { lat: prefs.lat, lng: prefs.lng } : null,
-    transportModes: prefs?.transport_modes ?? [],
+    // L'avion n'est plus un transport du quotidien : les anciennes réponses passent dans les voyages.
+    transportModes: (prefs?.transport_modes ?? []).filter((m) => m !== "plane"),
+    homeVisits: prefs?.home_visits ?? null,
+    wantsTravel: prefs?.wants_travel ?? null,
+    travelModes: [
+      ...new Set<DealSubcategory>([
+        ...(prefs?.travel_modes ?? []),
+        ...(prefs?.transport_modes?.includes("plane") ? (["plane"] as const) : []),
+      ]),
+    ],
     budget: prefs?.budget_profile ?? null,
     activities: prefs?.activities ?? [],
   };
@@ -39,6 +60,13 @@ const BUDGET_POINTS: Record<BudgetProfile, [number, number, number, number]> = {
 /** Portée quand aucun moyen de transport n'est renseigné. */
 const DEFAULT_REACH_KM = 3;
 export const FOR_YOU_MIN_SCORE = 55;
+/** Points de pôle de dépenses accordés à un trajet utile, même si « Transports » n'est pas suivi. */
+const TRAVEL_POINTS = { often: 36, other: 28 };
+
+export const goesHome = (me: Pick<StudentProfile, "homeVisits">) =>
+  me.homeVisits === "often" || me.homeVisits === "sometimes";
+export const isTraveler = (me: Pick<StudentProfile, "homeVisits" | "wantsTravel">) =>
+  goesHome(me) || me.wantsTravel === true;
 
 /** Durée estimée avec le premier moyen de transport de l'étudiant qui couvre la distance. */
 function travelTime(km: number, modes: TransportMode[]) {
@@ -65,12 +93,21 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   const reasons: string[] = [];
   const warnings: string[] = [];
 
-  // 1. Pôle de dépenses
+  // 1. Pôle de dépenses, ou trajet utile pour rentrer chez ses parents / voyager
   const rank = me.categories.indexOf(deal.category);
-  if (me.categories.length > 0) {
+  const travel =
+    deal.category === "transport" &&
+    // Un abonnement de bus local n'est pas un voyage.
+    !(deal.subcategory === "bus" && deal.scope !== "national") &&
+    isTraveler(me) &&
+    (!deal.subcategory || me.travelModes.length === 0 || me.travelModes.includes(deal.subcategory));
+  if (me.categories.length > 0 || travel) {
     max += WEIGHTS.category;
+    const rankPoints = rank >= 0 ? WEIGHTS.category - 4 * Math.min(rank, 3) : 0;
+    const travelPoints = !travel ? 0 : me.homeVisits === "often" ? TRAVEL_POINTS.often : TRAVEL_POINTS.other;
+    earned += Math.max(rankPoints, travelPoints);
+    if (travel) reasons.push(goesHome(me) ? "🏠 Pour rentrer chez tes parents" : "🧳 Pour tes envies de voyage");
     if (rank >= 0) {
-      earned += WEIGHTS.category - 4 * Math.min(rank, 3);
       const { emoji, label } = CATEGORIES[deal.category];
       reasons.push(rank < 3 ? `${emoji} Ta priorité n°${rank + 1}` : `${emoji} Tu suis ${label}`);
     }
@@ -113,11 +150,13 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     earned += 18;
   }
 
-  // 3. Budget
+  // 3. Budget : fait monter ou descendre le bon plan, sans jamais le retirer de « Pour toi »
+  let budgetEarned = 0;
+  let budgetMax = 0;
   if (me.budget && deal.price_level != null) {
-    max += WEIGHTS.budget;
+    budgetMax = WEIGHTS.budget;
     const points = BUDGET_POINTS[me.budget][deal.price_level] ?? 0;
-    earned += points;
+    budgetEarned = points;
     if (deal.price_level === 0) reasons.push("🆓 Gratuit");
     else if (points >= 16) reasons.push(`${BUDGET_PROFILES[me.budget].emoji} Dans ton budget`);
     else warnings.push("Au-dessus de ton budget habituel");
@@ -134,20 +173,25 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
       earned += WEIGHTS.interest;
       reasons.unshift(`${ACTIVITIES[liked].emoji} Tu aimes : ${ACTIVITIES[liked].label}`);
     }
-  } else if (deal.subcategory && me.transportModes.length > 0) {
+  } else if (deal.subcategory && (me.transportModes.length > 0 || (travel && me.travelModes.length > 0))) {
     max += WEIGHTS.interest;
     const mode = TRANSPORT_MODES[deal.subcategory];
-    if (me.transportModes.includes(deal.subcategory)) {
+    if (travel && me.travelModes.includes(deal.subcategory)) {
       interest = true;
       earned += WEIGHTS.interest;
-      reasons.unshift(`${mode.emoji} Tu voyages ${mode.by}`);
+    } else if (me.transportModes.includes(deal.subcategory)) {
+      interest = true;
+      earned += WEIGHTS.interest;
+      reasons.unshift(`${mode.emoji} Tu te déplaces ${mode.by}`);
     }
   }
 
-  const score = max > 0 ? Math.round((100 * earned) / max) : null;
+  const percent = (points: number, total: number) => (total > 0 ? Math.round((100 * points) / total) : null);
+  const relevance = percent(earned, max); // sans le budget
   return {
-    score,
-    forYou: score !== null && score >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest),
+    score: percent(earned + budgetEarned, max + budgetMax),
+    forYou:
+      relevance !== null && relevance >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest || travel),
     reasons,
     warnings,
   };

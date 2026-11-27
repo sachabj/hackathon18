@@ -25,7 +25,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via Photon (OSM), tous les champs saisis à la main | FAIT (testé sur la vraie base) |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
 | 8 | Favoris ❤️ | TODO |
-| 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé ; **migration 004 à exécuter** puis test sur la vraie base |
+| 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement | TODO |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
@@ -43,8 +43,8 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Sam. 11h–13h** : gel du code, pitch, répétition
 
 ## À prendre en compte (depuis les préférences)
-- **Tous** : lancer dans Supabase → SQL Editor `supabase/migrations/004_preferences.sql`, puis `supabase/seed_demo.sql` (exemples fictifs ; ne remplace pas la tâche 12).
-- **Anne-Lise (tâche 6)** : le formulaire de publication doit remplir `price_level` (`PRICE_LEVELS`) et `tags` (`ACTIVITIES`), sinon le bon plan est moins bien classé dans « Pour toi ».
+- **Tous** : lancer dans Supabase → SQL Editor `supabase/migrations/006_travel.sql` (004 déjà appliquée), puis `supabase/seed_demo.sql` (exemples fictifs, 2 trajets ajoutés ; ne remplace pas la tâche 12).
+- **Matteo (publication)** : `price_level` et `tags` sont bien remplis ✅. Pour les transports, la sous-catégorie (train, avion…) sert à proposer le bon plan aux bons voyageurs.
 - **Matteo (tâche 10)** : ajouter dans `/profil` un lien « Mes préférences » vers `/onboarding`. `usePreferences()` donne le profil et les préférences.
 - **Justin** : `DealsMap.tsx` modifié (démontage quand la page est cachée, sinon plantage au retour ; prop `homeZoneId` = vue par défaut sans GPS).
 - **Sacha (de Justin)** : carte restylée et fusionnée avec tes changements (zone par défaut, démontage de la page cachée conservés) ; `src/app/page.tsx` inchangé. Faire `npm install` après le pull.

@@ -340,3 +340,11 @@ grant execute on function
   public.boost_offer(uuid), public.my_offer_stats(), public.deals_near_my_business(),
   public.set_nearby_deal_ended(uuid, boolean)
 to authenticated;
+
+-- =====================================================================
+-- Voyages (voir migrations/006_travel.sql)
+-- =====================================================================
+alter table public.preferences add column if not exists home_visits text
+  check (home_visits in ('often', 'sometimes', 'never'));
+alter table public.preferences add column if not exists wants_travel boolean;
+alter table public.preferences add column if not exists travel_modes text[] not null default '{}';

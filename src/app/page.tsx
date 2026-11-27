@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import DealCard from "@/components/feed/DealCard";
 import DealsMap from "@/components/map/DealsMapLoader";
-import { APP_NAME, BUDGET_PROFILES, CATEGORIES, TRANSPORT_MODES, ZONES } from "@/lib/constants";
-import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
+import { APP_NAME, BUDGET_PROFILES, CATEGORIES, SUBCATEGORIES, TRANSPORT_MODES, ZONES } from "@/lib/constants";
+import { isTraveler, rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
@@ -61,7 +61,8 @@ export default function Page() {
             <span>
               {[
                 home && `📍 ${home.name}`,
-                me.transportModes.map((m) => TRANSPORT_MODES[m].emoji).join(" "),
+                me.transportModes.map((m) => TRANSPORT_MODES[m].emoji).join(""),
+                isTraveler(me) && `🧳${me.travelModes.map((m) => SUBCATEGORIES[m].emoji).join("")}`,
                 me.budget && `${BUDGET_PROFILES[me.budget].emoji} ${BUDGET_PROFILES[me.budget].label}`,
               ]
                 .filter(Boolean)
