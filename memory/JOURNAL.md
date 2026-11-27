@@ -99,3 +99,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 14h34 — Justin (habillage de la carte)
 - `BaseMap.tsx` (nouveau), `DealsMap.tsx`, `globals.css`. Fusion avec le travail de Sacha : son `page.tsx` et sa logique de carte (zone par défaut, Rennes, démontage de la page cachée) sont conservés. Nouvelles dépendances : faire `npm install` après le pull.
 - Lint + build OK, `npm audit` : 0 faille ; testé sur une version de production en local avec données fictives temporaires (retirées). Pas testé sur un vrai téléphone.
+
+### 2026-11-27 14h40 — Justin (lancer seed_demo)
+- Procédure expliquée (SQL Editor). ⚠️ L’auteur des exemples est le plus ancien profil : supprimer les comptes `test.claude.*` AVANT de lancer `seed_demo.sql` (sinon leur suppression efface les exemples).
+- La table `preferences` répond côté API (migration 004 apparemment appliquée) ; seed pas encore confirmé.
