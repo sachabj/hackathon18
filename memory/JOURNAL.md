@@ -234,3 +234,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 17h38 — Justin (tâches 18 à 26)
 - Nouveaux `app/page.tsx` (accueil), `app/recherche/page.tsx`, `010_student_aids.sql` ; modifiés : carte, `NavBar`, `RoleGate`, `DealCard`, favoris, parcours d'inscription, `matching`, préférences, confidentialité, `reset_demo.sql`.
 - Vérifié : types + lint (1 avertissement connu) + build ; base sur Postgres local (reset_demo avec et sans 010, RLS ; un « échec » attendu du test au 2e passage) ; parcours dans Chrome sans interface avec un faux Supabase, GPS refusé et autorisé. Corrigé au passage : la carte pouvait rester sur la zone au lieu du GPS (zoom animé). **Pas testé sur la vraie base ni sur téléphone.**
+
+### 2026-11-27 17h51 — Justin (défauts D1, D2, D10)
+- `011_no_self_vote.sql` (+ `schema.sql`) ; `ChoiceTile.tsx` ; copie locale `reset_demo.local.sql` reconstruite (non versionnée).
+- Vérifié : migration sur Postgres local (ancien vote effacé, vote sur le sien refusé, vote sur un autre et sans auteur acceptés) ; tuiles vues dans Chrome sans interface ; types + lint + build. **011 pas lancée sur la vraie base.**

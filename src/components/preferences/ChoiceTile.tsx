@@ -25,10 +25,14 @@ export default function ChoiceTile({
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={`sw-card relative flex w-full items-center border-2 p-3 transition active:scale-95 ${
+      // Pas de `.sw-card` ici : cette classe l'emporterait sur le fond et la bordure de la tuile choisie.
+      className={`relative flex w-full items-center rounded-3xl border-2 p-3 transition active:scale-95 ${
         row ? "gap-3 text-left" : "min-h-24 flex-col justify-center gap-1 text-center"
-      } ${selected ? "border-[var(--color-forest)] bg-[var(--color-sage)]" : ""}`}
-      style={selected ? undefined : { borderColor: "var(--color-border)" }}
+      } ${
+        selected
+          ? "border-[var(--color-forest)] bg-[var(--color-sage)]"
+          : "border-[var(--color-border)] bg-[var(--color-surface)]"
+      }`}
     >
       <span className={selected ? "text-[var(--color-forest)]" : "text-[var(--color-muted)]"}>{icon}</span>
       <span className="min-w-0">

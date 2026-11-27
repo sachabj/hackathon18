@@ -203,3 +203,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Inscription** : voyage = une fréquence + moyens, même pour « Rarement » (priorité faible) ; « Boursier ? » et « Carte Sortir (ou droit) ? » déclarés par l'étudiant, qui décident de « Pour toi ».
 - **Écarté** : déduire l'éligibilité à la Carte Sortir de la bourse (conditions de ressources).
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-27 17h51 — Pas de vote sur son propre bon plan
+- **Décision** : règle en base (`011`) ; les votes d'auteurs déjà enregistrés sont effacés. Les bons plans sans auteur restent votables.
+- **Qui** : Justin (réponses aux questions de cadrage)

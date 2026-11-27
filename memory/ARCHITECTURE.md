@@ -101,7 +101,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ⏳ · `011_no_self_vote.sql` ⏳ **à exécuter**
 - `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Une adresse à garder sans compte est ignorée et listée à la fin (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
@@ -117,7 +117,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - `zones` : id (`bruz`, `ker-lann`, `rennes`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)
 - `deals` : id, title, description, category, subcategory (transport uniquement), scope (local | zone | national ; local ⇒ lat/lng obligatoires), zone_id, place_name, lat, lng, price_info, expires_at, deadline_at, is_official (commerçants uniquement), ended_by_merchant, author_id (= auth.uid() par défaut), created_at
-- `votes` : deal_id, user_id, value (+1 / -1), created_at — **un vote par utilisateur et par bon plan** : re-confirmer = `upsert` (created_at remis à now())
+- `votes` : deal_id, user_id, value (+1 / -1), created_at — jamais sur son propre bon plan (RLS, 011) ; **un vote par utilisateur et par bon plan** : re-confirmer = `upsert` (created_at remis à now())
 - `favorites` : (user_id, deal_id)
 - `deal_views` / `deal_visits` : (deal_id, user_id) — fiche ouverte / « J'y suis allé », auteur exclu, lecture limitée à ses propres lignes ; totaux via `deal_visit_count()` et `my_deal_audience()`
 - Vue `user_contributions` : contributions (bons plans + votes) par utilisateur et catégorie, `count_7d` / `count_30d`
