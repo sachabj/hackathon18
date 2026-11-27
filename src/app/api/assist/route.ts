@@ -4,7 +4,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { createServerClient } from "@supabase/ssr";
 import type { NextRequest } from "next/server";
-import { AssistError, extractDeal, isAssistConfigured, reviewDeal } from "@/lib/ai/assist";
+import { AssistError, extractDeal, GeminiHttpError, isAssistConfigured, reviewDeal } from "@/lib/ai/assist";
 import type { AssistRequest, AssistResponse } from "@/lib/ai/types";
 
 const MAX_TEXT = 4000;
@@ -28,7 +28,8 @@ async function isLoggedIn(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!isAssistConfigured()) return fail("Assistant IA non configuré (clé ANTHROPIC_API_KEY absente).", 503, true);
+  if (!isAssistConfigured())
+    return fail("Assistant IA non configuré (clé GEMINI_API_KEY ou ANTHROPIC_API_KEY absente).", 503, true);
   if (!(await isLoggedIn(request))) return fail("Connexion requise.", 401);
 
   let body: AssistRequest;
@@ -57,6 +58,13 @@ export async function POST(request: NextRequest) {
     return fail("Action inconnue.", 400);
   } catch (e) {
     if (e instanceof AssistError) return fail(e.message, 422);
+    if (e instanceof GeminiHttpError) {
+      console.error("api/assist gemini", e.status, e.message);
+      if (e.status === 429) return fail("Assistant très demandé (quota gratuit atteint), réessaie dans un instant.", 429, true);
+      if (e.status === 400 || e.status === 401 || e.status === 403) return fail("Clé ou modèle Gemini invalide.", 503, true);
+      if (e.status === 404) return fail("Modèle Gemini introuvable (variable GEMINI_MODEL).", 503, true);
+      return fail(`Assistant indisponible (${e.status || "réseau"}).`, 502, true);
+    }
     if (e instanceof Anthropic.RateLimitError) return fail("Assistant très demandé, réessaie dans un instant.", 429, true);
     if (e instanceof Anthropic.AuthenticationError) return fail("Clé de l'assistant IA invalide.", 503, true);
     if (e instanceof Anthropic.APIError) return fail(`Assistant indisponible (${e.status ?? "réseau"}).`, 502, true);

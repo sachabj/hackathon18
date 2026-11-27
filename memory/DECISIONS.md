@@ -115,3 +115,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Repli** : sans clé ou si l'IA est en panne, le formulaire fonctionne comme avant (pré-remplissage indisponible, publication sans relecture).
 - **Pourquoi** : contrôle qualité et anti-doublons demandés ; publier depuis une photo est plus rapide pour la démo.
 - **Qui** : Matteo
+
+## 2026-11-27 — Gemini pour l'assistant de publication
+- **Décision** : l'assistant `/api/assist` utilise **Gemini** quand `GEMINI_API_KEY` est définie (prioritaire), sinon Claude. Même prompt et même schéma JSON pour les deux ; les valeurs renvoyées sont revérifiées (listes de catégories, dates…) avant d'arriver dans le formulaire.
+- **Pourquoi** : l'API Claude est payante et un abonnement Claude Pro ne donne pas de clé API ; Google propose une clé API Gemini avec une offre gratuite (Google AI Studio). L'abonnement Gemini Pro grand public ne donne pas non plus de clé API.
+- **Qui** : Matteo

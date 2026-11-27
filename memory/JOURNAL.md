@@ -146,3 +146,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 15h23 — Sacha (offres immatérielles)
 - Besoin précisé : la partie transport vise les réductions SNCF utiles aux étudiants, à classer parmi les offres immatérielles ; homepage prévue par Anne-Lise.
 - Proposition notée dans `TASKS.md` (tâche 16, à valider). Aucun code modifié.
+
+### 2026-11-27 16h30 — Matteo (Gemini pour l'assistant IA)
+- `src/lib/ai/assist.ts` (fournisseur Gemini ou Claude selon la clé, revérification des champs), `src/app/api/assist/route.ts` (erreurs Gemini : quota, clé, modèle), `.env.example` ; dépendance `@google/genai`.
+- Vérifié : lint + build. **Appel réel à Gemini pas testé (pas de clé sur ce poste)** ; nom du modèle par défaut repris de la doc du SDK, modifiable via `GEMINI_MODEL`.
