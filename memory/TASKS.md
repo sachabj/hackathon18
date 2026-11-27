@@ -24,10 +24,10 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
 | 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via Photon (OSM), tous les champs saisis à la main | FAIT (testé sur la vraie base) |
 | 6b | Assistant IA de publication : photo / texte → formulaire, contrôle du titre, modération, doublons (Matteo) | FAIT (testé avec réponses simulées) ; Gemini branché ; **ajouter `GEMINI_API_KEY` sur Vercel (Sacha) et dans `.env.local`** puis tester en vrai |
-| 7 | Votes 👍/👎 + score de fiabilité | TODO |
+| 7 | Votes 👍/👎 + score de fiabilité | EN COURS (Justin, repris d'Anne-Lise : à confirmer avec elle) |
 | 8 | Favoris ❤️ | FAIT (Anne-Lise) : bouton cœur sur `DealCard`, page `/favoris` regroupée par catégorie (triée par échéance dans chaque groupe). Build + lint OK ; **pas testé dans un navigateur ni sur la vraie base** (aucun outil de navigateur ni script contre la vraie BDD disponible dans cette session) |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
-| 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement | TODO |
+| 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement (page `/profil` : préférences, mes bons plans, audience) | EN COURS (Justin, repris de Matteo) |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
 | 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |

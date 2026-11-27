@@ -159,3 +159,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 15h37 — Justin (règle « poser des questions »)
 - `CLAUDE.md` : nouvelle règle (questions avant toute modification). Demande suivante : page Profil (cadrage en cours).
+
+### 2026-11-27 — Justin (profil, démarrage)
+- Prises : `/profil` (préférences, mes bons plans, vues / passages / favoris / votes), tâche 10 et boutons de vote (tâche 7). Anne-Lise et Matteo : ne pas démarrer ces deux points en parallèle.
