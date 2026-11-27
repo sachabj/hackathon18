@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import AccountLink from "@/components/account/AccountLink";
 import LogoutButton from "@/components/LogoutButton";
+import { TargetIcon } from "@/components/icons";
 import ActivityCard from "@/components/profile/ActivityCard";
 import MyDealCard from "@/components/profile/MyDealCard";
 import PreferencesSummary from "@/components/profile/PreferencesSummary";
@@ -72,25 +73,25 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-md space-y-6 px-4 py-6">
       <div>
-        <h1 className="text-2xl font-bold">{profile?.username ?? "Mon profil"}</h1>
+        <h1 className="text-2xl">{profile?.username ?? "Mon profil"}</h1>
         {error && (
           <p role="alert" className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
             {error}
           </p>
         )}
-        {!account && !error && <p className="mt-2 text-sm text-zinc-500">Chargement…</p>}
+        {!account && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">Chargement…</p>}
       </div>
 
       {account && <ActivityCard profile={account.profile} contributions={account.contributions} now={account.fetchedAt} />}
 
       {account && (
         <section>
-          <h2 className="mb-2 text-lg font-semibold">Mes préférences</h2>
+          <h2 className="mb-2 text-lg">Mes préférences</h2>
           {account.profile.onboarded ? (
             <PreferencesSummary me={toStudentProfile(account.profile, account.preferences)} />
           ) : (
-            <Link href="/onboarding" className="block rounded-2xl bg-blue-600 px-4 py-3 font-semibold text-white">
-              🎯 Personnaliser mes bons plans
+            <Link href="/onboarding" className="flex items-center justify-center gap-1.5 rounded-2xl px-4 py-3 font-medium" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
+              <TargetIcon className="h-4 w-4" /> Personnaliser mes bons plans
             </Link>
           )}
         </section>
@@ -98,18 +99,18 @@ export default function Page() {
 
       {mine && (
         <section>
-          <h2 className="text-lg font-semibold">Mes bons plans signalés ({mine.deals.length})</h2>
+          <h2 className="text-lg">Mes bons plans signalés ({mine.deals.length})</h2>
           {mine.stats && mine.deals.length > 0 && (
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-[var(--color-muted)]">
               Au total : {total("views")} vue{total("views") > 1 ? "s" : ""} et {total("visits")} passage
               {total("visits") > 1 ? "s" : ""}.
             </p>
           )}
           {mine.statsError && <p className="mt-1 text-sm text-amber-700">Chiffres indisponibles. {mine.statsError}</p>}
           {mine.deals.length === 0 && (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-[var(--color-muted)]">
               Tu n&apos;as encore rien signalé.{" "}
-              <Link href="/publier" className="font-semibold text-blue-600">Partager un bon plan</Link>
+              <Link href="/publier" className="font-medium" style={{ color: "var(--color-forest)" }}>Partager un bon plan</Link>
             </p>
           )}
           <ul className="mt-3 space-y-3">

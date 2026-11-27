@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { LogoutIcon } from "@/components/icons";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 
 /** Déconnecte ce navigateur (pas les autres appareils) et revient à l'écran de connexion. */
@@ -27,9 +28,13 @@ export default function LogoutButton() {
         type="button"
         onClick={logout}
         disabled={loading || !isSupabaseConfigured}
-        className="w-full rounded-2xl border-2 border-red-200 py-3 font-semibold text-red-600 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-red-200 py-3 font-medium text-red-600 disabled:opacity-50"
       >
-        {loading ? "Déconnexion…" : "🚪 Se déconnecter"}
+        {loading ? "Déconnexion…" : (
+          <>
+            <LogoutIcon className="h-4 w-4" /> Se déconnecter
+          </>
+        )}
       </button>
       {error && (
         <p role="alert" className="mt-2 text-sm text-red-600">

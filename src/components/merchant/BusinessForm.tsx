@@ -38,29 +38,29 @@ export default function BusinessForm({ onDone }: { onDone: () => void }) {
 
   return (
     <form onSubmit={submit} className="space-y-4">
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-[var(--color-muted)]">
         Décris ton commerce pour publier des offres officielles. L&apos;emplacement ne pourra plus être modifié.
       </p>
-      <label className="block text-sm font-semibold">
+      <label className="block text-sm font-medium">
         Nom du commerce
         <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} minLength={2} maxLength={80} required />
       </label>
-      <label className="block text-sm font-semibold">
-        Adresse <span className="font-normal text-zinc-500">(facultatif)</span>
+      <label className="block text-sm font-medium">
+        Adresse <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
         <input className={inputClass} value={address} onChange={(e) => setAddress(e.target.value)} maxLength={200} />
       </label>
-      <label className="block text-sm font-semibold">
+      <label className="block text-sm font-medium">
         Activité
         <select className={inputClass} value={category} onChange={(e) => setCategory(e.target.value as DealCategory)}>
           {BUSINESS_CATEGORIES.map((c) => (
             <option key={c} value={c}>
-              {CATEGORIES[c].emoji} {CATEGORIES[c].label}
+              {CATEGORIES[c].label}
             </option>
           ))}
         </select>
       </label>
       <div>
-        <p className="mb-1 text-sm font-semibold">Emplacement : touche la carte</p>
+        <p className="mb-1 text-sm font-medium">Emplacement : touche la carte</p>
         <LocationPicker value={position} onChange={setPosition} />
       </div>
       {error && (

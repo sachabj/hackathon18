@@ -175,6 +175,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Limite** : la confirmation par mot de passe est faite par l'app, la base ne l'impose pas.
 - **Qui** : Sacha
 
+## 2026-11-27 18h30 — Refonte visuelle complète + interdiction des emoji
+- **Décision** : nouveau système de design appliqué à toute l'app (pas seulement les pages d'Anne-Lise), à partir de `DESIGN_SHAREWOOD.md` : polices Newsreader + Inter auto-hébergées (`public/fonts/`), palette forêt/aubergine/sauge/lilas/crème en jetons CSS (`globals.css`), logo SVG, `CategoryIcon` (rond coloré par catégorie), extension d'`icons.tsx`. **Aucun emoji nulle part dans l'app** : remplacé par une icône SVG dédiée, ou simplement retiré du texte quand c'est une chaîne brute (`<option>`, libellés joints, raisons de matching) qui ne peut pas contenir de JSX.
+- **Pourquoi** : demande explicite d'Anne-Lise, plus stricte que le document de design (« je ne veux pas d'émojis apple ou autre, je veux de vrais designs »).
+- **Portée** : changement **uniquement visuel** — aucune logique, donnée, route ni appel Supabase modifié. `next/font/google` écarté pour la même raison que la police système avant elle (build qui échoue sans réseau sur certains postes) : auto-hébergement des `.woff2` à la place.
+- **Qui** : Anne-Lise
+
 ## 2026-11-27 — Crédits et badges (à implémenter)
 - **Décision** : des crédits s'obtiennent en interagissant avec les offres, publier rapportant plus que confirmer qu'une offre existe ; ils débloquent des badges et une progression, puis éventuellement des avantages d'entreprises qui alimentent les offres.
 - **Préalable** : crédits calculés par la base, avec règles anti-triche (vote sur son propre bon plan, publication puis suppression).

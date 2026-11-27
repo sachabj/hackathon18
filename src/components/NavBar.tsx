@@ -26,8 +26,12 @@ export default function NavBar() {
   const links = role === "merchant" ? MERCHANT_LINKS : LINKS;
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-[1000] border-t border-black/10 bg-white/95 backdrop-blur"
-      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      className="fixed bottom-0 inset-x-0 z-[1000] backdrop-blur"
+      style={{
+        borderTop: "1px solid var(--color-border)",
+        backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
+      }}
     >
       <ul className="mx-auto flex max-w-md justify-around">
         {links.map((l) => {
@@ -38,7 +42,8 @@ export default function NavBar() {
             <li key={l.href}>
               <Link
                 href={l.href}
-                className={`flex flex-col items-center gap-0.5 px-3 py-2 text-xs ${active ? "text-blue-600 font-semibold" : "text-zinc-500"}`}
+                className="flex flex-col items-center gap-0.5 px-3 py-2 text-xs"
+                style={active ? { color: "var(--color-forest)", fontWeight: 500 } : { color: "var(--color-muted)" }}
               >
                 <l.Icon className="h-5 w-5" />
                 {l.label}

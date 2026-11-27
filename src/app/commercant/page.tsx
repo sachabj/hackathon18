@@ -6,6 +6,7 @@ import MerchantPage from "@/components/merchant/MerchantPage";
 import OfferCard from "@/components/merchant/OfferCard";
 import OfferForm from "@/components/merchant/OfferForm";
 import { buttonClass } from "@/components/merchant/styles";
+import { PlusIcon, ProhibitedIcon, UndoIcon } from "@/components/icons";
 import { boostOffer, publishOffer, setNearbyDealEnded, setOfferEnded, updateOffer } from "@/lib/merchant";
 import { useDashboard } from "@/lib/useDashboard";
 
@@ -31,13 +32,13 @@ export default function Page() {
                 }}
               />
             ) : (
-              <button type="button" onClick={() => setEditing("new")} className={buttonClass}>
-                ➕ Publier une offre officielle
+              <button type="button" onClick={() => setEditing("new")} className={`${buttonClass} flex items-center justify-center gap-1.5`}>
+                <PlusIcon className="h-4 w-4" /> Publier une offre officielle
               </button>
             )}
           </div>
 
-          {data.offers.length === 0 && <p className="mt-4 text-sm text-zinc-500">Aucune offre pour le moment.</p>}
+          {data.offers.length === 0 && <p className="mt-4 text-sm text-[var(--color-muted)]">Aucune offre pour le moment.</p>}
           <ul className="mt-4 space-y-3">
             {data.offers.map((offer) => (
               <li key={offer.id}>
@@ -67,23 +68,32 @@ export default function Page() {
           </ul>
 
           <section className="mt-8">
-            <h2 className="text-lg font-semibold">Signalés près de chez moi</h2>
-            <p className="mt-1 text-sm text-zinc-500">
+            <h2 className="text-lg">Signalés près de chez moi</h2>
+            <p className="mt-1 text-sm text-[var(--color-muted)]">
               Bons plans publiés par des étudiants à moins de 75 m, dans ma catégorie. Retire ceux qui n&apos;existent plus.
             </p>
-            {data.nearby.length === 0 && <p className="mt-2 text-sm text-zinc-500">Aucun signalement.</p>}
+            {data.nearby.length === 0 && <p className="mt-2 text-sm text-[var(--color-muted)]">Aucun signalement.</p>}
             <ul className="mt-3 space-y-3">
               {data.nearby.map((deal) => (
-                <li key={deal.id} className="rounded-2xl border border-zinc-200 bg-white p-3 shadow-sm">
-                  <h3 className={`font-semibold ${deal.ended_by_merchant ? "text-zinc-400 line-through" : ""}`}>{deal.title}</h3>
-                  <p className="text-sm text-zinc-500">{[deal.price_info, deal.place_name].filter(Boolean).join(" · ")}</p>
+                <li key={deal.id} className="sw-card p-3">
+                  <h3 className={`font-medium ${deal.ended_by_merchant ? "text-[var(--color-muted)] line-through" : ""}`}>{deal.title}</h3>
+                  <p className="text-sm text-[var(--color-muted)]">{[deal.price_info, deal.place_name].filter(Boolean).join(" · ")}</p>
                   <button
                     type="button"
                     disabled={busy}
                     onClick={() => act(() => setNearbyDealEnded(deal.id, !deal.ended_by_merchant))}
-                    className={`mt-2 rounded-full border px-3 py-1.5 text-sm font-semibold disabled:opacity-50 ${deal.ended_by_merchant ? "border-green-300 text-green-700" : "border-red-300 text-red-600"}`}
+                    className="mt-2 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium disabled:opacity-50"
+                    style={deal.ended_by_merchant ? { borderColor: "var(--color-forest)", color: "var(--color-forest)" } : { borderColor: "#fca5a5", color: "#dc2626" }}
                   >
-                    {deal.ended_by_merchant ? "↩️ Annuler le retrait" : "🚫 N'existe plus"}
+                    {deal.ended_by_merchant ? (
+                      <>
+                        <UndoIcon className="h-4 w-4" /> Annuler le retrait
+                      </>
+                    ) : (
+                      <>
+                        <ProhibitedIcon className="h-4 w-4" /> N&apos;existe plus
+                      </>
+                    )}
                   </button>
                 </li>
               ))}

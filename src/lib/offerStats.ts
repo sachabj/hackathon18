@@ -1,12 +1,14 @@
 // Calculs des statistiques commerçant, à partir des votes et favoris des étudiants.
+import { HeartIcon, ThumbsDownIcon, ThumbsUpIcon } from "@/components/icons";
+import type { ComponentType } from "react";
 import type { Deal, OfferStats } from "./types";
 
 export type Metric = "favorites" | "confirmations" | "reports";
 
-export const METRICS: Record<Metric, { label: string; emoji: string }> = {
-  favorites: { label: "Favoris", emoji: "❤️" },
-  confirmations: { label: "Confirmations", emoji: "👍" },
-  reports: { label: "Signalements", emoji: "👎" },
+export const METRICS: Record<Metric, { label: string; Icon: ComponentType<{ className?: string }> }> = {
+  favorites: { label: "Favoris", Icon: HeartIcon },
+  confirmations: { label: "Confirmations", Icon: ThumbsUpIcon },
+  reports: { label: "Signalements", Icon: ThumbsDownIcon },
 };
 
 export const isOnline = (offer: Deal, now: number) =>

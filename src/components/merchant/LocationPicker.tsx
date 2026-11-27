@@ -5,12 +5,16 @@ import L from "leaflet";
 import { useLayoutEffect, useState } from "react";
 import { MapContainer, Marker, useMapEvents } from "react-leaflet";
 import BaseMap from "@/components/map/BaseMap";
+import { PinIcon } from "@/components/icons";
 import { MAP_CENTER } from "@/lib/constants";
 import type { Point } from "@/lib/geo";
 
+const STORE_SVG =
+  '<svg viewBox="0 0 48 48" width="20" height="20" fill="none" stroke="#FAF9F5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h5l4.5 20h21l4-14H12"/><circle cx="17" cy="36" r="2.5"/><circle cx="32" cy="36" r="2.5"/></svg>';
+
 const PIN = L.divIcon({
   className: "wz-marker",
-  html: '<div class="wz-pin" style="--pin:#0a84ff"><span>🏪</span></div>',
+  html: `<div class="wz-pin" style="--pin:#1e3a2f">${STORE_SVG}</div>`,
   iconSize: [40, 48],
   iconAnchor: [20, 47],
 });
@@ -61,7 +65,7 @@ export default function LocationPicker({
 
   return (
     <div className="space-y-2">
-      <div className="relative isolate h-64 overflow-hidden rounded-2xl border border-zinc-200">
+      <div className="relative isolate h-64 overflow-hidden rounded-2xl border" style={{ borderColor: "var(--color-border)" }}>
         {visible && (
           <MapContainer
             ref={setMap}
@@ -75,8 +79,8 @@ export default function LocationPicker({
           </MapContainer>
         )}
       </div>
-      <button type="button" onClick={locate} className="text-sm font-semibold text-blue-600">
-        📍 Je suis dans mon commerce : utiliser ma position
+      <button type="button" onClick={locate} className="flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+        <PinIcon className="h-4 w-4" /> Je suis dans mon commerce : utiliser ma position
       </button>
       {error && (
         <p role="alert" className="text-sm text-red-600">

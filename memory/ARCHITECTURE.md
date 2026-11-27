@@ -56,8 +56,9 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
-    │   ├── icons.tsx                 # icônes maison (traits, pas d'emoji) : Map, Plus, Heart, User, Tag, Chart, Store, ChevronDown
-    │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil (icônes `icons.tsx`)
+    │   ├── icons.tsx                 # ~60 icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
+    │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
+    │   ├── NavBar.tsx                # barre du bas : Carte / Partager / Favoris / Profil (icônes `icons.tsx`)
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
@@ -87,7 +88,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - **Pages interactives = composants client** (`"use client"`) qui lisent et écrivent dans Supabase via `getSupabase()`. La sécurité est assurée par les **policies RLS**, pas par le front.
 - Ne pas appeler `cookies()` dans un Server Component (avec `cacheComponents`, ça casse le build sans `<Suspense>`). L'auth côté serveur est gérée par `src/proxy.ts`.
 - Leaflet : composant carte en `"use client"`, chargé via `next/dynamic(..., { ssr: false })`. Le CSS Leaflet est déjà importé dans `globals.css`.
-- Police système (pas de `next/font/google` : le build échoue sans réseau).
+- Polices **Newsreader** (titres, `h1/h2/h3` + `.sw-quote`) et **Inter** (reste) : fichiers `.woff2` auto-hébergés dans `public/fonts/` + `@font-face` dans `globals.css` (pas `next/font/google` ni police système : build sans dépendance réseau sur n'importe quel poste).
+- Design : jetons CSS dans `globals.css` (`@theme inline` : `--color-paper/surface/border/ink/muted/forest/aubergine/aubergine-dark/sage/lilac`, `--font-sans/serif`) + classes réutilisables `.sw-card`, `.sw-btn-primary`, `.sw-btn-secondary`, `.sw-field`, `.sw-badge`, `.sw-eyebrow`, `.sw-quote`. Détail complet et logo dans `DESIGN_SHAREWOOD.md` (racine du repo).
 - Récupérer l'utilisateur côté client : `const { data: { user } } = await getSupabase().auth.getUser()`.
 
 ## Contraintes techniques
@@ -122,7 +124,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Règles métier (`src/lib/rules.ts` + RLS)
 - **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
 - **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). ✅ 7 jours offerts à l'inscription.
-- **Niveaux** (sur 7 jours) : ≥10 Très actif 🔥 · ≥3 Actif ✅ · ≥1 Peu actif 💤 · 0 Inactif 😴.
+- **Niveaux** (sur 7 jours) : ≥10 Très actif · ≥3 Actif · ≥1 Peu actif · 0 Inactif (icône dédiée par niveau dans `rules.ts`, pas d'emoji).
 
 ## Personnalisation (`src/lib/matching.ts`)
 - Score sur 100 = points obtenus / points applicables (un critère non renseigné ne compte pas) : pôle de dépenses 40 (−4 par rang), localisation 25 (distance selon les transports, ou zone suivie), budget 20, activité ou transport emprunté 15.

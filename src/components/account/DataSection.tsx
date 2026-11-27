@@ -46,7 +46,7 @@ export default function DataSection({
   return (
     <Section title="Mes données">
       <form onSubmit={save} className="space-y-2">
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Pseudo (visible par toi seul)
           <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} maxLength={40} required />
         </label>
@@ -54,8 +54,8 @@ export default function DataSection({
         <button disabled={pseudo.busy} className={secondaryClass}>Enregistrer le pseudo</button>
       </form>
 
-      <div className="space-y-2 border-t border-zinc-100 pt-3">
-        <p className="text-sm text-zinc-500">
+      <div className="space-y-2 pt-3" style={{ borderTop: "1px solid var(--color-border)" }}>
+        <p className="text-sm text-[var(--color-muted)]">
           {stored ? "Une position approximative (~100 m) est enregistrée." : "Aucune position enregistrée."}
         </p>
         <Feedback message={position.message} />
@@ -77,13 +77,13 @@ export default function DataSection({
         )}
       </div>
 
-      <div className="space-y-2 border-t border-zinc-100 pt-3">
+      <div className="space-y-2 pt-3" style={{ borderTop: "1px solid var(--color-border)" }}>
         <Feedback message={download.message} />
         <button type="button" disabled={download.busy} className={secondaryClass} onClick={exportData}>
           {download.busy ? "Préparation…" : "Télécharger mes données"}
         </button>
-        <p className="text-sm text-zinc-500">
-          <Link href="/confidentialite" className="font-semibold text-blue-600">Politique de confidentialité</Link>
+        <p className="text-sm text-[var(--color-muted)]">
+          <Link href="/confidentialite" className="font-medium" style={{ color: "var(--color-forest)" }}>Politique de confidentialité</Link>
           {acceptedAt && ` · acceptée le ${new Date(acceptedAt).toLocaleDateString("fr-FR")}`}
         </p>
       </div>

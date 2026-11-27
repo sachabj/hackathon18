@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { GraduationCapIcon, StoreIcon } from "@/components/icons";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { APP_NAME, PASSWORD_MIN } from "@/lib/constants";
 
@@ -39,32 +40,39 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 py-12">
-      <h1 className="text-4xl font-bold text-blue-600">{APP_NAME}</h1>
-      <p className="mt-2 text-zinc-500 text-center">Le Waze des bons plans étudiants</p>
+      {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
+      <img src="/logo.svg" alt="" width={56} height={56} aria-hidden />
+      <h1 className="mt-3 text-3xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</h1>
+      <p className="sw-quote mt-2 text-center text-[var(--color-muted)]">Les bons plans se partagent.</p>
 
       <form onSubmit={submit} className="mt-8 w-full max-w-sm space-y-3">
         {mode === "signup" && (
           <fieldset className="grid grid-cols-2 gap-2">
             <legend className="sr-only">Type de compte</legend>
             {[
-              { value: false, label: "🎓 Étudiant" },
-              { value: true, label: "🏪 Commerçant" },
+              { value: false, label: "Étudiant", Icon: GraduationCapIcon },
+              { value: true, label: "Commerçant", Icon: StoreIcon },
             ].map((t) => (
               <button
                 key={t.label}
                 type="button"
                 aria-pressed={merchant === t.value}
                 onClick={() => setMerchant(t.value)}
-                className={`rounded-lg border-2 py-2 text-sm font-semibold ${merchant === t.value ? "border-blue-600 bg-blue-50 text-blue-700" : "border-zinc-200 text-zinc-600"}`}
+                className="flex items-center justify-center gap-1.5 rounded-lg border-2 py-2 text-sm font-medium"
+                style={
+                  merchant === t.value
+                    ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }
+                    : { borderColor: "var(--color-border)", color: "var(--color-muted)" }
+                }
               >
-                {t.label}
+                <t.Icon className="h-4 w-4" /> {t.label}
               </button>
             ))}
           </fieldset>
         )}
         {mode === "signup" && (
           <input
-            className="w-full rounded-lg border px-3 py-2"
+            className="sw-field"
             placeholder="Pseudo"
             maxLength={40}
             value={username}
@@ -73,7 +81,7 @@ export default function LoginPage() {
           />
         )}
         <input
-          className="w-full rounded-lg border px-3 py-2"
+          className="sw-field"
           type="email"
           placeholder="Email"
           value={email}
@@ -81,7 +89,7 @@ export default function LoginPage() {
           required
         />
         <input
-          className="w-full rounded-lg border px-3 py-2"
+          className="sw-field"
           type="password"
           placeholder={mode === "signup" ? "Mot de passe (8 caractères min.)" : "Mot de passe"}
           minLength={mode === "signup" ? PASSWORD_MIN : undefined}
@@ -90,17 +98,17 @@ export default function LoginPage() {
           required
         />
         {mode === "signup" && (
-          <label className="flex items-start gap-2 text-sm text-zinc-600">
+          <label className="flex items-start gap-2 text-sm text-[var(--color-muted)]">
             <input
               type="checkbox"
-              className="mt-0.5 h-4 w-4 accent-blue-600"
+              className="mt-0.5 h-4 w-4"
               checked={accepted}
               onChange={(e) => setAccepted(e.target.checked)}
               required
             />
             <span>
               J&apos;ai au moins 15 ans et j&apos;accepte la{" "}
-              <Link href="/confidentialite" target="_blank" className="text-blue-600 underline">
+              <Link href="/confidentialite" target="_blank" className="underline" style={{ color: "var(--color-forest)" }}>
                 politique de confidentialité
               </Link>
               .
@@ -108,16 +116,14 @@ export default function LoginPage() {
           </label>
         )}
         {error && <p className="text-sm text-red-600">{error}</p>}
-        <button
-          disabled={loading}
-          className="w-full rounded-lg bg-blue-600 py-2 font-semibold text-white disabled:opacity-50"
-        >
+        <button disabled={loading} className="sw-btn-primary disabled:opacity-50">
           {loading ? "…" : mode === "login" ? "Se connecter" : "Créer mon compte"}
         </button>
       </form>
 
       <button
-        className="mt-4 text-sm text-blue-600"
+        className="mt-4 text-sm font-medium"
+        style={{ color: "var(--color-forest)" }}
         onClick={() => setMode(mode === "login" ? "signup" : "login")}
       >
         {mode === "login" ? "Pas de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}

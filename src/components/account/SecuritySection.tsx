@@ -31,15 +31,15 @@ export default function SecuritySection({ email }: { email: string }) {
       <form onSubmit={submit} className="space-y-3">
         {/* Aide le gestionnaire de mots de passe à reconnaître le compte. */}
         <input type="email" autoComplete="username" value={email} readOnly hidden />
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Mot de passe actuel
           <input type="password" autoComplete="current-password" className={inputClass} value={current} onChange={(e) => setCurrent(e.target.value)} required />
         </label>
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Nouveau mot de passe ({PASSWORD_MIN} caractères min.)
           <input type="password" autoComplete="new-password" minLength={PASSWORD_MIN} className={inputClass} value={next} onChange={(e) => setNext(e.target.value)} required />
         </label>
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Répète le nouveau mot de passe
           <input type="password" autoComplete="new-password" minLength={PASSWORD_MIN} className={inputClass} value={repeat} onChange={(e) => setRepeat(e.target.value)} required />
         </label>
@@ -49,8 +49,8 @@ export default function SecuritySection({ email }: { email: string }) {
         </button>
       </form>
 
-      <div className="space-y-2 border-t border-zinc-100 pt-3">
-        <p className="text-sm text-zinc-500">
+      <div className="space-y-2 pt-3" style={{ borderTop: "1px solid var(--color-border)" }}>
+        <p className="text-sm text-[var(--color-muted)]">
           Téléphone perdu ou ordinateur partagé ? Déconnecte tous les appareils, celui-ci compris. Les autres
           peuvent rester connectés jusqu&apos;à une heure.
         </p>

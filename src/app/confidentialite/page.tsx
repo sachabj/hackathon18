@@ -2,6 +2,7 @@
 // ⚠️ Elle doit décrire ce que fait réellement le code : la mettre à jour avec toute nouvelle donnée ou service.
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowLeftIcon } from "@/components/icons";
 import { APP_NAME, PRIVACY_CONTACT } from "@/lib/constants";
 
 export const metadata: Metadata = { title: `Confidentialité — ${APP_NAME}` };
@@ -9,8 +10,8 @@ export const metadata: Metadata = { title: `Confidentialité — ${APP_NAME}` };
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      <div className="space-y-2 text-sm text-zinc-700 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">{children}</div>
+      <h2 className="text-lg">{title}</h2>
+      <div className="space-y-2 text-sm text-[var(--color-ink)] [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">{children}</div>
     </section>
   );
 }
@@ -18,10 +19,12 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 export default function Page() {
   return (
     <article className="mx-auto w-full max-w-md space-y-6 px-4 py-6">
-      <Link href="/" className="text-sm font-semibold text-blue-600">← Retour à l&apos;application</Link>
+      <Link href="/" className="flex items-center gap-1 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+        <ArrowLeftIcon className="h-4 w-4" /> Retour à l&apos;application
+      </Link>
       <header>
-        <h1 className="text-2xl font-bold">Politique de confidentialité</h1>
-        <p className="text-sm text-zinc-500">Version du 27 novembre 2026</p>
+        <h1 className="text-2xl">Politique de confidentialité</h1>
+        <p className="text-sm text-[var(--color-muted)]">Version du 27 novembre 2026</p>
       </header>
 
       <Block title="Qui est responsable ?">

@@ -15,15 +15,15 @@ export default function Page() {
     <>
       <MerchantPage title="Mon compte" business={data ? data.business : undefined} error={error}>
         {business && (
-          <dl className="mt-4 divide-y divide-zinc-100 rounded-2xl border border-zinc-200">
+          <dl className="sw-card mt-4 divide-y divide-[var(--color-border)]">
             {[
               ["Commerce", business.name],
-              ["Activité", `${CATEGORIES[business.category].emoji} ${CATEGORIES[business.category].label}`],
+              ["Activité", CATEGORIES[business.category].label],
               ["Adresse", business.address ?? "Non renseignée"],
               ["Zone", ZONES.find((z) => z.id === business.zone_id)?.name ?? "—"],
             ].map(([label, value]) => (
               <div key={label} className="flex gap-3 p-3 text-sm">
-                <dt className="w-24 shrink-0 text-zinc-500">{label}</dt>
+                <dt className="w-24 shrink-0 text-[var(--color-muted)]">{label}</dt>
                 <dd className="font-medium">{value}</dd>
               </div>
             ))}

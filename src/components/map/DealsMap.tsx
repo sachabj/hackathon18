@@ -4,12 +4,14 @@
 import L from "leaflet";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
-import DealSheet from "@/components/deal/DealSheet";
+import CategoryIcon, { categoryIconSvg } from "@/components/CategoryIcon";
+import { CheckBadgeIcon, PinIcon, StarIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { recordView } from "@/lib/engagement";
 import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useUserPosition } from "@/lib/useUserPosition";
+import DealSheet from "@/components/deal/DealSheet";
 import BaseMap from "./BaseMap";
 
 /** Niveau de zoom « autour de moi » (quelques rues). */
@@ -19,14 +21,14 @@ const zoneBounds = (z: (typeof ZONES)[number]) => L.latLng(z.lat, z.lng).toBound
 
 const ALL_BOUNDS = ZONES.reduce((b, z) => b.extend(zoneBounds(z)), L.latLngBounds([]));
 
-// Repères façon Waze (goutte colorée + emoji), en HTML : styles dans globals.css (.wz-pin).
+// Repères façon Waze (goutte colorée + icône au trait), en HTML : styles dans globals.css (.wz-pin).
 function pins(boosted: boolean) {
   return Object.fromEntries(
-    Object.entries(CATEGORIES).map(([key, { emoji, color }]) => [
+    (Object.keys(CATEGORIES) as DealCategory[]).map((key) => [
       key,
       L.divIcon({
         className: "wz-marker",
-        html: `<div class="wz-pin${boosted ? " wz-pin-boosted" : ""}" style="--pin:${color}"><span>${emoji}</span></div>`,
+        html: `<div class="wz-pin${boosted ? " wz-pin-boosted" : ""}" style="--pin:${CATEGORIES[key].color}">${categoryIconSvg(key, 20)}</div>`,
         iconSize: [40, 48],
         iconAnchor: [20, 47],
         popupAnchor: [0, -44],
@@ -133,7 +135,7 @@ export default function DealsMap({
               center={[z.lat, z.lng]}
               radius={z.radiusM}
               interactive={false}
-              pathOptions={{ color: "#0a84ff", weight: 1.5, opacity: 0.45, dashArray: "4 8", fillOpacity: 0.025 }}
+              pathOptions={{ color: "#1e3a2f", weight: 1.5, opacity: 0.45, dashArray: "4 8", fillOpacity: 0.025 }}
             />
           ))}
           {position && (
@@ -142,7 +144,7 @@ export default function DealsMap({
                 center={[position.lat, position.lng]}
                 radius={position.accuracy}
                 interactive={false}
-                pathOptions={{ stroke: false, color: "#0a84ff", fillOpacity: 0.12 }}
+                pathOptions={{ stroke: false, color: "#1e3a2f", fillOpacity: 0.12 }}
               />
               <Marker position={[position.lat, position.lng]} icon={USER_ICON} title="Tu es ici" zIndexOffset={1000}>
                 <Popup>Tu es ici</Popup>
@@ -163,26 +165,36 @@ export default function DealsMap({
                 <Popup autoPanPaddingTopLeft={[16, 60]} autoPanPaddingBottomRight={[16, 24]} maxHeight={180}>
                   <div className="flex min-w-48 flex-col gap-1">
                     <span
-                      className="self-start rounded-full px-2 py-0.5 text-xs font-semibold text-zinc-900"
-                      style={{ backgroundColor: `${CATEGORIES[d.category].color}33` }}
+                      className="sw-badge self-start"
+                      style={{ backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }}
                     >
-                      {CATEGORIES[d.category].emoji} {CATEGORIES[d.category].label}
+                      <CategoryIcon category={d.category} size={16} /> {CATEGORIES[d.category].label}
                     </span>
                     <strong className="text-base leading-tight">{d.title}</strong>
-                    {isBoosted(d) && <span className="text-xs font-semibold text-amber-700">⭐ Sponsorisé</span>}
-                    {d.is_official && (
-                      <span className="text-xs font-semibold text-blue-600">✔ Offre officielle</span>
+                    {isBoosted(d) && (
+                      <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "#92700c" }}>
+                        <StarIcon className="h-3 w-3" filled /> Sponsorisé
+                      </span>
                     )}
-                    {d.price_info && <span className="text-sm font-bold text-green-700">{d.price_info}</span>}
+                    {d.is_official && (
+                      <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "var(--color-forest)" }}>
+                        <CheckBadgeIcon className="h-3 w-3" /> Offre officielle
+                      </span>
+                    )}
+                    {d.price_info && <span className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>{d.price_info}</span>}
                     {d.description && <span>{d.description}</span>}
-                    {d.place_name && <span className="text-zinc-500">📍 {d.place_name}</span>}
+                    {d.place_name && (
+                      <span className="flex items-center gap-1 text-[var(--color-muted)]">
+                        <PinIcon className="h-3 w-3" /> {d.place_name}
+                      </span>
+                    )}
                     {d.expires_at && (
-                      <span className="text-xs text-zinc-500">Jusqu&apos;au {formatDate(d.expires_at)}</span>
+                      <span className="text-xs text-[var(--color-muted)]">Jusqu&apos;au {formatDate(d.expires_at)}</span>
                     )}
                     <button
                       type="button"
                       onClick={() => setDetail(d)}
-                      className="mt-1 rounded-full bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white"
+                      className="sw-btn-primary mt-1 py-1.5 text-sm"
                     >
                       Voir et réagir
                     </button>
@@ -205,7 +217,8 @@ export default function DealsMap({
               type="button"
               onClick={() => focus(z.id)}
               aria-pressed={selected === z.id}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition active:scale-95 ${selected === z.id ? "bg-[#0a84ff] text-white shadow-lg" : "wz-glass text-zinc-700"}`}
+              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition active:scale-95 ${selected === z.id ? "shadow-lg" : "wz-glass"}`}
+              style={selected === z.id ? { backgroundColor: "var(--color-forest)", color: "var(--color-surface)" } : { color: "var(--color-ink)" }}
             >
               {z.name}
             </button>
@@ -225,7 +238,8 @@ export default function DealsMap({
           aria-label="Autour de moi"
           title="Autour de moi"
           aria-pressed={selected === "me"}
-          className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full text-[#0a84ff] transition active:scale-95 ${!position && !error ? "animate-pulse" : ""}`}
+          className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full transition active:scale-95 ${!position && !error ? "animate-pulse" : ""}`}
+          style={{ color: "var(--color-forest)" }}
         >
           {/* Flèche de localisation : pleine quand la carte est centrée sur soi. */}
           <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden>

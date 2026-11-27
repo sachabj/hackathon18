@@ -2,10 +2,14 @@
 
 // Carte : Justin · Fil, filtres et « Pour toi » : Sacha
 import Link from "next/link";
-import { useState } from "react";
+import { Fragment, useState, type ComponentType } from "react";
+import CategoryIcon from "@/components/CategoryIcon";
 import DealCard from "@/components/feed/DealCard";
+import { SuitcaseIcon, TargetIcon } from "@/components/icons";
 import DealsMap from "@/components/map/DealsMapLoader";
 import { APP_NAME, BUDGET_PROFILES, CATEGORIES, SUBCATEGORIES, TRANSPORT_MODES, ZONES } from "@/lib/constants";
+
+type IconComponent = ComponentType<{ className?: string }>;
 import { isTraveler, rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
@@ -48,39 +52,53 @@ export default function Page() {
   const home = ZONES.find((z) => z.id === me?.homeZoneId);
   const busy = loading || loadingProfile;
 
+  // Puces de la bannière préférences : zone, transports, voyages, budget (icône + texte).
+  type Chip = { Icon: IconComponent | null; text: string };
+  const chips: Chip[] = [];
+  if (me) {
+    if (home) chips.push({ Icon: null, text: home.name });
+    for (const m of me.transportModes) chips.push({ Icon: TRANSPORT_MODES[m].Icon, text: TRANSPORT_MODES[m].label });
+    if (isTraveler(me)) chips.push({ Icon: SuitcaseIcon, text: me.travelModes.map((m) => SUBCATEGORIES[m].label).join(", ") });
+    if (me.budget) chips.push({ Icon: BUDGET_PROFILES[me.budget].Icon, text: BUDGET_PROFILES[me.budget].label });
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col">
-      <header className="sticky top-0 z-[1001] flex items-center gap-2 border-b border-zinc-100 bg-white/95 px-4 py-3 backdrop-blur">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-sm bg-blue-600" aria-hidden />
-        <p className="text-xl font-bold tracking-tight text-zinc-900">{APP_NAME}</p>
+      <header
+        className="sticky top-0 z-[1001] flex items-center gap-2 px-4 py-3 backdrop-blur"
+        style={{ borderBottom: "1px solid var(--color-border)", backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
+        <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0" aria-hidden />
+        <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
       </header>
 
       <div className="px-4 py-3">
-        <h1 className="text-sm font-medium text-zinc-500">
+        <h1 className="text-sm font-medium text-[var(--color-muted)]">
           {profile?.username ? `Bonjour ${profile.username}` : "Les bons plans étudiants"}
         </h1>
-        {me && (
+        {me && chips.length > 0 && (
           <Link
             href="/onboarding"
-            className="mt-2 flex items-center justify-between gap-2 rounded-lg border border-zinc-200 px-3 py-2 text-sm"
+            className="mt-2 flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm"
+            style={{ borderColor: "var(--color-border)" }}
           >
-            <span>
-              {[
-                home?.name,
-                me.transportModes.map((m) => TRANSPORT_MODES[m].emoji).join(""),
-                isTraveler(me) && `🧳${me.travelModes.map((m) => SUBCATEGORIES[m].emoji).join("")}`,
-                me.budget && `${BUDGET_PROFILES[me.budget].emoji} ${BUDGET_PROFILES[me.budget].label}`,
-              ]
-                .filter(Boolean)
-                .join("  ·  ")}
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              {chips.map(({ Icon, text }, i) => (
+                <Fragment key={i}>
+                  <span className="flex items-center gap-1">
+                    {Icon && <Icon className="h-3.5 w-3.5" />} {text}
+                  </span>
+                </Fragment>
+              ))}
             </span>
-            <span className="shrink-0 font-semibold text-blue-600">Modifier</span>
+            <span className="shrink-0 font-medium" style={{ color: "var(--color-forest)" }}>Modifier</span>
           </Link>
         )}
         {profile && !profile.onboarded && (
-          <Link href="/onboarding" className="mt-2 block rounded-lg bg-blue-600 px-4 py-3 text-white">
-            <span className="block font-semibold">Personnalise tes bons plans</span>
-            <span className="block text-sm text-blue-100">
+          <Link href="/onboarding" className="mt-2 block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
+            <span className="block font-medium">Personnalise tes bons plans</span>
+            <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
               1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
             </span>
           </Link>
@@ -89,16 +107,23 @@ export default function Page() {
       </div>
 
       {me && (
-        <div className="mx-4 grid grid-cols-2 rounded-full bg-zinc-100 p-1 text-sm font-semibold">
+        <div className="mx-4 grid grid-cols-2 rounded-full p-1 text-sm font-medium" style={{ backgroundColor: "var(--color-border)" }}>
           {(["forYou", "all"] as const).map((t) => (
             <button
               key={t}
               type="button"
               aria-pressed={tab === t}
               onClick={() => setTab(t)}
-              className={`rounded-full py-2 ${tab === t ? "bg-white text-blue-600 shadow" : "text-zinc-500"}`}
+              className="flex items-center justify-center gap-1.5 rounded-full py-2"
+              style={tab === t ? { backgroundColor: "var(--color-surface)", color: "var(--color-forest)", boxShadow: "0 1px 3px rgb(0 0 0 / 0.1)" } : { color: "var(--color-muted)" }}
             >
-              {t === "forYou" ? `🎯 Pour toi (${forYouCount})` : `Tout (${deals.length})`}
+              {t === "forYou" ? (
+                <>
+                  <TargetIcon className="h-4 w-4" /> Pour toi ({forYouCount})
+                </>
+              ) : (
+                `Tout (${deals.length})`
+              )}
             </button>
           ))}
         </div>
@@ -111,9 +136,14 @@ export default function Page() {
             type="button"
             aria-pressed={category === c}
             onClick={() => setCategory(c)}
-            className={`shrink-0 rounded-full border px-3 py-1.5 text-sm font-medium ${category === c ? "border-blue-600 bg-blue-600 text-white" : "border-zinc-200 text-zinc-700"}`}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium"
+            style={
+              category === c
+                ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
+                : { borderColor: "var(--color-border)", color: "var(--color-ink)" }
+            }
           >
-            {c ? `${CATEGORIES[c].emoji} ${CATEGORIES[c].label}` : "Toutes"}
+            {c && <CategoryIcon category={c} size={18} />} {c ? CATEGORIES[c].label : "Toutes"}
           </button>
         ))}
       </div>
@@ -123,10 +153,10 @@ export default function Page() {
       </div>
 
       <section className="px-4 py-4">
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-lg">
           {tab === "forYou" ? "Sélectionnés pour toi" : "Fil des bons plans"}
         </h2>
-        <p role="status" className="mt-1 text-sm text-zinc-500">
+        <p role="status" className="mt-1 text-sm text-[var(--color-muted)]">
           {error ? (
             <span className="text-red-600">Impossible de charger les bons plans : {error}</span>
           ) : busy ? (

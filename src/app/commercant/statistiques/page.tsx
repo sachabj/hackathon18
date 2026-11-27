@@ -14,33 +14,37 @@ export default function Page() {
   return (
     <MerchantPage title="Statistiques" business={data ? data.business : undefined} error={error}>
       {summary && summary.rows.length === 0 && (
-        <p className="mt-4 text-sm text-zinc-500">Publie une première offre pour voir ses statistiques.</p>
+        <p className="mt-4 text-sm text-[var(--color-muted)]">Publie une première offre pour voir ses statistiques.</p>
       )}
       {summary && summary.rows.length > 0 && (
         <>
           <dl className="mt-4 grid grid-cols-2 gap-2">
             {[
-              { label: "Offres en ligne", value: `${summary.online} / ${summary.rows.length}` },
+              { label: "Offres en ligne", value: `${summary.online} / ${summary.rows.length}`, Icon: null },
               {
                 label: "Votes « toujours dispo »",
                 value: summary.trust === null ? "—" : `${summary.trust} %`,
+                Icon: null,
               },
               ...(Object.keys(METRICS) as Metric[]).map((m) => ({
-                label: `${METRICS[m].emoji} ${METRICS[m].label}`,
+                label: METRICS[m].label,
                 value: String(summary.totals[m]),
+                Icon: METRICS[m].Icon,
               })),
             ].map((tile) => (
-              <div key={tile.label} className="flex flex-col-reverse rounded-2xl border border-zinc-200 bg-white p-3 last:odd:col-span-2">
+              <div key={tile.label} className="sw-card flex flex-col-reverse p-3 last:odd:col-span-2">
                 <dd className="text-2xl font-bold">{tile.value}</dd>
-                <dt className="text-xs text-zinc-500">{tile.label}</dt>
+                <dt className="flex items-center gap-1 text-xs text-[var(--color-muted)]">
+                  {tile.Icon && <tile.Icon className="h-3.5 w-3.5" />} {tile.label}
+                </dt>
               </div>
             ))}
           </dl>
 
           <section className="mt-6">
-            <h2 className="mb-2 text-lg font-semibold">Comparaison des offres</h2>
+            <h2 className="mb-2 text-lg">Comparaison des offres</h2>
             {noReaction ? (
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-[var(--color-muted)]">
                 Aucune réaction pour le moment : les votes et les favoris des étudiants apparaîtront ici.
               </p>
             ) : (
@@ -49,22 +53,25 @@ export default function Page() {
           </section>
 
           <details className="mt-6">
-            <summary className="cursor-pointer text-sm font-semibold text-blue-600">Voir le tableau détaillé</summary>
+            <summary className="cursor-pointer text-sm font-medium" style={{ color: "var(--color-forest)" }}>Voir le tableau détaillé</summary>
             <table className="mt-2 w-full text-sm">
               <thead>
-                <tr className="border-b border-zinc-200 text-left text-xs text-zinc-500">
+                <tr className="border-b text-left text-xs text-[var(--color-muted)]" style={{ borderColor: "var(--color-border)" }}>
                   <th className="py-1 font-medium">Offre</th>
-                  {(Object.keys(METRICS) as Metric[]).map((m) => (
-                    <th key={m} className="py-1 text-right font-medium" title={METRICS[m].label}>
-                      <span aria-hidden>{METRICS[m].emoji}</span>
-                      <span className="sr-only">{METRICS[m].label}</span>
-                    </th>
-                  ))}
+                  {(Object.keys(METRICS) as Metric[]).map((m) => {
+                    const Icon = METRICS[m].Icon;
+                    return (
+                      <th key={m} className="py-1 text-right font-medium" title={METRICS[m].label}>
+                        <Icon className="ml-auto h-3.5 w-3.5" />
+                        <span className="sr-only">{METRICS[m].label}</span>
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
                 {summary.rows.map((r) => (
-                  <tr key={r.offer.id} className="border-b border-zinc-100">
+                  <tr key={r.offer.id} className="border-b" style={{ borderColor: "var(--color-border)" }}>
                     <td className="py-1.5 pr-2">{r.offer.title}</td>
                     {(Object.keys(METRICS) as Metric[]).map((m) => (
                       <td key={m} className="w-10 py-1.5 text-right tabular-nums">

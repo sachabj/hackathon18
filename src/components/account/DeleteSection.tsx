@@ -52,7 +52,7 @@ export default function DeleteSection() {
               confirmé{plural(preview.kept)} par d&apos;autres : conservé{plural(preview.kept)}, sans lien avec toi.
             </li>
           </ul>
-          <label className="block text-sm font-semibold">
+          <label className="block text-sm font-medium">
             Ton mot de passe pour confirmer
             <input type="password" autoComplete="current-password" className={inputClass} value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>

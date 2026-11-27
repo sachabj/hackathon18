@@ -4,7 +4,9 @@
 // Lieu précis : nom du magasin + ville → recherche Photon (OpenStreetMap) → choix du lieu exact.
 import Link from "next/link";
 import { useRef, useState } from "react";
+import CategoryIcon from "@/components/CategoryIcon";
 import ChoiceTile from "@/components/preferences/ChoiceTile";
+import { BuildingsIcon, GlobeIcon, PinIcon, ProhibitedIcon, SparklesIcon, ThumbsUpIcon } from "@/components/icons";
 import { AssistUnavailable, findDuplicateCandidates, reviewBeforePublish } from "@/lib/ai/client";
 import type { AssistDraft, AssistReview, DuplicateCandidate } from "@/lib/ai/types";
 import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, SUBCATEGORIES, ZONES } from "@/lib/constants";
@@ -16,10 +18,10 @@ import { uploadDealPhoto } from "@/lib/photos";
 import { usePreferences } from "@/lib/usePreferences";
 import AssistPanel from "./AssistPanel";
 
-const SCOPES: { id: DealScope; emoji: string; label: string; hint: string }[] = [
-  { id: "local", emoji: "📍", label: "Dans un lieu", hint: "Un magasin, un resto… (sur la carte)" },
-  { id: "zone", emoji: "🏙️", label: "Sur une zone", hint: "Valable dans toute une ville" },
-  { id: "national", emoji: "🌍", label: "Partout", hint: "Offre nationale, en ligne…" },
+const SCOPES: { id: DealScope; Icon: typeof PinIcon; label: string; hint: string }[] = [
+  { id: "local", Icon: PinIcon, label: "Dans un lieu", hint: "Un magasin, un resto… (sur la carte)" },
+  { id: "zone", Icon: BuildingsIcon, label: "Sur une zone", hint: "Valable dans toute une ville" },
+  { id: "national", Icon: GlobeIcon, label: "Partout", hint: "Offre nationale, en ligne…" },
 ];
 
 /** Catégories où une date limite (dossier, inscription) a du sens. */
@@ -35,14 +37,14 @@ const toggle = <T,>(list: T[], item: T) =>
 /** Fin de journée locale → ISO, pour qu'une offre « jusqu'au 15 » reste visible le 15. */
 const endOfDay = (date: string) => (date ? new Date(`${date}T23:59:59`).toISOString() : null);
 
-const inputClass = "w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 outline-none focus:border-blue-600";
+const inputClass = "sw-field";
 
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
       <div>
-        <h2 className="font-semibold text-zinc-900">{title}</h2>
-        {hint && <p className="text-xs text-zinc-500">{hint}</p>}
+        <h2 className="font-medium" style={{ color: "var(--color-ink)" }}>{title}</h2>
+        {hint && <p className="text-xs text-[var(--color-muted)]">{hint}</p>}
       </div>
       {children}
     </section>
@@ -55,9 +57,12 @@ function Chip({ selected, onClick, children }: { selected: boolean; onClick: () 
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      className={`rounded-full border px-3 py-1.5 text-sm transition active:scale-95 ${
-        selected ? "border-blue-600 bg-blue-50 font-semibold text-blue-700" : "border-zinc-300 bg-white text-zinc-700"
-      }`}
+      className="rounded-full border px-3 py-1.5 text-sm transition active:scale-95"
+      style={
+        selected
+          ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)", color: "var(--color-forest)", fontWeight: 500 }
+          : { borderColor: "var(--color-border)", color: "var(--color-ink)" }
+      }
     >
       {children}
     </button>
@@ -313,20 +318,18 @@ export default function PublishForm() {
   if (done) {
     return (
       <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-12 text-center">
-        <span className="text-6xl" aria-hidden>
-          🎉
-        </span>
-        <h1 className="mt-4 text-2xl font-bold">
-          {done === "confirmed" ? "Merci, bon plan confirmé 👍" : "Merci, bon plan publié !"}
+        <ThumbsUpIcon className="h-12 w-12 text-[var(--color-forest)]" />
+        <h1 className="mt-4 text-2xl">
+          {done === "confirmed" ? "Merci, bon plan confirmé" : "Merci, bon plan publié !"}
         </h1>
-        <p className="mt-2 text-sm text-zinc-500">
+        <p className="mt-2 text-sm text-[var(--color-muted)]">
           Ta contribution te donne 7 jours d&apos;accès complet aux nouveaux bons plans.
         </p>
         <div className="mt-8 flex w-full flex-col gap-3">
-          <Link href="/" className="rounded-xl bg-blue-600 py-3 font-semibold text-white">
+          <Link href="/" className="sw-btn-primary">
             Voir sur la carte
           </Link>
-          <button type="button" onClick={reset} className="rounded-xl border border-zinc-300 py-3 font-semibold">
+          <button type="button" onClick={reset} className="sw-btn-secondary">
             Partager un autre bon plan
           </button>
         </div>
@@ -337,8 +340,8 @@ export default function PublishForm() {
   return (
     <form onSubmit={submit} className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 pb-8 pt-6">
       <div>
-        <h1 className="text-2xl font-bold">Partager un bon plan</h1>
-        <p className="mt-1 text-sm text-zinc-500">Les autres étudiants pourront le confirmer 👍 ou le signaler 👎.</p>
+        <h1 className="text-2xl">Partager un bon plan</h1>
+        <p className="mt-1 text-sm text-[var(--color-muted)]">Les autres étudiants pourront le confirmer ou le signaler.</p>
       </div>
 
       <AssistPanel onDraft={applyDraft} />
@@ -348,36 +351,35 @@ export default function PublishForm() {
           {SCOPES.map((s) => (
             <ChoiceTile
               key={s.id}
-              emoji={s.emoji}
+              icon={<s.Icon className="h-7 w-7" />}
               label={s.label}
               selected={scope === s.id}
               onClick={() => setScope(s.id)}
             />
           ))}
         </div>
-        <p className="text-xs text-zinc-500">{SCOPES.find((s) => s.id === scope)?.hint}</p>
+        <p className="text-xs text-[var(--color-muted)]">{SCOPES.find((s) => s.id === scope)?.hint}</p>
       </Section>
 
       {scope === "local" && (
         <Section title="Le lieu" hint="Nom du magasin et ville, puis choisis le bon lieu dans la liste.">
           {place ? (
-            <div className="flex items-start gap-3 rounded-2xl border-2 border-blue-600 bg-blue-50 p-3">
-              <span className="text-2xl" aria-hidden>
-                📍
-              </span>
+            <div className="flex items-start gap-3 rounded-2xl border-2 p-3" style={{ borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)" }}>
+              <PinIcon className="h-6 w-6 shrink-0 text-[var(--color-forest)]" />
               <div className="min-w-0 flex-1">
-                <p className="font-semibold text-blue-700">{place.name}</p>
-                <p className="text-sm text-zinc-600">{place.address}</p>
+                <p className="font-medium" style={{ color: "var(--color-forest)" }}>{place.name}</p>
+                <p className="text-sm" style={{ color: "var(--color-ink)" }}>{place.address}</p>
                 <a
                   href={`https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lng}#map=18/${place.lat}/${place.lng}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs text-blue-600 underline"
+                  className="text-xs underline"
+                  style={{ color: "var(--color-forest)" }}
                 >
                   Vérifier sur la carte
                 </a>
               </div>
-              <button type="button" onClick={() => setPlace(null)} className="text-sm font-semibold text-blue-600">
+              <button type="button" onClick={() => setPlace(null)} className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>
                 Changer
               </button>
             </div>
@@ -412,13 +414,13 @@ export default function PublishForm() {
                   type="button"
                   onClick={() => runSearch()}
                   disabled={searching}
-                  className="shrink-0 rounded-xl bg-blue-600 px-4 font-semibold text-white disabled:opacity-50"
+                  className="sw-btn-primary shrink-0 px-4 disabled:opacity-50"
                 >
                   {searching ? "…" : "Rechercher"}
                 </button>
               </div>
               {results && results.length > 0 && (
-                <ul className="divide-y divide-zinc-200 overflow-hidden rounded-2xl border border-zinc-200 bg-white">
+                <ul className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border" style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)" }}>
                   {results.map((p) => {
                     const km = distanceKm(p, { lat: ZONES[0].lat, lng: ZONES[0].lng });
                     return (
@@ -426,15 +428,15 @@ export default function PublishForm() {
                         <button
                           type="button"
                           onClick={() => choosePlace(p)}
-                          className="flex w-full items-center gap-3 px-3 py-2 text-left active:bg-blue-50"
+                          className="flex w-full items-center gap-3 px-3 py-2 text-left"
                         >
                           <span className="min-w-0 flex-1">
                             <span className="block truncate font-medium">{p.name}</span>
-                            <span className="block truncate text-xs text-zinc-500">
+                            <span className="block truncate text-xs text-[var(--color-muted)]">
                               {[kindLabel(p.kind), p.address || "Adresse inconnue"].filter(Boolean).join(" · ")}
                             </span>
                           </span>
-                          {km > 30 && <span className="shrink-0 text-xs text-amber-600">loin de Bruz</span>}
+                          {km > 30 && <span className="shrink-0 text-xs" style={{ color: "var(--color-aubergine)" }}>loin de Bruz</span>}
                         </button>
                       </li>
                     );
@@ -442,8 +444,8 @@ export default function PublishForm() {
                 </ul>
               )}
               {searchError && <p className="text-sm text-red-600">{searchError}</p>}
-              <button type="button" onClick={useMyPosition} className="self-start text-sm font-semibold text-blue-600">
-                📍 Pas dans la liste ? Utiliser ma position actuelle
+              <button type="button" onClick={useMyPosition} className="flex items-center gap-1.5 self-start text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+                <PinIcon className="h-4 w-4" /> Pas dans la liste ? Utiliser ma position actuelle
               </button>
             </>
           )}
@@ -478,7 +480,7 @@ export default function PublishForm() {
           {keys(CATEGORIES).map((c) => (
             <ChoiceTile
               key={c}
-              emoji={CATEGORIES[c].emoji}
+              icon={<CategoryIcon category={c} size={32} />}
               label={CATEGORIES[c].label}
               selected={category === c}
               onClick={() => setCategory(c)}
@@ -487,11 +489,16 @@ export default function PublishForm() {
         </div>
         {category === "transport" && (
           <div className="flex flex-wrap gap-2 pt-1">
-            {keys(SUBCATEGORIES).map((s) => (
-              <Chip key={s} selected={subcategory === s} onClick={() => setSubcategory(subcategory === s ? null : s)}>
-                {SUBCATEGORIES[s].emoji} {SUBCATEGORIES[s].label}
-              </Chip>
-            ))}
+            {keys(SUBCATEGORIES).map((s) => {
+              const { Icon, label } = SUBCATEGORIES[s];
+              return (
+                <Chip key={s} selected={subcategory === s} onClick={() => setSubcategory(subcategory === s ? null : s)}>
+                  <span className="flex items-center gap-1">
+                    <Icon className="h-3.5 w-3.5" /> {label}
+                  </span>
+                </Chip>
+              );
+            })}
           </div>
         )}
       </Section>
@@ -529,21 +536,26 @@ export default function PublishForm() {
 
       <Section title="Activités liées" hint="Facultatif : aide à le proposer aux bons étudiants.">
         <div className="flex flex-wrap gap-2">
-          {keys(ACTIVITIES).map((a) => (
-            <Chip key={a} selected={tags.includes(a)} onClick={() => setTags(toggle(tags, a))}>
-              {ACTIVITIES[a].emoji} {ACTIVITIES[a].label}
-            </Chip>
-          ))}
+          {keys(ACTIVITIES).map((a) => {
+            const { Icon, label } = ACTIVITIES[a];
+            return (
+              <Chip key={a} selected={tags.includes(a)} onClick={() => setTags(toggle(tags, a))}>
+                <span className="flex items-center gap-1">
+                  <Icon className="h-3.5 w-3.5" /> {label}
+                </span>
+              </Chip>
+            );
+          })}
         </div>
       </Section>
 
       <Section title="Dates" hint="Facultatif.">
-        <label className="block text-sm text-zinc-700">
+        <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
           Fin de l&apos;offre
           <input type="date" className={`${inputClass} mt-1`} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
         </label>
         {category && DEADLINE_CATEGORIES.includes(category) && (
-          <label className="block text-sm text-zinc-700">
+          <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
             Date limite pour en profiter (dossier, inscription…)
             <input type="date" className={`${inputClass} mt-1`} value={deadlineAt} onChange={(e) => setDeadlineAt(e.target.value)} />
           </label>
@@ -551,19 +563,19 @@ export default function PublishForm() {
       </Section>
 
       {proofPhoto && (
-        <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-2">
+        <div className="flex items-center gap-3 rounded-2xl border p-2" style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)" }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- aperçu local (data URL) */}
           <img src={proofPhoto.preview} alt="Photo de preuve" className="h-14 w-14 rounded-lg object-cover" />
-          <label className="flex flex-1 items-start gap-2 text-sm text-zinc-700">
+          <label className="flex flex-1 items-start gap-2 text-sm" style={{ color: "var(--color-ink)" }}>
             <input
               type="checkbox"
-              className="mt-0.5 h-4 w-4 accent-blue-600"
+              className="mt-0.5 h-4 w-4"
               checked={sharePhoto}
               onChange={(e) => setSharePhoto(e.target.checked)}
             />
             Publier cette photo comme preuve (visible par tous)
           </label>
-          <button type="button" onClick={() => setProofPhoto(null)} className="text-sm font-semibold text-zinc-500">
+          <button type="button" onClick={() => setProofPhoto(null)} className="text-sm font-medium text-[var(--color-muted)]">
             Retirer
           </button>
         </div>
@@ -583,10 +595,7 @@ export default function PublishForm() {
           onEdit={() => setReview(null)}
         />
       ) : (
-        <button
-          disabled={submitting}
-          className="rounded-xl bg-blue-600 py-3 text-lg font-semibold text-white disabled:opacity-50"
-        >
+        <button disabled={submitting} className="sw-btn-primary text-lg">
           {submitting ? "Vérification…" : "Publier le bon plan"}
         </button>
       )}
@@ -614,31 +623,35 @@ function ReviewPanel({
 }) {
   const blocked = !result.acceptable;
   return (
-    <section className="space-y-3 rounded-2xl border-2 border-amber-300 bg-amber-50 p-3" aria-live="polite">
-      <h2 className="font-semibold text-zinc-900">✨ Avant de publier</h2>
+    <section className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-aubergine)", borderWidth: 2, backgroundColor: "var(--color-lilac)" }} aria-live="polite">
+      <h2 className="flex items-center gap-1.5 font-medium" style={{ color: "var(--color-aubergine)" }}>
+        <SparklesIcon className="h-4 w-4" /> Avant de publier
+      </h2>
 
       {blocked && (
-        <p className="text-sm text-red-700">🚫 {result.rejection_reason ?? "Ce contenu ne peut pas être publié."}</p>
+        <p className="flex items-center gap-1.5 text-sm text-red-700">
+          <ProhibitedIcon className="h-4 w-4 shrink-0" /> {result.rejection_reason ?? "Ce contenu ne peut pas être publié."}
+        </p>
       )}
 
       {!blocked && duplicate && (
-        <div className="space-y-2 rounded-xl bg-white p-3">
-          <p className="text-sm font-semibold">Ce bon plan existe peut-être déjà :</p>
+        <div className="space-y-2 rounded-xl p-3" style={{ backgroundColor: "var(--color-surface)" }}>
+          <p className="text-sm font-medium">Ce bon plan existe peut-être déjà :</p>
           <p className="text-sm">
             <span className="font-medium">{duplicate.title}</span>
-            {duplicate.place_name && <span className="text-zinc-500"> · {duplicate.place_name}</span>}
+            {duplicate.place_name && <span className="text-[var(--color-muted)]"> · {duplicate.place_name}</span>}
           </p>
-          {result.duplicate_reason && <p className="text-xs text-zinc-500">{result.duplicate_reason}</p>}
+          {result.duplicate_reason && <p className="text-xs text-[var(--color-muted)]">{result.duplicate_reason}</p>}
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
               disabled={busy}
               onClick={() => onConfirmDuplicate(duplicate.id)}
-              className="rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+              className="sw-btn-primary py-2 text-sm disabled:opacity-50"
             >
-              👍 C&apos;est le même : je le confirme
+              <ThumbsUpIcon className="h-4 w-4" /> C&apos;est le même : je le confirme
             </button>
-            <button type="button" onClick={onNotDuplicate} className="rounded-xl border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold">
+            <button type="button" onClick={onNotDuplicate} className="sw-btn-secondary py-2 text-sm">
               Ce n&apos;est pas le même
             </button>
           </div>
@@ -646,15 +659,16 @@ function ReviewPanel({
       )}
 
       {!blocked && !result.title_ok && result.suggested_title && (
-        <div className="space-y-2 rounded-xl bg-white p-3">
+        <div className="space-y-2 rounded-xl p-3" style={{ backgroundColor: "var(--color-surface)" }}>
           <p className="text-sm">
-            <span className="font-semibold">Titre : </span>
+            <span className="font-medium">Titre : </span>
             {result.title_issue ?? "il peut être plus clair."}
           </p>
           <button
             type="button"
             onClick={() => onUseTitle(result.suggested_title!)}
-            className="w-full rounded-xl border border-blue-600 px-3 py-2 text-left text-sm text-blue-700"
+            className="w-full rounded-xl border px-3 py-2 text-left text-sm"
+            style={{ borderColor: "var(--color-forest)", color: "var(--color-forest)" }}
           >
             Utiliser « {result.suggested_title} »
           </button>
@@ -662,7 +676,7 @@ function ReviewPanel({
       )}
 
       <div className="flex gap-2">
-        <button type="button" onClick={onEdit} className="flex-1 rounded-xl border border-zinc-300 bg-white py-3 font-semibold">
+        <button type="button" onClick={onEdit} className="sw-btn-secondary flex-1">
           Modifier
         </button>
         {!blocked && !duplicate && (
@@ -670,7 +684,7 @@ function ReviewPanel({
             type="button"
             disabled={busy}
             onClick={onPublish}
-            className="flex-1 rounded-xl bg-blue-600 py-3 font-semibold text-white disabled:opacity-50"
+            className="sw-btn-primary flex-1 disabled:opacity-50"
           >
             {busy ? "Publication…" : "Publier"}
           </button>

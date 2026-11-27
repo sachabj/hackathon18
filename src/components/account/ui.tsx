@@ -2,15 +2,14 @@
 
 import { useState } from "react";
 
-export const inputClass =
-  "mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-base font-normal outline-none focus:border-blue-600";
-export const primaryClass = "w-full rounded-xl bg-blue-600 py-2.5 font-semibold text-white disabled:opacity-50";
-export const secondaryClass = "w-full rounded-xl border border-zinc-300 py-2.5 font-semibold disabled:opacity-50";
+export const inputClass = "sw-field mt-1 text-base font-normal";
+export const primaryClass = "sw-btn-primary py-2.5 disabled:opacity-50";
+export const secondaryClass = "sw-btn-secondary py-2.5 disabled:opacity-50";
 
 export function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="space-y-3 rounded-2xl border border-zinc-200 p-3">
-      <h2 className="text-lg font-semibold">{title}</h2>
+    <section className="sw-card space-y-3 p-3">
+      <h2 className="text-lg">{title}</h2>
       {children}
     </section>
   );

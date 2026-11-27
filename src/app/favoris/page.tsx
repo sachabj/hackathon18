@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import CategoryIcon from "@/components/CategoryIcon";
 import DealCard from "@/components/feed/DealCard";
 import { ChevronDownIcon } from "@/components/icons";
 import { APP_NAME, CATEGORIES } from "@/lib/constants";
@@ -92,14 +93,18 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-md px-4 pb-6">
-      <header className="sticky top-0 z-10 -mx-4 flex items-center gap-2 border-b border-zinc-100 bg-white/95 px-4 py-3 backdrop-blur">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-sm bg-blue-600" aria-hidden />
-        <p className="text-xl font-bold tracking-tight text-zinc-900">{APP_NAME}</p>
+      <header
+        className="sticky top-0 z-10 -mx-4 flex items-center gap-2 px-4 py-3 backdrop-blur"
+        style={{ borderBottom: "1px solid var(--color-border)", backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
+        <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0" aria-hidden />
+        <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
       </header>
 
-      <h1 className="mt-3 text-sm font-medium text-zinc-500">Mes favoris</h1>
+      <h1 className="mt-3 text-sm font-medium text-[var(--color-muted)]">Mes favoris</h1>
 
-      <p role="status" className="mt-2 text-sm text-zinc-500">
+      <p role="status" className="mt-2 text-sm text-[var(--color-muted)]">
         {error ? (
           <span className="text-red-600">Impossible de charger les favoris : {error}</span>
         ) : busy ? (
@@ -117,7 +122,7 @@ export default function Page() {
             const isCollapsed = collapsed.has(category);
             const panelId = `favoris-${category}`;
             return (
-              <section key={category} className="rounded-lg border border-zinc-200">
+              <section key={category} className="rounded-lg border" style={{ borderColor: "var(--color-border)" }}>
                 <button
                   type="button"
                   onClick={() => toggleCollapsed(category)}
@@ -125,19 +130,15 @@ export default function Page() {
                   aria-controls={panelId}
                   className="flex w-full items-center gap-2 px-3 py-2.5 text-left"
                 >
-                  <span
-                    className="h-2.5 w-2.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: CATEGORIES[category].color }}
-                    aria-hidden
-                  />
-                  <span className="flex-1 text-sm font-semibold text-zinc-800">{CATEGORIES[category].label}</span>
-                  <span className="text-xs text-zinc-400">{deals.length}</span>
+                  <CategoryIcon category={category} size={22} />
+                  <span className="flex-1 text-sm font-medium" style={{ color: "var(--color-ink)" }}>{CATEGORIES[category].label}</span>
+                  <span className="text-xs text-[var(--color-muted)]">{deals.length}</span>
                   <ChevronDownIcon
-                    className={`h-4 w-4 text-zinc-400 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
+                    className={`h-4 w-4 text-[var(--color-muted)] transition-transform ${isCollapsed ? "" : "rotate-180"}`}
                   />
                 </button>
                 {!isCollapsed && (
-                  <ul id={panelId} className="space-y-3 border-t border-zinc-100 p-3">
+                  <ul id={panelId} className="space-y-3 p-3" style={{ borderTop: "1px solid var(--color-border)" }}>
                     {deals.map((deal) => (
                       <li key={deal.id}>
                         <DealCard deal={deal} favorite onToggleFavorite={toggleFavorite} />

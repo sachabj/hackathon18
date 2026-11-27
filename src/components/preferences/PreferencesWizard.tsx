@@ -4,6 +4,19 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import CategoryIcon from "@/components/CategoryIcon";
+import {
+  ArrowLeftIcon,
+  BuildingsIcon,
+  CloseIcon,
+  GlobeIcon,
+  GraduationCapIcon,
+  HomeIcon,
+  PinIcon,
+  SmileIcon,
+  SuitcaseIcon,
+  TargetIcon,
+} from "@/components/icons";
 import {
   ACTIVITIES,
   BUDGET_PROFILES,
@@ -45,7 +58,7 @@ const STEPS = [
   { id: "budget", title: "Ton budget ?", subtitle: "Visible uniquement par toi." },
   { id: "categories", title: "Tes pôles de dépenses", subtitle: "Touche-les dans l'ordre d'importance : les 3 premiers sont tes priorités." },
   { id: "activities", title: "Qu'est-ce que tu aimes faire ?", subtitle: "On mettra ces sorties en avant." },
-  { id: "recap", title: "Ton profil est prêt 🎉", subtitle: "Tu pourras le modifier quand tu veux." },
+  { id: "recap", title: "Ton profil est prêt", subtitle: "Tu pourras le modifier quand tu veux." },
 ] as const;
 
 const toggle = <T,>(list: T[], item: T) =>
@@ -120,7 +133,7 @@ export default function PreferencesWizard() {
           );
         }
         chooseHome(zone.id, position);
-        setGpsMessage(`📍 Trouvé : tu es à ${formatDistance(km)} du centre de ${zone.name}.`);
+        setGpsMessage(`Trouvé : tu es à ${formatDistance(km)} du centre de ${zone.name}.`);
       },
       () => {
         setLocating(false);
@@ -163,20 +176,21 @@ export default function PreferencesWizard() {
           onClick={() => setStep(step - 1)}
           disabled={step === 0 || single}
           aria-label="Étape précédente"
-          className="h-9 w-9 rounded-full text-xl text-zinc-600 disabled:invisible"
+          className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-muted)] disabled:invisible"
         >
-          ←
+          <ArrowLeftIcon className="h-5 w-5" />
         </button>
         <div
-          className="h-2 flex-1 overflow-hidden rounded-full bg-zinc-100"
+          className="h-2 flex-1 overflow-hidden rounded-full"
+          style={{ backgroundColor: "var(--color-border)" }}
           role="progressbar"
           aria-valuemin={1}
           aria-valuemax={STEPS.length}
           aria-valuenow={step + 1}
         >
           <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-300"
-            style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
+            className="h-full rounded-full transition-all duration-300"
+            style={{ width: `${((step + 1) / STEPS.length) * 100}%`, backgroundColor: "var(--color-forest)" }}
           />
         </div>
         {user?.editing ? (
@@ -184,17 +198,17 @@ export default function PreferencesWizard() {
             type="button"
             onClick={() => router.push(single ? "/profil" : "/")}
             aria-label="Fermer sans enregistrer"
-            className="h-9 w-9 rounded-full text-xl text-zinc-600"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-muted)]"
           >
-            ✕
+            <CloseIcon className="h-5 w-5" />
           </button>
         ) : (
           <span className="w-9" />
         )}
       </div>
 
-      <h1 className="mt-5 text-2xl font-bold">{current.title}</h1>
-      <p className="mt-1 text-sm text-zinc-500">{current.subtitle}</p>
+      <h1 className="mt-5">{current.title}</h1>
+      <p className="mt-1 text-sm text-[var(--color-muted)]">{current.subtitle}</p>
 
       <div className="mt-5">
         {current.id === "zone" && (
@@ -203,16 +217,16 @@ export default function PreferencesWizard() {
               type="button"
               onClick={locate}
               disabled={locating}
-              className="w-full rounded-2xl bg-blue-50 py-3 font-semibold text-blue-700 disabled:opacity-50"
+              className="sw-btn-secondary w-full disabled:opacity-50"
             >
-              {locating ? "Recherche…" : "📍 Me localiser"}
+              <PinIcon className="h-4 w-4" /> {locating ? "Recherche…" : "Me localiser"}
             </button>
-            <p className="text-center text-xs text-zinc-500">
+            <p className="text-center text-xs text-[var(--color-muted)]">
               Facultatif : ta position est arrondie (~100 m), enregistrée avec ton profil et visible par toi seul.
               Toucher une zone à la main l&apos;efface.
             </p>
             {gpsMessage && (
-              <p role="status" className="text-sm text-zinc-600">
+              <p role="status" className="text-sm text-[var(--color-muted)]">
                 {gpsMessage}
               </p>
             )}
@@ -220,7 +234,15 @@ export default function PreferencesWizard() {
               {ZONES.map((z) => (
                 <ChoiceTile
                   key={z.id}
-                  emoji={z.id === "rennes" ? "🏙️" : z.id === "ker-lann" ? "🎓" : "🏡"}
+                  icon={
+                    z.id === "rennes" ? (
+                      <BuildingsIcon className="h-7 w-7" />
+                    ) : z.id === "ker-lann" ? (
+                      <GraduationCapIcon className="h-7 w-7" />
+                    ) : (
+                      <HomeIcon className="h-7 w-7" />
+                    )
+                  }
                   label={z.name}
                   selected={me.homeZoneId === z.id}
                   onClick={() => chooseHome(z.id)}
@@ -229,7 +251,7 @@ export default function PreferencesWizard() {
             </div>
             {me.homeZoneId && (
               <div>
-                <p className="text-sm font-semibold">Aussi des bons plans de :</p>
+                <p className="text-sm font-medium">Aussi des bons plans de :</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {ZONES.filter((z) => z.id !== me.homeZoneId).map((z) => {
                     const on = me.zoneIds.includes(z.id);
@@ -239,9 +261,10 @@ export default function PreferencesWizard() {
                         type="button"
                         aria-pressed={on}
                         onClick={() => update({ zoneIds: toggle(me.zoneIds, z.id) })}
-                        className={`rounded-full border-2 px-4 py-1.5 text-sm font-medium ${on ? "border-blue-600 bg-blue-50 text-blue-700" : "border-zinc-200"}`}
+                        className={`rounded-full border-2 px-4 py-1.5 text-sm font-medium ${on ? "border-[var(--color-forest)] bg-[var(--color-sage)] text-[var(--color-forest)]" : ""}`}
+                        style={on ? undefined : { borderColor: "var(--color-border)" }}
                       >
-                        {on ? "✓" : "+"} {z.name}
+                        {z.name}
                       </button>
                     );
                   })}
@@ -253,39 +276,51 @@ export default function PreferencesWizard() {
 
         {current.id === "transport" && (
           <div className="grid grid-cols-3 gap-2">
-            {keys<TransportMode>(TRANSPORT_MODES).filter((m) => m !== "plane").map((m) => (
-              <ChoiceTile
-                key={m}
-                emoji={TRANSPORT_MODES[m].emoji}
-                label={TRANSPORT_MODES[m].label}
-                selected={me.transportModes.includes(m)}
-                onClick={() => update({ transportModes: toggle(me.transportModes, m) })}
-              />
-            ))}
+            {keys<TransportMode>(TRANSPORT_MODES).filter((m) => m !== "plane").map((m) => {
+              const { Icon, label } = TRANSPORT_MODES[m];
+              return (
+                <ChoiceTile
+                  key={m}
+                  icon={<Icon className="h-7 w-7" />}
+                  label={label}
+                  selected={me.transportModes.includes(m)}
+                  onClick={() => update({ transportModes: toggle(me.transportModes, m) })}
+                />
+              );
+            })}
           </div>
         )}
 
         {current.id === "travel" && (
           <div className="space-y-5">
             <fieldset>
-              <legend className="mb-2 text-sm font-semibold">🏠 Tu rentres chez tes parents ?</legend>
+              <legend className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+                <HomeIcon className="h-4 w-4" /> Tu rentres chez tes parents ?
+              </legend>
               <div className="grid grid-cols-3 gap-2">
-                {keys<HomeVisits>(HOME_VISITS).map((v) => (
-                  <ChoiceTile
-                    key={v}
-                    {...HOME_VISITS[v]}
-                    selected={me.homeVisits === v}
-                    onClick={() => update({ homeVisits: me.homeVisits === v ? null : v })}
-                  />
-                ))}
+                {keys<HomeVisits>(HOME_VISITS).map((v) => {
+                  const { Icon, label, hint } = HOME_VISITS[v];
+                  return (
+                    <ChoiceTile
+                      key={v}
+                      icon={<Icon className="h-7 w-7" />}
+                      label={label}
+                      hint={hint}
+                      selected={me.homeVisits === v}
+                      onClick={() => update({ homeVisits: me.homeVisits === v ? null : v })}
+                    />
+                  );
+                })}
               </div>
             </fieldset>
             <fieldset>
-              <legend className="mb-2 text-sm font-semibold">🧳 Envie de voyager de temps en temps ?</legend>
+              <legend className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+                <SuitcaseIcon className="h-4 w-4" /> Envie de voyager de temps en temps ?
+              </legend>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { value: true, emoji: "🌍", label: "Oui, ça me tente" },
-                  { value: false, emoji: "🙂", label: "Pas pour l'instant" },
+                  { value: true, icon: <GlobeIcon className="h-7 w-7" />, label: "Oui, ça me tente" },
+                  { value: false, icon: <SmileIcon className="h-7 w-7" />, label: "Pas pour l'instant" },
                 ].map(({ value, ...tile }) => (
                   <ChoiceTile
                     key={tile.label}
@@ -298,17 +333,20 @@ export default function PreferencesWizard() {
             </fieldset>
             {isTraveler(me) && (
               <fieldset>
-                <legend className="mb-2 text-sm font-semibold">Avec quoi ? (plusieurs choix possibles)</legend>
+                <legend className="mb-2 text-sm font-medium">Avec quoi ? (plusieurs choix possibles)</legend>
                 <div className="grid grid-cols-4 gap-2">
-                  {TRAVEL_MODES.map((m) => (
-                    <ChoiceTile
-                      key={m}
-                      emoji={SUBCATEGORIES[m].emoji}
-                      label={m === "carpool" ? "Covoit’" : SUBCATEGORIES[m].label}
-                      selected={me.travelModes.includes(m)}
-                      onClick={() => update({ travelModes: toggle(me.travelModes, m) })}
-                    />
-                  ))}
+                  {TRAVEL_MODES.map((m) => {
+                    const { Icon, label } = SUBCATEGORIES[m];
+                    return (
+                      <ChoiceTile
+                        key={m}
+                        icon={<Icon className="h-7 w-7" />}
+                        label={m === "carpool" ? "Covoit’" : label}
+                        selected={me.travelModes.includes(m)}
+                        onClick={() => update({ travelModes: toggle(me.travelModes, m) })}
+                      />
+                    );
+                  })}
                 </div>
               </fieldset>
             )}
@@ -317,15 +355,20 @@ export default function PreferencesWizard() {
 
         {current.id === "budget" && (
           <div className="space-y-3">
-            {keys<BudgetProfile>(BUDGET_PROFILES).map((b) => (
-              <ChoiceTile
-                key={b}
-                row
-                {...BUDGET_PROFILES[b]}
-                selected={me.budget === b}
-                onClick={() => update({ budget: b })}
-              />
-            ))}
+            {keys<BudgetProfile>(BUDGET_PROFILES).map((b) => {
+              const { Icon, label, hint } = BUDGET_PROFILES[b];
+              return (
+                <ChoiceTile
+                  key={b}
+                  row
+                  icon={<Icon className="h-7 w-7" />}
+                  label={label}
+                  hint={hint}
+                  selected={me.budget === b}
+                  onClick={() => update({ budget: b })}
+                />
+              );
+            })}
           </div>
         )}
 
@@ -336,7 +379,7 @@ export default function PreferencesWizard() {
               return (
                 <ChoiceTile
                   key={c}
-                  emoji={CATEGORIES[c].emoji}
+                  icon={<CategoryIcon category={c} size={32} />}
                   label={CATEGORIES[c].label}
                   selected={rank >= 0}
                   badge={rank >= 0 && rank < 3 ? rank + 1 : undefined}
@@ -349,52 +392,55 @@ export default function PreferencesWizard() {
 
         {current.id === "activities" && (
           <div className="grid grid-cols-3 gap-2">
-            {keys<ActivityId>(ACTIVITIES).map((a) => (
-              <ChoiceTile
-                key={a}
-                {...ACTIVITIES[a]}
-                selected={me.activities.includes(a)}
-                onClick={() => update({ activities: toggle(me.activities, a) })}
-              />
-            ))}
+            {keys<ActivityId>(ACTIVITIES).map((a) => {
+              const { Icon, label } = ACTIVITIES[a];
+              return (
+                <ChoiceTile
+                  key={a}
+                  icon={<Icon className="h-7 w-7" />}
+                  label={label}
+                  selected={me.activities.includes(a)}
+                  onClick={() => update({ activities: toggle(me.activities, a) })}
+                />
+              );
+            })}
           </div>
         )}
 
         {current.id === "recap" && (
-          <dl className="divide-y divide-zinc-100 rounded-2xl border-2 border-zinc-200">
+          <dl className="sw-card divide-y divide-[var(--color-border)]" style={{ borderWidth: 2 }}>
             {[
               {
                 label: "Zones",
                 value: ZONES.filter((z) => me.zoneIds.includes(z.id))
-                  .map((z) => (z.id === me.homeZoneId ? `🏠 ${z.name}` : z.name))
+                  .map((z) => (z.id === me.homeZoneId ? `${z.name} (principale)` : z.name))
                   .join(" · "),
               },
               {
                 label: "Quotidien",
-                value: me.transportModes.map((m) => `${TRANSPORT_MODES[m].emoji} ${TRANSPORT_MODES[m].label}`).join(" · "),
+                value: me.transportModes.map((m) => TRANSPORT_MODES[m].label).join(" · "),
               },
               {
                 label: "Voyages",
                 value: [
-                  me.homeVisits && `🏠 Chez les parents : ${HOME_VISITS[me.homeVisits].label.toLowerCase()}`,
-                  me.wantsTravel !== null && (me.wantsTravel ? "🌍 Envie de voyager" : "Pas de voyage prévu"),
-                  isTraveler(me) &&
-                    me.travelModes.map((m) => `${SUBCATEGORIES[m].emoji} ${SUBCATEGORIES[m].label}`).join(", "),
+                  me.homeVisits && `Chez les parents : ${HOME_VISITS[me.homeVisits].label.toLowerCase()}`,
+                  me.wantsTravel !== null && (me.wantsTravel ? "Envie de voyager" : "Pas de voyage prévu"),
+                  isTraveler(me) && me.travelModes.map((m) => SUBCATEGORIES[m].label).join(", "),
                 ]
                   .filter(Boolean)
                   .join(" · "),
               },
               {
                 label: "Budget",
-                value: me.budget ? `${BUDGET_PROFILES[me.budget].emoji} ${BUDGET_PROFILES[me.budget].label}` : "",
+                value: me.budget ? BUDGET_PROFILES[me.budget].label : "",
               },
               {
                 label: "Priorités",
-                value: me.categories.map((c) => `${CATEGORIES[c].emoji} ${CATEGORIES[c].label}`).join(" · "),
+                value: me.categories.map((c) => CATEGORIES[c].label).join(" · "),
               },
               {
                 label: "Activités",
-                value: me.activities.map((a) => `${ACTIVITIES[a].emoji} ${ACTIVITIES[a].label}`).join(" · "),
+                value: me.activities.map((a) => ACTIVITIES[a].label).join(" · "),
               },
             ].map((row, i) => (
               <button
@@ -402,10 +448,11 @@ export default function PreferencesWizard() {
                 type="button"
                 onClick={() => setStep(i)}
                 className="flex w-full items-start gap-3 p-3 text-left"
+                style={{ borderColor: "var(--color-border)" }}
               >
-                <dt className="w-24 shrink-0 text-sm text-zinc-500">{row.label}</dt>
+                <dt className="w-24 shrink-0 text-sm text-[var(--color-muted)]">{row.label}</dt>
                 <dd className="flex-1 text-sm font-medium">{row.value || "Non renseigné"}</dd>
-                <span aria-hidden className="text-zinc-400">
+                <span aria-hidden className="text-[var(--color-muted)]">
                   ›
                 </span>
               </button>
@@ -414,7 +461,10 @@ export default function PreferencesWizard() {
         )}
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-black/10 bg-white px-4 pb-4 pt-3">
+      <div
+        className="fixed inset-x-0 bottom-0 z-10 px-4 pb-4 pt-3"
+        style={{ borderTop: "1px solid var(--color-border)", background: "var(--color-paper)" }}
+      >
         <div className="mx-auto max-w-md">
           {error && (
             <p role="alert" className="mb-2 text-sm text-red-600">
@@ -427,8 +477,13 @@ export default function PreferencesWizard() {
             </p>
           )}
           {matches > 0 && (
-            <p role="status" className="mb-2 text-center text-sm font-medium text-blue-700">
-              🎯 {user?.name && last ? `${user.name}, ` : ""}
+            <p
+              role="status"
+              className="mb-2 flex items-center justify-center gap-1.5 text-center text-sm font-medium"
+              style={{ color: "var(--color-forest)" }}
+            >
+              <TargetIcon className="h-4 w-4 shrink-0" />
+              {user?.name && last ? `${user.name}, ` : ""}
               {matches} bon{matches > 1 ? "s" : ""} plan{matches > 1 ? "s" : ""} correspond
               {matches > 1 ? "ent" : ""} à ton profil
             </p>
@@ -437,7 +492,7 @@ export default function PreferencesWizard() {
             type="button"
             onClick={last || single ? finish : () => setStep(step + 1)}
             disabled={missing || saving || (last && !user)}
-            className="w-full rounded-2xl bg-blue-600 py-3 font-semibold text-white disabled:opacity-40"
+            className="sw-btn-primary w-full disabled:opacity-40"
           >
             {saving
               ? "Enregistrement…"

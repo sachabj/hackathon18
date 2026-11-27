@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CATEGORIES } from "@/lib/constants";
+import CategoryIcon from "@/components/CategoryIcon";
+import { EditIcon, EyeIcon, HeartIcon, ProhibitedIcon, ThumbsDownIcon, ThumbsUpIcon, TrashIcon, UndoIcon, WalkIcon } from "@/components/icons";
 import type { MyDealInput } from "@/lib/engagement";
 import type { Deal, DealAudience } from "@/lib/types";
 
@@ -10,8 +11,8 @@ const formatDate = (iso: string) =>
 /** Date ISO → valeur d'un champ date (jour local). */
 const toDay = (iso: string) => new Date(iso).toLocaleDateString("sv-SE");
 
-const actionClass = "rounded-full border px-3 py-1.5 text-sm font-semibold disabled:opacity-50";
-const inputClass = "mt-1 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2 text-base font-normal";
+const actionClass = "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
+const inputClass = "sw-field mt-1 text-base";
 
 /** Un de mes bons plans : état, audience, modification, retrait et suppression. */
 export default function MyDealCard({
@@ -75,44 +76,51 @@ export default function MyDealCard({
 
   if (mode === "edit") {
     return (
-      <form onSubmit={submit} className="space-y-3 rounded-2xl border-2 border-blue-200 bg-blue-50/40 p-3">
-        <label className="block text-sm font-semibold">
+      <form onSubmit={submit} className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-forest)", borderWidth: 2 }}>
+        <label className="block text-sm font-medium">
           Titre
           <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={100} required />
         </label>
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Détails
           <textarea className={inputClass} rows={2} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} />
         </label>
         <div className="grid grid-cols-2 gap-2">
-          <label className="block text-sm font-semibold">
+          <label className="block text-sm font-medium">
             Prix
             <input className={inputClass} value={price} onChange={(e) => setPrice(e.target.value)} maxLength={40} />
           </label>
-          <label className="block text-sm font-semibold">
+          <label className="block text-sm font-medium">
             Dernier jour
             <input type="date" className={inputClass} value={lastDay} onChange={(e) => setLastDay(e.target.value)} />
           </label>
         </div>
         <div className="flex gap-2">
-          <button disabled={busy} className={`${actionClass} border-blue-600 bg-blue-600 text-white`}>Enregistrer</button>
-          <button type="button" onClick={() => setMode("view")} className={`${actionClass} border-zinc-300`}>Annuler</button>
+          <button disabled={busy} className="sw-btn-primary">Enregistrer</button>
+          <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">Annuler</button>
         </div>
       </form>
     );
   }
 
   return (
-    <article className="rounded-2xl border border-zinc-200 bg-white p-3 shadow-sm">
+    <article className="sw-card p-3">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-semibold leading-snug">
-          {CATEGORIES[deal.category].emoji} {deal.title}
+        <h3 className="flex items-center gap-1.5 font-medium leading-snug">
+          <CategoryIcon category={deal.category} size={20} /> {deal.title}
         </h3>
-        <span className={`shrink-0 rounded-full px-2 py-1 text-xs font-bold ${status === "En ligne" ? "bg-green-100 text-green-800" : "bg-zinc-200 text-zinc-600"}`}>
+        <span
+          className="shrink-0 rounded-full px-2 py-1 text-xs font-medium"
+          style={
+            status === "En ligne"
+              ? { backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }
+              : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
+          }
+        >
           {status}
         </span>
       </div>
-      <p className="text-sm text-zinc-500">
+      <p className="text-sm text-[var(--color-muted)]">
         {[deal.price_info, `publié le ${formatDate(deal.created_at)}`, deal.expires_at && `jusqu'au ${formatDate(deal.expires_at)}`]
           .filter(Boolean)
           .join(" · ")}
@@ -120,17 +128,19 @@ export default function MyDealCard({
 
       {audience && (
         <dl className="mt-2 grid grid-cols-5 gap-1 text-center">
-          {[
-            ["👁️", "Vues", audience.views],
-            ["🚶", "Passages", audience.visits],
-            ["❤️", "Favoris", audience.favorites],
-            ["👍", "Dispo", audience.confirmations],
-            ["👎", "Plus dispo", audience.reports],
-          ].map(([emoji, label, value]) => (
-            <div key={label} className="rounded-xl bg-zinc-100 py-1.5">
+          {(
+            [
+              [EyeIcon, "Vues", audience.views],
+              [WalkIcon, "Passages", audience.visits],
+              [HeartIcon, "Favoris", audience.favorites],
+              [ThumbsUpIcon, "Dispo", audience.confirmations],
+              [ThumbsDownIcon, "Plus dispo", audience.reports],
+            ] as const
+          ).map(([Icon, label, value]) => (
+            <div key={label} className="rounded-xl py-1.5" style={{ backgroundColor: "var(--color-paper)" }}>
               <dd className="text-base font-bold">{value}</dd>
-              <dt className="text-[10px] leading-tight text-zinc-500">
-                <span aria-hidden className="block">{emoji}</span>
+              <dt className="text-[10px] leading-tight text-[var(--color-muted)]">
+                <Icon className="mx-auto h-3.5 w-3.5" />
                 {label}
               </dt>
             </div>
@@ -139,23 +149,33 @@ export default function MyDealCard({
       )}
 
       {mode === "delete" ? (
-        <div className="mt-3 rounded-xl bg-red-50 p-3 text-sm">
+        <div className="mt-3 rounded-xl p-3 text-sm" style={{ backgroundColor: "var(--color-lilac)" }}>
           <p>Supprimer définitivement ce bon plan, avec ses votes et ses favoris ?</p>
           <div className="mt-2 flex gap-2">
-            <button type="button" disabled={busy} onClick={onDelete} className={`${actionClass} border-red-600 bg-red-600 text-white`}>Supprimer</button>
-            <button type="button" onClick={() => setMode("view")} className={`${actionClass} border-zinc-300`}>Annuler</button>
+            <button type="button" disabled={busy} onClick={onDelete} className="sw-btn-primary" style={{ backgroundColor: "#b91c1c" }}>Supprimer</button>
+            <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">Annuler</button>
           </div>
         </div>
       ) : (
         <div className="mt-3 flex flex-wrap gap-2">
-          <button type="button" disabled={busy} onClick={startEdit} className={`${actionClass} border-zinc-300`}>✏️ Modifier</button>
+          <button type="button" disabled={busy} onClick={startEdit} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
+            <EditIcon className="h-4 w-4" /> Modifier
+          </button>
           {!byMerchant && (
-            <button type="button" disabled={busy} onClick={onToggleEnded} className={`${actionClass} border-zinc-300`}>
-              {deal.ended_by_merchant ? "↩️ Remettre en ligne" : "🚫 Plus dispo"}
+            <button type="button" disabled={busy} onClick={onToggleEnded} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
+              {deal.ended_by_merchant ? (
+                <>
+                  <UndoIcon className="h-4 w-4" /> Remettre en ligne
+                </>
+              ) : (
+                <>
+                  <ProhibitedIcon className="h-4 w-4" /> Plus dispo
+                </>
+              )}
             </button>
           )}
-          <button type="button" disabled={busy} onClick={() => setMode("delete")} className={`${actionClass} border-red-300 text-red-600`}>
-            🗑️ Supprimer
+          <button type="button" disabled={busy} onClick={() => setMode("delete")} className={actionClass} style={{ borderColor: "#fca5a5", color: "#dc2626" }}>
+            <TrashIcon className="h-4 w-4" /> Supprimer
           </button>
         </div>
       )}

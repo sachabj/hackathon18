@@ -1,5 +1,5 @@
 // Compatibilité entre un bon plan et le profil d'un étudiant (voir memory/ARCHITECTURE.md § Personnalisation).
-import { ACTIVITIES, BUDGET_PROFILES, CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
+import { ACTIVITIES, CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
 import { distanceKm, formatDistance } from "./geo";
 import type {
   ActivityId,
@@ -74,9 +74,9 @@ function travelTime(km: number, modes: TransportMode[]) {
     (m) => modes.includes(m) && km <= TRANSPORT_MODES[m].reachKm,
   );
   if (!mode) return null;
-  const { speedKmh, by, emoji } = TRANSPORT_MODES[mode];
+  const { speedKmh, by } = TRANSPORT_MODES[mode];
   // × 1,3 : un trajet réel est plus long qu'à vol d'oiseau.
-  return `${emoji} ≈ ${Math.max(1, Math.round(((km * 1.3) / speedKmh) * 60))} min ${by}`;
+  return `≈ ${Math.max(1, Math.round(((km * 1.3) / speedKmh) * 60))} min ${by}`;
 }
 
 export interface Match {
@@ -106,10 +106,10 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     const rankPoints = rank >= 0 ? WEIGHTS.category - 4 * Math.min(rank, 3) : 0;
     const travelPoints = !travel ? 0 : me.homeVisits === "often" ? TRAVEL_POINTS.often : TRAVEL_POINTS.other;
     earned += Math.max(rankPoints, travelPoints);
-    if (travel) reasons.push(goesHome(me) ? "🏠 Pour rentrer chez tes parents" : "🧳 Pour tes envies de voyage");
+    if (travel) reasons.push(goesHome(me) ? "Pour rentrer chez tes parents" : "Pour tes envies de voyage");
     if (rank >= 0) {
-      const { emoji, label } = CATEGORIES[deal.category];
-      reasons.push(rank < 3 ? `${emoji} Ta priorité n°${rank + 1}` : `${emoji} Tu suis ${label}`);
+      const { label } = CATEGORIES[deal.category];
+      reasons.push(rank < 3 ? `Ta priorité n°${rank + 1}` : `Tu suis ${label}`);
     }
   }
 
@@ -128,11 +128,11 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
       earned += WEIGHTS.location - 10 * (km / reach);
       reasons.push(
         travelTime(km, me.transportModes) ??
-          `📍 À ${formatDistance(km)} ${me.position ? "de toi" : `de ${home?.name}`}`,
+          `À ${formatDistance(km)} ${me.position ? "de toi" : `de ${home?.name}`}`,
       );
     } else if (deal.zone_id && me.zoneIds.includes(deal.zone_id)) {
       earned += 10;
-      reasons.push(`📍 Dans une zone que tu suis`);
+      reasons.push(`Dans une zone que tu suis`);
     } else {
       reachable = false;
       warnings.push(`À ${formatDistance(km)} : loin pour tes transports`);
@@ -141,7 +141,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     max += WEIGHTS.location;
     if (me.zoneIds.includes(deal.zone_id)) {
       earned += deal.zone_id === me.homeZoneId ? WEIGHTS.location : 20;
-      if (zone) reasons.push(`📍 Valable à ${zone.name}`);
+      if (zone) reasons.push(`Valable à ${zone.name}`);
     } else {
       reachable = false;
     }
@@ -157,8 +157,8 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     budgetMax = WEIGHTS.budget;
     const points = BUDGET_POINTS[me.budget][deal.price_level] ?? 0;
     budgetEarned = points;
-    if (deal.price_level === 0) reasons.push("🆓 Gratuit");
-    else if (points >= 16) reasons.push(`${BUDGET_PROFILES[me.budget].emoji} Dans ton budget`);
+    if (deal.price_level === 0) reasons.push("Gratuit");
+    else if (points >= 16) reasons.push(`Dans ton budget`);
     else warnings.push("Au-dessus de ton budget habituel");
   }
 
@@ -171,7 +171,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     if (liked) {
       interest = true;
       earned += WEIGHTS.interest;
-      reasons.unshift(`${ACTIVITIES[liked].emoji} Tu aimes : ${ACTIVITIES[liked].label}`);
+      reasons.unshift(`Tu aimes : ${ACTIVITIES[liked].label}`);
     }
   } else if (deal.subcategory && (me.transportModes.length > 0 || (travel && me.travelModes.length > 0))) {
     max += WEIGHTS.interest;
@@ -182,7 +182,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     } else if (me.transportModes.includes(deal.subcategory)) {
       interest = true;
       earned += WEIGHTS.interest;
-      reasons.unshift(`${mode.emoji} Tu te déplaces ${mode.by}`);
+      reasons.unshift(`Tu te déplaces ${mode.by}`);
     }
   }
 

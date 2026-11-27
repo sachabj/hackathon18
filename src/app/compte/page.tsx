@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import DataSection from "@/components/account/DataSection";
 import DeleteSection from "@/components/account/DeleteSection";
 import SecuritySection from "@/components/account/SecuritySection";
+import { ArrowLeftIcon } from "@/components/icons";
 import { fetchAccountInfo } from "@/lib/account";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 
@@ -35,15 +36,15 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-md space-y-4 px-4 py-6">
-      <button type="button" onClick={() => router.back()} className="text-sm font-semibold text-blue-600">
-        ← Retour
+      <button type="button" onClick={() => router.back()} className="flex items-center gap-1 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+        <ArrowLeftIcon className="h-4 w-4" /> Retour
       </button>
       <div>
-        <h1 className="text-2xl font-bold">Compte et confidentialité</h1>
-        <p className="text-sm text-zinc-500">{info?.email}</p>
+        <h1 className="text-2xl">Compte et confidentialité</h1>
+        <p className="text-sm text-[var(--color-muted)]">{info?.email}</p>
       </div>
       {error && <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-      {!info && !error && <p className="text-sm text-zinc-500">Chargement…</p>}
+      {!info && !error && <p className="text-sm text-[var(--color-muted)]">Chargement…</p>}
       {info && (
         <div key={visit} className="space-y-4">
           <SecuritySection email={info.email} />

@@ -81,6 +81,11 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - À prévoir : mot de passe et déconnexion de tous les appareils · export et suppression du compte · information sur les données (dont envois à l'IA et à Photon) · position enregistrée effaçable · crédits calculés par la base, avec règles anti-abus.
 - Justin / Matteo : prévenir Sacha avant de modifier `/profil` ; les ajouts viseront des sous-pages pour limiter les conflits.
 
+## Refonte visuelle complète (Anne-Lise, 18h30)
+- **Toutes** les pages et composants ont été restylés d'un coup (voir `DESIGN_SHAREWOOD.md` + `DECISIONS.md`) : polices, couleurs, `CategoryIcon`, icônes `icons.tsx`, et **suppression de tous les emoji** de l'app. **Changement uniquement visuel** : aucune logique, donnée, route ni appel Supabase n'a été touché — vos tâches en cours restent valables, seul l'habillage a changé sous vos pieds.
+- Si vous aviez un emoji ou une couleur `blue-`/`zinc-` codée en dur sur une page en cours de modification chez vous : regardez comment les fichiers voisins ont été convertis (ex. `PublishForm.tsx`, `page.tsx`) pour rester cohérent plutôt que de revenir à l'ancien style.
+- `npx tsc --noEmit`, `npm run lint`, `npm run build` : tous OK après la refonte.
+
 ## À prendre en compte (depuis le relookage « plus pro »)
 - **Tous** : nouveau fichier `src/components/icons.tsx` (icônes sobres en SVG, pas d'emoji) ; à réutiliser si vous retirez des emoji sur vos pages. `NavBar.tsx` et `DealCard.tsx` (fichiers partagés) ont été modifiés **uniquement visuellement** (icônes à la place des emoji) : aucun lien, route ou comportement changé.
 - **Périmètre volontairement pas touché** (pour ne pas marcher sur votre travail en cours) : pins et commandes de la carte (Justin), `/commercant` et `/profil` (Justin), `/publier` et `/onboarding` (Matteo/Sacha), emoji de `TRANSPORT_MODES` / `BUDGET_PROFILES` dans `constants.ts` (Sacha). Dites-moi si vous voulez que j'harmonise ces pages avec `icons.tsx` ou si vous préférez vous en charger.

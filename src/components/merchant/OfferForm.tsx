@@ -51,32 +51,32 @@ export default function OfferForm({
   }
 
   return (
-    <form onSubmit={submit} className="space-y-3 rounded-2xl border-2 border-blue-200 bg-blue-50/40 p-3">
-      <h3 className="font-semibold">{offer ? "Modifier l'offre" : "Nouvelle offre officielle"}</h3>
-      <label className="block text-sm font-semibold">
+    <form onSubmit={submit} className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-forest)", borderWidth: 2 }}>
+      <h3 className="font-medium">{offer ? "Modifier l'offre" : "Nouvelle offre officielle"}</h3>
+      <label className="block text-sm font-medium">
         Titre
         <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Menu étudiant à 6,50 €" maxLength={100} required />
       </label>
-      <label className="block text-sm font-semibold">
-        Détails <span className="font-normal text-zinc-500">(facultatif)</span>
+      <label className="block text-sm font-medium">
+        Détails <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
         <textarea className={inputClass} rows={2} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} />
       </label>
-      <label className="block text-sm font-semibold">
+      <label className="block text-sm font-medium">
         Catégorie
         <select className={inputClass} value={category} onChange={(e) => setCategory(e.target.value as DealCategory)}>
           {BUSINESS_CATEGORIES.map((c) => (
             <option key={c} value={c}>
-              {CATEGORIES[c].emoji} {CATEGORIES[c].label}
+              {CATEGORIES[c].label}
             </option>
           ))}
         </select>
       </label>
       <div className="grid grid-cols-2 gap-2">
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Prix affiché
           <input className={inputClass} value={priceInfo} onChange={(e) => setPriceInfo(e.target.value)} placeholder="6,50 €" maxLength={40} />
         </label>
-        <label className="block text-sm font-semibold">
+        <label className="block text-sm font-medium">
           Gamme de prix
           <select className={inputClass} value={priceLevel} onChange={(e) => setPriceLevel(e.target.value)}>
             <option value="">Non précisée</option>
@@ -88,8 +88,8 @@ export default function OfferForm({
           </select>
         </label>
       </div>
-      <label className="block text-sm font-semibold">
-        Dernier jour <span className="font-normal text-zinc-500">(facultatif)</span>
+      <label className="block text-sm font-medium">
+        Dernier jour <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
         <input type="date" className={inputClass} value={lastDay} min={toDay(new Date().toISOString())} onChange={(e) => setLastDay(e.target.value)} />
       </label>
       {error && (
@@ -100,7 +100,7 @@ export default function OfferForm({
       <button disabled={saving} className={buttonClass}>
         {saving ? "Enregistrement…" : offer ? "Enregistrer" : "Publier l'offre"}
       </button>
-      <button type="button" onClick={onCancel} className="w-full py-1 text-sm font-semibold text-zinc-500">
+      <button type="button" onClick={onCancel} className="w-full py-1 text-sm font-medium text-[var(--color-muted)]">
         Annuler
       </button>
     </form>

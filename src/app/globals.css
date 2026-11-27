@@ -2,20 +2,150 @@
 @import "leaflet/dist/leaflet.css";
 @import "maplibre-gl/dist/maplibre-gl.css";
 
+/* ---------- Polices (hébergées localement : pas de dépendance réseau au build) ---------- */
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/newsreader-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/newsreader-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/inter-500.woff2") format("woff2");
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f1efe9;
+  --foreground: #1a1a18;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-paper: #f1efe9;
+  --color-surface: #faf9f5;
+  --color-border: #ddd9cf;
+  --color-ink: #1a1a18;
+  --color-muted: #6b6a65;
+  --color-forest: #1e3a2f;
+  --color-aubergine: #4b2a63;
+  --color-aubergine-dark: #2a1b3d;
+  --color-sage: #cfe3ca;
+  --color-lilac: #e6dff0;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", Georgia, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+
+/* Slogan / citations */
+.sw-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+/* Petits intitulés de section */
+.sw-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-muted);
+}
+
+/* ---------- Composants du système de design ---------- */
+.sw-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+}
+
+.sw-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-forest);
+  color: var(--color-surface);
+  font-weight: 500;
+  border-radius: 999px;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  transition: background-color 0.15s ease;
+}
+.sw-btn-primary:hover { background: var(--color-aubergine); }
+.sw-btn-primary:disabled { opacity: 0.5; }
+
+.sw-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--color-forest);
+  font-weight: 500;
+  border: 1.5px solid var(--color-forest);
+  border-radius: 999px;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.sw-btn-secondary:hover { background: var(--color-forest); color: var(--color-surface); }
+
+.sw-field {
+  display: block;
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 0.65rem 0.9rem;
+  color: var(--color-ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.sw-field:focus {
+  outline: none;
+  border-color: var(--color-forest);
+  box-shadow: 0 0 0 3px var(--color-sage);
+}
+
+.sw-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 /* ---------- Carte (façon Apple Plans / Waze) ---------- */
@@ -54,29 +184,21 @@ body {
   border: 3px solid #ffb800;
   box-shadow: 0 0 0 2px #fff, 0 0 12px 3px rgb(255 184 0 / 0.8);
 }
-.wz-pin span {
+.wz-pin svg {
   position: relative;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #fff;
-  font-size: 17px;
 }
 .wz-me {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #0a84ff;
+  background: #1e3a2f;
   border: 3px solid #fff;
   box-shadow: 0 1px 6px rgb(0 0 0 / 0.35);
   animation: wz-pulse 2s ease-out infinite;
 }
 @keyframes wz-pulse {
-  0% { box-shadow: 0 1px 6px rgb(0 0 0 / 0.35), 0 0 0 0 rgb(10 132 255 / 0.45); }
-  100% { box-shadow: 0 1px 6px rgb(0 0 0 / 0.35), 0 0 0 22px rgb(10 132 255 / 0); }
+  0% { box-shadow: 0 1px 6px rgb(0 0 0 / 0.35), 0 0 0 0 rgb(30 58 47 / 0.45); }
+  100% { box-shadow: 0 1px 6px rgb(0 0 0 / 0.35), 0 0 0 22px rgb(30 58 47 / 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .wz-me { animation: none; }

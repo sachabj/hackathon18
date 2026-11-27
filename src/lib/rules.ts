@@ -1,5 +1,7 @@
 // Règles métier partagées (voir memory/ARCHITECTURE.md § Règles métier).
 // Si vous changez une constante ou une formule ici, mettez à jour ARCHITECTURE.md.
+import { BedIcon, CheckCircleIcon, FlameIcon, MoonIcon } from "@/components/icons";
+import type { ComponentType } from "react";
 import type { Deal, Profile, Vote } from "./types";
 
 const HOUR = 3600_000;
@@ -59,11 +61,11 @@ export function fullAccess(profile: Pick<Profile, "last_contribution_at">, now =
 
 export type ActivityLevel = "tres_actif" | "actif" | "peu_actif" | "inactif";
 
-export const LEVELS: Record<ActivityLevel, { label: string; emoji: string }> = {
-  tres_actif: { label: "Très actif", emoji: "🔥" },
-  actif: { label: "Actif", emoji: "✅" },
-  peu_actif: { label: "Peu actif", emoji: "💤" },
-  inactif: { label: "Inactif", emoji: "😴" },
+export const LEVELS: Record<ActivityLevel, { label: string; Icon: ComponentType<{ className?: string }> }> = {
+  tres_actif: { label: "Très actif", Icon: FlameIcon },
+  actif: { label: "Actif", Icon: CheckCircleIcon },
+  peu_actif: { label: "Peu actif", Icon: MoonIcon },
+  inactif: { label: "Inactif", Icon: BedIcon },
 };
 
 /** Niveau selon le nombre de contributions sur 7 jours (seuils à ajuster). */
