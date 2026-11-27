@@ -113,8 +113,8 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
 | 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | TODO |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
-| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | EN COURS (Justin) |
-| 64 | **Profil plus complet** | M | Justin / Sacha | EN COURS (Justin) |
+| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | À TESTER (Justin) : « passages sur tes offres » = total des passages (pas des étudiants uniques), sans migration |
+| 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin) : en-tête (pseudo modifiable), impact, grade et Flèches, raccourcis ; essayé avec un faux Supabase |
 | 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
@@ -157,6 +157,10 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 - Publications récompensées plafonnées à 3 par jour (018) ; des comptes complices peuvent encore confirmer des offres bidon.
 - 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
 - **Récompenses** (tâche 42) : partenaires fictifs ; « Avant-Première » seulement enregistrée (aucune offre flash n'existe) ; aucun tirage de tombola codé ; le commerçant ne peut pas vérifier un code (c'est l'étudiant qui marque le bon utilisé).
+
+## À prendre en compte (depuis le profil complet, Justin)
+- **Sacha** : le grade et les Flèches reviennent sur le profil sous forme de résumé (`ArrowsSummary`, avait été retiré en tâche 46) ; le détail reste dans « Ciblés ». `profil/page.tsx` réécrit, `LocationSetting` conservé : faire un pull avant d'y toucher.
+- Le pseudo se modifie aussi sur le profil (et toujours dans « Compte et confidentialité »).
 
 ## À prendre en compte (depuis l'affichage ordinateur, Justin)
 - **Tous** : toute nouvelle page ou fenêtre doit être regardée aussi en large (`lg:`) ; un nouvel en-tête de page avec logo doit porter `lg:hidden` (le logo est dans la barre du haut).

@@ -399,3 +399,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : trois signalements faits depuis chez soi archivaient une offre. Remplace, pour ce bouton, « on peut tout utiliser sans se localiser ».
 - **Écarté** : enregistrer le signalement lointain sans le compter pour l'archivage.
 - **Qui** : Sacha
+
+## 2026-11-28 00h40 — Profil plus complet (tâches 63 et 64)
+- **Décision** : cartes empilées (deux colonnes sur ordinateur) : en-tête avec pseudo modifiable, « Mon impact » (total des passages, offres, confirmations), résumé grade et Flèches, raccourcis, puis préférences, localisation et compte.
+- **Remplace en partie** : le retrait des Flèches du profil (tâche 46).
+- **Écartés** : compter les étudiants uniques (migration) ; onglets.
+- **Qui** : Justin (réponses aux questions de cadrage)

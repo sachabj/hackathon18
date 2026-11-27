@@ -442,3 +442,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 00h30 — Sacha (« Plus dispo » sur place)
 - Migration `021_gone_on_site.sql` (+ `schema.sql`) ; textes de la fenêtre d'accord (nouvelle version, redemandée), du réglage, de la fiche, de l'Activité et de la politique de confidentialité ; README, algorithmes, mémoire.
 - Vérifié : tsc, lint (1 avertissement connu), build ; 109 contrôles sur Postgres local + démo ; 39 contrôles dans Chrome avec un faux Supabase. Pas essayé sur la vraie base ni sur téléphone.
+
+### 2026-11-28 00h40 — Justin (profil complet, tâches 63 et 64)
+- Nouveaux `components/profile/{ProfileHeader,ImpactCard,ArrowsSummary,ProfileShortcuts}.tsx` ; `app/profil/page.tsx` ; README, mémoire. Sans migration.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (390, 320 et 1440 px, pseudo modifié, raccourcis). **Pas testé sur la vraie base ni sur téléphone ; non déployé.** Sonde en lecture : 020 présente sur la vraie base.
