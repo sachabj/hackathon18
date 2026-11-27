@@ -23,7 +23,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **018_no_access_limit.sql à exécuter** (Sacha, après 017) : accès ouvert à tous et 3 publications récompensées par jour. Relancer 018 si 009 ou 016 sont relancées.
 - **Sonde en lecture (Sacha, 27/11 au soir)** : table de **017 présente** et fonction supprimée par **018 absente** → 017 et 018 appliquées.
 - ⏳ **019_golden_badge_text.sql à exécuter** (Sacha) : texte du Badge Doré dans la boutique.
-- ⏳ **020_location_rules.sql à exécuter** (Sacha, après 019) : Flèches seulement sur place ; **obligatoire avant `seed_arrows.sql`**. Relancer 020 si 016 ou 018 sont relancées.
+- **020_location_rules.sql présente sur la vraie base** (sonde en lecture de Justin, 28/11) : Flèches seulement sur place ; obligatoire avant `seed_arrows.sql`. Relancer 020 si 016 ou 018 sont relancées.
 - **021_gone_on_site.sql exécutée** (Justin, 28/11, non vérifiable avec la clé publique) : « Plus dispo » seulement sur place.
 - Prochaine migration : numéro **022** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
