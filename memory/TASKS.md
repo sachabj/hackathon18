@@ -43,9 +43,9 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
 - **Anne-Lise** : `DealCard` affiche la fiabilité ; `/favoris` lit `votes(*)` ; barre du bas à 5 onglets.
 
-### Badge « Grande enseigne » : FAIT (Justin), en ligne
-- Sur les cartes d'offre, la fiche et la fenêtre de la carte ; nom du lieu commençant par une enseigne de `src/lib/chains.ts` (liste à compléter). Aucun effet sur le tri.
-- **Matteo (tâche 28)** : `DealCard`, `DealSheet` et `DealsMap` modifiés par ce badge (fenêtre de la carte passée à 220 px de haut) : faire un pull avant de les toucher.
+### Badges et filtre « Commerçant / Étudiant » : FAIT (Justin)
+- Remplace le badge « Grande enseigne » (demandé par erreur, supprimé) et la mention « Offre officielle » : `components/AuthorBadge.tsx` (commerçant = `is_official`) ; filtre Tous / Commerçants / Étudiants dans `/recherche`.
+- `DealCard`, `DealSheet`, `DealsMap` modifiés : faire un pull avant d'y toucher.
 
 ### Bouton « Y aller » : FAIT (Justin)
 - Dans la fiche d'un bon plan placé sur la carte : Apple Plans sur appareil Apple, Google Maps ailleurs (`src/lib/directions.ts`).
@@ -71,7 +71,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | # | Tâche | Statut |
 |---|---|---|
 | 11 | Notif sur place simulée (« toujours dispo ? ») + bouton « Simuler ma position » dans `/profil` | TODO |
-| 12 | Données de démo : `reset_demo.sql` prêt (exécution non confirmée), voir D2 ; revérifier les prix avant la démo | EN COURS (Justin) |
+| 12 | Données de démo : `reset_demo.sql` (~150 bons plans à 15 km de Bruz, 20 étudiants, 12 commerces **fictifs**) ; **à relancer après la migration 012** ; revérifier les prix sourcés avant la démo | EN COURS (Justin) : testé en local, copie locale à jour |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
@@ -98,7 +98,6 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - Pas d'emoji dans l'app : `components/icons.tsx`, `CategoryIcon`, classes `.sw-*` (`DESIGN_SHAREWOOD.md`).
 - `/profil` : prévenir Sacha avant de le modifier (ajouts en sous-pages) ; garder `LogoutButton` et `AccountLink`.
 - **Carte Sortir n'est plus une catégorie** (tâche 28) : c'est une condition (`deals.requirements`, `REQUIREMENTS` dans `constants.ts`), comme la carte étudiante. Affichage : `components/deal/DealExtras.tsx` (`RequirementBadges`, `OfferLink`, `LinkedText`). Liens : toujours passer par `src/lib/links.ts` (`normalizeLink` à l'écriture, `safeLink` à l'affichage).
-- **Justin** : `reset_demo.sql` modifié (colonnes `requirements`, `link_url` ; « Source : » retiré des descriptions) → refaire `reset_demo.local.sql` à partir de cette version (D2) et lancer 012 avant.
 - Publication : l'IA ne reçoit rien au moment de publier, seulement avec « Pré-remplir avec l'IA » ; les doublons passent par `src/lib/duplicates.ts` (plus de modération automatique).
 - Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter).
 

@@ -223,3 +223,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande de Matteo (questions posées avant de coder) ; les liens partagés n'étaient que du texte.
 - **Écarté** : retirer la valeur `carte_sortir` du type Postgres sur la vraie base (il faudrait recréer le type et ses dépendances) → interdite par une contrainte ; espace commerçant non modifié (ses offres passent par une fonction SQL).
 - **Qui** : Matteo
+
+## 2026-11-27 18h14 — Commerçant / Étudiant, et données de démo élargies
+- **Décision** : le badge « Grande enseigne » (demande mal formulée) est supprimé ; chaque offre porte « Commerçant » ou « Étudiant », avec un filtre dans la recherche.
+- **Démo** : ~150 bons plans à 15 km de Bruz ; commerces **fictifs** « (démo) » pour les offres officielles ; offres d'étudiants inventées sur des lieux réels, marquées « [Exemple] ».
+- **Écarté** : des comptes ou offres officielles au nom de vrais commerces.
+- **Qui** : Justin (réponses aux questions de cadrage)

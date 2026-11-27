@@ -3,11 +3,10 @@
 // Fiche d'un bon plan : détail, fiabilité, votes et « J'y suis allé » (Justin).
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
-import ChainBadge from "@/components/ChainBadge";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
-import { CalendarIcon, CheckBadgeIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
-import { isMajorChain } from "@/lib/chains";
+import { CalendarIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { fetchEngagement, recordView, setVisited, vote, type Engagement } from "@/lib/engagement";
@@ -84,12 +83,6 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
         <div className="flex items-start justify-between gap-2">
           <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-muted)]">
             <CategoryIcon category={deal.category} size={22} /> {category.label}
-            {deal.is_official && (
-              <span className="flex items-center gap-1" style={{ color: "var(--color-forest)" }}>
-                {" "}
-                · <CheckBadgeIcon className="h-4 w-4" /> Offre officielle
-              </span>
-            )}
           </p>
           <button
             type="button"
@@ -101,7 +94,7 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
             <CloseIcon className="h-4 w-4" />
           </button>
         </div>
-        {isMajorChain(deal) && <ChainBadge className="mb-2" />}
+        <AuthorBadge deal={deal} className="mb-2" />
         <h2 className="text-xl leading-snug">{deal.title}</h2>
         {deal.price_info && <p className="text-lg font-medium" style={{ color: "var(--color-forest)" }}>{deal.price_info}</p>}
         {deal.description && (

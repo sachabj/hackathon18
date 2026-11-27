@@ -1,12 +1,11 @@
 "use client";
 
 import { useLayoutEffect, useState } from "react";
+import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
-import ChainBadge from "@/components/ChainBadge";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import DealSheet from "@/components/deal/DealSheet";
-import { CalendarIcon, CameraIcon, CheckBadgeIcon, CloseIcon, HeartIcon, StarIcon } from "@/components/icons";
-import { isMajorChain } from "@/lib/chains";
+import { CalendarIcon, CameraIcon, CloseIcon, HeartIcon, StarIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -59,7 +58,7 @@ export default function DealCard({
           <StarIcon className="h-3.5 w-3.5" filled /> Sponsorisé
         </p>
       )}
-      {isMajorChain(deal) && <ChainBadge className="mb-2" />}
+      <AuthorBadge deal={deal} className="mb-2" />
       <div className="flex items-start gap-3">
         <CategoryIcon category={deal.category} size={44} />
         <div className="min-w-0 flex-1">
@@ -160,13 +159,8 @@ export default function DealCard({
         </ul>
       )}
 
-      {(deal.is_official || deal.expires_at || deal.deadline_at) && (
+      {(deal.expires_at || deal.deadline_at) && (
         <p className="mt-2 flex flex-wrap gap-x-3 text-xs text-[var(--color-muted)]">
-          {deal.is_official && (
-            <span className="flex items-center gap-1 font-medium" style={{ color: "var(--color-forest)" }}>
-              <CheckBadgeIcon className="h-3.5 w-3.5" /> Offre officielle
-            </span>
-          )}
           {deal.deadline_at && (
             <span className="flex items-center gap-1">
               <CalendarIcon className="h-3.5 w-3.5" /> Date limite : {formatDate(deal.deadline_at)}

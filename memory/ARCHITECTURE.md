@@ -38,7 +38,6 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── types.ts                  # types TS alignés sur schema.sql
     │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, REQUIREMENTS (conditions), ZONES, MAP_CENTER
     │   ├── directions.ts             # lien d'itinéraire (Apple Plans / Google Maps) du bouton « Y aller »
-    │   ├── chains.ts                 # grandes enseignes reconnues au nom du lieu → composant `ChainBadge`
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
@@ -62,6 +61,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
     │   ├── icons.tsx                 # ~60 icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
+    │   ├── AuthorBadge.tsx           # badge « Commerçant » (offre officielle) / « Étudiant »
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
     │   ├── NavBar.tsx                # barre du bas : Accueil / Recherche / Partager / Favoris / Profil (icônes `icons.tsx`)
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
@@ -107,7 +107,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
 - Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ⏳ **à exécuter**
-- `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Une adresse à garder sans compte est ignorée et listée à la fin (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
+- `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste « [Exemple] » sur des lieux OpenStreetMap, ODbL). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
 - **Confidentialité (009)** : chacun ne lit que son profil ; `profiles.privacy_accepted_at` posée à l'inscription ; pseudo ≤ 40 ; `deals.author_id` nullable (`on delete set null`) ; RPC `my_kept_deals()` et `delete_my_account()` (garde les bons plans actifs avec plus de 👍 que de 👎 d'autres étudiants, hors offres officielles)

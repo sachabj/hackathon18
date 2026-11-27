@@ -4,10 +4,9 @@
 import L from "leaflet";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
+import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon, { categoryIconSvg } from "@/components/CategoryIcon";
-import ChainBadge from "@/components/ChainBadge";
-import { CheckBadgeIcon, PinIcon, StarIcon } from "@/components/icons";
-import { isMajorChain } from "@/lib/chains";
+import { PinIcon, StarIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { recordView } from "@/lib/engagement";
 import { isBoosted } from "@/lib/merchant";
@@ -167,7 +166,7 @@ export default function DealsMap({
                 title={d.title}
                 eventHandlers={{ popupopen: () => recordView(d) }}
               >
-                <Popup autoPanPaddingTopLeft={[16, 16]} autoPanPaddingBottomRight={[16, 24]} maxHeight={220}>
+                <Popup autoPanPaddingTopLeft={[16, 16]} autoPanPaddingBottomRight={[16, 24]} maxHeight={240}>
                   <div className="flex min-w-48 flex-col gap-1">
                     <span
                       className="sw-badge self-start"
@@ -175,16 +174,11 @@ export default function DealsMap({
                     >
                       <CategoryIcon category={d.category} size={16} /> {CATEGORIES[d.category].label}
                     </span>
-                    {isMajorChain(d) && <ChainBadge className="self-start" />}
+                    <AuthorBadge deal={d} className="self-start" />
                     <strong className="text-base leading-tight">{d.title}</strong>
                     {isBoosted(d) && (
                       <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "#92700c" }}>
                         <StarIcon className="h-3 w-3" filled /> Sponsorisé
-                      </span>
-                    )}
-                    {d.is_official && (
-                      <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "var(--color-forest)" }}>
-                        <CheckBadgeIcon className="h-3 w-3" /> Offre officielle
                       </span>
                     )}
                     {d.price_info && <span className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>{d.price_info}</span>}

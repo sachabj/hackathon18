@@ -15,12 +15,18 @@ import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
 
+/** Filtre « qui a publié » : les offres des commerçants sont les offres officielles. */
+const AUTHORS = { all: "Tous", merchant: "Commerçants", student: "Étudiants" } as const;
+type AuthorFilter = keyof typeof AUTHORS;
+const byAuthor = (deal: Deal, a: AuthorFilter) => a === "all" || deal.is_official === (a === "merchant");
+
 export default function Page() {
   const { deals, loading, error } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [chosenTab, setTab] = useState<"forYou" | "all" | null>(null);
   const [category, setCategory] = useState<DealCategory | null>(null);
+  const [author, setAuthor] = useState<AuthorFilter>("all");
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   const tab = me ? (chosenTab ?? "forYou") : "all";
@@ -34,7 +40,7 @@ export default function Page() {
     tab === "forYou"
       ? ranked.filter((r) => r.match?.forYou)
       : [...ranked].sort((a, b) => b.deal.created_at.localeCompare(a.deal.created_at));
-  const filtered = category ? inTab.filter((r) => r.deal.category === category) : inTab;
+  const filtered = inTab.filter((r) => (!category || r.deal.category === category) && byAuthor(r.deal, author));
   // Offres mises en avant en tête (sans les ajouter à « Pour toi » si elles ne correspondent pas).
   const shown = [...filtered].sort((a, b) => Number(isBoosted(b.deal)) - Number(isBoosted(a.deal)));
   const mapDeals = shown.map((r) => r.deal).filter((d) => d.scope === "local");
@@ -49,15 +55,23 @@ export default function Page() {
   });
   const busy = loading || loadingProfile;
 
-  /** Aucun bon plan « Pour toi » dans cette catégorie : on passe sur « Tout » pour ne pas montrer un écran vide. */
-  const nothingForMe = (c: DealCategory) => !ranked.some((r) => r.match?.forYou && r.deal.category === c);
+  /** Aucun bon plan « Pour toi » avec ces filtres : on passe sur « Tout » pour ne pas montrer un écran vide. */
+  const nothingForMe = (c: DealCategory | null, a: AuthorFilter) =>
+    !ranked.some((r) => r.match?.forYou && (!c || r.deal.category === c) && byAuthor(r.deal, a));
   function chooseCategory(c: DealCategory | null) {
     setCategory(c);
-    if (tab === "forYou" && c && nothingForMe(c)) setTab("all");
+    if (tab === "forYou" && (c || author !== "all") && nothingForMe(c, author)) setTab("all");
+  }
+  function chooseAuthor(a: AuthorFilter) {
+    setAuthor(a);
+    if (tab === "forYou" && (category || a !== "all") && nothingForMe(category, a)) setTab("all");
   }
   function chooseTab(t: "forYou" | "all") {
     setTab(t);
-    if (t === "forYou" && category && nothingForMe(category)) setCategory(null);
+    if (t === "forYou" && (category || author !== "all") && nothingForMe(category, author)) {
+      setCategory(null);
+      setAuthor("all");
+    }
   }
 
   return (
@@ -108,6 +122,25 @@ export default function Page() {
           ))}
         </div>
       )}
+
+      <div role="group" aria-label="Publié par" className="flex gap-2 px-4 pt-3">
+        {(Object.keys(AUTHORS) as AuthorFilter[]).map((a) => (
+          <button
+            key={a}
+            type="button"
+            aria-pressed={author === a}
+            onClick={() => chooseAuthor(a)}
+            className="flex-1 rounded-full border px-2 py-1.5 text-sm font-medium"
+            style={
+              author === a
+                ? { borderColor: "var(--color-aubergine)", backgroundColor: "var(--color-aubergine)", color: "var(--color-surface)" }
+                : { borderColor: "var(--color-border)", color: "var(--color-ink)" }
+            }
+          >
+            {AUTHORS[a]}
+          </button>
+        ))}
+      </div>
 
       <div className="flex shrink-0 gap-2 overflow-x-auto px-4 py-3">
         {[null, ...categories].map((c) => (
