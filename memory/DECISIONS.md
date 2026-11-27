@@ -190,3 +190,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : des crédits s'obtiennent en interagissant avec les offres, publier rapportant plus que confirmer qu'une offre existe ; ils débloquent des badges et une progression, puis éventuellement des avantages d'entreprises qui alimentent les offres.
 - **Préalable** : crédits calculés par la base, avec règles anti-triche (vote sur son propre bon plan, publication puis suppression).
 - **Qui** : Sacha
+
+## 2026-11-27 — Tâche 27 : doublons sans IA à la publication
+- **Décision** : plus aucune relecture IA à la publication (titre, modération, doublon) ; l'IA ne sert plus qu'au pré-remplissage par photo / texte. **Lieu précis** : dès le choix du lieu, liste « Déjà partagé ici (N) » des offres encore valables au **même établissement = même nom de lieu** (`place_name` identique ; rien pour « Ma position actuelle »). **Zone / partout** : au clic sur Publier, offres de **même catégorie, même portée et même zone** ; « Non, publier la mienne » publie. « C'est la même offre » → vote 👍 sur l'existante + écran **« Bon plan validé »** ; sur son propre bon plan, pas de bouton (« C'est ton bon plan »).
+- **Pourquoi** : choix de Matteo (questions posées avant de coder), cadrage de Justin (tâche 27). Plus simple, gratuit et instantané.
+- **Conséquence** : plus de modération automatique (titres injurieux, spam) ; reste le signalement 👎 par les étudiants.
+- **Qui** : Matteo

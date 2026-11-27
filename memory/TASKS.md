@@ -32,7 +32,7 @@ Lots A, B et C pris par Justin, lot D par Matteo (**ne pas y toucher en parallè
 | 20 | C | 1re connexion : « Me localiser » + menu pays → ville-campus | EN COURS (Justin) |
 | 21 | C | Inscription : une question « fréquence de voyage » + moyens | EN COURS (Justin) |
 | 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | EN COURS (Justin) |
-| 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | EN COURS (Matteo) |
+| 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | FAIT (Matteo) : « Déjà partagé ici » dès le choix du lieu (même `place_name`), zone / partout au clic sur Publier (même catégorie + zone), « Bon plan validé » ; `findDuplicateCandidates` remplacé par `src/lib/duplicates.ts` |
 
 ### Lot A — accueil, recherche, fil (`app/page.tsx`, `NavBar.tsx`, `DealCard.tsx`)
 - **26** : accueil = 3 meilleures offres « Pour toi » (`rankDeals`), une entrée vers la recherche et une rubrique « Réductions & aides » (`scope !== "local"` ; rubriques possibles d'après `category` : Voyager = transport, Aides = scholarship, Culture & sport = carte_sortir / sport / activity, Quotidien = restaurant / supermarket). Nouvel onglet **« Recherche »** avec la carte ; barre du bas : Accueil / Recherche / Partager / Favoris / Profil.
@@ -71,7 +71,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 
 | # | Priorité | Défaut | Statut |
 |---|---|---|---|
-| D1 | Haute | **On peut voter sur son propre bon plan** : « C'est le même : je le confirme » ne filtre pas ses offres et la règle `voter` de la base l'autorise → fiabilité gonflée et accès 7 jours relancé à volonté. Corriger dans l'app (avec la tâche 27) **et** par une règle en base (migration) | TODO |
+| D1 | Haute | **On peut voter sur son propre bon plan** : « C'est le même : je le confirme » ne filtre pas ses offres et la règle `voter` de la base l'autorise → fiabilité gonflée et accès 7 jours relancé à volonté. Corriger dans l'app (avec la tâche 27) **et** par une règle en base (migration) | EN PARTIE : **app corrigée** (tâche 27 : pas de bouton sur son propre bon plan) ; **règle en base à faire** (migration) |
 | D2 | Haute (Justin) | La copie locale `supabase/reset_demo.local.sql` de Justin est **périmée** (ne supprime pas les bons plans avant les comptes, depuis la 009) : la refaire à partir de `reset_demo.sql` avant tout lancement | TODO |
 | D3 | Moyenne | `/favoris` affiche les bons plans expirés ou retirés sans le signaler | TODO |
 | D4 | Moyenne | Après un vote dans la fiche, le fil et la carte ne se rafraîchissent qu'au retour sur la page (`useDeals`) | TODO |
@@ -117,3 +117,4 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - **Ven. soir** : tâches 18 à 27, défauts hauts
 - **Sam. matin** : tests réels, données de démo, finitions
 - **Sam. 11h–13h** : gel du code, pitch, répétition
+- **Sacha** : `src/app/confidentialite/page.tsx` modifié par Matteo (tâche 27) : l'IA ne reçoit plus rien à la publication, seulement avec « Pré-remplir avec l'IA ».

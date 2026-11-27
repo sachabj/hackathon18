@@ -224,3 +224,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 17h24 — Justin (lots A, B, C pris)
 - Tâches 18 à 26 réservées avant de coder (`TASKS.md`).
+
+### 2026-11-27 19h — Matteo (tâche 27 : doublons sans IA)
+- Nouveau `src/lib/duplicates.ts` ; `PublishForm.tsx` (liste « Déjà partagé ici » sous le lieu, panneau « Une offre semblable existe peut-être déjà » pour zone / partout, écran « Bon plan validé ») ; relecture IA supprimée de `lib/ai/assist.ts`, `lib/ai/client.ts`, `lib/ai/types.ts`, `api/assist/route.ts` ; `src/app/confidentialite/page.tsx` (fichier de Sacha : mention IA). Code poussé dans `f101495`, mémoire dans le commit suivant.
+- Vérifié : tsc + lint + build ; Playwright sur la vraie base (vote et insertion interceptés, rien d'écrit) : Intermarché Bruz → « Déjà partagé ici (1) » puis « C'est la même offre » → « Bon plan validé » ; transport « Partout » → « Carte Avantage Jeune SNCF » proposée, « Non, publier la mienne » → publié ; **0 appel à l'IA**.
+- Défaut D1 : corrigé côté app (pas de vote proposé sur son propre bon plan) ; règle en base encore à faire.
+- L'ancien compte de test a été effacé (reset_demo) ; nouveau : `test.claude.matteo.1795797148943@example.com` (aucun bon plan, à supprimer si besoin).
