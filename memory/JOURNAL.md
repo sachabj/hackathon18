@@ -28,3 +28,10 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 ~13h00 — Justin
 - Décisions : compte obligatoire pour tout, 24 h de retard pour les inactifs, répartition validée → `PROJECT.md`, `DECISIONS.md`, `TASKS.md`.
 - Démarrage du squelette Next.js (tâche 3). BDD en attente des clés Supabase.
+
+### 2026-11-27 ~14h00 — Justin
+- Squelette Next.js 16 + Tailwind installé à la racine ; dépendances Supabase + Leaflet.
+- `src/proxy.ts` (compte obligatoire), page `/login` (inscription / connexion), NavBar, pages vides avec responsable pour chacun.
+- `src/lib/` : client Supabase, types, constantes (catégories, zones), règles métier (fiabilité, accès 7 j, niveaux).
+- `supabase/schema.sql` : tables, triggers, RLS (retard 24 h des inactifs), vue `user_contributions`.
+- `npm run build` + `npm run lint` OK. `ARCHITECTURE.md` réécrit (arborescence, conventions, BDD).

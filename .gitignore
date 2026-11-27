@@ -232,3 +232,8 @@ dist/
 .vercel
 .DS_Store
 .claude/settings.local.json
+coverage/
+build/
+*.pem
+*.tsbuildinfo
+next-env.d.ts

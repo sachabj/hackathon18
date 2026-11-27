@@ -17,8 +17,8 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 |---|---|---|
 | 1 | Mettre en place la mémoire partagée + git | FAIT |
 | 2 | Valider la stack, le nom (Waze-Etu) et les propositions | FAIT |
-| 3 | Initialiser le projet Next.js (squelette + déploiement Vercel) | EN COURS (Justin) |
-| 4 | BDD Supabase (zones, deals, votes, favorites, profiles) | BLOQUÉ (attente des clés Supabase de l'équipe) |
+| 3 | Squelette Next.js (auth, pages vides, règles métier) — FAIT · déploiement Vercel — TODO | EN COURS (Justin) |
+| 4 | BDD Supabase : `supabase/schema.sql` écrit — reste à l'exécuter + tester | BLOQUÉ (attente des clés Supabase) |
 | 5 | Carte Bruz / Ker Lann + fil + filtres par catégorie | TODO |
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |
@@ -30,6 +30,9 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 13 | Espace commerçant (badge officiel, « n'existe plus ») | TODO |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
+
+## Pour démarrer sa tâche
+Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` : partir de là. Règles partagées dans `src/lib/rules.ts`, types dans `src/lib/types.ts`, catégories et zones dans `src/lib/constants.ts`.
 
 ## Planning indicatif (deadline sam. 28/11 13h00)
 - **Ven. après-midi** : stack, squelette, BDD, déploiement

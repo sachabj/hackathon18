@@ -1,43 +1,72 @@
 # ARCHITECTURE
 
-> ⚠️ Rien n'est encore codé.
-
-## Stack ✅ (validée par l'équipe)
-- **Front** : Next.js (React) + Tailwind — web app responsive (marche sur mobile sans store)
-- **Back / BDD / Auth** : Supabase (Postgres + auth + API auto) — pas de serveur à coder
-- **Carte** : Leaflet + OpenStreetMap (gratuit, sans clé API)
-- **Déploiement** : Vercel (URL publique pour la démo)
+## Stack ✅
+- **Next.js 16.4** (App Router, TypeScript, `src/`) + **Tailwind 4**, web app responsive
+- **Supabase** (Postgres + auth + RLS) via `@supabase/supabase-js` + `@supabase/ssr`
+- **Leaflet** + `react-leaflet` 5 + OpenStreetMap
+- **Vercel** pour le déploiement
+- ⚠️ **Next 16 a des changements cassants** (`middleware` → `proxy`, `cacheComponents` activé…) : lire `AGENTS.md` et la doc dans `node_modules/next/dist/docs/` avant d'utiliser une API Next.
 
 ## Repo
 https://github.com/sachabj/hackathon18.git — branche unique `main`, commits/push faits par Claude (voir CLAUDE.md).
 
+## Lancer le projet
+```
+npm install
+cp .env.example .env.local   # puis coller l'URL et la clé anon Supabase
+npm run dev                  # http://localhost:3000
+npm run build && npm run lint   # à faire passer avant chaque push
+```
+Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run. Pour la démo, désactiver la confirmation par email (Authentication → Sign In / Providers → Email → « Confirm email » OFF).
+
 ## Arborescence
 ```
 /
-├── README.md
-├── .gitignore             # inclut node_modules, .env*, .next…
-├── CLAUDE.md              # protocole mémoire (lu par Claude Code)
-├── .claude/settings.json  # hook qui injecte les .md à chaque prompt
-├── memory/                # mémoire partagée du projet
-└── (code à venir)
+├── CLAUDE.md, AGENTS.md, README.md   # protocole Claude, règles Next 16 (générées par next), présentation
+├── memory/                           # mémoire partagée du projet
+├── supabase/schema.sql               # tables, triggers, RLS (source de vérité de la BDD)
+├── .env.example                      # modèle de .env.local (jamais committé)
+└── src/
+    ├── proxy.ts                      # auth obligatoire : redirige vers /login sans session + rafraîchit le cookie
+    ├── lib/
+    │   ├── supabase/client.ts        # getSupabase() (navigateur), isSupabaseConfigured
+    │   ├── types.ts                  # types TS alignés sur schema.sql
+    │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
+    │   └── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    ├── components/
+    │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
+    │   └── SupabaseBanner.tsx        # bandeau si .env.local absent
+    └── app/
+        ├── layout.tsx                # layout global (fr, NavBar)
+        ├── page.tsx                  # / carte + fil (Sacha)
+        ├── login/page.tsx            # connexion / inscription (fait)
+        ├── onboarding/page.tsx       # préférences après inscription (Matteo)
+        ├── publier/page.tsx          # signaler un bon plan (Anne-Lise)
+        ├── favoris/page.tsx          # favoris (Anne-Lise)
+        └── profil/page.tsx           # niveau, accès, simuler position (Matteo)
 ```
 
+## Conventions de code
+- **Pages interactives = composants client** (`"use client"`) qui lisent et écrivent dans Supabase via `getSupabase()`. La sécurité est assurée par les **policies RLS**, pas par le front.
+- Ne pas appeler `cookies()` dans un Server Component (avec `cacheComponents`, ça casse le build sans `<Suspense>`). L'auth côté serveur est gérée par `src/proxy.ts`.
+- Leaflet : composant carte en `"use client"`, chargé via `next/dynamic(..., { ssr: false })`. Le CSS Leaflet est déjà importé dans `globals.css`.
+- Police système (pas de `next/font/google` : le build échoue sans réseau).
+- Récupérer l'utilisateur côté client : `const { data: { user } } = await getSupabase().auth.getUser()`.
+
 ## Contraintes techniques
-- Notif « sur place » : impossible de suivre la position en arrière-plan sur le web → démo avec une **position simulée** (ou `navigator.geolocation` quand l'app est ouverte). Vraies notifications push possibles plus tard via une PWA.
+- Notif « sur place » : impossible de suivre la position en arrière-plan sur le web → démo avec une **position simulée** (ou `navigator.geolocation` quand l'app est ouverte).
 
-## Modèle de données (brouillon)
-- `zones` : id, name (Bruz, Ker Lann…), center_lat, center_lng, radius_m
-- `deals` : id, title, description, category (restaurant | supermarket | transport | scholarship | sport | carte_sortir | activity), subcategory (plane | train | bus | carpool | null), **scope (local | zone | national)**, zone_id (null si national), place_name, lat, lng (null si non localisé), price_info, expires_at, deadline_at (bourses / dates limites), is_official (posté par un commerçant), created_at, author_id
-- `votes` : id, deal_id, user_id, value (+1 toujours dispo / -1 expiré), created_at
-- `favorites` : user_id, deal_id, created_at (❤️ ; sert aussi aux rappels de dates limites)
-- `profiles` : id (= user auth), username, **role (student | merchant)**, followed_categories[], followed_zone_ids[], **last_contribution_at** (accès complet si < 7 jours), contributions par catégorie (pour le niveau et les messages d'encouragement)
-- `users` : géré par l'auth Supabase
-- Un commerçant peut mettre `deals.ended_by_merchant = true` → bon plan retiré immédiatement
+## Base de données (`supabase/schema.sql`)
+- `zones` : id (`bruz`, `ker-lann`), name, center_lat, center_lng, radius_m — coordonnées à vérifier
+- `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)
+- `deals` : id, title, description, category, subcategory (transport uniquement), scope (local | zone | national ; local ⇒ lat/lng obligatoires), zone_id, place_name, lat, lng, price_info, expires_at, deadline_at, is_official (commerçants uniquement), ended_by_merchant, author_id (= auth.uid() par défaut), created_at
+- `votes` : deal_id, user_id, value (+1 / -1), created_at — **un vote par utilisateur et par bon plan** : re-confirmer = `upsert` (created_at remis à now())
+- `favorites` : (user_id, deal_id)
+- Vue `user_contributions` : contributions (bons plans + votes) par utilisateur et catégorie, `count_7d` / `count_30d`
+- Fonctions RPC : `has_full_access()`, `is_merchant()`, `active_users_in_zone(z)`
+- Triggers : publier ou voter → `profiles.last_contribution_at = now()`
 
-## Règles métier
-- **Score de fiabilité** = moyenne pondérée des votes (poids qui diminue avec l'ancienneté du vote). Masqué si score < seuil ET nombre de votes ≥ N, où N dépend du nombre d'utilisateurs actifs dans la zone (formule exacte à fixer dans le code puis à recopier ici).
-- **Accès complet** si `now - last_contribution_at < 7 jours`.
-- **Niveau** (Très actif / Actif / Peu actif / Inactif) calculé à partir des contributions récentes.
-
-## API / Routes
-_À définir._
+## Règles métier (`src/lib/rules.ts` + RLS)
+- **Fiabilité** : moyenne des votes pondérée par l'ancienneté (demi-vie 48 h). Masqué si score < 0,3 ET nb de votes ≥ `minVotesToHide` = 5 % des utilisateurs actifs de la zone, borné entre 2 et 10. Masqué aussi si `ended_by_merchant` ou expiré.
+- **Accès complet** si dernière contribution < 7 jours. Sinon, **la RLS cache les bons plans de moins de 24 h** (sauf les siens). 💡 7 jours offerts à l'inscription.
+- **Niveaux** (sur 7 jours) : ≥10 Très actif 🔥 · ≥3 Actif ✅ · ≥1 Peu actif 💤 · 0 Inactif 😴.

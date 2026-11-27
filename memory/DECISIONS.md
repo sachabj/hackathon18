@@ -33,5 +33,13 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Supabase** : le projet est créé par l'équipe, qui fournira les clés (à mettre dans `.env.local`, jamais sur git).
 - **Qui** : équipe (transcrit par Justin)
 
+## 2026-11-27 — Choix techniques du squelette
+- **Pages = composants client + Supabase côté navigateur, sécurité par RLS** ; auth obligatoire gérée dans `src/proxy.ts`.
+  - Pourquoi : Next 16 avec `cacheComponents` rend la lecture de cookies côté serveur piégeuse ; le client + RLS est plus simple pour 4 personnes en 25 h.
+- **Retard de 24 h des inactifs appliqué en RLS** (policy sur `deals`), donc impossible à contourner depuis le front.
+- **Un vote par utilisateur et par bon plan**, mis à jour pour re-confirmer.
+- **Police système** au lieu de Google Fonts (le build échoue sans réseau).
+- **Qui** : Justin
+
 ## EN ATTENTE DE VALIDATION
-- (rien pour l'instant)
+- 💡 7 jours d'accès complet offerts à l'inscription (sinon un nouvel inscrit ne voit pas les bons plans des dernières 24 h)
