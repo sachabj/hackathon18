@@ -25,6 +25,7 @@ Mettre à jour la mémoire, **dans le même commit que le code** :
 - `memory/ARCHITECTURE.md` → si la structure, la stack, le modèle de données ou les routes ont changé.
 - `memory/DECISIONS.md` → si une décision a été prise (techno, scope, design…), avec le pourquoi.
 - `memory/PROJECT.md` → si la vision / le périmètre fonctionnel a changé.
+- `README.md` → **à chaque changement visible** : fonction ajoutée, retirée ou modifiée, nouvelle page, nouvelle étape d'installation (migration particulière, script, clé, dépendance). Pas pour un correctif ou un ajustement de style. Il s'adresse d'abord au **jury** (ce que fait l'appli, fonctions principales, limites), puis à l'équipe (installation) : corriger les lignes périmées, rester court, ne décrire que ce qui est codé, jamais de secret ni d'adresse email (dépôt public).
 
 Puis **faire soi-même** le commit + push (voir section Git ci-dessous) — ne pas juste le proposer.
 

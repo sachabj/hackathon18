@@ -335,3 +335,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Justin (récapitulatif du projet)
 - Récapitulatif demandé, aucun code modifié. Sonde en lecture seule de la vraie base : 014 et 016 présentes, 017 absente (013, 015 non vérifiables) ; `TASKS.md` annoté. Copie locale `reset_demo.local.sql` de Justin plus ancienne que `reset_demo.sql` (à refaire avant lancement).
+
+### 2026-11-27 soir — Justin (README)
+- `README.md` réécrit (fonctions, limites, installation) ; règle de mise à jour ajoutée dans `CLAUDE.md` ; `TASKS.md`, `DECISIONS.md`. Aucun code modifié. Décrit l'application avant la tâche 43 de Sacha (en cours).

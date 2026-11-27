@@ -134,6 +134,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement https://hackathon18-t1lb.vercel.app), 4 (base + droits testés).
 
 ## Règles à connaître avant de modifier le code
+- **README.md** : à mettre à jour dans le même commit à chaque changement visible (règle de `CLAUDE.md`). **Sacha (tâche 43)** : il mentionne encore le retard de 24 h après 7 jours sans contribution (« Faire confiance ») : à retirer avec ta tâche, et ajouter la limite de 3 publications récompensées par jour.
 - **Algorithmes** (tri, compatibilité, Hot, recherche, fiabilité) : expliqués dans `docs/ALGORITHMES.md` ; le mettre à jour si on change une formule ou une constante.
 - Toute nouvelle donnée ou tout nouveau service externe → mettre à jour `src/app/confidentialite/page.tsx`.
 - `deals.author_id` peut être `null` (compte supprimé) ; les profils des autres ne sont pas lisibles.

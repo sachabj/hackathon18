@@ -306,3 +306,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : « Mes récompenses » dans le profil ; renommer « Robin des Campus ».
 - **Choix par défaut** : partenaires fictifs ; Avant-Première sans effet sur les offres pour l'instant ; pas de tirage codé ; QR code dessiné dans le navigateur (bibliothèque `qrcode`).
 - **Qui** : Sacha
+
+## 2026-11-27 soir — README tenu à jour
+- **Décision** : le README présente l'appli (jury d'abord, puis installation), avec une courte section de limites ; tout changement visible le met à jour dans le même commit (règle dans `CLAUDE.md`).
+- **Écartés** : mise à jour à chaque commit de code (conflits à 4) ; taire les limites.
+- **Qui** : Justin
