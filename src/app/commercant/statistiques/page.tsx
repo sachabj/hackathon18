@@ -22,7 +22,7 @@ export default function Page() {
             {[
               { label: "Offres en ligne", value: `${summary.online} / ${summary.rows.length}`, Icon: null },
               {
-                label: "Votes « toujours dispo »",
+                label: "Confirmations (« J’y suis allé »)",
                 value: summary.trust === null ? "—" : `${summary.trust} %`,
                 Icon: null,
               },

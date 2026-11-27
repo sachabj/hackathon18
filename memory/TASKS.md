@@ -10,7 +10,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
 - **012 présente sur la vraie base** (colonne `link_url` détectée via l'API le 27/11).
-- Prochaine migration : numéro **013** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **013_unvote.sql à exécuter** (Matteo) : sans elle, décocher une réaction affiche « base pas à jour » (cocher marche).
+- Prochaine migration : numéro **014** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -36,7 +37,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | À TESTER (Justin) |
 | 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | FAIT (Matteo) : « Déjà partagé ici » dès le choix du lieu (même `place_name`), zone / partout au clic sur Publier (même catégorie + zone), « Bon plan validé » ; `findDuplicateCandidates` remplacé par `src/lib/duplicates.ts` |
 | 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | À TESTER (Matteo) : 012 présente en base |
-| 29 | E | Réactions : « Toujours dispo » retiré (« J'y suis allé » = passage + confirmation) ; « J'y suis allé » et « Plus dispo » exclusifs et décochables (migration 013 : retirer son vote) | EN COURS (Matteo) |
+| 29 | E | Réactions : « Toujours dispo » retiré (« J'y suis allé » = passage + confirmation) ; « J'y suis allé » et « Plus dispo » exclusifs et décochables (migration 013 : retirer son vote) | À TESTER (Matteo) : ⏳ **lancer `013_unvote.sql`** |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
@@ -99,6 +100,7 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - Pas d'emoji dans l'app : `components/icons.tsx`, `CategoryIcon`, classes `.sw-*` (`DESIGN_SHAREWOOD.md`).
 - `/profil` : prévenir Sacha avant de le modifier (ajouts en sous-pages) ; garder `LogoutButton` et `AccountLink`.
 - **Carte Sortir n'est plus une catégorie** (tâche 28) : c'est une condition (`deals.requirements`, `REQUIREMENTS` dans `constants.ts`), comme la carte étudiante. Affichage : `components/deal/DealExtras.tsx` (`RequirementBadges`, `OfferLink`, `LinkedText`). Liens : toujours passer par `src/lib/links.ts` (`normalizeLink` à l'écriture, `safeLink` à l'affichage).
+- **Réactions (tâche 29)** : plus de « Toujours dispo ». « J'y suis allé » = passage (`deal_visits`) + vote +1 ; « Plus dispo » = vote −1 ; exclusifs, recliquer décoche (`setReaction` dans `engagement.ts`). **Justin** : `DealSheet.tsx`, `engagement.ts`, libellés de `MyDealCard` (« Confirmé ») et des statistiques commerçant modifiés.
 - Publication : l'IA ne reçoit rien au moment de publier, seulement avec « Pré-remplir avec l'IA » ; les doublons passent par `src/lib/duplicates.ts` (plus de modération automatique).
 - Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter).
 

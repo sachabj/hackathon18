@@ -6,10 +6,10 @@ import { createPortal } from "react-dom";
 import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
-import { CalendarIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
+import { CalendarIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDownIcon, WalkIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
-import { fetchEngagement, recordView, setVisited, vote, type Engagement } from "@/lib/engagement";
+import { fetchEngagement, recordView, setReaction, type Engagement, type Reaction } from "@/lib/engagement";
 import { reliability } from "@/lib/rules";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal } from "@/lib/types";
@@ -66,6 +66,24 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
   const own = data?.userId === deal.author_id;
   const trust = data ? reliability(data.votes, data.at) : null;
   const myVote = data?.votes.find((v) => v.user_id === data.userId)?.value;
+  // « J'y suis allé » vaut confirmation : actif s'il y a un passage ou une confirmation (« C'est la même offre »).
+  const reaction: Reaction = myVote === -1 ? "gone" : myVote === 1 || data?.visit?.mine ? "visited" : null;
+  /** Recliquer sur la réaction active la décoche ; l'autre bouton la remplace. */
+  function react(next: Exclude<Reaction, null>) {
+    if (!data) return;
+    act(() =>
+      setReaction(deal.id, data.userId, reaction === next ? null : next, {
+        vote: myVote,
+        visited: !!data.visit?.mine,
+        visitsAvailable: data.visit !== null,
+      }),
+    );
+  }
+  const reactStyle = (on: boolean, color: string, background: string) => ({
+    borderColor: on ? color : "var(--color-border)",
+    backgroundColor: on ? background : undefined,
+    color: on ? color : "var(--color-ink)",
+  });
   const voteClass = (on: boolean, color: string) =>
     `flex items-center justify-center gap-1.5 rounded-2xl border-2 py-2.5 text-sm font-medium disabled:opacity-50 ${on ? color : ""}`;
 
@@ -161,35 +179,28 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
               <button
                 type="button"
                 disabled={busy}
-                aria-pressed={myVote === 1}
-                onClick={() => act(() => vote(deal.id, 1))}
-                className={voteClass(myVote === 1, "")}
-                style={{ borderColor: myVote === 1 ? "var(--color-forest)" : "var(--color-border)", backgroundColor: myVote === 1 ? "var(--color-sage)" : undefined, color: myVote === 1 ? "var(--color-forest)" : "var(--color-ink)" }}
+                aria-pressed={reaction === "visited"}
+                onClick={() => react("visited")}
+                className={voteClass(reaction === "visited", "")}
+                style={reactStyle(reaction === "visited", "var(--color-forest)", "var(--color-sage)")}
               >
-                <ThumbsUpIcon className="h-4 w-4" /> Toujours dispo
+                {reaction === "visited" ? <CheckIcon className="h-4 w-4" /> : <WalkIcon className="h-4 w-4" />} J&apos;y suis allé
               </button>
               <button
                 type="button"
                 disabled={busy}
-                aria-pressed={myVote === -1}
-                onClick={() => act(() => vote(deal.id, -1))}
-                className={voteClass(myVote === -1, "")}
-                style={{ borderColor: myVote === -1 ? "var(--color-aubergine)" : "var(--color-border)", backgroundColor: myVote === -1 ? "var(--color-lilac)" : undefined, color: myVote === -1 ? "var(--color-aubergine)" : "var(--color-ink)" }}
+                aria-pressed={reaction === "gone"}
+                onClick={() => react("gone")}
+                className={voteClass(reaction === "gone", "")}
+                style={reactStyle(reaction === "gone", "var(--color-aubergine)", "var(--color-lilac)")}
               >
-                <ThumbsDownIcon className="h-4 w-4" /> Plus dispo
+                {reaction === "gone" ? <CheckIcon className="h-4 w-4" /> : <ThumbsDownIcon className="h-4 w-4" />} Plus dispo
               </button>
             </div>
-            {data.visit && (
-              <button
-                type="button"
-                disabled={busy}
-                aria-pressed={data.visit.mine}
-                onClick={() => act(() => setVisited(deal.id, data.userId, !data.visit!.mine))}
-                className={`mt-2 w-full ${voteClass(data.visit.mine, "")}`}
-                style={{ borderColor: data.visit.mine ? "var(--color-forest)" : "var(--color-border)", backgroundColor: data.visit.mine ? "var(--color-sage)" : undefined, color: data.visit.mine ? "var(--color-forest)" : "var(--color-ink)" }}
-              >
-                {data.visit.mine ? <CheckIcon className="h-4 w-4" /> : <WalkIcon className="h-4 w-4" />} J&apos;y suis allé
-              </button>
+            {reaction && (
+              <p className="mt-1.5 text-center text-xs text-[var(--color-muted)]">
+                Touché par erreur ? Touche à nouveau pour décocher.
+              </p>
             )}
           </>
         )}

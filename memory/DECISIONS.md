@@ -229,3 +229,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Démo** : ~150 bons plans à 15 km de Bruz ; commerces **fictifs** « (démo) » pour les offres officielles ; offres d'étudiants inventées sur des lieux réels, marquées « [Exemple] ».
 - **Écarté** : des comptes ou offres officielles au nom de vrais commerces.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-27 18h25 — « Toujours dispo » fusionné dans « J'y suis allé » (tâche 29)
+- **Décision** : le bouton « Toujours dispo » disparaît. « J'y suis allé » enregistre le passage **et** une confirmation (vote +1) : il fait monter la fiabilité et compte comme contribution. « J'y suis allé » et « Plus dispo » s'excluent (l'un remplace l'autre) et se **décochent** en touchant à nouveau (migration 013 : un étudiant peut supprimer son vote).
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) : les deux boutons disaient la même chose, et un clic par erreur ne pouvait pas être annulé.
+- **Limite** : décocher ne retire pas les 7 jours d'accès déjà gagnés (la date de contribution n'est pas recalculée).
+- **Qui** : Matteo

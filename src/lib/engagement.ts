@@ -61,6 +61,40 @@ export async function vote(dealId: string, value: 1 | -1) {
   check(await getSupabase().from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));
 }
 
+/** Retire son vote (migration 013). */
+export async function removeVote(dealId: string, userId: string) {
+  const { error } = await getSupabase().from("votes").delete().eq("deal_id", dealId).eq("user_id", userId);
+  if (error) {
+    throw new Error(
+      /permission/i.test(error.message)
+        ? "La base de données n'est pas à jour : lancer supabase/migrations/013_unvote.sql."
+        : error.message,
+    );
+  }
+}
+
+export type Reaction = "visited" | "gone" | null;
+
+/**
+ * Réaction d'un étudiant (tâche 29) : « J'y suis allé » = passage + confirmation (vote +1),
+ * « Plus dispo » = vote -1. Les deux s'excluent ; null retire tout.
+ * `visitsAvailable` : false tant que la migration 007 manque (on ne touche alors qu'aux votes).
+ */
+export async function setReaction(
+  dealId: string,
+  userId: string,
+  reaction: Reaction,
+  current: { vote?: 1 | -1; visited: boolean; visitsAvailable: boolean },
+) {
+  if (reaction === "visited") await vote(dealId, 1);
+  else if (reaction === "gone") await vote(dealId, -1);
+  else if (current.vote !== undefined) await removeVote(dealId, userId);
+
+  if (!current.visitsAvailable) return;
+  const visited = reaction === "visited";
+  if (visited !== current.visited) await setVisited(dealId, userId, visited);
+}
+
 export async function setVisited(dealId: string, userId: string, visited: boolean) {
   const table = getSupabase().from("deal_visits");
   check(

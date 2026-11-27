@@ -258,3 +258,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 18h14 — Justin (badges Commerçant / Étudiant, démo élargie)
 - Nouveau `AuthorBadge.tsx` ; supprimés `ChainBadge.tsx`, `lib/chains.ts` ; `DealCard`, `DealSheet`, `DealsMap`, `recherche/page.tsx` ; `reset_demo.sql` régénéré avec des lieux OpenStreetMap (requête publique Overpass), copie locale reconstruite.
 - Vérifié : types + lint (1 avertissement connu) + build ; script sur Postgres local avec 010 à 012 (2 passages, 152 bons plans, espace commerçant) ; badges et filtre dans Chrome sans interface avec un faux Supabase. **Script pas lancé sur la vraie base.**
+
+### 2026-11-27 18h25 — Matteo (tâche 29 : réactions décochables)
+- Nouveau `supabase/migrations/013_unvote.sql` (+ `schema.sql`). `engagement.ts` : `removeVote`, `setReaction`. `DealSheet.tsx` (fichier de Justin) : deux boutons « J'y suis allé » / « Plus dispo », exclusifs et décochables, aide « Touche à nouveau pour décocher ». Libellés : `MyDealCard` (« Confirmé »), `commercant/statistiques`, `offerStats.ts`, `PROJECT.md`.
+- Vérifié : tsc + lint (1 avertissement connu) + build. **013 pas lancée** ; pas testé dans le navigateur ni sur la vraie base.

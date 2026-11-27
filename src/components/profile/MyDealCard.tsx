@@ -191,7 +191,7 @@ export default function MyDealCard({
               [EyeIcon, "Vues", audience.views],
               [WalkIcon, "Passages", audience.visits],
               [HeartIcon, "Favoris", audience.favorites],
-              [ThumbsUpIcon, "Dispo", audience.confirmations],
+              [ThumbsUpIcon, "Confirmé", audience.confirmations],
               [ThumbsDownIcon, "Plus dispo", audience.reports],
             ] as const
           ).map(([Icon, label, value]) => (

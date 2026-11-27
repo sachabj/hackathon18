@@ -571,3 +571,10 @@ alter table public.deals drop constraint if exists deals_link_url_check;
 alter table public.deals add constraint deals_link_url_check
   check (link_url is null or (link_url ~* '^https?://[^[:space:]]+$' and char_length(link_url) <= 500));
 grant insert (requirements, link_url), update (requirements, link_url) on public.deals to authenticated;
+
+-- =====================================================================
+-- Retirer son vote : réactions décochables (voir migrations/013_unvote.sql)
+-- =====================================================================
+drop policy if exists "retirer son vote" on public.votes;
+create policy "retirer son vote" on public.votes for delete to authenticated using (user_id = auth.uid());
+grant delete on public.votes to authenticated;
