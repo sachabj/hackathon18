@@ -10,11 +10,13 @@ import { isTraveler, rankDeals, toStudentProfile, type Match } from "@/lib/match
 import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
+import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
 
 export default function Page() {
   const { deals, loading, error } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [chosenTab, setTab] = useState<"forYou" | "all" | null>(null);
   const [category, setCategory] = useState<DealCategory | null>(null);
 
@@ -137,7 +139,12 @@ export default function Page() {
           <ul className="mt-3 space-y-3">
             {shown.map(({ deal, match }) => (
               <li key={deal.id}>
-                <DealCard deal={deal} match={match} />
+                <DealCard
+                  deal={deal}
+                  match={match}
+                  favorite={isFavorite(deal.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
               </li>
             ))}
           </ul>

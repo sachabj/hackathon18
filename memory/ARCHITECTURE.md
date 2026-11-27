@@ -46,13 +46,14 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
     │   ├── useDashboard.ts           # hook : données de l'espace commerçant
     │   ├── offerStats.ts             # calculs des statistiques d'offres
+    │   ├── useFavorites.ts           # hook : favoris de l'utilisateur (table `favorites`), ajout/retrait optimiste
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
-    │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
+    │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`)
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile

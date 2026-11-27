@@ -132,3 +132,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 15h12 — Justin (interface commerçant séparée)
 - Pages `/commercant` (offres), `/commercant/statistiques`, `/commercant/compte` ; `RoleGate`, `useRole` (remplace `useIsMerchant`), NavBar et inscription adaptées.
 - Lint (1 avertissement connu) + build OK ; testé dans Chrome sans interface avec un faux Supabase, comptes commerçant et étudiant. Pas testé sur la vraie base.
+
+### 2026-11-27 15h12 — Anne-Lise (favoris, tâche 8)
+- Bouton cœur (🤍/❤️) sur `DealCard` (props optionnels `favorite` / `onToggleFavorite`), branché sur l'accueil (`src/app/page.tsx`). Nouveau hook `src/lib/useFavorites.ts` (lecture + ajout/retrait optimiste sur la table `favorites`, déjà en place côté BDD).
+- `src/app/favoris/page.tsx` reconstruite : liste des bons plans favoris, triée par échéance la plus proche (`deadline_at` puis `expires_at`) pour retrouver facilement une offre qu'on veut regarder plus tard.
+- Build cassé après le pull (`maplibre-gl` introuvable) : résolu par `npm install` (nouvelles dépendances de Justin pas encore installées chez moi). `next.config.ts` : `turbopack.root` fixé explicitement (un `package-lock.json` vide dans le dossier parent, hors du repo, faisait choisir la mauvaise racine à Turbopack).
+- Vérifié : lint + build OK. **Pas testé dans un navigateur ni contre la vraie base** : aucun outil de navigateur (Chrome, browser intégré) n'était disponible dans cette session, et un script Node ciblant directement la vraie BDD Supabase a été bloqué par le mode automatique (écriture sur une base partagée). Logique relue à la main contre `supabase/schema.sql` (colonnes, policies, GRANT de `favorites` déjà présents, aucune migration nécessaire). À tester sur la vraie base dès que possible.

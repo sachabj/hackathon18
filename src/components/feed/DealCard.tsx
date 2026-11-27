@@ -7,7 +7,18 @@ const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
 
 /** Carte d'un bon plan dans le fil. `match` absent tant que l'étudiant n'a pas rempli son profil. */
-export default function DealCard({ deal, match }: { deal: Deal; match?: Match }) {
+export default function DealCard({
+  deal,
+  match,
+  favorite,
+  onToggleFavorite,
+}: {
+  deal: Deal;
+  match?: Match;
+  /** Favori ou non ; le bouton cœur n'est affiché que si ce prop (et onToggleFavorite) est fourni. */
+  favorite?: boolean;
+  onToggleFavorite?: (dealId: string) => void;
+}) {
   const category = CATEGORIES[deal.category];
   const where =
     deal.place_name ??
@@ -37,6 +48,18 @@ export default function DealCard({ deal, match }: { deal: Deal; match?: Match })
           <span className="shrink-0 rounded-full bg-blue-600 px-2 py-1 text-xs font-bold text-white">
             {match.score} %<span className="sr-only"> compatible avec ton profil</span>
           </span>
+        )}
+        {onToggleFavorite && (
+          <button
+            type="button"
+            aria-pressed={favorite}
+            onClick={() => onToggleFavorite(deal.id)}
+            className="shrink-0 text-xl leading-none"
+            title={favorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+          >
+            <span aria-hidden>{favorite ? "❤️" : "🤍"}</span>
+            <span className="sr-only">{favorite ? "Retirer des favoris" : "Ajouter aux favoris"}</span>
+          </button>
         )}
       </div>
 

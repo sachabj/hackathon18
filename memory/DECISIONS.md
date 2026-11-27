@@ -92,6 +92,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : adresse précise, budget par pôle.
 - **Qui** : Sacha
 
+## 2026-11-27 15h12 — Turbopack : racine explicite
+- **Décision** : `next.config.ts` fixe `turbopack.root` sur le dossier du projet.
+- **Pourquoi** : un `package-lock.json` (vide) dans un dossier parent, hors du repo, faisait choisir à Turbopack la mauvaise racine et cassait la résolution de `maplibre-gl` au build. Fixer la racine évite ce problème quel que soit l'environnement de chacun.
+- **Qui** : Anne-Lise
+
 ## 2026-11-27 — Publication : lieu trouvé via Photon, saisie manuelle
 - **Décision** : `/publier` = formulaire manuel (pas d'extraction par IA). Lieu précis : nom du magasin + ville → recherche **Photon** (géocodeur OpenStreetMap, gratuit, sans clé, appelé depuis le navigateur) → l'étudiant choisit le lieu exact ; repli « utiliser ma position ». La catégorie (et une activité) est proposée d'après le type de lieu OSM, modifiable. Zone rattachée = zone la plus proche si le lieu est à moins de rayon + 5 km.
 - **Pourquoi** : simple et fiable pour la démo ; Photon accepte les appels navigateur (CORS) et la recherche par nom de commerce, contrairement à l'API Adresse (adresses seulement).
