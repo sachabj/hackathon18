@@ -54,5 +54,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : Justin avait fini sa partie ; l'interface de base est attendue par les autres pages.
 - **Qui** : Justin (à confirmer avec Sacha)
 
+## 2026-11-27 14h27 — Carte centrée sur l'utilisateur
+- **Décision** : à l'ouverture, la carte demande la localisation et se centre sur l'utilisateur (sauf s'il a déjà déplacé la carte ou choisi une zone) ; si refus, vue Bruz + Ker Lann. La position reste dans le navigateur.
+- **Pourquoi** : voir directement les bons plans autour de soi.
+- **Qui** : Justin
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)

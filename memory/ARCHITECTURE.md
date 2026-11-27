@@ -37,7 +37,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── types.ts                  # types TS alignés sur schema.sql
     │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
-    │   └── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
+    │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
+    │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
@@ -62,6 +63,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 
 ## Contraintes techniques
 - Notif « sur place » : impossible de suivre la position en arrière-plan sur le web → démo avec une **position simulée** (ou `navigator.geolocation` quand l'app est ouverte).
+- Géolocalisation : uniquement en HTTPS ou sur `localhost` (pas via l'IP du réseau local). Utiliser `useUserPosition()`.
 
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.

@@ -20,6 +20,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 3 | Squelette Next.js + déploiement Vercel (https://hackathon18-t1lb.vercel.app) | FAIT |
 | 4 | BDD Supabase : schéma + migrations 002 et 003, test e2e OK | FAIT |
 | 5a | Carte Bruz / Ker Lann + écran d'accueil (Justin) | FAIT |
+| 5c | Localisation GPS : carte centrée sur l'utilisateur + « Autour de moi » (Justin) | FAIT |
 | 5b | Fil + filtres par catégorie (Sacha) : section « Fil » de `src/app/page.tsx` | TODO |
 | 6 | Formulaire de publication (local / zone / national) | TODO |
 | 7 | Votes 👍/👎 + score de fiabilité | TODO |

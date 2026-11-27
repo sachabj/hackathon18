@@ -80,3 +80,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 — Sacha (préférences, cadrage)
 - Tâche 9 reprise à Matteo (avec son accord) → `TASKS.md` : EN COURS (Sacha).
 - Choix : localisation par zones + GPS, budget en 3 profils, périmètre = parcours + fil « Pour toi ».
+
+### 2026-11-27 14h27 — Justin (géolocalisation)
+- Nouveau hook `src/lib/useUserPosition.ts` ; `DealsMap.tsx` : point bleu + cercle de précision, centrage automatique, bouton « 📍 Autour de moi », message si refus.
+- Lint + build OK ; testé dans Chrome sans interface avec position simulée (autorisée et refusée). Pas encore testé sur un téléphone.

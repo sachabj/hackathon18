@@ -2,10 +2,14 @@
 
 // Responsable : Justin (carte). Chargée uniquement côté client via DealsMapLoader.
 import L from "leaflet";
-import { useState } from "react";
-import { Circle, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useEffect, useRef, useState } from "react";
+import { Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Deal, DealCategory } from "@/lib/types";
+import { useUserPosition } from "@/lib/useUserPosition";
+
+/** Niveau de zoom « autour de moi » (quelques rues). */
+const USER_ZOOM = 16;
 
 const zoneBounds = (z: (typeof ZONES)[number]) => L.latLng(z.lat, z.lng).toBounds(z.radiusM * 2);
 
@@ -30,12 +34,45 @@ const formatDate = (iso: string) =>
 
 export default function DealsMap({ deals }: { deals: Deal[] }) {
   const [map, setMap] = useState<L.Map | null>(null);
-  const [selected, setSelected] = useState("all");
+  /** Vue choisie par l'utilisateur ; null tant qu'il n'a rien choisi. */
+  const [choice, setChoice] = useState<string | null>(null);
+  const { position, error, retry } = useUserPosition();
+  const selected = choice ?? (position ? "me" : "all");
+  /** Vrai dès que la vue ne doit plus être recentrée automatiquement. */
+  const viewTaken = useRef(false);
+
+  // L'utilisateur a déplacé la carte avant que le GPS réponde : on ne la lui reprend pas.
+  useEffect(() => {
+    const take = () => {
+      viewTaken.current = true;
+    };
+    map?.on("dragstart", take);
+    return () => {
+      map?.off("dragstart", take);
+    };
+  }, [map]);
+
+  // Première position reçue : on arrive directement autour de l'utilisateur.
+  useEffect(() => {
+    if (!map || !position || viewTaken.current) return;
+    viewTaken.current = true;
+    map.setView([position.lat, position.lng], USER_ZOOM);
+  }, [map, position]);
 
   function focus(id: string) {
-    setSelected(id);
+    viewTaken.current = true;
+    setChoice(id);
     const zone = ZONES.find((z) => z.id === id);
     map?.flyToBounds(zone ? zoneBounds(zone) : ALL_BOUNDS, { duration: 0.8 });
+  }
+
+  function locateMe() {
+    setChoice("me");
+    if (position) map?.flyTo([position.lat, position.lng], USER_ZOOM, { duration: 0.8 });
+    else {
+      viewTaken.current = false;
+      retry();
+    }
   }
 
   return (
@@ -55,6 +92,23 @@ export default function DealsMap({ deals }: { deals: Deal[] }) {
             pathOptions={{ color: "#2563eb", weight: 1.5, fillOpacity: 0.05 }}
           />
         ))}
+        {position && (
+          <>
+            <Circle
+              center={[position.lat, position.lng]}
+              radius={position.accuracy}
+              interactive={false}
+              pathOptions={{ stroke: false, color: "#2563eb", fillOpacity: 0.12 }}
+            />
+            <CircleMarker
+              center={[position.lat, position.lng]}
+              radius={8}
+              pathOptions={{ color: "#fff", weight: 3, fillColor: "#2563eb", fillOpacity: 1 }}
+            >
+              <Popup>Tu es ici</Popup>
+            </CircleMarker>
+          </>
+        )}
         {deals.map((d) =>
           d.lat === null || d.lng === null ? null : (
             <Marker key={d.id} position={[d.lat, d.lng]} icon={ICONS[d.category]} title={d.title}>
@@ -92,6 +146,22 @@ export default function DealsMap({ deals }: { deals: Deal[] }) {
             {z.name}
           </button>
         ))}
+      </div>
+
+      <div className="pointer-events-none absolute bottom-6 left-2 right-2 z-[1000] flex flex-col items-start gap-1 *:pointer-events-auto">
+        {error && (
+          <p role="alert" className="rounded-lg bg-white px-3 py-1.5 text-sm text-red-600 shadow">
+            {error}
+          </p>
+        )}
+        <button
+          type="button"
+          onClick={locateMe}
+          aria-pressed={selected === "me"}
+          className={`rounded-full px-3 py-2 text-sm font-medium shadow ${selected === "me" ? "bg-blue-600 text-white" : "bg-white text-zinc-700"}`}
+        >
+          📍 {position || error ? "Autour de moi" : "Localisation…"}
+        </button>
       </div>
     </div>
   );
