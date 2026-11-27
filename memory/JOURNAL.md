@@ -410,3 +410,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 soir — Justin (affichage sur ordinateur, tâche 48)
 - `NavBar`, `layout`, `globals.css`, accueil, recherche, Ciblés (+ favoris, récompenses), profil, compte, confidentialité, préférences, publication, fiches, espace commerçant ; README, mémoire.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase, comptes étudiant et commerçant, 1440 et 1100 px, retour à 390 px. Corrigé au passage : page Recherche qui défilait en plus de la liste. **Pas testé sur la vraie base, ni sur un vrai écran / autre navigateur ; non déployé.**
+
+### 2026-11-27 22h38 — Justin (déploiement)
+- `64acebe` (affichage ordinateur) mis en ligne sur https://sharewood-ensai.vercel.app depuis un clone propre. Vérifié : pages publiques et nouveaux styles servis ; connexion non essayée.

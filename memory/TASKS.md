@@ -7,7 +7,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `cf8e31b`, 27/11 à 22h16** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo).
+- **Dernier déploiement : `64acebe`, 27/11 à 22h38** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5` (limite Vercel atteinte, puis déploiement au push coupé).
 
 ## Base de données
