@@ -83,6 +83,9 @@ function Stroke({ className = "h-5 w-5", viewBox = "0 0 24 24", children }: Icon
   );
 }
 
+export function NavigationIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M21 3 3 10.5l7.8 2.7L13.5 21 21 3Z" /></Stroke>;
+}
 export function SearchIcon({ className }: IconProps) {
   return <Stroke className={className}><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></Stroke>;
 }

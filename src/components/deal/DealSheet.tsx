@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import CategoryIcon from "@/components/CategoryIcon";
 import ChainBadge from "@/components/ChainBadge";
-import { CalendarIcon, CheckBadgeIcon, CheckIcon, CloseIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
+import { CalendarIcon, CheckBadgeIcon, CheckIcon, CloseIcon, NavigationIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
 import { isMajorChain } from "@/lib/chains";
 import { CATEGORIES, ZONES } from "@/lib/constants";
+import { directionsUrl } from "@/lib/directions";
 import { fetchEngagement, recordView, setVisited, vote, type Engagement } from "@/lib/engagement";
 import { reliability } from "@/lib/rules";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
@@ -130,6 +131,18 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
               </p>
             )}
           </div>
+        )}
+
+        {/* Seulement pour une offre placée sur la carte (la fiche n'existe que dans le navigateur). */}
+        {deal.lat !== null && deal.lng !== null && (
+          <a
+            href={directionsUrl({ lat: deal.lat, lng: deal.lng }, navigator.userAgent)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sw-btn-primary mt-3 w-full"
+          >
+            <NavigationIcon className="h-4 w-4" /> Y aller
+          </a>
         )}
 
         {data && own && <p className="mt-3 text-sm text-[var(--color-muted)]">C&apos;est ton bon plan : tu suis ses réactions dans ton profil.</p>}

@@ -67,6 +67,7 @@ export default function Page() {
           <li><strong>Vercel</strong> : hébergement du site. Comme Supabase, il peut garder des journaux techniques (dont l&apos;adresse IP).</li>
           <li><strong>Google (Gemini) ou Anthropic (Claude)</strong> : seulement si tu utilises « Pré-remplir avec l&apos;IA » : la photo et le texte fournis, pour remplir le formulaire. Rien n&apos;est envoyé à l&apos;IA quand tu publies.</li>
           <li><strong>Photon (komoot)</strong> : le nom du magasin et la ville que tu recherches.</li>
+          <li><strong>Apple Plans ou Google Maps</strong> : seulement si tu touches « Y aller » sur une offre ; son emplacement leur est transmis et leur propre politique s&apos;applique.</li>
           <li><strong>OpenFreeMap et OpenStreetMap</strong> : fournissent le fond de carte et reçoivent à cette occasion ton adresse IP.</li>
         </ul>
         <p>Ces prestataires peuvent traiter des données hors de l&apos;Union européenne. Nous ne vendons pas tes données.</p>

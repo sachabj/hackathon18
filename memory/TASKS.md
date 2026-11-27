@@ -8,7 +8,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 
 ## Base de données
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
-- ⏳ **À exécuter : `010_student_aids.sql` puis `011_no_self_vote.sql`.**
+- **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
 - Prochaine migration : numéro **012** (011 prise par Justin ; vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
@@ -37,7 +37,6 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | EN COURS (Matteo) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
-- ⚠️ **Lancer `supabase/migrations/010_student_aids.sql`** (SQL Editor) : sans elle, les réponses « Boursier » / « Carte Sortir » ne sont pas enregistrées (le reste du profil l'est).
 - `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
 - **Matteo** : le bouton « Voir sur la carte » de `PublishForm` pointe maintenant vers `/recherche` (modifié par Justin).
 - **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
@@ -47,12 +46,16 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - Sur les cartes d'offre, la fiche et la fenêtre de la carte ; nom du lieu commençant par une enseigne de `src/lib/chains.ts` (liste à compléter). Aucun effet sur le tri.
 - **Matteo (tâche 28)** : `DealCard`, `DealSheet` et `DealsMap` modifiés par ce badge (fenêtre de la carte passée à 220 px de haut) : faire un pull avant de les toucher.
 
+### Bouton « Y aller » : FAIT (Justin)
+- Dans la fiche d'un bon plan placé sur la carte : Apple Plans sur appareil Apple, Google Maps ailleurs (`src/lib/directions.ts`).
+- **Matteo (tâche 28)** : `DealSheet.tsx` et `confidentialite/page.tsx` modifiés : faire un pull avant de les toucher.
+
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
 
 | # | Priorité | Défaut | Statut |
 |---|---|---|---|
-| D1 | Haute | **On peut voter sur son propre bon plan** : « C'est le même : je le confirme » ne filtre pas ses offres et la règle `voter` de la base l'autorise → fiabilité gonflée et accès 7 jours relancé à volonté. Corriger dans l'app (avec la tâche 27) **et** par une règle en base (migration) | À TESTER (Justin) : app corrigée (tâche 27) + `011_no_self_vote.sql` **à exécuter** |
+| D1 | Haute | **On peut voter sur son propre bon plan** : « C'est le même : je le confirme » ne filtre pas ses offres et la règle `voter` de la base l'autorise → fiabilité gonflée et accès 7 jours relancé à volonté. Corriger dans l'app (avec la tâche 27) **et** par une règle en base (migration) | FAIT (Justin) : app corrigée (tâche 27) + règle en base (011 exécutée) ; pas essayé sur la vraie base |
 | D2 | Haute (Justin) | La copie locale `supabase/reset_demo.local.sql` de Justin est **périmée** (ne supprime pas les bons plans avant les comptes, depuis la 009) : la refaire à partir de `reset_demo.sql` avant tout lancement | FAIT (Justin) : copie locale reconstruite depuis le script à jour |
 | D3 | Moyenne | `/favoris` affiche les bons plans expirés ou retirés sans le signaler | TODO |
 | D4 | Moyenne | Après un vote dans la fiche, le fil et la carte ne se rafraîchissent qu'au retour sur la page (`useDeals`) | TODO |
@@ -97,6 +100,6 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter).
 
 ## Planning (deadline sam. 28/11 13h00)
-- **Ven. soir** : migrations 010 et 011
+- **Ven. soir** : fin de la tâche 28
 - **Sam. matin** : tests réels, données de démo, finitions
 - **Sam. 11h–13h** : gel du code, pitch, répétition

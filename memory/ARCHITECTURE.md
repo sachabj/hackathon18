@@ -37,6 +37,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── supabase/client.ts        # getSupabase() (navigateur), isSupabaseConfigured
     │   ├── types.ts                  # types TS alignés sur schema.sql
     │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
+    │   ├── directions.ts             # lien d'itinéraire (Apple Plans / Google Maps) du bouton « Y aller »
     │   ├── chains.ts                 # grandes enseignes reconnues au nom du lieu → composant `ChainBadge`
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
@@ -102,7 +103,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ⏳ · `011_no_self_vote.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅
 - `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Une adresse à garder sans compte est ignorée et listée à la fin (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).

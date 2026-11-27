@@ -245,3 +245,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 17h57 — Justin (fusion du badge)
 - Branche `badge-enseignes` fusionnée dans `main` ; fenêtre de la carte agrandie (220 px) pour que « Voir et réagir » reste visible.
 - Vérifié : types + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase : badge sur les cartes, la fiche et la carte pour les enseignes, absent ailleurs. Pas testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 18h00 — Justin (bouton « Y aller »)
+- Migrations 010 et 011 exécutées par Justin. Nouveau `src/lib/directions.ts` ; `DealSheet.tsx`, `icons.tsx`, `confidentialite/page.tsx`.
+- Vérifié : types + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (liens Mac / iPhone / Android / Windows, absent pour une offre nationale). Ouverture réelle de l'application de cartes non testée.

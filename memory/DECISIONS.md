@@ -212,3 +212,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : badge aubergine d'après le nom du lieu (liste dans le code), sans migration ni effet sur le tri.
 - **Limite** : liste à tenir à jour ; un lieu dont le nom commence comme une enseigne (« Action… », « Paul… ») serait badgé à tort.
 - **Qui** : Justin
+
+## 2026-11-27 18h00 — Bouton « Y aller »
+- **Décision** : dans la fiche seulement, un bouton ouvre l'itinéraire : Apple Plans sur iPhone / iPad / Mac, Google Maps ailleurs ; affiché pour les offres qui ont des coordonnées (y compris les siennes).
+- **Qui** : Justin (réponses aux questions de cadrage)
