@@ -51,7 +51,8 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 39 | E | Plus de formule d'accueil « Bonjour <pseudo> » / « Les bons plans étudiants » en haut de l'Accueil et de Recherche (titre gardé pour les lecteurs d'écran) | FAIT (Matteo) : `app/page.tsx`, `app/recherche/page.tsx` (fichiers de Sacha / Justin) |
 | 40 | E | Document `docs/ALGORITHMES.md` : visibilité, ordre d'affichage (sponsorisées, compatibilité, Hot, recherche), fiabilité (poids, masses, score, archivage), limites, où régler | FAIT (Matteo) : **à mettre à jour à chaque changement de formule** |
 | 36 | E | Filtres sous la recherche (prix, moyen + temps de trajet, conditions, tri) ; « gratuit », « pas cher », « près de moi » compris dans la saisie. « Ouvert maintenant » remis à plus tard (aucune donnée d'horaires) | À TESTER (Sacha) : `lib/search.ts`, `lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`, `app/page.tsx` |
-| 40 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
+| 41 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
+| 42 | E | Onglet « Ciblés » (à la place de Favoris) : carte Flèches + influence, onglets Favoris / Activité / Récompenses ; boutique, échanges, bons avec QR code (migration **017**) ; profil allégé. Touche `favoris/page.tsx` (Anne-Lise), `NavBar`, `profil/page.tsx` (Justin), `InfluenceCard` (Matteo) | EN COURS (Sacha) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
