@@ -22,7 +22,11 @@ export default function LoginPage() {
     const { error } =
       mode === "login"
         ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password, options: { data: { username } } });
+        : await supabase.auth.signUp({
+            email,
+            password,
+            options: { data: { username, account_type: merchant ? "merchant" : "student" } },
+          });
     setLoading(false);
     if (error) return setError(error.message);
     // Après inscription → préférences (étudiant) ou commerce ; après connexion → carte.

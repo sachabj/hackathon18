@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import NavBar from "@/components/NavBar";
+import RoleGate from "@/components/RoleGate";
 import SupabaseBanner from "@/components/SupabaseBanner";
 import "./globals.css";
 
@@ -15,7 +16,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="fr" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <SupabaseBanner />
-        <main className="flex-1 flex flex-col pb-16">{children}</main>
+        <main className="flex-1 flex flex-col pb-16">
+          <RoleGate>{children}</RoleGate>
+        </main>
         <NavBar />
       </body>
     </html>

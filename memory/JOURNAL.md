@@ -128,3 +128,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Nouvelle étape « longs trajets » dans le parcours, score voyage, budget non excluant (`matching.ts`, `PreferencesWizard.tsx`, `preferences.ts`, `types.ts`, `constants.ts`, `page.tsx`).
 - `006_travel.sql` (+ `schema.sql`) **à exécuter** ; en attendant, le reste du profil s'enregistre mais pas les réponses voyage. 2 exemples ajoutés à `seed_demo.sql`.
 - Vérifié : lint + build ; migrations 004 à 006 sur un Postgres local ; 11 contrôles du score ; parcours dans Chrome sans interface avec un faux Supabase. Pas testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 15h12 — Justin (interface commerçant séparée)
+- Pages `/commercant` (offres), `/commercant/statistiques`, `/commercant/compte` ; `RoleGate`, `useRole` (remplace `useIsMerchant`), NavBar et inscription adaptées.
+- Lint (1 avertissement connu) + build OK ; testé dans Chrome sans interface avec un faux Supabase, comptes commerçant et étudiant. Pas testé sur la vraie base.

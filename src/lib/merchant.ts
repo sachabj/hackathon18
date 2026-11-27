@@ -19,6 +19,8 @@ export interface Dashboard {
   stats: Record<string, OfferStats>;
   /** Signalements d'étudiants à côté du commerce */
   nearby: Deal[];
+  /** Instant de la lecture, pour juger si une offre est encore en ligne */
+  fetchedAt: number;
 }
 
 function check<T>(result: { data: T; error: { code?: string; message: string } | null }): T {
@@ -41,7 +43,7 @@ export async function fetchDashboard(): Promise<Dashboard> {
   const business = check(
     await supabase.from("businesses").select("*").eq("owner_id", user.id).maybeSingle(),
   ) as Business | null;
-  if (!business) return { business, offers: [], stats: {}, nearby: [] };
+  if (!business) return { business, offers: [], stats: {}, nearby: [], fetchedAt: Date.now() };
 
   const [offers, stats, nearby] = await Promise.all([
     supabase.from("deals").select("*").eq("author_id", user.id).order("created_at", { ascending: false }),
@@ -53,6 +55,7 @@ export async function fetchDashboard(): Promise<Dashboard> {
     offers: check(offers) as Deal[],
     stats: Object.fromEntries((check(stats) as OfferStats[]).map((s) => [s.deal_id, s])),
     nearby: check(nearby) as Deal[],
+    fetchedAt: Date.now(),
   };
 }
 

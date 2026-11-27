@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useIsMerchant } from "@/lib/useIsMerchant";
+import { useRole } from "@/lib/useRole";
 
 const LINKS = [
   { href: "/", label: "Carte", emoji: "🗺️" },
@@ -11,11 +11,17 @@ const LINKS = [
   { href: "/profil", label: "Profil", emoji: "👤" },
 ];
 
+const MERCHANT_LINKS = [
+  { href: "/commercant", label: "Offres", emoji: "🏷️" },
+  { href: "/commercant/statistiques", label: "Statistiques", emoji: "📊" },
+  { href: "/commercant/compte", label: "Compte", emoji: "🏪" },
+];
+
 export default function NavBar() {
   const pathname = usePathname();
-  const merchant = useIsMerchant(pathname);
-  const links = merchant ? [...LINKS, { href: "/commercant", label: "Commerce", emoji: "🏪" }] : LINKS;
-  if (pathname.startsWith("/login") || pathname.startsWith("/onboarding")) return null;
+  const role = useRole(pathname);
+  if (!role || pathname.startsWith("/login") || pathname.startsWith("/onboarding")) return null;
+  const links = role === "merchant" ? MERCHANT_LINKS : LINKS;
   return (
     <nav
       className="fixed bottom-0 inset-x-0 z-[1000] border-t border-black/10 bg-white/95 backdrop-blur"
@@ -23,7 +29,9 @@ export default function NavBar() {
     >
       <ul className="mx-auto flex max-w-md justify-around">
         {links.map((l) => {
-          const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
+          // Les pages d'accueil de chaque interface ne sont actives que sur leur adresse exacte.
+          const active =
+            l.href === "/" || l.href === "/commercant" ? pathname === l.href : pathname.startsWith(l.href);
           return (
             <li key={l.href}>
               <Link

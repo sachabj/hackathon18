@@ -77,6 +77,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **À confirmer** : tarif de 9,90 € (proposé par Claude).
 - **Qui** : Justin
 
+## 2026-11-27 15h12 — Interface commerçant séparée
+- **Décision** : un compte commerçant a sa propre interface (onglets Offres / Statistiques / Compte) et n'accède plus aux pages étudiantes ; type de compte lu dans `account_type` (inscription) ou le rôle en base. La redirection est un confort d'interface : les droits restent ceux de la RLS.
+- **Statistiques** : uniquement des données réelles (favoris, confirmations, signalements) ; pas de compteur de vues.
+- **Qui** : Justin
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

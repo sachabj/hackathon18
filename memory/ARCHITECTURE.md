@@ -43,7 +43,9 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
     │   ├── merchant.ts               # espace commerçant : lecture / écriture, isBoosted()
-    │   ├── useIsMerchant.ts          # hook : onglet « Commerce » de la NavBar
+    │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
+    │   ├── useDashboard.ts           # hook : données de l'espace commerçant
+    │   ├── offerStats.ts             # calculs des statistiques d'offres
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
@@ -51,7 +53,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
-    │   ├── merchant/                 # BusinessForm, LocationPicker, OfferForm, OfferCard
+    │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
+    │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
@@ -61,7 +64,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
         ├── favoris/page.tsx          # favoris (Anne-Lise)
-        ├── commercant/page.tsx       # espace commerçant (Justin)
+        ├── commercant/               # (Justin) page = mes offres · statistiques/ · compte/
         └── profil/page.tsx           # niveau, accès, simuler position (Matteo)
 ```
 

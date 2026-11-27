@@ -54,3 +54,5 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Sacha** : `src/app/page.tsx` (offres sponsorisées triées en tête) et `DealCard.tsx` (badge « Sponsorisé ») modifiés par Justin.
 - **Matteo (tâche 6)** : le formulaire commerçant est séparé (`components/merchant/OfferForm.tsx`) ; `/publier` reste à toi (ne pas envoyer `boosted_until` ni `ended_by`, non écrivables).
 - **Matteo** : bouton « Se déconnecter » (`LogoutButton`) ajouté en bas de `/profil` par Justin : à conserver en construisant la page.
+- **Tous** : un compte commerçant ne voit plus les pages étudiantes (`RoleGate`) ; tester vos pages avec un compte étudiant.
+- **Anne-Lise (tâches 7, 8)** : les statistiques commerçant restent à zéro tant que les votes et favoris ne sont pas enregistrés (tables `votes`, `favorites`).
