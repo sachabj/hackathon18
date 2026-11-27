@@ -92,9 +92,9 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 
 | # | Tâche | Taille | Domaine | Statut |
 |---|---|---|---|---|
-| 49 | **Profil > préférences : désactiver la localisation** (ne plus être localisé : carte, distances, réactions) | M | Sacha / Justin | TODO : préciser l'effet avec la tâche 51 (sans localisation, pas de réaction sur une offre placée) ; confidentialité à mettre à jour |
+| 49 | **Profil > préférences : désactiver la localisation** (ne plus être localisé : carte, distances, réactions) | M | Sacha / Justin | EN COURS (Sacha) |
 | 50 | **Profil > préférences : application en anglais** | G | tous | TODO : tous les textes sont écrits en français dans le code ; à décider : toute l'appli ou les pages principales (les offres saisies restent dans leur langue) |
-| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | TODO : contrôle en base (migration, `react_to_deal`) ; remplace le barème de distance des Flèches et « sans position, pas de pénalité ». ⚠️ **Démo** : loin de Bruz, plus personne ne peut réagir → prévoir la tâche 11 (position simulée) ou une exception ; offres sans lieu à préciser |
+| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | EN COURS (Sacha) : règle revue, la réaction reste permise, sans Flèches loin ou sans position |
 | 52 | **1re connexion : n'importe quelle ville de France** (plus seulement Bruz, Ker Lann, Rennes) | G | Justin / Sacha / Matteo | TODO : zones en base (`zones`, `zone_id`), carte, « Pour toi », publication « Une ville » ; recherche de ville possible via Photon ; migration |
 | 53 | **Nouvelles icônes** (réflexion ; « emojis » demandés aussi, mais la règle actuelle est : aucun emoji, `DESIGN_SHAREWOOD.md`) | P | Anne-Lise | TODO : choisir lesquelles |
 | 54 | **« Tes aides » plus générales** : la Carte Sortir est propre à Rennes, prévoir des aides valables partout en France | M | Sacha | TODO : lister les aides (inscription, conditions des offres, « Pour toi ») ; lié à la tâche 52 |
