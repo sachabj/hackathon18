@@ -19,19 +19,19 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 | Anne-Lise | Favoris, design |
 
 ## 🔴 À faire en priorité : modifications demandées (18 à 27)
-Lots A, B et C **libres**, lot D pris par Matteo. **Prendre un lot entier** : ses tâches touchent les mêmes fichiers.
+Lots A, B et C pris par Justin, lot D par Matteo (**ne pas y toucher en parallèle**, y compris les fichiers de Sacha concernés par le lot C). **Prendre un lot entier** : ses tâches touchent les mêmes fichiers.
 
 | # | Lot | Tâche | Statut |
 |---|---|---|---|
-| 18 | A | % de compatibilité remplacé par le % de fiabilité sur les cartes | TODO |
-| 23 | A | Menu carte : enlever la barre du haut | TODO |
-| 25 | A | « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | TODO |
-| 26 | A | Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » (inclut l'ancienne tâche 16) | TODO |
-| 19 | B | Carte : enlever les cercles en pointillés des zones | TODO |
-| 24 | B | Carte : un seul bouton « revenir à ma localisation » | TODO |
-| 20 | C | 1re connexion : « Me localiser » + menu pays → ville-campus | TODO |
-| 21 | C | Inscription : une question « fréquence de voyage » + moyens | TODO |
-| 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | TODO |
+| 18 | A | % de compatibilité remplacé par le % de fiabilité sur les cartes | EN COURS (Justin) |
+| 23 | A | Menu carte : enlever la barre du haut | EN COURS (Justin) |
+| 25 | A | « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | EN COURS (Justin) |
+| 26 | A | Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » (inclut l'ancienne tâche 16) | EN COURS (Justin) |
+| 19 | B | Carte : enlever les cercles en pointillés des zones | EN COURS (Justin) |
+| 24 | B | Carte : un seul bouton « revenir à ma localisation » | EN COURS (Justin) |
+| 20 | C | 1re connexion : « Me localiser » + menu pays → ville-campus | EN COURS (Justin) |
+| 21 | C | Inscription : une question « fréquence de voyage » + moyens | EN COURS (Justin) |
+| 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | EN COURS (Justin) |
 | 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | EN COURS (Matteo) |
 
 ### Lot A — accueil, recherche, fil (`app/page.tsx`, `NavBar.tsx`, `DealCard.tsx`)

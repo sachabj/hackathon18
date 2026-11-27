@@ -221,3 +221,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Tout le code relu ; `TASKS.md` réécrit (statuts, précisions des tâches 18 à 27, défauts D1 à D9, notes périmées retirées). Ligne des migrations corrigée dans `ARCHITECTURE.md` : 007, 008, 009 présentes sur la base (sondes en lecture avec la clé publique).
 - Lint (1 avertissement connu) + build OK. Aucun code modifié ; défauts relevés à la lecture, non reproduits dans l'app.
 
+
+### 2026-11-27 17h24 — Justin (lots A, B, C pris)
+- Tâches 18 à 26 réservées avant de coder (`TASKS.md`).
