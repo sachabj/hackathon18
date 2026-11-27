@@ -58,3 +58,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 — Justin (build cassé chez Sacha)
 - Cause : la règle `lib/` du `.gitignore` (modèle Python de GitHub) excluait `src/lib/` : client Supabase, types, constantes et règles n'avaient jamais été poussés (commit f3cd327). Le build passait en local seulement.
 - Correctif : règles ancrées à la racine (`/lib/`…), `src/lib/` ajouté au repo, vérifié par build sur un clone neuf.
+
+### 2026-11-27 — Justin (npm introuvable chez Sacha)
+- Node.js n'est pas installé sur sa machine → prérequis et commandes d'installation ajoutés dans `README.md`.

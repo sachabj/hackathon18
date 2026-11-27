@@ -3,6 +3,13 @@
 Projet du hackathon ENSAI (27–28 nov. 2026). Une app communautaire pour voir et signaler les bons plans étudiants (restaurants, grandes surfaces, transports, bourses, sport, Carte Sortir, activités).
 
 ## Démarrer
+Prérequis : **Node.js 20.9 ou plus** (`node -v`), npm est installé avec. S'il manque (`command not found: npm`) :
+- macOS : `brew install node`, ou l'installeur LTS de https://nodejs.org
+- Windows : `winget install OpenJS.NodeJS.LTS`, ou l'installeur LTS de https://nodejs.org
+- Linux (ou sans droits admin) : [nvm](https://github.com/nvm-sh/nvm) puis `nvm install --lts`
+
+Rouvrir ensuite le terminal.
+
 ```
 git clone https://github.com/sachabj/hackathon18.git && cd hackathon18
 npm install
