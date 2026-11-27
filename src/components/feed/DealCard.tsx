@@ -113,7 +113,7 @@ export default function DealCard({
       </div>
 
       <div className="mt-2.5">
-        <ReactionBar size="sm" counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />
+        <ReactionBar size="sm" placed={deal.lat !== null && deal.lng !== null} counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />
         {r.error && (
           <p role="alert" className="mt-1 text-xs text-red-600">
             {r.error}

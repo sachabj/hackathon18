@@ -3,13 +3,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@/components/icons";
-import { APP_NAME, PRIVACY_CONTACT } from "@/lib/constants";
+import { APP_NAME, PRIVACY_CONTACT, NEARBY_M } from "@/lib/constants";
 
 export const metadata: Metadata = { title: `Confidentialité — ${APP_NAME}` };
 
-function Block({ title, children }: { title: string; children: React.ReactNode }) {
+function Block({ id, title, children }: { id?: string; title: string; children: React.ReactNode }) {
   return (
-    <section className="space-y-2">
+    <section id={id} className="space-y-2">
       <h2 className="text-lg">{title}</h2>
       <div className="space-y-2 text-sm text-[var(--color-ink)] [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5">{children}</div>
     </section>
@@ -24,7 +24,7 @@ export default function Page() {
       </Link>
       <header>
         <h1 className="text-2xl">Politique de confidentialité</h1>
-        <p className="text-sm text-[var(--color-muted)]">Version du 27 novembre 2026</p>
+        <p className="text-sm text-[var(--color-muted)]">Version du 28 novembre 2026</p>
       </header>
 
       <Block title="Qui est responsable ?">
@@ -39,18 +39,42 @@ export default function Page() {
           <li><strong>Email et mot de passe</strong> (le mot de passe est stocké haché par notre hébergeur) : te connecter.</li>
           <li><strong>Pseudo, zones, centres d&apos;intérêt, transports, voyages, budget</strong> : personnaliser tes bons plans.</li>
           <li><strong>Boursier et Carte Sortir (oui / non)</strong>, facultatifs : te proposer seulement les aides auxquelles tu as droit.</li>
-          <li><strong>Position approximative (~100 m)</strong>, seulement si tu touches « Me localiser » : calculer les distances. La carte, elle, suit ta position sans l&apos;enregistrer.</li>
-          <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager. Avec « Utiliser ma position actuelle », le lieu publié est ta position précise.</li>
+          <li><strong>Ta localisation</strong>, avec ton accord seulement : détail dans la partie qui suit.</li>
+          <li><strong>Ton choix sur la localisation</strong> (accepté ou refusé, date, version du texte) : le respecter et pouvoir le prouver.</li>
+          <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager.</li>
           <li><strong>Votes, favoris, vues, « J&apos;y suis allé »</strong> : fiabilité des offres, tes favoris et ton niveau d&apos;activité.</li>
           <li><strong>Poids de tes réactions</strong>, calculé à partir de l&apos;ancienneté de ton compte, de ton activité sur 30 jours et de l&apos;accord de tes réactions avec celles des autres : rendre la fiabilité des offres plus juste. Il n&apos;est ni enregistré ni affiché.</li>
           <li><strong>Tes Flèches</strong> (gains, offre concernée, date) et les jours où tu as partagé ou réagi : ton solde, ton grade et ta série. Toi seul les vois.</li>
           <li><strong>Tes échanges de récompenses</strong> (récompense, code du bon, dates d&apos;échange et d&apos;utilisation) et tes avantages actifs : te redonner tes bons. Rien n&apos;est transmis aux partenaires, tu leur montres toi-même ton bon.</li>
-          <li><strong>Position au moment d&apos;une réaction</strong> à une offre placée sur la carte, si tu l&apos;autorises : calculer les Flèches selon la distance. Elle n&apos;est pas enregistrée.</li>
           <li><strong>Pour un commerçant</strong> : nom, adresse, activité et emplacement du commerce.</li>
         </ul>
         <p>
-          La base légale est le fonctionnement du service que tu demandes, et ton accord pour la position et la
-          publication d&apos;une photo.
+          La base légale est le fonctionnement du service que tu demandes (article 6.1.b du RGPD), et ton accord pour
+          la localisation et la publication d&apos;une photo (article 6.1.a).
+        </p>
+      </Block>
+
+      <Block id="localisation" title="Ta localisation">
+        <p>
+          <strong>Rien n&apos;est demandé sans ton accord.</strong> La première fois, une fenêtre t&apos;explique
+          l&apos;usage : tu acceptes ou tu refuses. Ton navigateur te demande ensuite sa propre autorisation.
+        </p>
+        <ul>
+          <li><strong>Réaction ou publication sur une offre placée</strong> : ta position, arrondie à environ 10 m, est comparée au lieu de l&apos;offre pour vérifier que tu es à moins de {NEARBY_M} m et verser les Flèches. Nous ne l&apos;enregistrons pas. Le gain enregistré, que toi seul vois, indique donc que tu étais près de cette offre à cette date.</li>
+          <li><strong>Carte</strong> : ta position est suivie tant que la carte est ouverte et reste sur ton appareil. Le fournisseur du fond de carte reçoit la zone affichée.</li>
+          <li><strong>« Me localiser » (préférences)</strong> : une position arrondie à environ 100 m est enregistrée pour calculer les distances. Toi seul peux la lire.</li>
+          <li><strong>« Utiliser ma position » pour placer une offre ou un commerce</strong> : ce point précis devient son lieu public.</li>
+        </ul>
+        <p>
+          <strong>Sécurité</strong> : la position voyage chiffrée (HTTPS) et la base n&apos;autorise chacun à lire que sa
+          propre position enregistrée. Elle n&apos;est ni vendue ni utilisée pour de la publicité.
+        </p>
+        <p>
+          <strong>C&apos;est facultatif.</strong> Sans elle, tout fonctionne ; seules les Flèches des offres placées sur la
+          carte demandent d&apos;être localisé. Tu retires ton accord à tout moment dans Profil, « Ma localisation »
+          (commerçant : « Compte et confidentialité ») : plus rien n&apos;est demandé et la position enregistrée est
+          effacée. Un lieu déjà publié le reste tant que l&apos;offre existe. Tu peux aussi bloquer la localisation dans
+          les réglages du navigateur.
         </p>
       </Block>
 
@@ -97,10 +121,13 @@ export default function Page() {
         <ul>
           <li>Consulter et télécharger tes données, corriger ton pseudo et tes préférences, effacer ta position.</li>
           <li>Supprimer ton compte à tout moment.</li>
-          <li>Retirer un accord, ou t&apos;opposer à un traitement.</li>
+          <li>Retirer un accord (sans effet sur ce qui a été fait avant), t&apos;opposer à un traitement ou demander sa limitation.</li>
           <li>Saisir la CNIL (cnil.fr) si tu estimes que tes droits ne sont pas respectés.</li>
         </ul>
-        <p>Ces actions se trouvent dans « Compte et confidentialité », depuis ton profil.</p>
+        <p>
+          Ces actions se trouvent dans « Compte et confidentialité », depuis ton profil (la localisation, directement
+          dans le profil).{PRIVACY_CONTACT && ` Pour toute autre demande : ${PRIVACY_CONTACT}. Réponse sous un mois.`}
+        </p>
         <p>Le service est réservé aux personnes d&apos;au moins 15 ans.</p>
       </Block>
     </article>

@@ -73,7 +73,7 @@ export default function DealsMap({
   selectedId?: string | null;
 }) {
   const [map, setMap] = useState<L.Map | null>(null);
-  const { position, error, retry } = useUserPosition();
+  const { position, error, retry, consent } = useUserPosition();
   const home = ZONES.find((z) => z.id === homeZoneId);
   const savedLat = savedPosition?.lat;
   const savedLng = savedPosition?.lng;
@@ -242,13 +242,18 @@ export default function DealsMap({
             {error}
           </p>
         )}
+        {consent !== null && consent !== "granted" && (
+          <button type="button" onClick={retry} className="wz-glass rounded-full px-4 py-2 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+            Position non partagée · Activer
+          </button>
+        )}
         <button
           type="button"
           onClick={recenter}
           aria-label="Revenir à ma localisation"
           title="Revenir à ma localisation"
           aria-pressed={centered}
-          className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full transition active:scale-95 ${!position && !error ? "animate-pulse" : ""}`}
+          className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full transition active:scale-95 ${consent === "granted" && !position && !error ? "animate-pulse" : ""}`}
           style={{ color: "var(--color-forest)" }}
         >
           {/* Flèche de localisation : pleine quand la carte est centrée sur soi. */}

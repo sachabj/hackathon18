@@ -1,9 +1,14 @@
 // « Les Flèches » côté navigateur : barème affiché, rangs, lecture et messages de gain.
-// Les Flèches sont calculées par la base (supabase/migrations/016_arrows.sql) : garder le barème identique.
+// Les Flèches sont calculées par la base (supabase/migrations/020_location_rules.sql) : garder le barème identique.
+import { NEARBY_M } from "./constants";
+import { currentPosition } from "./location";
 import { getSupabase } from "./supabase/client";
-import type { Point } from "./geo";
 
+/** Offre placée sur la carte : il faut être sur place (position partagée à 500 m au plus). */
 export const ARROWS = { create: 50, bonus: 30, confirm: 10, report: 15 } as const;
+/** Offre sans lieu précis : rien à vérifier, donc bien moins. */
+export const ARROWS_NO_PLACE = { create: 20, bonus: 10, confirm: 3, report: 5 } as const;
+export const arrowsFor = (placed: boolean) => (placed ? ARROWS : ARROWS_NO_PLACE);
 export const DAILY_PAID_VOTES = 5;
 export const DAILY_PAID_CREATIONS = 3;
 export const STREAK_DAYS = 3;
@@ -128,26 +133,26 @@ export async function fetchArrowLog(): Promise<ArrowLine[] | null> {
 
 /** Résultat d'un vote renvoyé par `react_to_deal`. */
 export interface ArrowOutcome {
-  status: "paid" | "pending" | "far" | "limit" | "already";
+  /** "noloc" : position non partagée ; "far" : à plus de 500 m d'une offre placée */
+  status: "paid" | "pending" | "noloc" | "far" | "limit" | "already";
   kind: "confirm" | "report";
   amount: number;
   multiplier: number;
-  /** 1 : près de l'offre (ou position inconnue) ; 0,5 : entre 500 m et 2 km */
-  factor: number;
   archived: boolean;
 }
 
 export interface ArrowNotice {
   title: string;
   detail?: string;
+  /** La position vient d'être partagée : le message rappelle comment elle est protégée. */
+  secure?: boolean;
 }
 
+const NEEDS_POSITION = "Sans ta position (Profil, « Ma localisation »), pas de Flèches sur une offre placée.";
+const TOO_FAR = `Tu es à plus de ${NEARBY_M} m de l'offre.`;
+
 export function outcomeNotice(o: ArrowOutcome): ArrowNotice | null {
-  const notes = [
-    o.factor === 0.5 && "à plus de 500 m : la moitié",
-    o.multiplier > 1 && "série : gains × 1,5",
-  ].filter(Boolean);
-  const detail = (first: string) => [first, ...notes].join(" · ");
+  const detail = (first: string) => [first, o.multiplier > 1 && "série : gains × 1,5"].filter(Boolean).join(" · ");
   switch (o.status) {
     case "paid":
       return {
@@ -159,11 +164,13 @@ export function outcomeNotice(o: ArrowOutcome): ArrowNotice | null {
         title: "Signalement enregistré",
         detail: detail(`+${o.amount} Flèches quand 3 étudiants l'auront signalée`),
       };
+    case "noloc":
+      return { title: "Réaction enregistrée, sans Flèches", detail: NEEDS_POSITION };
     case "far":
-      return { title: "Vote enregistré, sans Flèches", detail: "Tu es à plus de 2 km de l'offre." };
+      return { title: "Réaction enregistrée, sans Flèches", detail: TOO_FAR };
     case "limit":
       return {
-        title: "Vote enregistré, sans Flèches",
+        title: "Réaction enregistrée, sans Flèches",
         detail: `Tes ${DAILY_PAID_VOTES} votes récompensés du jour sont atteints.`,
       };
     default:
@@ -185,45 +192,41 @@ export function onArrows(listener: (notice: ArrowNotice | null) => void) {
   return () => window.removeEventListener(EVENT, handle);
 }
 
-/** Après une publication : annonce les Flèches de création, si la base les a versées. */
-export async function announceCreation() {
-  const created = (await fetchMyArrows())?.history.find((e) => e.kind === "create");
-  const recent = created && Date.now() - new Date(created.created_at).getTime() < 120_000;
-  if (!recent) return announce();
-  announce(
-    created.amount === 0
-      ? {
-          title: "Bon plan publié, sans Flèches",
-          detail: `Tes ${DAILY_PAID_CREATIONS} publications récompensées du jour sont atteintes.`,
-        }
-      : {
-          title: `+${created.amount} Flèches`,
-          detail: `Bon plan partagé${created.multiplier > 1 ? " · série : gains × 1,5" : ""}`,
-        },
-  );
+const LIMIT_REACHED = `Tes ${DAILY_PAID_CREATIONS} publications récompensées du jour sont atteintes.`;
+
+function creationNotice(amount: number, multiplier: number, refusal: string): ArrowNotice {
+  return amount === 0
+    ? { title: "Bon plan publié, sans Flèches", detail: refusal }
+    : { title: `+${amount} Flèches`, detail: `Bon plan partagé${multiplier > 1 ? " · série : gains × 1,5" : ""}` };
 }
 
-/** Précision au-delà de laquelle la position ne dit rien (ordinateur localisé par son réseau). */
-const MAX_ACCURACY_M = 1000;
+/** Annonce les Flèches de la dernière publication, déjà décidées par la base. */
+async function announceCreation() {
+  const created = (await fetchMyArrows())?.history.find((e) => e.kind === "create");
+  const recent = created && Date.now() - new Date(created.created_at).getTime() < 120_000;
+  announce(recent ? creationNotice(created.amount, created.multiplier, LIMIT_REACHED) : null);
+}
 
 /**
- * Position au moment d'un vote (le navigateur demande l'autorisation), pour le barème selon la distance.
- * null si elle est refusée, trop imprécise ou trop longue à obtenir : aucune pénalité. Elle n'est pas enregistrée.
+ * Après une publication. Lieu précis : la position est demandée et la base vérifie qu'on est sur place
+ * avant de verser les Flèches (migration 020 ; sans elle, l'ancien barème s'applique).
  */
-export function currentPosition(timeoutMs = 8000): Promise<Point | null> {
-  if (!("geolocation" in navigator)) return Promise.resolve(null);
-  return new Promise((resolve) => {
-    // Une demande d'autorisation laissée sans réponse ne doit pas bloquer le vote.
-    const timer = setTimeout(() => resolve(null), timeoutMs);
-    const done = (point: Point | null) => {
-      clearTimeout(timer);
-      resolve(point);
-    };
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) =>
-        done(coords.accuracy <= MAX_ACCURACY_M ? { lat: coords.latitude, lng: coords.longitude } : null),
-      () => done(null),
-      { enableHighAccuracy: true, maximumAge: 60_000, timeout: 6000 },
-    );
+export async function rewardCreation(dealId: string, placed: boolean) {
+  if (!placed) return announceCreation();
+  const position = await currentPosition();
+  const { data, error } = await getSupabase().rpc("claim_creation_arrows", {
+    p_deal_id: dealId,
+    p_lat: position?.lat ?? null,
+    p_lng: position?.lng ?? null,
   });
+  if (error) {
+    if (error.code === "PGRST202") return announceCreation();
+    console.warn("Flèches de publication non vérifiées :", error.message);
+    return announce();
+  }
+  // null : rien à gagner (compte commerçant, par exemple).
+  if (!data) return announce();
+  const claim = data as { status: "paid" | "noloc" | "far" | "limit"; amount: number; multiplier: number };
+  const refusal = { paid: "", noloc: NEEDS_POSITION, far: TOO_FAR, limit: LIMIT_REACHED }[claim.status];
+  announce({ ...creationNotice(claim.amount, claim.multiplier, refusal), secure: !!position });
 }

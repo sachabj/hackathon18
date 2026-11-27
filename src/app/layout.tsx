@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import ArrowToast from "@/components/arrows/ArrowToast";
+import LocationConsentDialog from "@/components/location/LocationConsentDialog";
 import NavBar from "@/components/NavBar";
 import RoleGate from "@/components/RoleGate";
 import SupabaseBanner from "@/components/SupabaseBanner";
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <NavBar />
         <ArrowToast />
+        <LocationConsentDialog />
       </body>
     </html>
   );

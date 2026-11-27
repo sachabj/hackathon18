@@ -27,6 +27,7 @@ export async function fetchAccountInfo() {
     username: (profile.data.username as string | null) ?? "",
     acceptedAt: (profile.data.privacy_accepted_at as string | null | undefined) ?? null,
     hasPosition: preferences.data?.lat != null,
+    isMerchant: profile.data.role === "merchant",
   };
 }
 

@@ -1,6 +1,7 @@
 -- =====================================================================
 -- ShareWood — données de démo « Les Flèches » et récompenses.
--- Prérequis : migrations 016_arrows.sql et 017_rewards.sql, puis reset_demo.sql (comptes demo.…@example.com).
+-- Prérequis : migrations 016_arrows.sql, 017_rewards.sql et 020_location_rules.sql, puis reset_demo.sql
+-- (comptes demo.…@example.com).
 -- ⚠️ À lancer le jour de la démo : les séries sont calculées à partir de la date d'exécution.
 -- À coller dans Supabase → SQL Editor → Run. Ne touche qu'aux comptes de démo et à trois de leurs offres.
 -- Relançable : remet les scénarios à zéro (utile après une répétition). Historique INVENTÉ.
@@ -8,18 +9,18 @@
 -- Comptes préparés (mot de passe : celui choisi dans reset_demo.sql) ; Flèches gagnées, qui fixent le rang :
 --   demo.lea     Robin des Étudiants      680, série 5 jours ; 430 disponibles, un bon actif et un utilisé
 --   demo.hugo    Robin des Étudiants      520
---   demo.sarah   Chasseur de bons plans   485, série 2 jours  → compte conseillé pour la démo en direct
+--   demo.sarah   Chasseur de bons plans   495, série 2 jours  → compte conseillé pour la démo en direct
 --   demo.ines    Chasseur de bons plans   310, série 3 jours
 --   demo.malo    Chasseur de bons plans   150
 --   demo.tom     Éclaireur                 60
 --
 -- En direct, connecté en demo.sarah (la série passe à 3 jours : gains × 1,5) :
---   1. « Carte Avantage Jeune » : J'y suis allé → +15, elle passe Robin des Étudiants (500) ;
---      3e confirmation, son auteur (demo.hugo) gagne le bonus.
---   2. « Covoiturage Bruz → Rennes » : Plus dispo → 3e signalement, +23 (523), offre archivée.
---   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 373 disponibles,
+--   1. « Carte Avantage Jeune » : J'y suis allé → +5, elle passe Robin des Étudiants (500) ;
+--      3e confirmation, son auteur (demo.hugo) gagne le bonus (+10).
+--   2. « Covoiturage Bruz → Rennes » : Plus dispo → 3e signalement, +8 (508), offre archivée.
+--   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 358 disponibles,
 --      le rang ne bouge pas ; montrer le bon, puis « Marquer comme utilisé en caisse ».
--- Les offres des étapes 1 et 2 sont sans lieu précis : la position ne change rien aux gains.
+-- Les offres des étapes 1 et 2 sont sans lieu précis : petits montants, et la position ne change rien.
 -- =====================================================================
 do $seed$
 declare
@@ -38,8 +39,9 @@ declare
   used_own int;
   used_other int;
 begin
-  if to_regclass('public.arrow_events') is null or to_regclass('public.user_rewards') is null then
-    raise exception 'Lance d''abord supabase/migrations/016_arrows.sql puis 017_rewards.sql.';
+  if to_regclass('public.arrow_events') is null or to_regclass('public.user_rewards') is null
+     or to_regprocedure('public.claim_creation_arrows(uuid, float8, float8)') is null then
+    raise exception 'Lance d''abord les migrations 016_arrows.sql, 017_rewards.sql et 020_location_rules.sql.';
   end if;
   if not exists (select 1 from auth.users where email = 'demo.sarah@example.com') then
     raise exception 'Lance d''abord supabase/reset_demo.sql (comptes de démo absents).';
@@ -81,7 +83,7 @@ begin
       ('demo.hugo@example.com',   8, 0,  9, 2, 1),
       ('demo.ines@example.com',   4, 0,  8, 2, 3),
       ('demo.malo@example.com',   2, 0,  5, 0, 0),
-      ('demo.sarah@example.com',  5, 3, 13, 1, 2),
+      ('demo.sarah@example.com',  5, 3, 14, 1, 2),
       ('demo.tom@example.com',    1, 0,  1, 0, 0)
     ) as t(email, creates, bonuses, confirms, reports, streak)
   loop
@@ -121,7 +123,7 @@ begin
 
   -- Signalements déjà faits sur l'offre à archiver en direct : en attente du 3e.
   insert into public.arrow_events (user_id, deal_id, kind, base, amount, paid, created_at)
-  select a.id, report_deal, 'report', 15, 15, false, now() - interval '2 days'
+  select a.id, report_deal, 'report', 5, 5, false, now() - interval '2 days'
   from auth.users a where a.email in ('demo.lea@example.com', 'demo.ines@example.com');
 
   -- Deux bons de demo.lea : un déjà utilisé, un à présenter.

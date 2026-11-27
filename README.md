@@ -30,6 +30,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Récompenses
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
+- **Gagner sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m, à la publication comme à la réaction ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
 
 ### Espace commerçant
@@ -39,11 +40,13 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Compte et confidentialité
 - Publications anonymes, changement de mot de passe, export et suppression de ses données, politique de confidentialité.
+- **Localisation facultative et sous contrôle** : accord demandé avant tout partage (accepter ou refuser), retirable dans le profil ; envoyée chiffrée et non enregistrée lors d'une réaction ou d'une publication. Sans elle, tout fonctionne, seules les Flèches des offres sur la carte manquent.
 
 ## Limites actuelles
 - Démonstration : les données de démo mêlent des offres sourcées et des offres **inventées** (signalées « Exemple fictif » dans leur fiche) ; commerçants de démo et partenaires des récompenses sont **fictifs**.
 - Le paiement de la mise en avant est **simulé** ; le statut de commerçant n'est pas vérifié.
 - Distances et temps de trajet estimés à vol d'oiseau.
+- La position vient du navigateur : un utilisateur averti peut la falsifier. L'adresse de contact de la politique de confidentialité est fictive.
 - Pas encore là : notifications sur place, rappels de dates limites, filtre « ouvert maintenant ».
 
 ## Technique

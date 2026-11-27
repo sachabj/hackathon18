@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import LocationNotice from "@/components/location/LocationNotice";
 import CategoryIcon from "@/components/CategoryIcon";
 import {
   ArrowLeftIcon,
@@ -27,6 +28,7 @@ import {
   ZONES,
 } from "@/lib/constants";
 import { formatDistance, nearestZone } from "@/lib/geo";
+import { ensureLocationConsent } from "@/lib/location";
 import { isTraveler, rankDeals, toStudentProfile, type StudentProfile } from "@/lib/matching";
 import { fetchMyPreferences, saveMyPreferences } from "@/lib/preferences";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
@@ -117,8 +119,9 @@ export default function PreferencesWizard() {
     }));
   }
 
-  function locate() {
+  async function locate() {
     if (!navigator.geolocation) return setGpsMessage("Ton navigateur ne permet pas la localisation.");
+    if (!(await ensureLocationConsent(true))) return setGpsMessage("Position non partagée : choisis ta zone ci-dessous.");
     setLocating(true);
     setGpsMessage(null);
     navigator.geolocation.getCurrentPosition(
@@ -226,10 +229,10 @@ export default function PreferencesWizard() {
             >
               <PinIcon className="h-4 w-4" /> {locating ? "Recherche…" : "Me localiser"}
             </button>
-            <p className="text-center text-xs text-[var(--color-muted)]">
-              Facultatif : ta position est arrondie (~100 m), enregistrée avec ton profil et visible par toi seul.
-              Choisir dans le menu l&apos;efface.
-            </p>
+            <LocationNotice>
+              Facultatif : envoyée chiffrée, arrondie à environ 100 m, enregistrée avec ton profil et lisible par toi
+              seul. Choisir dans le menu l&apos;efface.
+            </LocationNotice>
             {gpsMessage && (
               <p role="status" className="text-sm text-[var(--color-muted)]">
                 {gpsMessage}

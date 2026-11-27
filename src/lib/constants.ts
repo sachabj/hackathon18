@@ -39,10 +39,15 @@ import type { ComponentType } from "react";
 
 export const APP_NAME = "ShareWood";
 
+/** Distance maximale à une offre placée pour gagner des Flèches (la base applique la même : migration 020). */
+export const NEARBY_M = 500;
 /** Longueur minimale d'un nouveau mot de passe. */
 export const PASSWORD_MIN = 8;
-/** Adresse de contact affichée dans la politique de confidentialité (rien n'est affiché tant qu'elle est vide). */
-export const PRIVACY_CONTACT = "";
+/**
+ * Contact affiché dans la politique de confidentialité. FICTIF (hackathon) : le domaine example.com est réservé,
+ * personne ne reçoit ces messages. À remplacer par une vraie adresse avant toute mise en service.
+ */
+export const PRIVACY_CONTACT = "sharewood@example.com (adresse fictive, démonstration)";
 
 type IconComponent = ComponentType<{ className?: string }>;
 

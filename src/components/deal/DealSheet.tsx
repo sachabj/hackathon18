@@ -7,6 +7,7 @@ import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import ReactionBar from "@/components/deal/ReactionBar";
+import DealLocationNote from "@/components/location/DealLocationNote";
 import { CalendarIcon, CameraIcon, CloseIcon, NavigationIcon, PinIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
@@ -223,7 +224,14 @@ export default function DealSheet({
 
         {data && (
           <div className="mt-3">
-            <ReactionBar counts={recentCounts(data.votes, data.at)} reaction={reaction} busy={busy} own={own} onReact={react} />
+            <ReactionBar
+              counts={recentCounts(data.votes, data.at)}
+              reaction={reaction}
+              busy={busy}
+              own={own}
+              onReact={react}
+              placed={deal.lat !== null && deal.lng !== null}
+            />
             <p className="mt-1.5 text-center text-xs text-[var(--color-muted)]">
               {own
                 ? "C'est ton bon plan : tu suis ses réactions dans « Ciblés », onglet Activité."
@@ -231,6 +239,7 @@ export default function DealSheet({
                   ? "Touché par erreur ? Touche à nouveau pour décocher."
                   : "Réactions des 30 derniers jours."}
             </p>
+            {!own && <DealLocationNote placed={deal.lat !== null && deal.lng !== null} />}
           </div>
         )}
         {!data && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">Chargement…</p>}

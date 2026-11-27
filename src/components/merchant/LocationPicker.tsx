@@ -4,6 +4,8 @@
 import L from "leaflet";
 import { useLayoutEffect, useState } from "react";
 import { MapContainer, Marker, useMapEvents } from "react-leaflet";
+import LocationNotice from "@/components/location/LocationNotice";
+import { ensureLocationConsent } from "@/lib/location";
 import BaseMap from "@/components/map/BaseMap";
 import { PinIcon } from "@/components/icons";
 import { MAP_CENTER } from "@/lib/constants";
@@ -50,8 +52,11 @@ export default function LocationPicker({
     };
   }, []);
 
-  function locate() {
+  async function locate() {
     setError(null);
+    if (!(await ensureLocationConsent(true))) {
+      return setError("Position non partagée : touche la carte à l'emplacement du commerce.");
+    }
     navigator.geolocation?.getCurrentPosition(
       ({ coords }) => {
         const point = { lat: coords.latitude, lng: coords.longitude };
@@ -82,6 +87,7 @@ export default function LocationPicker({
       <button type="button" onClick={locate} className="flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
         <PinIcon className="h-4 w-4" /> Je suis dans mon commerce : utiliser ma position
       </button>
+      <LocationNotice>Envoyée chiffrée. Le point choisi devient l&apos;emplacement public de ton commerce.</LocationNotice>
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}

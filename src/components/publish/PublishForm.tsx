@@ -10,17 +10,19 @@ import { useRef, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { BuildingsIcon, ChevronDownIcon, GlobeIcon, LinkIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
 import type { AssistDraft } from "@/lib/ai/types";
-import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES } from "@/lib/constants";
+import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES, NEARBY_M } from "@/lib/constants";
 import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplicates";
 import { distanceKm, nearestZone } from "@/lib/geo";
 import { normalizeLink } from "@/lib/links";
 import { kindLabel, searchPlaces, suggestActivity, suggestCategory, type Place } from "@/lib/places";
-import { announceCreation } from "@/lib/arrows";
+import { ARROWS, ARROWS_NO_PLACE, rewardCreation } from "@/lib/arrows";
 import { vote } from "@/lib/engagement";
+import { currentPosition, ensureLocationConsent } from "@/lib/location";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { ActivityId, DealCategory, DealRequirement, DealScope, DealSubcategory } from "@/lib/types";
 import { uploadDealPhoto } from "@/lib/photos";
 import { usePreferences } from "@/lib/usePreferences";
+import LocationNotice from "@/components/location/LocationNotice";
 import AssistPanel from "./AssistPanel";
 
 const SCOPES: { id: DealScope; Icon: typeof PinIcon; label: string }[] = [
@@ -155,8 +157,11 @@ export default function PublishForm() {
     if (activity) setTags((t) => (t.includes(activity) ? t : [...t, activity]));
   }
 
-  function useMyPosition() {
+  async function useMyPosition() {
     if (!navigator.geolocation) return setSearchError("Localisation indisponible sur cet appareil.");
+    if (!(await ensureLocationConsent(true))) {
+      return setSearchError("Position non partagée : cherche le lieu par son nom, ou active-la dans ton profil.");
+    }
     setSearchError(null);
     navigator.geolocation.getCurrentPosition(
       ({ coords }) =>
@@ -281,7 +286,8 @@ export default function PublishForm() {
     setSubmitting(true);
     setError(null);
     try {
-      await vote(dealId, 1);
+      // « Un lieu précis » : la position permet de gagner les Flèches de la confirmation.
+      await vote(dealId, 1, scope === "local" ? await currentPosition() : null);
     } catch (err) {
       return setError(`Confirmation impossible : ${(err as Error).message}`);
     } finally {
@@ -329,16 +335,18 @@ export default function PublishForm() {
         ...(link_url && { link_url }),
     };
     const supabase = getSupabase();
-    let { error } = await supabase.from("deals").insert(photo_url ? { ...row, photo_url } : row);
+    const insert = (values: Record<string, unknown>) => supabase.from("deals").insert(values).select("id").single();
+    let { data, error } = await insert(photo_url ? { ...row, photo_url } : row);
     // Migration 008 pas encore lancée : la colonne photo_url n'existe pas → on publie sans la photo.
     if (error && photo_url && /photo_url/.test(error.message)) {
-      ({ error } = await supabase.from("deals").insert(row));
+      ({ data, error } = await insert(row));
     }
     setSubmitting(false);
     if (error) return setError(`Publication impossible : ${error.message}`);
     setSimilar(null);
     setDone("published");
-    announceCreation();
+    // La publication est faite ; les Flèches ne la retardent pas.
+    if (data) rewardCreation(data.id, row.lat != null).catch((e) => console.warn("Flèches non annoncées :", e));
   }
 
   const filledDetails = [
@@ -490,6 +498,9 @@ export default function PublishForm() {
               <button type="button" onClick={useMyPosition} className="flex items-center gap-1.5 self-start text-sm font-medium" style={{ color: "var(--color-forest)" }}>
                 <PinIcon className="h-4 w-4" /> Pas dans la liste ? Utiliser ma position actuelle
               </button>
+              <LocationNotice>
+                Envoyée chiffrée. Si tu la choisis comme lieu, ce point sera publié et visible de tous.
+              </LocationNotice>
             </>
           )}
           {place && atPlace && atPlace.length > 0 && (
@@ -677,6 +688,14 @@ export default function PublishForm() {
         </div>
       )}
       {error && <p className="text-sm text-red-600">{error}</p>}
+      {scope === "local" ? (
+        <LocationNotice>
+          +{ARROWS.create} Flèches si tu publies à moins de {NEARBY_M} m du lieu : ta position est envoyée chiffrée pour
+          ce contrôle, sans être enregistrée. Sans elle, ton bon plan est publié sans Flèches.
+        </LocationNotice>
+      ) : (
+        <p className="text-xs text-[var(--color-muted)]">Offre sans lieu précis : +{ARROWS_NO_PLACE.create} Flèches.</p>
+      )}
       {similar ? (
         <div className="space-y-3">
           <ExistingDeals

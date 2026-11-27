@@ -4,7 +4,7 @@ import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { ArrowShotIcon, ChevronDownIcon, EditIcon, ProhibitedIcon, TrashIcon, UndoIcon } from "@/components/icons";
 import { DAILY_PAID_CREATIONS } from "@/lib/arrows";
-import { REQUIREMENTS } from "@/lib/constants";
+import { REQUIREMENTS, NEARBY_M } from "@/lib/constants";
 import type { MyDealInput } from "@/lib/engagement";
 import { normalizeLink } from "@/lib/links";
 import type { Deal, DealAudience, DealRequirement } from "@/lib/types";
@@ -19,7 +19,7 @@ const sameList = (a: string[], b: string[]) => a.length === b.length && a.every(
 const actionClass = "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
 const inputClass = "sw-field mt-1 text-base";
 
-/** Flèches rapportées par un de ses bons plans ; `create` à 0 : publié au-delà du plafond du jour. */
+/** Flèches rapportées par un de ses bons plans ; `create` à 0 : publié loin du lieu ou au-delà du plafond du jour. */
 export type DealGains = { create?: number; bonus?: number };
 
 const plural = (n: number, word: string) => `${n} ${word}${n > 1 ? "s" : ""}`;
@@ -231,7 +231,9 @@ export default function MyDealCard({
           )}
           {gains?.create === 0 ? (
             <p className="text-[var(--color-muted)]">
-              Publié au-delà de {DAILY_PAID_CREATIONS} bons plans le même jour : sans Flèches.
+              {deal.lat !== null && deal.lng !== null
+                ? `Sans Flèches : publié sans position vérifiée à moins de ${NEARBY_M} m du lieu, ou au-delà de ${DAILY_PAID_CREATIONS} publications récompensées le même jour.`
+                : `Publié au-delà de ${DAILY_PAID_CREATIONS} bons plans le même jour : sans Flèches.`}
             </p>
           ) : (
             !!gains?.bonus && (

@@ -23,7 +23,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **018_no_access_limit.sql à exécuter** (Sacha, après 017) : accès ouvert à tous et 3 publications récompensées par jour. Relancer 018 si 009 ou 016 sont relancées.
 - **Sonde en lecture (Sacha, 27/11 au soir)** : table de **017 présente** et fonction supprimée par **018 absente** → 017 et 018 appliquées.
 - ⏳ **019_golden_badge_text.sql à exécuter** (Sacha) : texte du Badge Doré dans la boutique.
-- Prochaine migration : numéro **020** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **020_location_rules.sql à exécuter** (Sacha, après 019) : Flèches seulement sur place ; **obligatoire avant `seed_arrows.sql`**. Relancer 020 si 016 ou 018 sont relancées.
+- Prochaine migration : numéro **021** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -87,22 +88,27 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Justin** : `app/page.tsx` réécrit ; sur `app/recherche/page.tsx`, retrait des filtres « Pour toi / Tout » et « Tous / Commerçants / Étudiants » (les badges des cartes restent) ; catégories et carte inchangées.
 - **Matteo** : `hotScore()` conservé : il trie maintenant la liste unique de `/recherche` (sponsorisées en tête) ; pas appliqué aux onglets de l'accueil.
 
+### Localisation (tâches 49 et 51, Sacha)
+- **Tous** : toute position passe par `lib/location.ts` (`ensureLocationConsent` / `currentPosition`) ; ne pas appeler `navigator.geolocation` sans accord.
+- **Justin** : `DealsMap`, `useUserPosition`, `LocationPicker`, `DealSheet`, profil, `layout`, `/compte` modifiés ; `ReactionBar` demande `placed`. **Matteo** : `PublishForm` et `docs/ALGORITHMES.md` modifiés. **Anne-Lise** : `DealCard` (une propriété).
+- **Démo** : les deux offres du scénario sont sans lieu (rien à localiser) ; pour montrer un gain sur place, être à moins de 500 m de l'offre.
+
 ## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 65, toutes libres
 Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les questions de `CLAUDE.md`. « Taille » est une estimation (P petite · M moyenne · G grosse) ; « Domaine » indique qui connaît le code, sans attribution.
 
 | # | Tâche | Taille | Domaine | Statut |
 |---|---|---|---|---|
-| 49 | **Profil > préférences : désactiver la localisation** (ne plus être localisé : carte, distances, réactions) | M | Sacha / Justin | EN COURS (Sacha) |
+| 49 | **Profil > préférences : désactiver la localisation** (ne plus être localisé : carte, distances, réactions) | M | Sacha / Justin | À TESTER (Sacha) : accord (fenêtre Accepter / Refuser), interrupteur « Ma localisation » au profil (compte pour un commerçant), refus = position enregistrée effacée |
 | 50 | **Profil > préférences : application en anglais** | G | tous | TODO : tous les textes sont écrits en français dans le code ; à décider : toute l'appli ou les pages principales (les offres saisies restent dans leur langue) |
-| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | EN COURS (Sacha) : règle revue, la réaction reste permise, sans Flèches loin ou sans position |
+| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | À TESTER (Sacha) : ⏳ **lancer `020_location_rules.sql`** ; règle revue : la réaction reste permise, Flèches seulement à 500 m sur une offre placée (publication aussi) ; offre sans lieu : +20 / +10 / +3 / +5 |
 | 52 | **1re connexion : n'importe quelle ville de France** (plus seulement Bruz, Ker Lann, Rennes) | G | Justin / Sacha / Matteo | TODO : zones en base (`zones`, `zone_id`), carte, « Pour toi », publication « Une ville » ; recherche de ville possible via Photon ; migration |
 | 53 | **Nouvelles icônes** (réflexion ; « emojis » demandés aussi, mais la règle actuelle est : aucun emoji, `DESIGN_SHAREWOOD.md`) | P | Anne-Lise | TODO : choisir lesquelles |
 | 54 | **« Tes aides » plus générales** : la Carte Sortir est propre à Rennes, prévoir des aides valables partout en France | M | Sacha | TODO : lister les aides (inscription, conditions des offres, « Pour toi ») ; lié à la tâche 52 |
 | 55 | **« Licence de sport » → « Sport »** (pôles de dépenses et catégorie) | P | Sacha | TODO : libellé seulement (identifiant `sport` inchangé) ; README et documentation |
 | 56 | **Accueil : onglet « Restauration »** (restaurants) ; « Quotidien » ne garde que les grandes surfaces | P | Sacha | TODO : 6 onglets, vérifier la largeur à 320 px |
-| 57 | **Récompenses : même gain pour « Plus dispo » et « J'y suis allé » : +10** (aujourd'hui +15 et +10) | P | Sacha | TODO : migration + `lib/arrows.ts` + `docs/ALGORITHMES.md` |
+| 57 | **Récompenses : même gain pour « Plus dispo » et « J'y suis allé » : +10** (aujourd'hui +15 et +10) | P | Sacha | TODO : migration + `lib/arrows.ts` + `docs/ALGORITHMES.md` ; depuis la tâche 51 : +10 / +15 sur place, +3 / +5 sans lieu (migration 020 à reprendre) |
 | 58 | **Récompense d'un signalement seulement quand l'offre n'est vraiment plus disponible** | P à M | Sacha | TODO : en partie déjà fait (gain « en attente » jusqu'au 3e « Plus dispo ») ; préciser ce qui doit changer |
-| 59 | **Récompense d'une publication différée** : après un certain temps et un certain nombre d'étudiants venus sur l'offre (aujourd'hui +50 dès la publication, +30 à 3 confirmations) | M | Sacha | TODO : choisir le délai et le nombre ; migration |
+| 59 | **Récompense d'une publication différée** : après un certain temps et un certain nombre d'étudiants venus sur l'offre (aujourd'hui +50 dès la publication, +30 à 3 confirmations) | M | Sacha | TODO : choisir le délai et le nombre ; migration ; depuis la tâche 51 : +50 sur place seulement, +20 sans lieu |
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
 | 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | TODO |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
@@ -135,8 +141,8 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | 31 | Accueil en onglets (« Pour toi » + les 4 rubriques) avec barre de recherche ; filtres « Pour toi / Tout » et « Commerçant / Étudiant » retirés de la page carte | À TESTER (Sacha) : onglets rectangulaires ; codé et essayé avec un faux Supabase ; à voir sur la vraie base et sur téléphone ; sans migration |
 | 14 | Rappels de dates limites | TODO |
 | 15 | 🔴 **Pitch : préparer les diapos** (problème, solution, démo en direct sur sharewood-ensai.vercel.app, fiabilité et anti-abus, modèle économique commerçants, limites et évolutions) | À TESTER (Justin) : cinquième version : 7 diapos (format validé par Justin), texte allégé, sur le pitch amélioré ; **vidéo de 1 min max à placer** sur la diapo de démo (fichier pas encore fourni) (texte complet dans les notes d’orateur, captures de l’appli, Erasmus présenté comme ambition ; présentation claude.ai privée, lien auprès de Justin) ; à répéter avec chronomètre, vidéo de secours à préparer ; base : `README.md`, `PROJECT.md`, `docs/ALGORITHMES.md` |
-| 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
-| 17b | « Les Flèches » : points calculés par la base (barème, série × 1,5, 5 votes payés par jour, moitié au-delà de 500 m et rien au-delà de 2 km, archivage à 3 signalements), rangs, solde dans les en-têtes, fiche, profil, données de démo | À TESTER (Sacha) : ⏳ **lancer `016_arrows.sql`**, puis `seed_arrows.sql` ; testé sur Postgres local et faux Supabase seulement |
+| 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; contact **fictif** `PRIVACY_CONTACT` (`constants.ts`) à remplacer avant une vraie mise en service |
+| 17b | « Les Flèches » : points calculés par la base (barème, série × 1,5, 5 votes payés par jour, règle de distance remplacée par la tâche 51, archivage à 3 signalements), rangs, solde dans les en-têtes, fiche, profil, données de démo | À TESTER (Sacha) : ⏳ **lancer `016_arrows.sql`**, puis `seed_arrows.sql` ; testé sur Postgres local et faux Supabase seulement |
 
 ## Recherche déplacée sur Accueil → Recherche (Anne-Lise)
 - **Décision demandée par l'utilisateur** : la barre de recherche (+ ses filtres prix/trajet/condition/tri) quitte l'Accueil pour `/recherche` ; les catégories de `/recherche` sont retirées (gain de place) ; dans une liste de `/recherche` (recherche ou fil « Hot »), toucher une offre **localisée** centre et met en avant son repère sur la carte (contour aubergine, petit rebond) au lieu d'ouvrir sa fiche — pour comparer vite plusieurs offres. Une offre **sans lieu** (zone / nationale) garde l'ouverture de sa fiche (rien à montrer sur la carte).

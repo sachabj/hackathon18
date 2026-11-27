@@ -1,7 +1,7 @@
 // Réactions d'un bon plan (tâches 29 et 35) : « J'y suis allé (n) » / « Plus dispo (n) », sur la carte et dans la fiche.
 // Exclusives ; toucher la réaction active la décoche. Sur son propre bon plan : compteurs seuls.
 import { ArrowShotIcon, CheckIcon, ThumbsDownIcon, WalkIcon } from "@/components/icons";
-import { ARROWS } from "@/lib/arrows";
+import { arrowsFor } from "@/lib/arrows";
 import type { Reaction } from "@/lib/engagement";
 
 export default function ReactionBar({
@@ -12,6 +12,7 @@ export default function ReactionBar({
   onReact,
   size = "md",
   showGain = true,
+  placed,
 }: {
   counts: { visited: number; gone: number };
   reaction: Reaction;
@@ -20,12 +21,15 @@ export default function ReactionBar({
   own?: boolean;
   onReact: (next: Exclude<Reaction, null>) => void;
   size?: "sm" | "md";
-  /** « +10 » / « +15 » à côté du libellé (retiré dans la petite fenêtre de la carte). */
+  /** Gain à côté du libellé (retiré dans la petite fenêtre de la carte). */
   showGain?: boolean;
+  /** Offre placée sur la carte : le gain, plus élevé, suppose d'être sur place. */
+  placed: boolean;
 }) {
+  const gains = arrowsFor(placed);
   const buttons = [
-    { id: "visited" as const, label: "J'y suis allé", count: counts.visited, gain: ARROWS.confirm, Icon: WalkIcon, color: "var(--color-forest)", bg: "var(--color-sage)" },
-    { id: "gone" as const, label: "Plus dispo", count: counts.gone, gain: ARROWS.report, Icon: ThumbsDownIcon, color: "var(--color-aubergine)", bg: "var(--color-lilac)" },
+    { id: "visited" as const, label: "J'y suis allé", count: counts.visited, gain: gains.confirm, Icon: WalkIcon, color: "var(--color-forest)", bg: "var(--color-sage)" },
+    { id: "gone" as const, label: "Plus dispo", count: counts.gone, gain: gains.report, Icon: ThumbsDownIcon, color: "var(--color-aubergine)", bg: "var(--color-lilac)" },
   ];
   const pad = size === "sm" ? "px-1 py-1.5 text-[13px]" : "py-2.5 text-sm";
   return (

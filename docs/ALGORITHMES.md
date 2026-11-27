@@ -214,7 +214,7 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 - Le score « Hot » utilise les réactions **sans le poids** des étudiants.
 - La fiabilité n'intervient pas dans l'ordre des offres (seulement dans la couleur).
 - Une offre toute neuve passe devant une offre de 2 jours très confirmée sur la page carte (2.4).
-- La position au moment de la réaction ne change pas la fiabilité (elle ne sert qu'au calcul des Flèches, le système de points).
+- La position au moment de la réaction ne change pas la fiabilité (elle ne sert qu'au calcul des Flèches, section 6) : une réaction faite loin, ou sans position, compte autant, y compris pour l'archivage.
 
 ---
 
@@ -231,3 +231,21 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 | Poids d'un étudiant (justesse, activité, ancienneté, bornes 0,5–2) | | `supabase/migrations/014_voter_weights.sql` (`voter_stats`) |
 | Fenêtre des compteurs (30 jours) | | `src/lib/rules.ts` (`COUNT_WINDOW_DAYS`) |
 | Archivage (3 signalements) | | `src/lib/rules.ts` (`ARCHIVE_REPORTS`) **et** `supabase/migrations/016_arrows.sql` |
+
+---
+
+## 6. Les Flèches et la localisation
+
+| Action | Offre sur la carte | Offre sans lieu précis |
+|---|---|---|
+| Publier un bon plan | +50, **sur place** | +20 |
+| 3 confirmations reçues (si la publication a rapporté) | +30 | +10 |
+| « J'y suis allé » | +10, **sur place** | +3 |
+| « Plus dispo » (versées au 3e signalement) | +15, **sur place** | +5 |
+
+- **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : l'action est enregistrée, sans Flèches.
+- Publication : la vérification se fait dans les 15 minutes qui suivent, une seule fois.
+- Série de 3 jours ou plus : gains × 1,5 (arrondi). Au plus 5 votes et 3 publications récompensés par jour.
+- La position n'est jamais enregistrée par ces calculs.
+
+Réglages : `supabase/migrations/020_location_rules.sql` **et** `src/lib/arrows.ts` (`ARROWS`, `ARROWS_NO_PLACE`), rayon aussi dans `src/lib/constants.ts` (`NEARBY_M`).

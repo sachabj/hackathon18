@@ -2,7 +2,8 @@
 
 // Historique des Flèches : une ligne par mouvement (hors gains des bons plans listés au-dessus).
 import { useState } from "react";
-import { ARROWS, DAILY_PAID_CREATIONS, DAILY_PAID_VOTES, KIND_LABELS, type ArrowLine } from "@/lib/arrows";
+import { ARROWS, ARROWS_NO_PLACE, DAILY_PAID_CREATIONS, DAILY_PAID_VOTES, KIND_LABELS, type ArrowLine } from "@/lib/arrows";
+import { NEARBY_M } from "@/lib/constants";
 
 const SHOWN = 5;
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
@@ -52,8 +53,15 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
           </li>
           <li>« J&apos;y suis allé » : +{ARROWS.confirm}.</li>
           <li>« Plus dispo » : +{ARROWS.report}, versées quand 3 étudiants l&apos;ont signalée.</li>
+          <li>
+            Pour une offre sur la carte, il faut partager ta position à moins de {NEARBY_M} m d&apos;elle, sinon aucune
+            Flèche.
+          </li>
+          <li>
+            Offre sans lieu précis : +{ARROWS_NO_PLACE.create} à la publication, +{ARROWS_NO_PLACE.bonus} aux 3
+            confirmations, +{ARROWS_NO_PLACE.confirm} « J&apos;y suis allé », +{ARROWS_NO_PLACE.report} « Plus dispo ».
+          </li>
           <li>3 jours d&apos;activité d&apos;affilée : gains × 1,5.</li>
-          <li>Loin d&apos;une offre sur la carte : la moitié au-delà de 500 m, rien au-delà de 2 km.</li>
         </ul>
       </details>
     </section>

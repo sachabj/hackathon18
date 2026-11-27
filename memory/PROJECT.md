@@ -61,5 +61,6 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 
 ## Compte ✅
 - **Un compte est obligatoire pour tout**, y compris pour consulter.
+- **Localisation** ✅ (codé) : facultative, avec accord retirable au profil ; sans elle tout fonctionne mais les offres placées sur la carte ne rapportent pas de Flèches (500 m au plus). Offres sans lieu : petits montants.
 - **Publications anonymes** ; page « Compte et confidentialité » (sécurité, mes données, suppression) et politique de confidentialité.
 - **Les Flèches** ✅ (codé) : points gagnés en partageant et en réagissant (publier > confirmer), série, grades Éclaireur → Chasseur de bons plans → Robin des Étudiants (page « Ciblés »). **Boutique de récompenses** ✅ (codée) : bons chez des commerçants partenaires (fictifs en démo) avec QR code, avantages dans l'appli (Badge Doré, Avant-Première), tickets de tombola. Dépenser ne fait jamais baisser le rang. Le tout sur la page **« Ciblés »** (ex-Favoris).

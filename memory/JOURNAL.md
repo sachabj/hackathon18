@@ -434,3 +434,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 nuit — Justin (diapos allégées)
 - Petites mentions retirées, textes raccourcis et agrandis, mise en page conservée ; note de la diapo démo adaptée à une vidéo de 1 min max (pas encore fournie). Mentions gardées dans le texte : « bientôt » (Erasmus), « tarif envisagé ». Aucun code modifié.
+
+### 2026-11-28 00h — Sacha (localisation, tâches 49 et 51)
+- Migration `020_location_rules.sql` (+ `schema.sql`) ; `lib/location.ts`, `components/location/` ; `arrows.ts`, `engagement.ts`, `useUserPosition`, `DealsMap`, `LocationPicker`, assistant de préférences, `PublishForm`, fiche et boutons de réaction, Activité, profil, compte, politique de confidentialité, `seed_arrows.sql` (sarah 495, +5 puis +8, 358 disponibles) ; README, algorithmes, mémoire.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 98 contrôles sur Postgres local + scénario de démo ; 37 contrôles dans Chrome avec un faux Supabase. **Pas essayé sur la vraie base ni sur téléphone ; conformité RGPD non relue par un juriste.**

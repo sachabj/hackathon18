@@ -1,10 +1,11 @@
 "use client";
 
-// Profil étudiant (Justin) : préférences et compte. Mes bons plans sont dans « Ciblés > Activité ».
+// Profil étudiant (Justin) : préférences, localisation et compte. Mes bons plans sont dans « Ciblés > Activité ».
 // TODO Tâche 11 (Matteo) : bouton « 📍 Simuler ma position ».
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AccountLink from "@/components/account/AccountLink";
+import LocationSetting from "@/components/location/LocationSetting";
 import LogoutButton from "@/components/LogoutButton";
 import { TargetIcon } from "@/components/icons";
 import PreferencesSummary from "@/components/profile/PreferencesSummary";
@@ -15,6 +16,8 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 export default function Page() {
   const [account, setAccount] = useState<Awaited<ReturnType<typeof fetchMyPreferences>> | null>(null);
   const [error, setError] = useState<string | null>(null);
+  /** Relit les préférences (le retrait de la localisation efface la position enregistrée). */
+  const [version, setVersion] = useState(0);
 
   // Relu à chaque retour sur la page (Next conserve l'état).
   useEffect(() => {
@@ -30,7 +33,7 @@ export default function Page() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [version]);
 
   const profile = account?.profile;
 
@@ -58,6 +61,8 @@ export default function Page() {
           )}
         </section>
       )}
+
+      {account && <LocationSetting onChange={() => setVersion((v) => v + 1)} />}
 
       <AccountLink />
 

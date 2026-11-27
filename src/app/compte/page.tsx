@@ -7,6 +7,7 @@ import DataSection from "@/components/account/DataSection";
 import DeleteSection from "@/components/account/DeleteSection";
 import SecuritySection from "@/components/account/SecuritySection";
 import { ArrowLeftIcon } from "@/components/icons";
+import LocationSetting from "@/components/location/LocationSetting";
 import { fetchAccountInfo } from "@/lib/account";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 
@@ -48,6 +49,8 @@ export default function Page() {
       {info && (
         <div key={visit} className="space-y-4">
           <SecuritySection email={info.email} />
+          {/* Les étudiants règlent leur localisation dans leur profil. */}
+          {info.isMerchant && <LocationSetting student={false} />}
           <DataSection {...info} />
           <DeleteSection />
         </div>

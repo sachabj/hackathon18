@@ -2,10 +2,10 @@
 
 // Message bref au gain (ou non) de Flèches, au-dessus de toute l'application.
 import { useEffect, useState } from "react";
-import { ArrowShotIcon } from "@/components/icons";
+import { ArrowShotIcon, LockClosedIcon } from "@/components/icons";
 import { onArrows, type ArrowNotice } from "@/lib/arrows";
 
-const DURATION_MS = 4000;
+const DURATION_MS = 4500;
 
 export default function ArrowToast() {
   const [notice, setNotice] = useState<(ArrowNotice & { key: number }) | null>(null);
@@ -30,6 +30,11 @@ export default function ArrowToast() {
           <span>
             <span className="block font-medium">{notice.title}</span>
             {notice.detail && <span className="block text-sm opacity-90">{notice.detail}</span>}
+            {notice.secure && (
+              <span className="mt-0.5 flex items-center gap-1 text-xs opacity-90">
+                <LockClosedIcon className="h-3 w-3 shrink-0" /> Position envoyée chiffrée, non enregistrée.
+              </span>
+            )}
           </span>
         </div>
       )}

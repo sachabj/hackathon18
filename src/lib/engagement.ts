@@ -1,5 +1,6 @@
 // Réactions aux bons plans (vues, passages, votes) et gestion de ses propres signalements.
-import { announce, currentPosition, outcomeNotice, type ArrowOutcome } from "./arrows";
+import { announce, outcomeNotice, type ArrowOutcome } from "./arrows";
+import { currentPosition } from "./location";
 import type { Point } from "./geo";
 import { removeDealPhoto } from "./photos";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
@@ -79,7 +80,7 @@ export async function fetchReactions(dealId: string): Promise<Reactions> {
 
 /**
  * Un vote par étudiant et par bon plan ; revoter (même valeur comprise) le rafraîchit.
- * La position, facultative, sert au barème des Flèches selon la distance.
+ * La position, facultative, permet de gagner des Flèches sur une offre placée (à 500 m au plus).
  */
 export async function vote(dealId: string, value: 1 | -1, position: Point | null = null) {
   const supabase = getSupabase();
@@ -89,7 +90,11 @@ export async function vote(dealId: string, value: 1 | -1, position: Point | null
     p_lat: position?.lat ?? null,
     p_lng: position?.lng ?? null,
   });
-  if (!error) return announce(data ? outcomeNotice(data as ArrowOutcome) : null);
+  if (!error) {
+    const notice = data ? outcomeNotice(data as ArrowOutcome) : null;
+    // Position partagée : le message le rappelle, même sans gain.
+    return announce(position ? { ...(notice ?? { title: "Réaction enregistrée" }), secure: true } : notice);
+  }
   // Sans la migration 016 (fonction absente) : vote simple, sans Flèches.
   if (error.code !== "PGRST202") throw new Error(error.message);
   check(await supabase.from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));

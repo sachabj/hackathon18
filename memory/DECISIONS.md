@@ -386,3 +386,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : diapo voyage / Erasmus qui sépare ce qui existe (carte et partage, non testés à l'étranger) de ce qui arrive, avec la mention « maquette ». Diapos bâties sur le texte de l'équipe, avec de vraies captures (offres d'exemple).
 - **Écarté** : présenter la couverture mondiale et Erasmus comme disponibles ; les coder avant la démo.
 - **Qui** : Justin
+
+## 2026-11-28 00h — Localisation et Flèches (tâches 49 et 51)
+- **Décisions** : on ne gagne des Flèches sur une offre placée qu'en partageant sa position à 500 m au plus (tout ou rien), publication comprise ; la réaction et la publication restent permises sans position ; offre sans lieu : montants très faibles (publier 20, bonus 10, confirmer 3, signaler 5) ; accord par fenêtre au premier besoin + interrupteur au profil, un refus effaçant la position enregistrée ; contact fictif sur le domaine réservé example.com.
+- **Remplace** : les paliers (500 m / 2 km) et « sans position, plein gain » (tâche 17b) ; le refus de réaction prévu par la tâche 51.
+- **Choix techniques** : accord dans les métadonnées du compte (daté, versionné) ; position arrondie à ~10 m et jamais enregistrée ; contrôle de distance dans la base.
+- **Écartés** : `sharewood@gmail.com` (peut appartenir à un inconnu) ; position exigée pour les offres sans lieu (rien à vérifier).
+- **Qui** : Sacha (réponses aux questions de cadrage)
