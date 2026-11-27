@@ -390,3 +390,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Justin (adresse du site)
 - Question seulement : site en ligne vérifié (page de connexion : réponse 200). Aucun code modifié.
+
+### 2026-11-27 soir — Justin (site pas à jour)
+- Diagnostic via les statuts publics GitHub : déploiements Vercel refusés (limite atteinte) depuis `9a3f9d3` ; dernier réussi `4b716f5`. `TASKS.md` annoté, aucun code modifié.

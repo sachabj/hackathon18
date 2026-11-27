@@ -6,6 +6,10 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
+## 🚨 Site en ligne bloqué (27/11 au soir)
+- Vercel refuse les déploiements depuis `9a3f9d3` : « Deployment rate limited — retry in 24 hours ». **Le site affiche encore `4b716f5`** : ni « Partager » rapide (45), ni la sélection surlignée d'Anne-Lise, ni l'Activité allégée (47). Attendre dépasse la deadline : **Sacha** (propriétaire Vercel) ou un second compte Vercel doit redéployer.
+- D'ici là, **regrouper les push** (chaque push, même de mémoire seule, demande un déploiement).
+
 ## Base de données
 - Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
