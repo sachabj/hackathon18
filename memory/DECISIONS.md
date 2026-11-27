@@ -64,6 +64,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande d'Anne-Lise.
 - **Qui** : Anne-Lise
 
+## 2026-11-27 14h34 — Habillage de la carte façon Apple Plans / Waze
+- **Décision** : fond vectoriel OpenFreeMap recoloré, repères en goutte, point bleu pulsant, commandes flottantes translucides. La mise en page de l'accueil (Sacha) est conservée ; une carte plein écran a été essayée puis écartée à la fusion.
+- **Pourquoi** : rendu plus joli pour la démo, gratuit et sans clé.
+- **Alternatives écartées** : tuiles CARTO (clé désormais obligatoire) ; Apple / Google Maps (compte et clé) ; `maplibre-gl` 5 (faille XSS critique, d'où la version 6).
+- **Qui** : Justin
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

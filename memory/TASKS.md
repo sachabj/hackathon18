@@ -47,3 +47,4 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Anne-Lise (tâche 6)** : le formulaire de publication doit remplir `price_level` (`PRICE_LEVELS`) et `tags` (`ACTIVITIES`), sinon le bon plan est moins bien classé dans « Pour toi ».
 - **Matteo (tâche 10)** : ajouter dans `/profil` un lien « Mes préférences » vers `/onboarding`. `usePreferences()` donne le profil et les préférences.
 - **Justin** : `DealsMap.tsx` modifié (démontage quand la page est cachée, sinon plantage au retour ; prop `homeZoneId` = vue par défaut sans GPS).
+- **Sacha (de Justin)** : carte restylée et fusionnée avec tes changements (zone par défaut, démontage de la page cachée conservés) ; `src/app/page.tsx` inchangé. Faire `npm install` après le pull.

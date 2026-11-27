@@ -3,7 +3,7 @@
 ## Stack ✅
 - **Next.js 16.4** (App Router, TypeScript, `src/`) + **Tailwind 4**, web app responsive
 - **Supabase** (Postgres + auth + RLS) via `@supabase/supabase-js` + `@supabase/ssr`
-- **Leaflet** + `react-leaflet` 5 + OpenStreetMap
+- **Leaflet** + `react-leaflet` 5 ; fond de carte vectoriel **OpenFreeMap** (sans clé) via `maplibre-gl` 6 + `@maplibre/maplibre-gl-leaflet` (secours : tuiles OpenStreetMap)
 - **Vercel** pour le déploiement
 - ⚠️ **Next 16 a des changements cassants** (`middleware` → `proxy`, `cacheComponents` activé…) : lire `AGENTS.md` et la doc dans `node_modules/next/dist/docs/` avant d'utiliser une API Next.
 
@@ -48,7 +48,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
     │   ├── preferences/              # PreferencesWizard (parcours en 6 étapes) + ChoiceTile
-    │   └── map/                      # DealsMap.tsx (Leaflet, <DealsMap deals={...}/>) + DealsMapLoader.tsx (à importer)
+    │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
         ├── page.tsx                  # / carte (Justin) + fil « Pour toi » et filtres (Sacha)

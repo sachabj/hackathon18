@@ -3,10 +3,11 @@
 // Responsable : Justin (carte). Chargée uniquement côté client via DealsMapLoader.
 import L from "leaflet";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useUserPosition } from "@/lib/useUserPosition";
+import BaseMap from "./BaseMap";
 
 /** Niveau de zoom « autour de moi » (quelques rues). */
 const USER_ZOOM = 16;
@@ -15,19 +16,26 @@ const zoneBounds = (z: (typeof ZONES)[number]) => L.latLng(z.lat, z.lng).toBound
 
 const ALL_BOUNDS = ZONES.reduce((b, z) => b.extend(zoneBounds(z)), L.latLngBounds([]));
 
-// Marqueurs en HTML (emoji + couleur de la catégorie) : pas d'images Leaflet à charger.
+// Repères façon Waze (goutte colorée + emoji), en HTML : styles dans globals.css (.wz-pin).
 const ICONS = Object.fromEntries(
   Object.entries(CATEGORIES).map(([key, { emoji, color }]) => [
     key,
     L.divIcon({
-      className: "",
-      html: `<div style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#fff;border:3px solid ${color};box-shadow:0 2px 6px rgba(0,0,0,.35);font-size:18px">${emoji}</div>`,
-      iconSize: [36, 36],
-      iconAnchor: [18, 18],
-      popupAnchor: [0, -18],
+      className: "wz-marker",
+      html: `<div class="wz-pin" style="--pin:${color}"><span>${emoji}</span></div>`,
+      iconSize: [40, 48],
+      iconAnchor: [20, 47],
+      popupAnchor: [0, -44],
     }),
   ]),
 ) as Record<DealCategory, L.DivIcon>;
+
+const USER_ICON = L.divIcon({
+  className: "wz-marker",
+  html: '<div class="wz-me"></div>',
+  iconSize: [22, 22],
+  iconAnchor: [11, 11],
+});
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
@@ -106,18 +114,15 @@ export default function DealsMap({
     // `isolate` garde les z-index de Leaflet sous la barre de navigation.
     <div className="relative isolate h-full w-full">
       {visible && (
-        <MapContainer ref={setMap} bounds={ALL_BOUNDS} className="h-full w-full">
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+        <MapContainer ref={setMap} bounds={ALL_BOUNDS} zoomControl={false} className="h-full w-full">
+          <BaseMap />
           {ZONES.map((z) => (
             <Circle
               key={z.id}
               center={[z.lat, z.lng]}
               radius={z.radiusM}
               interactive={false}
-              pathOptions={{ color: "#2563eb", weight: 1.5, fillOpacity: 0.05 }}
+              pathOptions={{ color: "#0a84ff", weight: 1.5, opacity: 0.45, dashArray: "4 8", fillOpacity: 0.025 }}
             />
           ))}
           {position && (
@@ -126,32 +131,32 @@ export default function DealsMap({
                 center={[position.lat, position.lng]}
                 radius={position.accuracy}
                 interactive={false}
-                pathOptions={{ stroke: false, color: "#2563eb", fillOpacity: 0.12 }}
+                pathOptions={{ stroke: false, color: "#0a84ff", fillOpacity: 0.12 }}
               />
-              <CircleMarker
-                center={[position.lat, position.lng]}
-                radius={8}
-                pathOptions={{ color: "#fff", weight: 3, fillColor: "#2563eb", fillOpacity: 1 }}
-              >
+              <Marker position={[position.lat, position.lng]} icon={USER_ICON} title="Tu es ici" zIndexOffset={1000}>
                 <Popup>Tu es ici</Popup>
-              </CircleMarker>
+              </Marker>
             </>
           )}
           {deals.map((d) =>
             d.lat === null || d.lng === null ? null : (
               <Marker key={d.id} position={[d.lat, d.lng]} icon={ICONS[d.category]} title={d.title}>
-                <Popup>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-xs text-zinc-500">
+                {/* Marges : la fiche ne doit pas passer sous les boutons de zone. */}
+                <Popup autoPanPaddingTopLeft={[16, 60]} autoPanPaddingBottomRight={[16, 24]} maxHeight={180}>
+                  <div className="flex min-w-48 flex-col gap-1">
+                    <span
+                      className="self-start rounded-full px-2 py-0.5 text-xs font-semibold text-zinc-900"
+                      style={{ backgroundColor: `${CATEGORIES[d.category].color}33` }}
+                    >
                       {CATEGORIES[d.category].emoji} {CATEGORIES[d.category].label}
                     </span>
-                    <strong className="text-sm">{d.title}</strong>
+                    <strong className="text-base leading-tight">{d.title}</strong>
                     {d.is_official && (
                       <span className="text-xs font-semibold text-blue-600">✔ Offre officielle</span>
                     )}
-                    {d.price_info && <span className="font-semibold">{d.price_info}</span>}
+                    {d.price_info && <span className="text-sm font-bold text-green-700">{d.price_info}</span>}
                     {d.description && <span>{d.description}</span>}
-                    {d.place_name && <span>📍 {d.place_name}</span>}
+                    {d.place_name && <span className="text-zinc-500">📍 {d.place_name}</span>}
                     {d.expires_at && (
                       <span className="text-xs text-zinc-500">Jusqu&apos;au {formatDate(d.expires_at)}</span>
                     )}
@@ -163,33 +168,47 @@ export default function DealsMap({
         </MapContainer>
       )}
 
-      <div className="absolute right-2 top-2 z-[1000] flex gap-1">
-        {[{ id: "all", name: "Tout" }, ...ZONES].map((z) => (
-          <button
-            key={z.id}
-            type="button"
-            onClick={() => focus(z.id)}
-            aria-pressed={selected === z.id}
-            className={`rounded-full px-3 py-1.5 text-sm font-medium shadow ${selected === z.id ? "bg-blue-600 text-white" : "bg-white text-zinc-700"}`}
-          >
-            {z.name}
-          </button>
-        ))}
+      {/* Choix de la zone, flottant au-dessus de la carte. */}
+      <div className="pointer-events-none absolute inset-x-1 top-1 z-[1000] flex justify-center">
+        <div className="pointer-events-auto flex max-w-full gap-2 overflow-x-auto p-2 [scrollbar-width:none]">
+          {[{ id: "all", name: "Tout" }, ...ZONES].map((z) => (
+            <button
+              key={z.id}
+              type="button"
+              onClick={() => focus(z.id)}
+              aria-pressed={selected === z.id}
+              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-semibold transition active:scale-95 ${selected === z.id ? "bg-[#0a84ff] text-white shadow-lg" : "wz-glass text-zinc-700"}`}
+            >
+              {z.name}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-6 left-2 right-2 z-[1000] flex flex-col items-start gap-1 *:pointer-events-auto">
+      <div className="pointer-events-none absolute bottom-6 left-3 right-3 z-[1000] flex flex-col items-end gap-2 *:pointer-events-auto">
         {error && (
-          <p role="alert" className="rounded-lg bg-white px-3 py-1.5 text-sm text-red-600 shadow">
+          <p role="alert" className="wz-glass self-stretch rounded-2xl px-4 py-2 text-sm text-red-600">
             {error}
           </p>
         )}
         <button
           type="button"
           onClick={locateMe}
+          aria-label="Autour de moi"
+          title="Autour de moi"
           aria-pressed={selected === "me"}
-          className={`rounded-full px-3 py-2 text-sm font-medium shadow ${selected === "me" ? "bg-blue-600 text-white" : "bg-white text-zinc-700"}`}
+          className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full text-[#0a84ff] transition active:scale-95 ${!position && !error ? "animate-pulse" : ""}`}
         >
-          📍 {position || error ? "Autour de moi" : "Localisation…"}
+          {/* Flèche de localisation : pleine quand la carte est centrée sur soi. */}
+          <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden>
+            <path
+              d="M21 3 3 10.5l7.8 2.7L13.5 21 21 3Z"
+              fill={selected === "me" && position ? "currentColor" : "none"}
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
     </div>

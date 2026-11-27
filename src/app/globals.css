@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
 
 :root {
   --background: #ffffff;
@@ -15,4 +16,72 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---------- Carte (façon Apple Plans / Waze) ---------- */
+.leaflet-container {
+  background: #f5f2ea;
+  font-family: inherit;
+}
+.wz-glass {
+  background: rgb(255 255 255 / 0.88);
+  backdrop-filter: blur(14px) saturate(1.6);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 0.14);
+}
+.wz-pin {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 4px rgb(0 0 0 / 0.3));
+}
+.wz-pin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--pin);
+  border: 2px solid #fff;
+  border-radius: 50% 50% 50% 4px;
+  transform: rotate(-45deg);
+}
+.wz-pin span {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 17px;
+}
+.wz-me {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #0a84ff;
+  border: 3px solid #fff;
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.35);
+  animation: wz-pulse 2s ease-out infinite;
+}
+@keyframes wz-pulse {
+  0% { box-shadow: 0 1px 6px rgb(0 0 0 / 0.35), 0 0 0 0 rgb(10 132 255 / 0.45); }
+  100% { box-shadow: 0 1px 6px rgb(0 0 0 / 0.35), 0 0 0 22px rgb(10 132 255 / 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wz-me { animation: none; }
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+}
+.leaflet-popup-content {
+  margin: 14px 16px;
+}
+/* Attribution obligatoire, discrète. */
+.leaflet-control-attribution {
+  background: rgb(255 255 255 / 0.65) !important;
+  font-size: 9px !important;
 }
