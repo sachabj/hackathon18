@@ -1,15 +1,13 @@
 // POST /api/assist — assistant IA du formulaire de publication. Responsable : Matteo.
 // { action: "extract", text?, image? }      → brouillon structuré (AssistDraft)
-// { action: "review", draft, candidates }   → contrôle du titre, modération, doublon (AssistReview)
 import Anthropic from "@anthropic-ai/sdk";
 import { createServerClient } from "@supabase/ssr";
 import type { NextRequest } from "next/server";
-import { AssistError, extractDeal, GeminiHttpError, isAssistConfigured, reviewDeal } from "@/lib/ai/assist";
+import { AssistError, extractDeal, GeminiHttpError, isAssistConfigured } from "@/lib/ai/assist";
 import type { AssistRequest, AssistResponse } from "@/lib/ai/types";
 
 const MAX_TEXT = 4000;
 const MAX_IMAGE_BASE64 = 4_000_000; // ~3 Mo d'image, sous la limite de 4,5 Mo des requêtes Vercel
-const MAX_CANDIDATES = 20;
 const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 const fail = (error: string, status: number, unavailable = false) =>
@@ -47,12 +45,6 @@ export async function POST(request: NextRequest) {
       if (image && (!IMAGE_TYPES.includes(image.media_type) || typeof image.data !== "string" || image.data.length > MAX_IMAGE_BASE64))
         return fail("Photo trop lourde ou format non pris en charge.", 400);
       const result = await extractDeal({ text, image });
-      return Response.json({ ok: true, result } satisfies AssistResponse<typeof result>);
-    }
-    if (body.action === "review") {
-      if (!body.draft?.title || !body.draft.category) return fail("Titre et catégorie requis.", 400);
-      const candidates = (body.candidates ?? []).slice(0, MAX_CANDIDATES);
-      const result = await reviewDeal(body.draft, candidates);
       return Response.json({ ok: true, result } satisfies AssistResponse<typeof result>);
     }
     return fail("Action inconnue.", 400);

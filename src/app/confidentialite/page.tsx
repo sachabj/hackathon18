@@ -64,7 +64,7 @@ export default function Page() {
         <ul>
           <li><strong>Supabase</strong> : comptes, base de données et photos.</li>
           <li><strong>Vercel</strong> : hébergement du site. Comme Supabase, il peut garder des journaux techniques (dont l&apos;adresse IP).</li>
-          <li><strong>Google (Gemini) ou Anthropic (Claude)</strong> : si tu utilises l&apos;assistant, la photo et le texte fournis ; à la publication, le contenu de ton bon plan, pour vérifier le titre et repérer les doublons.</li>
+          <li><strong>Google (Gemini) ou Anthropic (Claude)</strong> : seulement si tu utilises « Pré-remplir avec l&apos;IA » : la photo et le texte fournis, pour remplir le formulaire. Rien n&apos;est envoyé à l&apos;IA quand tu publies.</li>
           <li><strong>Photon (komoot)</strong> : le nom du magasin et la ville que tu recherches.</li>
           <li><strong>OpenFreeMap et OpenStreetMap</strong> : fournissent le fond de carte et reçoivent à cette occasion ton adresse IP.</li>
         </ul>

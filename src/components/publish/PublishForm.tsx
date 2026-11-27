@@ -2,14 +2,16 @@
 
 // Formulaire « Partager un bon plan » (tâche 6). Responsable : Matteo.
 // Lieu précis : nom du magasin + ville → recherche Photon (OpenStreetMap) → choix du lieu exact.
+// Doublons sans IA (tâche 27) : offres déjà partagées au même établissement, affichées dès le choix du
+// lieu ; pour une zone / partout, offres de même catégorie vérifiées au clic sur « Publier ».
 import Link from "next/link";
 import { useRef, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import ChoiceTile from "@/components/preferences/ChoiceTile";
-import { BuildingsIcon, GlobeIcon, PinIcon, ProhibitedIcon, SparklesIcon, ThumbsUpIcon } from "@/components/icons";
-import { AssistUnavailable, findDuplicateCandidates, reviewBeforePublish } from "@/lib/ai/client";
-import type { AssistDraft, AssistReview, DuplicateCandidate } from "@/lib/ai/types";
+import { BuildingsIcon, GlobeIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
+import type { AssistDraft } from "@/lib/ai/types";
 import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, SUBCATEGORIES, ZONES } from "@/lib/constants";
+import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplicates";
 import { distanceKm, nearestZone } from "@/lib/geo";
 import { kindLabel, searchPlaces, suggestActivity, suggestCategory, type Place } from "@/lib/places";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
@@ -103,8 +105,10 @@ export default function PublishForm() {
   const [proofPhoto, setProofPhoto] = useState<{ data: string; preview: string } | null>(null);
   // La photo n'est publiée que sur accord explicite (confidentialité).
   const [sharePhoto, setSharePhoto] = useState(false);
-  /** Relecture IA affichée avant publication (titre, modération, doublon). */
-  const [review, setReview] = useState<{ result: AssistReview; duplicate: DuplicateCandidate | null } | null>(null);
+  /** Offres déjà partagées au même établissement (null = pas encore cherché). */
+  const [atPlace, setAtPlace] = useState<ExistingDeal[] | null>(null);
+  /** Zone / partout : offres semblables trouvées au clic sur « Publier », à départager par l'étudiant. */
+  const [similar, setSimilar] = useState<ExistingDeal[] | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
 
   async function runSearch(storeName = store, cityName = city) {
@@ -130,6 +134,14 @@ export default function PublishForm() {
     setPlace(p);
     setResults(null);
     setSearchError(null);
+    setAtPlace(null);
+    // Position GPS : pas d'établissement identifié, donc pas de recherche par nom de lieu.
+    if (p.id !== "gps") {
+      const name = [p.name, p.address].filter(Boolean).join(" · ");
+      dealsAtPlace(name)
+        .then(setAtPlace)
+        .catch((err) => console.warn("Offres du lieu non chargées :", err));
+    }
     const suggested = suggestCategory(p.kind);
     if (suggested && !category) setCategory(suggested);
     const activity = suggestActivity(p.kind);
@@ -162,7 +174,7 @@ export default function PublishForm() {
 
   /** Brouillon de l'IA → formulaire (seuls les champs trouvés remplacent la saisie). */
   function applyDraft(d: AssistDraft, photo: { data: string; preview: string } | null) {
-    setReview(null);
+    setSimilar(null);
     if (photo) {
       setProofPhoto(photo);
       setSharePhoto(false);
@@ -204,7 +216,8 @@ export default function PublishForm() {
     setProofPhoto(null);
     setSharePhoto(false);
     setError(null);
-    setReview(null);
+    setAtPlace(null);
+    setSimilar(null);
     setDone(null);
   }
 
@@ -221,56 +234,42 @@ export default function PublishForm() {
   const placeName = () =>
     scope === "local" && place ? [place.name, place.address].filter(Boolean).join(" · ") : null;
 
-  /** Bouton « Publier » : relecture par l'IA d'abord ; si elle est indisponible, on publie quand même. */
+  /**
+   * Bouton « Publier ». Lieu précis : les offres du même établissement sont déjà affichées sous le lieu,
+   * on publie directement. Zone / partout : on cherche d'abord les offres semblables (sans IA).
+   */
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!isSupabaseConfigured) return setError("Supabase n'est pas encore configuré.");
     if (!title.trim()) return setError("Donne un titre au bon plan.");
     if (!category) return setError("Choisis une catégorie.");
     if (scope === "local" && !place) return setError("Choisis le lieu exact dans la liste (ou utilise ta position).");
+    if (scope === "local") return publish();
 
     setSubmitting(true);
     setError(null);
     try {
-      const zone_id = dealZoneId();
-      const candidates = await findDuplicateCandidates({
-        category,
-        scope,
-        zone_id,
-        lat: scope === "local" ? place?.lat ?? null : null,
-        lng: scope === "local" ? place?.lng ?? null : null,
-      });
-      const result = await reviewBeforePublish(
-        {
-          title: title.trim(),
-          category,
-          place_name: placeName(),
-          zone_id,
-          price_info: priceInfo.trim() || null,
-          description: description.trim() || null,
-        },
-        candidates,
-      );
-      const duplicate = candidates.find((c) => c.id === result.duplicate_of) ?? null;
-      if (result.acceptable && result.title_ok && !duplicate) return await publish();
-      setReview({ result, duplicate });
+      const found = await similarAreaDeals({ category, scope, zone_id: dealZoneId() });
+      if (found.length === 0) return await publish();
+      setSimilar(found);
       setSubmitting(false);
     } catch (err) {
-      // Assistant indisponible ou en erreur : la relecture est un plus, pas un passage obligé.
-      if (!(err instanceof AssistUnavailable)) console.warn("Relecture IA ignorée :", err);
+      // La recherche de doublons est un plus : en cas d'erreur, on publie quand même.
+      console.warn("Recherche de doublons ignorée :", err);
       await publish();
     }
   }
 
-  /** Doublon : on confirme le bon plan existant (vote 👍) au lieu d'en créer un second. */
-  async function confirmDuplicate(dealId: string) {
+  /** « C'est la même offre » : on confirme l'existante (vote 👍) au lieu d'en créer une seconde. */
+  async function confirmExisting(dealId: string) {
     setSubmitting(true);
+    setError(null);
     const { error } = await getSupabase()
       .from("votes")
       .upsert({ deal_id: dealId, value: 1 }, { onConflict: "deal_id,user_id" });
     setSubmitting(false);
     if (error) return setError(`Confirmation impossible : ${error.message}`);
-    setReview(null);
+    setSimilar(null);
     setDone("confirmed");
   }
 
@@ -311,7 +310,7 @@ export default function PublishForm() {
     }
     setSubmitting(false);
     if (error) return setError(`Publication impossible : ${error.message}`);
-    setReview(null);
+    setSimilar(null);
     setDone("published");
   }
 
@@ -319,9 +318,12 @@ export default function PublishForm() {
     return (
       <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-12 text-center">
         <ThumbsUpIcon className="h-12 w-12 text-[var(--color-forest)]" />
-        <h1 className="mt-4 text-2xl">
-          {done === "confirmed" ? "Merci, bon plan confirmé" : "Merci, bon plan publié !"}
-        </h1>
+        <h1 className="mt-4 text-2xl">{done === "confirmed" ? "Bon plan validé" : "Merci, bon plan publié !"}</h1>
+        {done === "confirmed" && (
+          <p className="mt-2 text-sm" style={{ color: "var(--color-ink)" }}>
+            Ta confirmation rend l&apos;offre plus fiable pour les autres étudiants.
+          </p>
+        )}
         <p className="mt-2 text-sm text-[var(--color-muted)]">
           Ta contribution te donne 7 jours d&apos;accès complet aux nouveaux bons plans.
         </p>
@@ -354,7 +356,10 @@ export default function PublishForm() {
               icon={<s.Icon className="h-7 w-7" />}
               label={s.label}
               selected={scope === s.id}
-              onClick={() => setScope(s.id)}
+              onClick={() => {
+                setScope(s.id);
+                setSimilar(null);
+              }}
             />
           ))}
         </div>
@@ -379,7 +384,15 @@ export default function PublishForm() {
                   Vérifier sur la carte
                 </a>
               </div>
-              <button type="button" onClick={() => setPlace(null)} className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setPlace(null);
+                  setAtPlace(null);
+                }}
+                className="text-sm font-medium"
+                style={{ color: "var(--color-forest)" }}
+              >
                 Changer
               </button>
             </div>
@@ -448,6 +461,15 @@ export default function PublishForm() {
                 <PinIcon className="h-4 w-4" /> Pas dans la liste ? Utiliser ma position actuelle
               </button>
             </>
+          )}
+          {place && atPlace && atPlace.length > 0 && (
+            <ExistingDeals
+              title={`Déjà partagé ici (${atPlace.length})`}
+              hint="Ton offre est dans la liste ? Confirme-la plutôt que d'en créer une seconde. Sinon, continue ci-dessous."
+              deals={atPlace}
+              busy={submitting}
+              onConfirm={confirmExisting}
+            />
           )}
         </Section>
       )}
@@ -581,19 +603,24 @@ export default function PublishForm() {
         </div>
       )}
       {error && <p className="text-sm text-red-600">{error}</p>}
-      {review ? (
-        <ReviewPanel
-          review={review}
-          busy={submitting}
-          onUseTitle={(t) => {
-            setTitle(t);
-            setReview({ ...review, result: { ...review.result, title_ok: true, suggested_title: null, title_issue: null } });
-          }}
-          onConfirmDuplicate={confirmDuplicate}
-          onNotDuplicate={() => setReview({ ...review, duplicate: null })}
-          onPublish={publish}
-          onEdit={() => setReview(null)}
-        />
+      {similar ? (
+        <div className="space-y-3">
+          <ExistingDeals
+            title="Une offre semblable existe peut-être déjà"
+            hint="Même catégorie, même zone. Si c'est la même, confirme-la ; sinon publie la tienne."
+            deals={similar}
+            busy={submitting}
+            onConfirm={confirmExisting}
+          />
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setSimilar(null)} className="sw-btn-secondary flex-1">
+              Modifier
+            </button>
+            <button type="button" disabled={submitting} onClick={publish} className="sw-btn-primary flex-1 disabled:opacity-50">
+              {submitting ? "Publication…" : "Non, publier la mienne"}
+            </button>
+          </div>
+        </div>
       ) : (
         <button disabled={submitting} className="sw-btn-primary text-lg">
           {submitting ? "Vérification…" : "Publier le bon plan"}
@@ -603,93 +630,55 @@ export default function PublishForm() {
   );
 }
 
-/** Résultat de la relecture IA : titre à améliorer, contenu refusé ou doublon possible. */
-function ReviewPanel({
-  review: { result, duplicate },
+/** Offres déjà partagées : « C'est la même » confirme l'existante (sauf la sienne, qu'on ne vote pas). */
+function ExistingDeals({
+  title,
+  hint,
+  deals,
   busy,
-  onUseTitle,
-  onConfirmDuplicate,
-  onNotDuplicate,
-  onPublish,
-  onEdit,
+  onConfirm,
 }: {
-  review: { result: AssistReview; duplicate: DuplicateCandidate | null };
+  title: string;
+  hint: string;
+  deals: ExistingDeal[];
   busy: boolean;
-  onUseTitle: (title: string) => void;
-  onConfirmDuplicate: (dealId: string) => void;
-  onNotDuplicate: () => void;
-  onPublish: () => void;
-  onEdit: () => void;
+  onConfirm: (dealId: string) => void;
 }) {
-  const blocked = !result.acceptable;
   return (
-    <section className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-aubergine)", borderWidth: 2, backgroundColor: "var(--color-lilac)" }} aria-live="polite">
-      <h2 className="flex items-center gap-1.5 font-medium" style={{ color: "var(--color-aubergine)" }}>
-        <SparklesIcon className="h-4 w-4" /> Avant de publier
-      </h2>
-
-      {blocked && (
-        <p className="flex items-center gap-1.5 text-sm text-red-700">
-          <ProhibitedIcon className="h-4 w-4 shrink-0" /> {result.rejection_reason ?? "Ce contenu ne peut pas être publié."}
-        </p>
-      )}
-
-      {!blocked && duplicate && (
-        <div className="space-y-2 rounded-xl p-3" style={{ backgroundColor: "var(--color-surface)" }}>
-          <p className="text-sm font-medium">Ce bon plan existe peut-être déjà :</p>
-          <p className="text-sm">
-            <span className="font-medium">{duplicate.title}</span>
-            {duplicate.place_name && <span className="text-[var(--color-muted)]"> · {duplicate.place_name}</span>}
-          </p>
-          {result.duplicate_reason && <p className="text-xs text-[var(--color-muted)]">{result.duplicate_reason}</p>}
-          <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => onConfirmDuplicate(duplicate.id)}
-              className="sw-btn-primary py-2 text-sm disabled:opacity-50"
-            >
-              <ThumbsUpIcon className="h-4 w-4" /> C&apos;est le même : je le confirme
-            </button>
-            <button type="button" onClick={onNotDuplicate} className="sw-btn-secondary py-2 text-sm">
-              Ce n&apos;est pas le même
-            </button>
-          </div>
-        </div>
-      )}
-
-      {!blocked && !result.title_ok && result.suggested_title && (
-        <div className="space-y-2 rounded-xl p-3" style={{ backgroundColor: "var(--color-surface)" }}>
-          <p className="text-sm">
-            <span className="font-medium">Titre : </span>
-            {result.title_issue ?? "il peut être plus clair."}
-          </p>
-          <button
-            type="button"
-            onClick={() => onUseTitle(result.suggested_title!)}
-            className="w-full rounded-xl border px-3 py-2 text-left text-sm"
-            style={{ borderColor: "var(--color-forest)", color: "var(--color-forest)" }}
-          >
-            Utiliser « {result.suggested_title} »
-          </button>
-        </div>
-      )}
-
-      <div className="flex gap-2">
-        <button type="button" onClick={onEdit} className="sw-btn-secondary flex-1">
-          Modifier
-        </button>
-        {!blocked && !duplicate && (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onPublish}
-            className="sw-btn-primary flex-1 disabled:opacity-50"
-          >
-            {busy ? "Publication…" : "Publier"}
-          </button>
-        )}
+    <section
+      className="sw-card space-y-3 p-3"
+      style={{ borderColor: "var(--color-aubergine)", borderWidth: 2, backgroundColor: "var(--color-lilac)" }}
+      aria-live="polite"
+    >
+      <div>
+        <h3 className="font-medium" style={{ color: "var(--color-aubergine)" }}>{title}</h3>
+        <p className="text-xs" style={{ color: "var(--color-ink)" }}>{hint}</p>
       </div>
+      <ul className="space-y-2">
+        {deals.map((d) => (
+          <li key={d.id} className="space-y-2 rounded-xl p-3" style={{ backgroundColor: "var(--color-surface)" }}>
+            <p className="text-sm">
+              <span className="font-medium">{d.title}</span>
+              {d.price_info && <span className="text-[var(--color-muted)]"> · {d.price_info}</span>}
+            </p>
+            {d.description && <p className="text-xs text-[var(--color-muted)]">{d.description}</p>}
+            {d.mine ? (
+              <p className="text-xs font-medium" style={{ color: "var(--color-forest)" }}>
+                C&apos;est ton bon plan : tu peux le modifier depuis ton profil.
+              </p>
+            ) : (
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => onConfirm(d.id)}
+                className="sw-btn-primary py-2 text-sm disabled:opacity-50"
+              >
+                <ThumbsUpIcon className="h-4 w-4" /> C&apos;est la même offre
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

@@ -44,8 +44,9 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── account.ts                # mot de passe, sessions, export, suppression du compte
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
-    │   ├── ai/assist.ts              # SERVEUR : appels Gemini ou Claude (extraction photo/texte, relecture titre + modération + doublon)
-    │   ├── ai/client.ts              # navigateur : appel de /api/assist, compression photo, bons plans proches (doublons)
+    │   ├── ai/assist.ts              # SERVEUR : appels Gemini ou Claude (extraction photo/texte → formulaire ; plus de relecture IA)
+    │   ├── duplicates.ts             # doublons SANS IA à la publication : offres du même lieu (place_name identique) / même catégorie + zone
+    │   ├── ai/client.ts              # navigateur : appel de /api/assist (pré-remplissage), compression photo
     │   ├── ai/types.ts               # types partagés AssistDraft / AssistReview
     │   ├── merchant.ts               # espace commerçant : lecture / écriture, isBoosted()
     │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
@@ -74,7 +75,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── page.tsx                  # / carte (Justin) + fil « Pour toi » et filtres (Sacha)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
-        ├── api/assist/route.ts       # POST : assistant IA (connexion requise ; 503 « unavailable » sans clé)
+        ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
         ├── favoris/page.tsx          # favoris (Anne-Lise)
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)

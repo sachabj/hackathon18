@@ -20,33 +20,7 @@ export interface AssistDraft {
   notes: string | null;
 }
 
-/** Ce qui est relu avant publication. */
-export interface ReviewInput {
-  title: string;
-  category: DealCategory;
-  place_name: string | null;
-  zone_id: string | null;
-  price_info: string | null;
-  description: string | null;
-}
-
-export interface DuplicateCandidate extends ReviewInput {
-  id: string;
-}
-
-export interface AssistReview {
-  acceptable: boolean;
-  rejection_reason: string | null;
-  title_ok: boolean;
-  title_issue: string | null;
-  suggested_title: string | null;
-  /** id d'un bon plan existant identique, sinon null */
-  duplicate_of: string | null;
-  duplicate_reason: string | null;
-}
-
 export type AssistRequest =
-  | { action: "extract"; text?: string; image?: { media_type: "image/jpeg" | "image/png" | "image/webp"; data: string } }
-  | { action: "review"; draft: ReviewInput; candidates: DuplicateCandidate[] };
+  | { action: "extract"; text?: string; image?: { media_type: "image/jpeg" | "image/png" | "image/webp"; data: string } };
 
 export type AssistResponse<T> = { ok: true; result: T } | { ok: false; error: string; unavailable?: boolean };
