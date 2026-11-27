@@ -300,3 +300,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Nouveaux : `components/deal/ReactionBar.tsx`, `components/deal/QuickReactions.tsx`, `lib/useDealReactions.ts`, `lib/useCurrentUserId.ts`.
 - Modifiés : `feed/DealCard.tsx` (réécrit), `deal/DealSheet.tsx` (photo, `ReactionBar`, `onReactionsChange`), `map/DealsMap.tsx` (fenêtre : réactions directes, sans « Sponsorisé » ni description), `lib/matching.ts` (`Match.distance`), `lib/rules.ts` (`recentCounts`), `lib/engagement.ts` (`fetchReactions`, `setVisited` en upsert).
 - Vérifié : tsc + lint (1 avertissement connu) + build. **Pas vu dans le navigateur** (connexion requise) ni sur téléphone.
+
+### 2026-11-27 19h21 — Sacha (idées pour la recherche)
+- Question seulement, aucun code modifié. Constat sur les offres de démo (base locale) : « pizza pas cher », « pizza près de moi », « ciné ce soir » ne donnent aucun résultat (chaque mot est exigé dans l’offre). Pistes proposées à Sacha, à décider.
