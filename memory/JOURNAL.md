@@ -142,3 +142,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 16h — Matteo (assistant IA de publication)
 - Nouveaux `src/app/api/assist/route.ts`, `src/lib/ai/{assist,client,types}.ts`, `src/components/publish/AssistPanel.tsx` ; `PublishForm.tsx` (pré-remplissage, relecture avant publication, panneau doublon / titre) ; dépendance `@anthropic-ai/sdk` ; `.env.example` (`ANTHROPIC_API_KEY`).
 - Vérifié : lint + build ; route non connectée → redirigée vers /login ; sans clé → message de repli et publication normale ; Playwright sur la vraie base avec réponses Claude **simulées** (photo → champs + recherche du lieu, relecture indisponible → publié, doublon détecté → confirmé par un vote, titre suggéré appliqué), bons plans de test supprimés. **Appel réel à Claude pas testé (pas de clé sur ce poste).**
+
+### 2026-11-27 15h23 — Sacha (offres immatérielles)
+- Besoin précisé : la partie transport vise les réductions SNCF utiles aux étudiants, à classer parmi les offres immatérielles ; homepage prévue par Anne-Lise.
+- Proposition notée dans `TASKS.md` (tâche 16, à valider). Aucun code modifié.

@@ -33,6 +33,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
+| 16 | Offres immatérielles (réductions SNCF, aides, Carte Sortir) : rubrique « Réductions & aides » reliée à la homepage | TODO — 💡 proposition à valider (Sacha + Anne-Lise) |
 
 ## Pour démarrer sa tâche
 Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` : partir de là. Règles partagées dans `src/lib/rules.ts`, types dans `src/lib/types.ts`, catégories et zones dans `src/lib/constants.ts`.
@@ -57,3 +58,10 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Matteo** : bouton « Se déconnecter » (`LogoutButton`) ajouté en bas de `/profil` par Justin : à conserver en construisant la page.
 - **Tous** : un compte commerçant ne voit plus les pages étudiantes (`RoleGate`) ; tester vos pages avec un compte étudiant.
 - **Anne-Lise (tâches 7, 8)** : les statistiques commerçant restent à zéro tant que les votes et favoris ne sont pas enregistrés (tables `votes`, `favorites`).
+
+## 💡 Homepage et offres immatérielles (de Sacha, pour Anne-Lise — à valider avant de coder)
+- Les réductions utiles à un étudiant (cartes et tarifs jeunes SNCF, bourses, Carte Sortir…) n'ont pas de lieu : les montrer à part de la carte.
+- **Aucune migration pour les distinguer** : immatériel = `deal.scope !== "local"` (« Sur une zone » / « Partout » dans `/publier`).
+- Rubriques déduites de `category` : 🚆 Voyager (transport) · 🎓 Aides & bourses (scholarship) · 🎟️ Culture & sport (carte_sortir, sport, activity) · 🛒 Quotidien (restaurant, supermarket).
+- Homepage proposée : 3 meilleurs « Pour toi » (`rankDeals`), puis deux entrées « 📍 Autour de moi » (carte) et « 💳 Réductions & aides ».
+- ⚠️ `src/app/page.tsx` contient la carte, le fil « Pour toi » et les favoris : prévenir Sacha avant de le déplacer.
