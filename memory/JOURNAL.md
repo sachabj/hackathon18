@@ -61,3 +61,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 — Justin (npm introuvable chez Sacha)
 - Node.js n'est pas installé sur sa machine → prérequis et commandes d'installation ajoutés dans `README.md`.
+
+### 2026-11-27 — Justin (déploiement)
+- Sacha lance l'app en local (écran de connexion OK). Procédure d'import Vercel transmise ; en attente de l'URL publique.
