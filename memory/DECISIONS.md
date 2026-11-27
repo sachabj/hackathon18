@@ -158,3 +158,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : choix de Matteo (questions posées avant de coder). Lien public : simple et rapide, ce sont des photos d'affiches de magasin.
 - **Avertissement Next « Instant navigation »** sur `/` : ignoré (contrôle affiché seulement en développement, sans effet sur le site), choix de Matteo.
 - **Qui** : Matteo
+
+## 2026-11-27 — « Signaler » devient « Partager »
+- **Décision** : publier un bon plan se dit désormais **« Partager »** (onglet de la barre du bas, titre de /publier, bouton « Partager un autre bon plan », lien du profil, textes d'ActivityCard, description du site). « Signaler 👎 » garde son sens : dire qu'une offre n'existe plus.
+- **Qui** : Matteo

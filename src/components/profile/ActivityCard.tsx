@@ -28,8 +28,8 @@ export default function ActivityCard({
         </p>
         <p className="text-sm">
           {access.active
-            ? "Chaque bon plan signalé ou confirmé remet le compteur à 7 jours."
-            : "Les nouveaux bons plans t'arrivent avec 24 h de retard. Signales-en un ou confirme-en un."}
+            ? "Chaque bon plan partagé ou confirmé remet le compteur à 7 jours."
+            : "Les nouveaux bons plans t'arrivent avec 24 h de retard. Partages-en un ou confirme-en un."}
         </p>
       </div>
       <div className="rounded-2xl border border-zinc-200 p-3">

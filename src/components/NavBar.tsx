@@ -7,7 +7,7 @@ import { useRole } from "@/lib/useRole";
 
 const LINKS = [
   { href: "/", label: "Carte", Icon: MapIcon },
-  { href: "/publier", label: "Signaler", Icon: PlusIcon },
+  { href: "/publier", label: "Partager", Icon: PlusIcon },
   { href: "/favoris", label: "Favoris", Icon: HeartIcon },
   { href: "/profil", label: "Profil", Icon: UserIcon },
 ];

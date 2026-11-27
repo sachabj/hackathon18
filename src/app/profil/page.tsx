@@ -108,7 +108,7 @@ export default function Page() {
           {mine.deals.length === 0 && (
             <p className="mt-1 text-sm text-zinc-500">
               Tu n&apos;as encore rien signalé.{" "}
-              <Link href="/publier" className="font-semibold text-blue-600">Signaler un bon plan</Link>
+              <Link href="/publier" className="font-semibold text-blue-600">Partager un bon plan</Link>
             </p>
           )}
           <ul className="mt-3 space-y-3">

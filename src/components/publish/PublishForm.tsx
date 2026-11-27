@@ -1,6 +1,6 @@
 "use client";
 
-// Formulaire « Signaler un bon plan » (tâche 6). Responsable : Matteo.
+// Formulaire « Partager un bon plan » (tâche 6). Responsable : Matteo.
 // Lieu précis : nom du magasin + ville → recherche Photon (OpenStreetMap) → choix du lieu exact.
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -321,7 +321,7 @@ export default function PublishForm() {
             Voir sur la carte
           </Link>
           <button type="button" onClick={reset} className="rounded-xl border border-zinc-300 py-3 font-semibold">
-            Signaler un autre bon plan
+            Partager un autre bon plan
           </button>
         </div>
       </div>
@@ -331,7 +331,7 @@ export default function PublishForm() {
   return (
     <form onSubmit={submit} className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 pb-8 pt-6">
       <div>
-        <h1 className="text-2xl font-bold">Signaler un bon plan</h1>
+        <h1 className="text-2xl font-bold">Partager un bon plan</h1>
         <p className="mt-1 text-sm text-zinc-500">Les autres étudiants pourront le confirmer 👍 ou le signaler 👎.</p>
       </div>
 

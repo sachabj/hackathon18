@@ -191,3 +191,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 16h06 — Sacha (profil, état des lieux)
 - Relecture de `/profil`, des droits en base et des envois de données externes ; liste des besoins (tâche 17). Aucun code modifié.
+
+### 2026-11-27 17h45 — Matteo (renommage « Partager »)
+- « Signaler » → « Partager » pour la publication : `NavBar.tsx`, `PublishForm.tsx`, `src/app/layout.tsx`, et fichiers de Justin `src/app/profil/page.tsx` (lien) et `components/profile/ActivityCard.tsx` (deux phrases). Lint + build OK.
+- Offre « -20 % sur les pâtes et le riz » (Intermarché Bruz, publiée par Matteo) : à supprimer par Matteo depuis /profil (seul l'auteur peut supprimer, RLS).

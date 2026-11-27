@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "ShareWood — les bons plans étudiants",
-  description: "Signale et découvre les bons plans étudiants autour de toi.",
+  description: "Partage et découvre les bons plans étudiants autour de toi.",
 };
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#2563eb" };
