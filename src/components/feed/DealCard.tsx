@@ -9,7 +9,7 @@ import { RequirementBadges } from "@/components/deal/DealExtras";
 import DealSheet from "@/components/deal/DealSheet";
 import ReactionBar from "@/components/deal/ReactionBar";
 import TrustBadge from "@/components/deal/TrustBadge";
-import { CalendarIcon, HeartIcon, PinIcon } from "@/components/icons";
+import { CalendarIcon, HeartIcon, PinIcon, SparklesIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -25,6 +25,7 @@ export default function DealCard({
   favorite,
   onToggleFavorite,
   onSelect,
+  selected,
 }: {
   deal: DealWithVotes;
   match?: Match;
@@ -33,6 +34,8 @@ export default function DealCard({
   onToggleFavorite?: (dealId: string) => void;
   /** Fourni (recherche, fil de Recherche) : toucher la carte sélectionne l'offre sur la carte au lieu d'ouvrir sa fiche. */
   onSelect?: (dealId: string) => void;
+  /** Cette offre est celle choisie sur la carte (Recherche) : même contour aubergine que son repère. */
+  selected?: boolean;
 }) {
   const where =
     deal.place_name ??
@@ -53,8 +56,14 @@ export default function DealCard({
   return (
     <article
       className="sw-card p-3"
-      // Offre mise en avant : le cadre doré suffit (plus d'étiquette « Sponsorisé »).
-      style={isBoosted(deal) ? { borderColor: "#d4a017", borderWidth: 2 } : undefined}
+      // Choisie sur la carte : contour aubergine (même couleur que son repère), prioritaire sur le cadre doré.
+      style={
+        selected
+          ? { borderColor: "var(--color-aubergine)", borderWidth: 2 }
+          : isBoosted(deal)
+            ? { borderColor: "#d4a017", borderWidth: 2 }
+            : undefined
+      }
     >
       <div className="flex items-center gap-2">
         <button type="button" onClick={touch} className="flex min-w-0 flex-1 items-center gap-3 text-left">
@@ -88,6 +97,12 @@ export default function DealCard({
       </button>
 
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        {isBoosted(deal) && (
+          // Explique le cadre doré (sinon sans texte, on ne sait pas que c'est une mise en avant payante).
+          <span className="sw-badge" style={{ backgroundColor: "#d4a017", color: "#1A1A18" }}>
+            <SparklesIcon className="h-3.5 w-3.5" /> Sponsorisé
+          </span>
+        )}
         <AuthorBadge deal={deal} />
         <RequirementBadges requirements={deal.requirements} />
         {deadline && (

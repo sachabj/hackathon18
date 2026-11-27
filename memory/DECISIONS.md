@@ -307,6 +307,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écarté** : perdre l'accès à la fiche pour les offres sans lieu (corrigé par le repli automatique sur `DealCard`) ; filtrer aussi la carte par la recherche (elle montre toujours toutes les offres localisées, pour voir le contexte complet en comparant).
 - **Qui** : Anne-Lise
 
+## 2026-11-27 soir — Surlignage aussi sur la carte dans la liste, étiquette « Sponsorisé » revenue
+- **Décision** : sur Recherche, l'offre choisie sur la carte (`selectedId`) est maintenant aussi surlignée dans la liste (contour aubergine sur `DealCard`, même couleur que son repère), pour relier visuellement carte et liste. Étiquette **« Sponsorisé »** réintroduite (icône + texte) sur `DealCard` et dans la fenêtre de `DealsMap`, en plus du cadre/contour doré, indépendamment du surlignage de sélection (priorité visuelle à l'aubergine si l'offre est à la fois sponsorisée et choisie).
+- **Pourquoi** : demande d'Anne-Lise — sans surlignage dans la liste, le lien avec le repère choisi sur la carte n'était pas visible ; sans texte, le cadre doré ne disait pas ce qu'il signifiait (« mises en avant sans savoir pourquoi »). **Revient en partie sur la tâche 35** (Matteo : « le cadre doré suffit, plus d'étiquette Sponsorisé ») : la pratique a montré que ça ne suffisait pas.
+- **Qui** : Anne-Lise
+
 ## 2026-11-27 20h47 — Page « Ciblés » et boutique de récompenses (tâche 42)
 - **Décision** : l'onglet Favoris devient « Ciblés » : Flèches et influence fusionnées en haut, puis Favoris / Activité (historique, accès 7 jours, niveau) / Récompenses (solde, mes bons, boutique). Le profil les perd et renvoie vers la boutique. Solde = gains − dépenses, rang d'après les gains. 3e rang : « Robin des Étudiants ». Compte de démo : `demo.sarah` (485).
 - **Écartés** : « Mes récompenses » dans le profil ; renommer « Robin des Campus ».

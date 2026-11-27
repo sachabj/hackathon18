@@ -125,6 +125,7 @@ export default function Page() {
             favorite={isFavorite(deal.id)}
             onToggleFavorite={toggleFavorite}
             onSelect={setSelectedId}
+            selected={deal.id === selectedId}
           />
         </li>
       ))}

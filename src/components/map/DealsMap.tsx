@@ -6,7 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
 import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon, { categoryIconSvg } from "@/components/CategoryIcon";
-import { PinIcon } from "@/components/icons";
+import { PinIcon, SparklesIcon } from "@/components/icons";
 import QuickReactions from "@/components/deal/QuickReactions";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { recordView } from "@/lib/engagement";
@@ -200,6 +200,12 @@ export default function DealsMap({
                       <CategoryIcon category={d.category} size={16} /> {CATEGORIES[d.category].label}
                     </span>
                     <AuthorBadge deal={d} className="self-start" />
+                    {isBoosted(d) && (
+                      // Explique le repère au contour doré (sinon sans texte, on ne sait pas que c'est une mise en avant payante).
+                      <span className="sw-badge self-start" style={{ backgroundColor: "#d4a017", color: "#1A1A18" }}>
+                        <SparklesIcon className="h-3.5 w-3.5" /> Sponsorisé
+                      </span>
+                    )}
                     <strong className="text-base leading-tight">{d.title}</strong>
                     {d.place_name && (
                       <span className="flex items-center gap-1 text-[var(--color-muted)]">

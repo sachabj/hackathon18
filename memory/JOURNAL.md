@@ -369,3 +369,12 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 soir — Justin (« Partager » plus rapide, tâche 45)
 - `PublishForm.tsx`, `AssistPanel.tsx`, `confidentialite/page.tsx` (envoi de la photo à l'IA dès son choix), `README.md`, mémoire.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase, IA et recherche de lieu simulées (publication à la main, photo, détails, lien invalide, réessai, texte, 320 px ; bouton « Publier » visible sans défiler à 390 × 844). **Pas testé sur la vraie base, la vraie IA ni un téléphone.**
+
+### 2026-11-27 soir — Anne-Lise (surlignage dans la liste + étiquette « Sponsorisé »)
+- Retour de l'utilisateur sur le changement précédent : le surlignage carte ne se voyait pas dans la liste, et le cadre doré des offres sponsorisées n'était pas compris (« mises en avant sans savoir pourquoi »).
+- `src/components/feed/DealCard.tsx` : nouveau prop `selected` (contour aubergine si vrai, même couleur que le repère choisi sur la carte, prioritaire sur le cadre doré) ; étiquette « Sponsorisé » (icône `SparklesIcon` + texte) réintroduite dans la ligne des badges, indépendante du surlignage.
+- `src/app/recherche/page.tsx` : `selected={deal.id === selectedId}` passé à chaque `DealCard`.
+- `src/components/map/DealsMap.tsx` : même étiquette « Sponsorisé » ajoutée dans la fenêtre d'un repère.
+- Revient en partie sur la tâche 35 de Matteo (étiquette « Sponsorisé » retirée alors, voir `DECISIONS.md`) : jugé nécessaire après ce retour concret.
+- Vérifié : tsc + lint (1 avertissement connu) + build OK. Pas vu dans le navigateur (toujours indisponible dans cette session).
+- Trouvé sur le disque en début de requête, sans rapport avec cette demande : `src/app/login/page.tsx` était revenu à l'ancien style (bleu, emoji) d'avant la refonte visuelle, non committé. Mis de côté (`git stash`, non appliqué) plutôt que perdu ou réappliqué sans demander : à vérifier avec l'utilisateur.

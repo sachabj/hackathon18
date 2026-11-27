@@ -15,7 +15,7 @@ Ce document explique, sans avoir à lire le code, **dans quel ordre les bons pla
 | **« Plus dispo »** | Signalement : l'offre n'existe plus. Enregistré comme un vote **−1**. |
 | **Décocher** | Toucher à nouveau sa réaction la retire. Les deux réactions s'excluent. |
 | **Auteur** | Celui qui a publié l'offre. Il **ne peut pas** réagir à sa propre offre (règle imposée par la base). |
-| **Sponsorisée** | Offre qu'un commerçant a payé pour mettre en avant (7 jours). Reconnaissable à son **cadre doré**. |
+| **Sponsorisée** | Offre qu'un commerçant a payé pour mettre en avant (7 jours). Reconnaissable à son **cadre doré** et son étiquette « Sponsorisé ». |
 
 ---
 
