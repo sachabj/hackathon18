@@ -35,7 +35,7 @@ export default function Page() {
   const profile = account?.profile;
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-6 px-4 py-6">
+    <div className="mx-auto w-full max-w-md lg:max-w-2xl space-y-6 px-4 py-6">
       <div>
         <h1 className="text-2xl">{profile?.username ?? "Mon profil"}</h1>
         {error && (

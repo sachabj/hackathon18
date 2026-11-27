@@ -12,13 +12,13 @@ export default function Modal({ label, onClose, children }: { label: string; onC
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
   return createPortal(
-    <div className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/40" onClick={onClose}>
+    <div className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/40 lg:items-center lg:p-6" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-label={label}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-t-3xl p-4 pb-6"
+        className="max-h-[90dvh] w-full max-w-md overflow-y-auto rounded-t-3xl p-4 pb-6 lg:rounded-3xl"
         style={{ backgroundColor: "var(--color-surface)" }}
       >
         <div className="flex justify-end">

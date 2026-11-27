@@ -31,7 +31,7 @@ export default function Page() {
         )}
       </MerchantPage>
       {/* Toujours accessible, même sans commerce ou en cas d'erreur. */}
-      <div className="mx-auto w-full max-w-md space-y-3 px-4 pb-6">
+      <div className="mx-auto w-full max-w-md lg:max-w-2xl space-y-3 px-4 pb-6">
         <AccountLink />
         <LogoutButton />
       </div>

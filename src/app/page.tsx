@@ -61,9 +61,9 @@ export default function Page() {
   const busy = loading || loadingProfile;
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col">
+    <div className="mx-auto flex w-full max-w-md flex-col md:max-w-3xl lg:max-w-6xl lg:pb-8">
       <header
-        className="sticky top-0 z-10 flex items-center gap-2 px-4 py-3 backdrop-blur"
+        className="sticky top-0 z-10 flex items-center gap-2 px-4 py-3 backdrop-blur lg:hidden"
         style={{ borderBottom: "1px solid var(--color-border)", backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)" }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
@@ -72,7 +72,7 @@ export default function Page() {
         <ArrowBadge className="ml-auto" />
       </header>
 
-      <div className="space-y-4 px-4 py-4">
+      <div className="space-y-4 px-4 py-4 lg:py-6">
         {/* Pas de formule d'accueil (« Bonjour … ») : la page commence par les onglets. Titre pour les lecteurs d'écran. */}
         <h1 className="sr-only">Les bons plans étudiants</h1>
         {profile && !profile.onboarded && (
@@ -88,7 +88,9 @@ export default function Page() {
         {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
 
         <div>
-          <Tabs label="Rubriques" idPrefix="tab" tabs={tabs} selected={tab} onSelect={setTab} />
+          <div className="lg:mx-auto lg:max-w-2xl">
+            <Tabs label="Rubriques" idPrefix="tab" tabs={tabs} selected={tab} onSelect={setTab} />
+          </div>
 
           <div id="tab-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="space-y-3 pt-3">
             {busy ? (
@@ -106,7 +108,7 @@ export default function Page() {
                   {current.items.length === 0 ? (
                     <p className="text-sm text-[var(--color-muted)]">Aucun bon plan dans cette rubrique pour le moment.</p>
                   ) : (
-                    <ul className="space-y-3">
+                    <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 [&>li>article]:h-full">
                       {current.items.map(({ deal, match }) => (
                         <li key={deal.id}>
                           <DealCard deal={deal} match={match} favorite={isFavorite(deal.id)} onToggleFavorite={toggleFavorite} />

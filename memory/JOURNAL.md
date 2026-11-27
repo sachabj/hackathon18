@@ -406,3 +406,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 22h20 — Justin (déploiement à la demande)
 - Nouveau `vercel.json` ; règle dans `CLAUDE.md` ; README, TASKS, ARCHITECTURE, DECISIONS. Aucun code d'application modifié, aucun déploiement lancé.
+
+### 2026-11-27 soir — Justin (affichage sur ordinateur, tâche 48)
+- `NavBar`, `layout`, `globals.css`, accueil, recherche, Ciblés (+ favoris, récompenses), profil, compte, confidentialité, préférences, publication, fiches, espace commerçant ; README, mémoire.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase, comptes étudiant et commerçant, 1440 et 1100 px, retour à 390 px. Corrigé au passage : page Recherche qui défilait en plus de la liste. **Pas testé sur la vraie base, ni sur un vrai écran / autre navigateur ; non déployé.**

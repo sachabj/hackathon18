@@ -18,7 +18,7 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 
 export default function Page() {
   return (
-    <article className="mx-auto w-full max-w-md space-y-6 px-4 py-6">
+    <article className="mx-auto w-full max-w-md lg:max-w-2xl space-y-6 px-4 py-6">
       <Link href="/" className="flex items-center gap-1 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
         <ArrowLeftIcon className="h-4 w-4" /> Retour à l&apos;application
       </Link>

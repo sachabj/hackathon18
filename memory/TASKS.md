@@ -67,7 +67,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 45 | E | « Partager » plus rapide : seuls lieu, titre et catégorie visibles, le reste sous « Plus de détails » ; photo analysée dès qu'elle est prise. Touche `PublishForm`, `AssistPanel` (domaine de Matteo, avec son accord) | À TESTER (Justin) : essayé avec un faux Supabase et une IA simulée ; à essayer sur téléphone (appareil photo) et avec la vraie IA ; sans migration. **Matteo** : photo analysée sans bouton, « Coller un texte » devient « Texte », portée et catégories en puces, `ChoiceTile` plus utilisé ici |
 | 46 | E | Profil : retrait du bouton « Utiliser mes Flèches » et du Badge Doré (visible dans « Ciblés ») ; description de la récompense corrigée (migration **019**) | À TESTER (Sacha) : ⏳ **lancer `019_golden_badge_text.sql`** |
 | 47 | E | « Ciblés > Activité » allégé : niveau sur une ligne (sans spécialité), « Mes bons plans » (déplacés du profil, lignes dépliables avec leurs Flèches), historique sans ces gains. Touche `profil/page.tsx`, `MyDealCard`, `ActivityCard` (Justin), texte de `DealSheet` | À TESTER (Sacha) : essayé avec un faux Supabase ; sans migration |
-| 48 | E | Affichage sur ordinateur : barre de navigation en haut, Recherche en liste + carte, offres en 2-3 colonnes, autres pages en colonne centrée plus large (étudiant et commerçant). Téléphone inchangé. Touche les pages et composants de tous | EN COURS (Justin) |
+| 48 | E | Affichage sur ordinateur : barre de navigation en haut, Recherche en liste + carte, offres en 2-3 colonnes, autres pages en colonne centrée plus large (étudiant et commerçant). Téléphone inchangé. Touche les pages et composants de tous | À TESTER (Justin) : vu avec un faux Supabase à 1440 et 1100 px, téléphone inchangé à 390 px ; sans migration |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -127,6 +127,10 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 - Publications récompensées plafonnées à 3 par jour (018) ; des comptes complices peuvent encore confirmer des offres bidon.
 - 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
 - **Récompenses** (tâche 42) : partenaires fictifs ; « Avant-Première » seulement enregistrée (aucune offre flash n'existe) ; aucun tirage de tombola codé ; le commerçant ne peut pas vérifier un code (c'est l'étudiant qui marque le bon utilisé).
+
+## À prendre en compte (depuis l'affichage ordinateur, Justin)
+- **Tous** : toute nouvelle page ou fenêtre doit être regardée aussi en large (`lg:`) ; un nouvel en-tête de page avec logo doit porter `lg:hidden` (le logo est dans la barre du haut).
+- Pages et composants retouchés : accueil, recherche, Ciblés, profil, compte, confidentialité, préférences, `NavBar`, `DealSheet`, `Modal`, `PublishForm`, espace commerçant : faire un pull avant d'y toucher.
 
 ## À prendre en compte (depuis les Flèches, Sacha)
 - **Matteo** : le masquage pondéré (tâche 33) est remplacé par l'archivage à 3 signalements (`isDealHidden(deal, votes, now)` ; `minVotesToHide` supprimé) ; la fiabilité pondérée ne sert plus qu'à la couleur. `vote()` passe par la RPC `react_to_deal` (toujours l'utiliser, y compris dans `PublishForm`) ; « +10 / +15 » ajoutés sur les boutons de réaction ; `DealSheet`, `ReactionBar`, `duplicates.ts` modifiés.

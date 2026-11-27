@@ -6,6 +6,8 @@ Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les 
 
 ## Ce que fait l'application
 
+Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en haut, carte à côté de la liste, offres en colonnes.
+
 ### Trouver un bon plan
 - **Accueil** : onglets « Pour toi », Voyager, Aides & bourses, Culture & sport et Quotidien.
 - **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».

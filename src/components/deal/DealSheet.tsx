@@ -98,13 +98,13 @@ export default function DealSheet({
   }
   // Dans <body> : la fiche doit passer au-dessus de la carte, de l'en-tête et de la barre du bas.
   return createPortal(
-    <div className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/40" onClick={onClose}>
+    <div className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/40 lg:items-center lg:p-6" onClick={onClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-label={deal.title}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-3xl p-4 pb-6"
+        className="max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-3xl p-4 pb-6 lg:rounded-3xl lg:max-w-lg"
         style={{ backgroundColor: "var(--color-surface)" }}
       >
         <div className="flex items-start justify-between gap-2">

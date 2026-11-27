@@ -19,7 +19,7 @@ export default function ArrowToast() {
 
   // La région reste en place pour que les lecteurs d'écran annoncent chaque message.
   return (
-    <div role="status" className="pointer-events-none fixed inset-x-0 bottom-20 z-[2200] flex justify-center px-4">
+    <div role="status" className="pointer-events-none fixed inset-x-0 bottom-20 z-[2200] lg:bottom-8 flex justify-center px-4">
       {notice && (
         <div
           key={notice.key}

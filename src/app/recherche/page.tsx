@@ -132,10 +132,11 @@ export default function Page() {
     </ul>
   );
 
+  // Ordinateur : recherche et liste à gauche (qui défile), carte sur toute la hauteur à droite.
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col">
+    <div className="mx-auto flex w-full max-w-3xl flex-col lg:grid lg:h-[calc(100dvh-4rem)] lg:max-w-none lg:grid-cols-[28rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)]">
       <header
-        className="sticky top-0 z-[1001] flex items-center gap-2 px-4 py-3 backdrop-blur"
+        className="sticky top-0 z-[1001] flex items-center gap-2 px-4 py-3 backdrop-blur lg:hidden"
         style={{ borderBottom: "1px solid var(--color-border)", backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)" }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
@@ -147,7 +148,7 @@ export default function Page() {
       {/* Pas de formule d'accueil (« Bonjour … ») ; titre pour les lecteurs d'écran. */}
       <h1 className="sr-only">Carte et recherche des bons plans</h1>
 
-      <div className="px-4 py-3">
+      <div className="px-4 py-3 lg:col-start-1 lg:row-start-1">
         {profile && !profile.onboarded && (
           <Link
             href="/onboarding"
@@ -198,11 +199,11 @@ export default function Page() {
         {profileError && <p className="mt-2 text-sm text-red-600">{profileError}</p>}
       </div>
 
-      <div className="h-[40dvh] min-h-64">
+      <div className="h-[40dvh] min-h-64 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-auto lg:min-h-0">
         <DealsMap deals={mapDeals} homeZoneId={me?.homeZoneId} savedPosition={me?.position} selectedId={selectedId} />
       </div>
 
-      <section className="px-4 py-4">
+      <section className="px-4 py-4 lg:relative lg:col-start-1 lg:row-start-2 lg:overflow-y-auto lg:pt-1">
         {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
         {!error &&
           (results ? (

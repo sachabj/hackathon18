@@ -174,7 +174,7 @@ export default function PreferencesWizard() {
   const matches = rankDeals(deals, me).filter((r) => r.match.forYou).length;
 
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col px-4 pb-32 pt-4">
+    <div className="mx-auto flex w-full max-w-md flex-col px-4 pb-32 pt-4 lg:max-w-2xl">
       <div className="flex items-center gap-3">
         <button
           type="button"
@@ -457,7 +457,7 @@ export default function PreferencesWizard() {
         className="fixed inset-x-0 bottom-0 z-10 px-4 pb-4 pt-3"
         style={{ borderTop: "1px solid var(--color-border)", background: "var(--color-paper)" }}
       >
-        <div className="mx-auto max-w-md">
+        <div className="mx-auto max-w-md lg:max-w-2xl">
           {error && (
             <p role="alert" className="mb-2 text-sm text-red-600">
               {error}{" "}

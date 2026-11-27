@@ -17,7 +17,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="fr" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
         <SupabaseBanner />
-        <main className="flex-1 flex flex-col pb-16">
+        <main className="sw-main flex-1 flex flex-col pb-16">
           <RoleGate>{children}</RoleGate>
         </main>
         <NavBar />

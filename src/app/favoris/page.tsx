@@ -31,9 +31,9 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="mx-auto w-full max-w-md px-4 pb-6">
+    <div className="mx-auto w-full max-w-md px-4 pb-6 md:max-w-3xl lg:max-w-6xl">
       <header
-        className="sticky top-0 z-10 -mx-4 flex items-center gap-2 px-4 py-3 backdrop-blur"
+        className="sticky top-0 z-10 -mx-4 flex items-center gap-2 px-4 py-3 backdrop-blur lg:hidden"
         style={{ borderBottom: "1px solid var(--color-border)", backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)" }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
@@ -43,7 +43,7 @@ export default function Page() {
       </header>
 
       <h1 className="sr-only">Ciblés</h1>
-      <div className="space-y-4 pt-4">
+      <div className="space-y-4 pt-4 lg:grid lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0 lg:pt-6">
         <ArrowsCard />
         <div>
           <Tabs label="Ciblés" idPrefix="cibles" tabs={TABS} selected={tab} onSelect={setTab} />

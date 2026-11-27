@@ -20,7 +20,7 @@ export default function Page() {
     <MerchantPage title="Mes offres" business={data ? data.business : undefined} error={error}>
       {data && business && (
         <>
-          <div className="mt-4">
+          <div className="mt-4 lg:max-w-2xl">
             {editing === "new" ? (
               <OfferForm
                 defaultCategory={business.category}
@@ -39,7 +39,7 @@ export default function Page() {
           </div>
 
           {data.offers.length === 0 && <p className="mt-4 text-sm text-[var(--color-muted)]">Aucune offre pour le moment.</p>}
-          <ul className="mt-4 space-y-3">
+          <ul className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
             {data.offers.map((offer) => (
               <li key={offer.id}>
                 {editing === offer.id ? (
@@ -73,7 +73,7 @@ export default function Page() {
               Bons plans publiés par des étudiants à moins de 75 m, dans ma catégorie. Retire ceux qui n&apos;existent plus.
             </p>
             {data.nearby.length === 0 && <p className="mt-2 text-sm text-[var(--color-muted)]">Aucun signalement.</p>}
-            <ul className="mt-3 space-y-3">
+            <ul className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
               {data.nearby.map((deal) => (
                 <li key={deal.id} className="sw-card p-3">
                   <h3 className={`font-medium ${deal.ended_by_merchant ? "text-[var(--color-muted)] line-through" : ""}`}>{deal.title}</h3>

@@ -109,7 +109,7 @@ export default function RewardsPanel() {
 
       <section aria-label="Boutique" className="space-y-2">
         <h2 className="text-lg">Boutique</h2>
-        <ul className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 lg:grid-cols-3">
           {shop.rewards.map((r) => {
             const category = REWARD_CATEGORIES[r.category];
             const why = blocked(r);

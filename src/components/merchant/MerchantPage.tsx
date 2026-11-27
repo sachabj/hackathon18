@@ -16,7 +16,7 @@ export default function MerchantPage({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-6">
+    <div className="mx-auto w-full max-w-md px-4 py-6 lg:max-w-5xl">
       <p className="flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
         {business ? (
           <>
@@ -34,7 +34,7 @@ export default function MerchantPage({
       )}
       {business === undefined && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">Chargement…</p>}
       {business === null && (
-        <div className="mt-4">
+        <div className="mt-4 lg:max-w-2xl">
           {/* Rechargement complet : tous les écrans doivent voir le nouveau commerce. */}
           <BusinessForm onDone={() => window.location.reload()} />
         </div>

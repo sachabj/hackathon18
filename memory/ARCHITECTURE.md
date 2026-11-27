@@ -115,6 +115,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ```
 
 ## Conventions de code
+- **Écrans** : téléphone par défaut ; ordinateur à partir de `lg:` (1024 px). `NavBar` passe en haut (hauteur 4 rem, marges de `main` dans `globals.css`, classes `.sw-nav` / `.sw-main`) et les en-têtes de page (logo + Flèches) sont masqués (`lg:hidden`). Recherche : liste à gauche (défile), carte à droite sur `100dvh - 4rem`. Accueil et Favoris en grille ; Partager, Profil, Compte, préférences en colonne `lg:max-w-2xl` ; fiches centrées.
 - `.gitignore` : les règles héritées du modèle Python sont ancrées à la racine (`/lib/`, `/build/`…). Après ajout d'un dossier, vérifier avec `git status` qu'il est bien suivi.
 - **Pages interactives = composants client** (`"use client"`) qui lisent et écrivent dans Supabase via `getSupabase()`. La sécurité est assurée par les **policies RLS**, pas par le front.
 - Ne pas appeler `cookies()` dans un Server Component (avec `cacheComponents`, ça casse le build sans `<Suspense>`). L'auth côté serveur est gérée par `src/proxy.ts`.

@@ -83,6 +83,12 @@ h1, h2, h3 {
   color: var(--color-muted);
 }
 
+/* ---------- Ordinateur : barre de navigation en haut (NavBar) au lieu du bas ---------- */
+@media (min-width: 64rem) {
+  .sw-main { padding-bottom: 0; }
+  body:has(.sw-nav) .sw-main { padding-top: 4rem; }
+}
+
 /* ---------- Composants du système de design ---------- */
 .sw-card {
   background: var(--color-surface);

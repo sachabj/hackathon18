@@ -368,3 +368,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : déploiement au push coupé (`vercel.json`) ; tests en local ; Claude propose un déploiement si le dernier date de plus de 30 min et que du code a changé, et ne déploie que sur accord.
 - **Écartés** : garder l'automatique en regroupant les push ; réduire aussi les essais automatisés ; rappel toutes les heures.
 - **Qui** : Justin
+
+## 2026-11-27 soir — Affichage sur ordinateur (tâche 48)
+- **Décision** : à partir de 1024 px, barre de navigation en haut ; Recherche en liste + carte ; offres en 2 ou 3 colonnes ; autres pages en colonne centrée plus large ; espace commerçant compris. Téléphone inchangé.
+- **Écartés** : menu vertical à gauche ; barre en bas conservée ; carte au-dessus d'une grille ; Partager et Profil en deux colonnes.
+- **Qui** : Justin (réponses aux questions de cadrage)

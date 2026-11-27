@@ -135,7 +135,7 @@ export default function FavoritesPanel() {
                   />
                 </button>
                 {!isCollapsed && (
-                  <ul id={panelId} className="space-y-3 p-3" style={{ borderTop: "1px solid var(--color-border)" }}>
+                  <ul id={panelId} className="grid grid-cols-1 gap-3 p-3 md:grid-cols-2 [&>li>article]:h-full" style={{ borderTop: "1px solid var(--color-border)" }}>
                     {deals.map((deal) => (
                       <li key={deal.id}>
                         <DealCard deal={deal} favorite onToggleFavorite={toggleFavorite} />

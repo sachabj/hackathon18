@@ -35,7 +35,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-4 px-4 py-6">
+    <div className="mx-auto w-full max-w-md lg:max-w-2xl space-y-4 px-4 py-6">
       <button type="button" onClick={() => router.back()} className="flex items-center gap-1 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
         <ArrowLeftIcon className="h-4 w-4" /> Retour
       </button>

@@ -18,7 +18,7 @@ export default function Page() {
       )}
       {summary && summary.rows.length > 0 && (
         <>
-          <dl className="mt-4 grid grid-cols-2 gap-2">
+          <dl className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-5">
             {[
               { label: "Offres en ligne", value: `${summary.online} / ${summary.rows.length}`, Icon: null },
               {
@@ -32,7 +32,7 @@ export default function Page() {
                 Icon: METRICS[m].Icon,
               })),
             ].map((tile) => (
-              <div key={tile.label} className="sw-card flex flex-col-reverse p-3 last:odd:col-span-2">
+              <div key={tile.label} className="sw-card flex flex-col-reverse justify-end p-3 last:odd:col-span-2 lg:last:odd:col-span-1">
                 <dd className="text-2xl font-bold">{tile.value}</dd>
                 <dt className="flex items-center gap-1 text-xs text-[var(--color-muted)]">
                   {tile.Icon && <tile.Icon className="h-3.5 w-3.5" />} {tile.label}

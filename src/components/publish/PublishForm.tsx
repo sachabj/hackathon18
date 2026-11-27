@@ -353,7 +353,7 @@ export default function PublishForm() {
 
   if (done) {
     return (
-      <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-12 text-center">
+      <div className="mx-auto flex w-full max-w-md lg:max-w-2xl flex-col items-center px-4 py-12 text-center">
         <ThumbsUpIcon className="h-12 w-12 text-[var(--color-forest)]" />
         <h1 className="mt-4 text-2xl">{done === "confirmed" ? "Bon plan validé" : "Merci, bon plan publié !"}</h1>
         {done === "confirmed" && (
@@ -374,7 +374,7 @@ export default function PublishForm() {
   }
 
   return (
-    <form onSubmit={submit} className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 pb-8 pt-4">
+    <form onSubmit={submit} className="mx-auto flex w-full max-w-md lg:max-w-2xl flex-col gap-4 px-4 pb-8 pt-4">
       <h1 className="text-2xl">Partager un bon plan</h1>
 
       <AssistPanel onDraft={applyDraft} />
