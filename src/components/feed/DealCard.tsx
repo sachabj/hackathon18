@@ -9,7 +9,7 @@ import { RequirementBadges } from "@/components/deal/DealExtras";
 import DealSheet from "@/components/deal/DealSheet";
 import ReactionBar from "@/components/deal/ReactionBar";
 import TrustBadge from "@/components/deal/TrustBadge";
-import { CalendarIcon, HeartIcon } from "@/components/icons";
+import { CalendarIcon, HeartIcon, PinIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -51,18 +51,10 @@ export default function DealCard({
       // Offre mise en avant : le cadre doré suffit (plus d'étiquette « Sponsorisé »).
       style={isBoosted(deal) ? { borderColor: "#d4a017", borderWidth: 2 } : undefined}
     >
-      <div className="flex items-start gap-2">
-        <button type="button" onClick={() => setOpen(true)} className="flex min-w-0 flex-1 items-start gap-3 text-left">
+      <div className="flex items-center gap-2">
+        <button type="button" onClick={() => setOpen(true)} className="flex min-w-0 flex-1 items-center gap-3 text-left">
           <CategoryIcon category={deal.category} size={40} />
-          <span className="min-w-0">
-            <span className="flex items-center gap-1 font-medium leading-snug">
-              {deal.title}
-            </span>
-            <span className="block text-sm text-[var(--color-muted)]">
-              {/* Pas de montant : le titre dit déjà l'avantage (tâche 37). */}
-              {[where, match?.distance].filter(Boolean).join(" · ")}
-            </span>
-          </span>
+          <span className="min-w-0 font-medium leading-snug">{deal.title}</span>
         </button>
         {r.trust !== undefined && <TrustBadge level={r.trust} />}
         {onToggleFavorite && (
@@ -79,6 +71,16 @@ export default function DealCard({
           </button>
         )}
       </div>
+
+      {/* Lieu et distance sur toute la largeur, sous le titre et la fiabilité (tâche 38) ; pas de montant (tâche 37). */}
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="mt-1.5 flex w-full items-start gap-1 text-left text-sm text-[var(--color-muted)]"
+      >
+        <PinIcon className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        <span className="min-w-0">{[where, match?.distance].filter(Boolean).join(" · ")}</span>
+      </button>
 
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         <AuthorBadge deal={deal} />

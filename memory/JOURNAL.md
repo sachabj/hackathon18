@@ -312,3 +312,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Nouveau `supabase/migrations/015_demo_titles.sql` (données). `reset_demo.sql` (fichier de Justin) : 137 titres sans « [Exemple] », commentaire et contrôle final.
 - Montant retiré : `DealCard`, `DealSheet`, `DealsMap`, `commercant/page.tsx`, `OfferCard`, `OfferForm` (champ retiré, ancienne valeur conservée), `MyDealCard` + `MyDealInput`, `PublishForm` (section « Niveau de prix »), consigne de l'IA (`ai/assist.ts`). Flamme retirée (`DealCard`, `isTrending` supprimé de `hot.ts`).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 015 sur PGlite (relançable, mention ajoutée si absente). Pas vu dans le navigateur.
+
+### 2026-11-27 20h35 — Matteo (tâche 38 : ligne du lieu pleine largeur)
+- `src/components/feed/DealCard.tsx` : le lieu et la distance quittent la colonne du titre pour une ligne pleine largeur (icône repère) sous la ligne titre / fiabilité / cœur, sans espace vide sous le badge. Choix de Matteo (aperçus proposés avant de coder).
+- Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur.
