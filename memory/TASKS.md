@@ -43,6 +43,10 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
 - **Anne-Lise** : `DealCard` affiche la fiabilité ; `/favoris` lit `votes(*)` ; barre du bas à 5 onglets.
 
+### Badge « Grande enseigne » : FAIT (Justin), en ligne
+- Sur les cartes d'offre, la fiche et la fenêtre de la carte ; nom du lieu commençant par une enseigne de `src/lib/chains.ts` (liste à compléter). Aucun effet sur le tri.
+- **Matteo (tâche 28)** : `DealCard`, `DealSheet` et `DealsMap` modifiés par ce badge (fenêtre de la carte passée à 220 px de haut) : faire un pull avant de les toucher.
+
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
 

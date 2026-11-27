@@ -238,3 +238,10 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 17h51 — Justin (défauts D1, D2, D10)
 - `011_no_self_vote.sql` (+ `schema.sql`) ; `ChoiceTile.tsx` ; copie locale `reset_demo.local.sql` reconstruite (non versionnée).
 - Vérifié : migration sur Postgres local (ancien vote effacé, vote sur le sien refusé, vote sur un autre et sans auteur acceptés) ; tuiles vues dans Chrome sans interface ; types + lint + build. **011 pas lancée sur la vraie base.**
+
+### 2026-11-27 — Justin (badge grandes enseignes)
+- Nouveaux `lib/chains.ts`, `components/ChainBadge.tsx` ; badge sur `DealCard`, `DealSheet`, fiche de la carte. Reconnaissance par le nom du lieu (liste), sans migration ni effet sur le tri. Choix par défaut, à confirmer. Branche locale `badge-enseignes`, non poussée.
+
+### 2026-11-27 17h57 — Justin (fusion du badge)
+- Branche `badge-enseignes` fusionnée dans `main` ; fenêtre de la carte agrandie (220 px) pour que « Voir et réagir » reste visible.
+- Vérifié : types + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase : badge sur les cartes, la fiche et la carte pour les enseignes, absent ailleurs. Pas testé sur la vraie base ni sur téléphone.

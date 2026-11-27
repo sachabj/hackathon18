@@ -37,6 +37,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── supabase/client.ts        # getSupabase() (navigateur), isSupabaseConfigured
     │   ├── types.ts                  # types TS alignés sur schema.sql
     │   ├── constants.ts              # CATEGORIES, SUBCATEGORIES, ZONES, MAP_CENTER
+    │   ├── chains.ts                 # grandes enseignes reconnues au nom du lieu → composant `ChainBadge`
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences

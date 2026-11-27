@@ -207,3 +207,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 17h51 — Pas de vote sur son propre bon plan
 - **Décision** : règle en base (`011`) ; les votes d'auteurs déjà enregistrés sont effacés. Les bons plans sans auteur restent votables.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-27 17h57 — Badge « Grande enseigne »
+- **Décision** : badge aubergine d'après le nom du lieu (liste dans le code), sans migration ni effet sur le tri.
+- **Limite** : liste à tenir à jour ; un lieu dont le nom commence comme une enseigne (« Action… », « Paul… ») serait badgé à tort.
+- **Qui** : Justin
