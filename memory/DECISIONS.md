@@ -381,3 +381,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 23h25 — Deux grosses tâches
 - **Décision** : les diapos du pitch (tâche 15) sont prioritaires samedi matin ; les vraies offres (tâche 65) se font si le temps le permet, recherche web ou API à trancher alors.
 - **Qui** : Justin
+
+## 2026-11-28 00h15 — Pitch : « partout dans le monde » présenté comme ambition
+- **Décision** : diapo voyage / Erasmus qui sépare ce qui existe (carte et partage, non testés à l'étranger) de ce qui arrive, avec la mention « maquette ». Diapos bâties sur le texte de l'équipe, avec de vraies captures (offres d'exemple).
+- **Écarté** : présenter la couverture mondiale et Erasmus comme disponibles ; les coder avant la démo.
+- **Qui** : Justin

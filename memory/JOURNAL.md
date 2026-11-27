@@ -422,3 +422,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 23h40 — Justin (diapos du pitch, tâche 15)
 - Présentation « ShareWood — pitch » (claude.ai, privée) : couverture, problème, idée, démo, confiance, modèle économique, suite ; notes d'orateur minutées (3 min). Aucun code modifié. Prénoms, aucun chiffre de marché. **Pas encore relue ni répétée.**
+
+### 2026-11-28 00h15 — Justin (diapos refaites)
+- Présentation reconstruite sur le pitch de l'équipe : captures de l'application (faux serveur, offres d'exemple « (démo) »), diapo voyage / Erasmus, annexes confiance et modèle économique. Rendu vérifié en local. Aucun code modifié.
