@@ -345,3 +345,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Sacha (README, tâche 43)
 - `README.md` : retard de 24 h retiré, plafond de 3 publications récompensées par jour ajouté (demande notée par Justin). Aucun code modifié.
+
+### 2026-11-27 soir — Justin (copie locale de la démo)
+- `reset_demo.local.sql` (non versionnée) reconstruite depuis le script à jour, mêmes comptes gardés et mot de passe. Testée sur Postgres local avec le schéma jusqu'à 018 (2 passages, puis `seed_arrows.sql`, 0 échec). **Pas lancée sur la vraie base.**
