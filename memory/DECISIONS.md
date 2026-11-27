@@ -272,3 +272,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : la recherche porte sur toutes les offres (liste unique à la place des onglets), classées par pertinence ; elle tolère les fautes et les pluriels et propose des mots proches, d'après une liste écrite dans le code.
 - **Écartés** : filtrer onglet par onglet ; recherche par IA (saisie envoyée à l'extérieur, quota) ; ajouter des offres « kebab » aux données de démo.
 - **Qui** : Sacha
+
+## 2026-11-27 20h05 — Carte de bon plan réduite à l'essentiel (tâche 35)
+- **Décision** : la carte montre seulement : icône, titre (+ flamme si Tendance), prix · lieu · distance, pastille de fiabilité, cœur, badge Commerçant / Étudiant, conditions, échéance, et **les deux réactions avec leurs compteurs** (« J'y suis allé (12) », « Plus dispo (2) », 30 derniers jours) cliquables directement (cocher / décocher). Toucher la carte ouvre la fiche (description, photo, lien, itinéraire). Plus de « Voir et réagir », plus d'étiquette « Sponsorisé » (le cadre doré suffit), plus de raisons « Ta priorité n°2 », « Dans ton budget »… (seule la distance reste). Même chose dans la fenêtre d'un repère sur la carte.
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) : trop d'informations par bon plan, et réagir doit être immédiat.
+- **Inchangé** : le calcul de la compatibilité (tri « Pour toi ») et de la fiabilité.
+- **Qui** : Matteo

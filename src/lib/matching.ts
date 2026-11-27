@@ -90,6 +90,8 @@ export interface Match {
   forYou: boolean;
   reasons: string[];
   warnings: string[];
+  /** Seule info affichée sur la carte d'un bon plan (tâche 35) : durée ou distance depuis l'étudiant. */
+  distance: string | null;
 }
 
 export function matchDeal(deal: Deal, me: StudentProfile): Match {
@@ -97,6 +99,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   let max = 0;
   const reasons: string[] = [];
   const warnings: string[] = [];
+  let distance: string | null = null;
 
   // 1. Pôle de dépenses, trajet utile, ou aide à laquelle on a droit
   const rank = me.categories.indexOf(deal.category);
@@ -148,15 +151,15 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
       : DEFAULT_REACH_KM;
     if (km <= reach) {
       earned += WEIGHTS.location - 10 * (km / reach);
-      reasons.push(
-        travelTime(km, me.transportModes) ??
-          `À ${formatDistance(km)} ${me.position ? "de toi" : `de ${home?.name}`}`,
-      );
+      distance = travelTime(km, me.transportModes) ?? `À ${formatDistance(km)} ${me.position ? "de toi" : `de ${home?.name}`}`;
+      reasons.push(distance);
     } else if (deal.zone_id && me.zoneIds.includes(deal.zone_id)) {
       earned += 10;
+      distance = `À ${formatDistance(km)}`;
       reasons.push(`Dans une zone que tu suis`);
     } else {
       reachable = false;
+      distance = `À ${formatDistance(km)}`;
       warnings.push(`À ${formatDistance(km)} : loin pour tes transports`);
     }
   } else if (deal.scope === "zone" && deal.zone_id && me.zoneIds.length > 0) {
@@ -221,6 +224,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
           : relevance !== null && relevance >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest || travel),
     reasons,
     warnings,
+    distance,
   };
 }
 

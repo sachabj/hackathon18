@@ -61,6 +61,14 @@ export function reliability(votes: Vote[], now = Date.now(), trust?: DealTrust |
   };
 }
 
+/** Compteurs affichés sur les boutons (tâche 35) : réactions des 30 derniers jours seulement. */
+export const COUNT_WINDOW_DAYS = 30;
+export function recentCounts(votes: Vote[], now: number) {
+  const since = now - COUNT_WINDOW_DAYS * DAY;
+  const recent = votes.filter((v) => new Date(v.created_at).getTime() >= since);
+  return { visited: recent.filter((v) => v.value === 1).length, gone: recent.filter((v) => v.value === -1).length };
+}
+
 export type TrustLevel = "very_reliable" | "reliable" | "to_check" | "doubtful";
 
 /**

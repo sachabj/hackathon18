@@ -61,6 +61,20 @@ export async function fetchEngagement(dealId: string): Promise<Engagement> {
   };
 }
 
+/** Réactions d'une offre et leurs masses pondérées, relues après un clic sur la carte ou dans la fiche. */
+export interface Reactions {
+  votes: Vote[];
+  trust: DealTrust | null;
+}
+
+export async function fetchReactions(dealId: string): Promise<Reactions> {
+  const [votes, trust] = await Promise.all([
+    getSupabase().from("votes").select("*").eq("deal_id", dealId),
+    fetchDealTrust([dealId]),
+  ]);
+  return { votes: check(votes) as Vote[], trust: trust ? (trust.get(dealId) ?? { pos: 0, neg: 0 }) : null };
+}
+
 /** Un vote par étudiant et par bon plan ; revoter (même valeur comprise) le rafraîchit. */
 export async function vote(dealId: string, value: 1 | -1) {
   check(await getSupabase().from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));
@@ -104,7 +118,8 @@ export async function setVisited(dealId: string, userId: string, visited: boolea
   const table = getSupabase().from("deal_visits");
   check(
     visited
-      ? await table.insert({ deal_id: dealId, user_id: userId })
+      ? // Déjà déclaré (ancien « J'y suis allé » sans vote) : rien à faire.
+        await table.upsert({ deal_id: dealId, user_id: userId }, { onConflict: "deal_id,user_id", ignoreDuplicates: true })
       : await table.delete().eq("deal_id", dealId).eq("user_id", userId),
   );
 }

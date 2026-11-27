@@ -41,6 +41,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, accès 7 j, niveaux
+    │   ├── useDealReactions.ts       # réagir en un geste depuis une carte (vote + passage, relecture des votes et masses)
+    │   ├── useCurrentUserId.ts       # id de l'utilisateur connecté (session locale)
     │   ├── trust.ts                  # fiabilité pondérée : withTrust() (rpc deal_trust), fetchMyInfluence() (rpc my_influence)
     │   ├── hot.ts                    # tri « Hot » de l'onglet « Tout » + badge « Tendance » (réglages : HOT)
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
@@ -70,7 +72,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
-    │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
+    │   ├── deal/ReactionBar.tsx      # boutons « J'y suis allé (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
+    │   ├── feed/DealCard.tsx         # (tâche 35 : épurée — titre, prix · lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
     │   ├── profile/                  # ActivityCard, InfluenceCard (rang Waze), PreferencesSummary, MyDealCard

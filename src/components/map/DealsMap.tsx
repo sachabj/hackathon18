@@ -6,11 +6,12 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
 import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon, { categoryIconSvg } from "@/components/CategoryIcon";
-import { PinIcon, StarIcon } from "@/components/icons";
+import { PinIcon } from "@/components/icons";
+import QuickReactions from "@/components/deal/QuickReactions";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { recordView } from "@/lib/engagement";
 import { isBoosted } from "@/lib/merchant";
-import type { Deal, DealCategory } from "@/lib/types";
+import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
 import { useUserPosition } from "@/lib/useUserPosition";
 import DealSheet from "@/components/deal/DealSheet";
 import BaseMap from "./BaseMap";
@@ -56,7 +57,7 @@ export default function DealsMap({
   homeZoneId,
   savedPosition,
 }: {
-  deals: Deal[];
+  deals: DealWithVotes[];
   /** Zone choisie à l'inscription : localisation de repli tant que le GPS n'a pas répondu (ou s'il est refusé). */
   homeZoneId?: string | null;
   /** Position enregistrée par « Me localiser » à l'inscription, préférée au centre de la zone. */
@@ -167,7 +168,7 @@ export default function DealsMap({
                 eventHandlers={{ popupopen: () => recordView(d) }}
               >
                 <Popup autoPanPaddingTopLeft={[16, 16]} autoPanPaddingBottomRight={[16, 24]} maxHeight={240}>
-                  <div className="flex min-w-48 flex-col gap-1">
+                  <div className="flex min-w-[16.5rem] flex-col gap-1">
                     <span
                       className="sw-badge self-start"
                       style={{ backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }}
@@ -176,13 +177,7 @@ export default function DealsMap({
                     </span>
                     <AuthorBadge deal={d} className="self-start" />
                     <strong className="text-base leading-tight">{d.title}</strong>
-                    {isBoosted(d) && (
-                      <span className="flex items-center gap-1 text-xs font-medium" style={{ color: "#92700c" }}>
-                        <StarIcon className="h-3 w-3" filled /> Sponsorisé
-                      </span>
-                    )}
                     {d.price_info && <span className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>{d.price_info}</span>}
-                    {d.description && <span>{d.description}</span>}
                     {d.place_name && (
                       <span className="flex items-center gap-1 text-[var(--color-muted)]">
                         <PinIcon className="h-3 w-3" /> {d.place_name}
@@ -191,12 +186,16 @@ export default function DealsMap({
                     {d.expires_at && (
                       <span className="text-xs text-[var(--color-muted)]">Jusqu&apos;au {formatDate(d.expires_at)}</span>
                     )}
+                    <div className="mt-1">
+                      <QuickReactions deal={d} />
+                    </div>
                     <button
                       type="button"
                       onClick={() => setDetail(d)}
-                      className="sw-btn-primary mt-1 py-1.5 text-sm"
+                      className="text-left text-sm font-medium"
+                      style={{ color: "var(--color-forest)" }}
                     >
-                      Voir et réagir
+                      Détails ›
                     </button>
                   </div>
                 </Popup>

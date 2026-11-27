@@ -295,3 +295,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 19h19 — Sacha (croix pour annuler la recherche)
 - `src/app/page.tsx` : croix au bout du champ dès qu'il contient du texte (remplace la croix native du navigateur). Conflit dans `TASKS.md` avec la prise de la tâche 35 (Matteo) : les deux lignes gardées.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase. Pas testé sur un téléphone.
+
+### 2026-11-27 20h05 — Matteo (tâche 35 : carte épurée, réactions directes)
+- Nouveaux : `components/deal/ReactionBar.tsx`, `components/deal/QuickReactions.tsx`, `lib/useDealReactions.ts`, `lib/useCurrentUserId.ts`.
+- Modifiés : `feed/DealCard.tsx` (réécrit), `deal/DealSheet.tsx` (photo, `ReactionBar`, `onReactionsChange`), `map/DealsMap.tsx` (fenêtre : réactions directes, sans « Sponsorisé » ni description), `lib/matching.ts` (`Match.distance`), `lib/rules.ts` (`recentCounts`), `lib/engagement.ts` (`fetchReactions`, `setVisited` en upsert).
+- Vérifié : tsc + lint (1 avertissement connu) + build. **Pas vu dans le navigateur** (connexion requise) ni sur téléphone.
