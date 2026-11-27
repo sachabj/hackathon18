@@ -213,3 +213,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 17h15 — Justin (nouvelles modifications, cadrage)
 - 10 modifications demandées par l'équipe ajoutées dans `TASKS.md` (tâches 18 à 27, lots A à D, toutes libres) ; `PROJECT.md`, `DECISIONS.md`. Aucun code modifié.
+
+### 2026-11-27 17h16 — Justin (allowScripts)
+- `package.json` : autorisation du script d'installation de `protobufjs@7.6.6` (dépendance de `@google/genai`) ajoutée pour npm 11 ; script relu : il affiche seulement un avertissement de version.
