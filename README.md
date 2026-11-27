@@ -11,7 +11,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 ### Trouver un bon plan
 - **Accueil** : onglets « Pour toi », Restauration (restaurants et grandes surfaces), Aides & bourses, Voyages et Culture & sport.
 - **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».
-- **Carte** : bons plans autour de soi, filtre par catégorie, offres qui marchent en ce moment en premier, boutons + et − pour zoomer.
+- **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer.
 - **Fiche** : détails, photo, lien vers l'offre et bouton « Y aller » (Apple Plans ou Google Maps).
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
 - **Favoris** pour garder une offre sous la main.
