@@ -416,3 +416,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Justin (nouvelles tâches)
 - Brainstorming de l'équipe ajouté dans `TASKS.md` (tâches 49 à 64, libres) et `DECISIONS.md`. Aucun code modifié.
+
+### 2026-11-27 23h25 — Justin (pitch et vraies offres)
+- `TASKS.md` : tâche 15 précisée et passée en priorité, tâche 65 ajoutée ; `DECISIONS.md`. Aucun code modifié.

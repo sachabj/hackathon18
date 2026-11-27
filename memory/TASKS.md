@@ -87,7 +87,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Justin** : `app/page.tsx` réécrit ; sur `app/recherche/page.tsx`, retrait des filtres « Pour toi / Tout » et « Tous / Commerçants / Étudiants » (les badges des cartes restent) ; catégories et carte inchangées.
 - **Matteo** : `hotScore()` conservé : il trie maintenant la liste unique de `/recherche` (sponsorisées en tête) ; pas appliqué aux onglets de l'accueil.
 
-## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 64, toutes libres
+## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 65, toutes libres
 Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les questions de `CLAUDE.md`. « Taille » est une estimation (P petite · M moyenne · G grosse) ; « Domaine » indique qui connaît le code, sans attribution.
 
 | # | Tâche | Taille | Domaine | Statut |
@@ -108,6 +108,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
 | 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | TODO : totaux disponibles par offre (`my_deal_audience`) ; compter un étudiant une seule fois demanderait une fonction en base. Les totaux avaient été retirés de l'Activité (tâche 47) |
 | 64 | **Profil plus complet** | M | Justin / Sacha | TODO : contenu à définir (avec les tâches 49, 50, 63) |
+| 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
@@ -133,7 +134,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | 12 | Données de démo : `reset_demo.sql` (~150 bons plans à 15 km de Bruz, 20 étudiants, 12 commerces **fictifs**) ; **à lancer** (012 déjà présente) ; revérifier les prix sourcés avant la démo | EN COURS (Justin) : testé en local, copie locale à jour |
 | 31 | Accueil en onglets (« Pour toi » + les 4 rubriques) avec barre de recherche ; filtres « Pour toi / Tout » et « Commerçant / Étudiant » retirés de la page carte | À TESTER (Sacha) : onglets rectangulaires ; codé et essayé avec un faux Supabase ; à voir sur la vraie base et sur téléphone ; sans migration |
 | 14 | Rappels de dates limites | TODO |
-| 15 | Pitch / slides (modèle économique commerçants) | TODO |
+| 15 | 🔴 **Pitch : préparer les diapos** (problème, solution, démo en direct sur sharewood-ensai.vercel.app, fiabilité et anti-abus, modèle économique commerçants, limites et évolutions) | TODO : **prioritaire samedi matin**, grosse tâche ; base : `README.md`, `PROJECT.md`, `docs/ALGORITHMES.md` |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
 | 17b | « Les Flèches » : points calculés par la base (barème, série × 1,5, 5 votes payés par jour, moitié au-delà de 500 m et rien au-delà de 2 km, archivage à 3 signalements), rangs, solde dans les en-têtes, fiche, profil, données de démo | À TESTER (Sacha) : ⏳ **lancer `016_arrows.sql`**, puis `seed_arrows.sql` ; testé sur Postgres local et faux Supabase seulement |
 

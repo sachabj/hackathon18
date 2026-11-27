@@ -377,3 +377,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-27 soir — Cadrage des améliorations (tâches 49 à 64)
 - **Décisions** : deux réglages au profil (désactiver la localisation ; anglais) ; réactions limitées à 500 m ; onglet « Restauration », « Quotidien » = grandes surfaces ; +10 pour « Plus dispo » comme pour « J'y suis allé ». Rien n'est encore codé.
 - **Qui** : équipe (transcrit par Justin)
+
+## 2026-11-27 23h25 — Deux grosses tâches
+- **Décision** : les diapos du pitch (tâche 15) sont prioritaires samedi matin ; les vraies offres (tâche 65) se font si le temps le permet, recherche web ou API à trancher alors.
+- **Qui** : Justin
