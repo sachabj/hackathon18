@@ -2,6 +2,8 @@
 
 Projet du hackathon ENSAI (27–28 nov. 2026). Une app communautaire pour voir et signaler les bons plans étudiants (restaurants, grandes surfaces, transports, bourses, sport, Carte Sortir, activités).
 
+**En ligne : https://hackathon18-t1lb.vercel.app**
+
 ## Démarrer
 Prérequis : **Node.js 20.9 ou plus** (`node -v`), npm est installé avec. S'il manque (`command not found: npm`) :
 - macOS : `brew install node`, ou l'installeur LTS de https://nodejs.org

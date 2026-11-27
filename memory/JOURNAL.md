@@ -64,3 +64,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 — Justin (déploiement)
 - Sacha lance l'app en local (écran de connexion OK). Procédure d'import Vercel transmise ; en attente de l'URL publique.
+
+### 2026-11-27 — Justin (mise en ligne)
+- Site déployé sur https://hackathon18-t1lb.vercel.app. Bandeau Supabase au premier essai ; vérifié ensuite : plus de bandeau, clés présentes dans le build, `/` redirige vers `/login` → tâche 3 FAIT.
