@@ -113,8 +113,8 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
 | 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | TODO |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
-| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | TODO : totaux disponibles par offre (`my_deal_audience`) ; compter un étudiant une seule fois demanderait une fonction en base. Les totaux avaient été retirés de l'Activité (tâche 47) |
-| 64 | **Profil plus complet** | M | Justin / Sacha | TODO : contenu à définir (avec les tâches 49, 50, 63) |
+| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | EN COURS (Justin) |
+| 64 | **Profil plus complet** | M | Justin / Sacha | EN COURS (Justin) |
 | 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
