@@ -221,3 +221,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Ajouts équipe hackathon (Node / Next.js / divers) ---
+node_modules/
+.next/
+out/
+dist/
+.env*
+!.env.example
+.vercel
+.DS_Store
+.claude/settings.local.json

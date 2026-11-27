@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && echo '=== MÉMOIRE PROJET (tous les .md, injectés automatiquement) — à mettre à jour après la requête ===' && find . -name '*.md' -not -path '*/node_modules/*' -not -path './.git/*' -not -name 'CLAUDE.md' | sort | while read -r f; do echo; echo \"----- $f -----\"; cat \"$f\"; done"
+          }
+        ]
+      }
+    ]
+  }
+}
