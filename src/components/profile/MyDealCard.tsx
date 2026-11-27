@@ -41,7 +41,6 @@ export default function MyDealCard({
   const [mode, setMode] = useState<"view" | "edit" | "delete">("view");
   const [title, setTitle] = useState(deal.title);
   const [description, setDescription] = useState(deal.description ?? "");
-  const [price, setPrice] = useState(deal.price_info ?? "");
   const [lastDay, setLastDay] = useState(deal.expires_at ? toDay(deal.expires_at) : "");
   const [requirements, setRequirements] = useState<DealRequirement[]>(deal.requirements ?? []);
   const [link, setLink] = useState(deal.link_url ?? "");
@@ -60,7 +59,6 @@ export default function MyDealCard({
   function startEdit() {
     setTitle(deal.title);
     setDescription(deal.description ?? "");
-    setPrice(deal.price_info ?? "");
     setLastDay(deal.expires_at ? toDay(deal.expires_at) : "");
     setRequirements(deal.requirements ?? []);
     setLink(deal.link_url ?? "");
@@ -80,7 +78,6 @@ export default function MyDealCard({
     const saved = await onSave({
       title: title.trim(),
       description: description.trim() || null,
-      price_info: price.trim() || null,
       // Valable jusqu'à la fin du dernier jour ; on ne touche pas à l'heure si le jour est inchangé.
       expires_at: !lastDay
         ? null
@@ -105,16 +102,10 @@ export default function MyDealCard({
           Détails
           <textarea className={inputClass} rows={2} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} />
         </label>
-        <div className="grid grid-cols-2 gap-2">
-          <label className="block text-sm font-medium">
-            Prix
-            <input className={inputClass} value={price} onChange={(e) => setPrice(e.target.value)} maxLength={40} />
-          </label>
-          <label className="block text-sm font-medium">
-            Dernier jour
-            <input type="date" className={inputClass} value={lastDay} onChange={(e) => setLastDay(e.target.value)} />
-          </label>
-        </div>
+        <label className="block text-sm font-medium">
+          Dernier jour
+          <input type="date" className={inputClass} value={lastDay} onChange={(e) => setLastDay(e.target.value)} />
+        </label>
         <fieldset>
           <legend className="text-sm font-medium">Conditions</legend>
           <div className="mt-1 flex flex-wrap gap-1.5">
@@ -179,7 +170,7 @@ export default function MyDealCard({
         </span>
       </div>
       <p className="text-sm text-[var(--color-muted)]">
-        {[deal.price_info, `publié le ${formatDate(deal.created_at)}`, deal.expires_at && `jusqu'au ${formatDate(deal.expires_at)}`]
+        {[`Publié le ${formatDate(deal.created_at)}`, deal.expires_at && `jusqu'au ${formatDate(deal.expires_at)}`]
           .filter(Boolean)
           .join(" · ")}
       </p>

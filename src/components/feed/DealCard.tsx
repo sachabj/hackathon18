@@ -1,6 +1,6 @@
 "use client";
 
-// Carte d'un bon plan, réduite à l'essentiel (tâche 35) : titre, prix, lieu, fiabilité, conditions, échéance
+// Carte d'un bon plan, réduite à l'essentiel (tâches 35 et 37) : titre (qui dit l'avantage), lieu, fiabilité, conditions, échéance
 // et réactions en un geste. Le reste (description, photo, lien, itinéraire) est dans la fiche (toucher la carte).
 import { useLayoutEffect, useState } from "react";
 import AuthorBadge from "@/components/AuthorBadge";
@@ -9,9 +9,8 @@ import { RequirementBadges } from "@/components/deal/DealExtras";
 import DealSheet from "@/components/deal/DealSheet";
 import ReactionBar from "@/components/deal/ReactionBar";
 import TrustBadge from "@/components/deal/TrustBadge";
-import { CalendarIcon, FlameIcon, HeartIcon } from "@/components/icons";
+import { CalendarIcon, HeartIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
-import { isTrending } from "@/lib/hot";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import type { DealWithVotes } from "@/lib/types";
@@ -58,19 +57,10 @@ export default function DealCard({
           <span className="min-w-0">
             <span className="flex items-center gap-1 font-medium leading-snug">
               {deal.title}
-              {isTrending(r.votes, r.now) && (
-                <span role="img" aria-label="Tendance" title="Tendance : beaucoup d'étudiants y sont allés aujourd'hui" className="shrink-0 text-[var(--color-aubergine)]">
-                  <FlameIcon className="h-4 w-4" />
-                </span>
-              )}
             </span>
             <span className="block text-sm text-[var(--color-muted)]">
-              {[deal.price_info, where, match?.distance].filter(Boolean).map((part, i) => (
-                <span key={i} className={i === 0 && deal.price_info ? "font-medium text-[var(--color-ink)]" : undefined}>
-                  {i > 0 && " · "}
-                  {part}
-                </span>
-              ))}
+              {/* Pas de montant : le titre dit déjà l'avantage (tâche 37). */}
+              {[where, match?.distance].filter(Boolean).join(" · ")}
             </span>
           </span>
         </button>

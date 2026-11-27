@@ -283,3 +283,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : sous la recherche, filtres prix, temps de trajet (moyen + durée), conditions et tri ; « gratuit », « pas cher » et « près de moi » activent les filtres. Durées estimées à vol d'oiseau (comme « Pour toi »), sans service d'itinéraire.
 - **Écartés pour l'instant** : « Ouvert maintenant » (aucune donnée d'horaires), filtres fiabilité et catégorie.
 - **Qui** : Sacha
+
+## 2026-11-27 20h25 — Démo sans « [Exemple] », plus de montant ni de flamme (tâche 37)
+- **Décision** : « [Exemple] » quitte les titres des offres inventées (il prenait de la place et cassait la démo) ; elles restent signalées « Exemple fictif (démo) : offre inventée. » dans leur description, visible seulement dans la fiche. Le champ montant (`price_info`) n'est plus saisi ni affiché nulle part : le titre dit l'avantage (« Menu étudiant à 6,50 € »), l'IA l'y met. Le niveau de prix reste (filtres). Flamme « Tendance » retirée.
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) : redondance titre / montant, carte encore trop chargée.
+- **Écarté** : supprimer toute mention de fiction (fausses promos de vrais commerces présentées comme vraies sur un site en ligne).
+- **Qui** : Matteo

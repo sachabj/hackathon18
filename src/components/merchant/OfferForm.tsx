@@ -24,7 +24,6 @@ export default function OfferForm({
   const [title, setTitle] = useState(offer?.title ?? "");
   const [description, setDescription] = useState(offer?.description ?? "");
   const [category, setCategory] = useState<DealCategory>(offer?.category ?? defaultCategory);
-  const [priceInfo, setPriceInfo] = useState(offer?.price_info ?? "");
   const [priceLevel, setPriceLevel] = useState(offer?.price_level?.toString() ?? "");
   const [lastDay, setLastDay] = useState(offer?.expires_at ? toDay(offer.expires_at) : "");
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +38,8 @@ export default function OfferForm({
         title: title.trim(),
         description: description.trim() || null,
         category,
-        price_info: priceInfo.trim() || null,
+        // Plus de champ montant (tâche 37) : le titre dit l'avantage ; une ancienne valeur est conservée.
+        price_info: offer?.price_info ?? null,
         price_level: priceLevel === "" ? null : Number(priceLevel),
         // L'offre reste valable jusqu'à la fin du dernier jour.
         expires_at: lastDay ? new Date(`${lastDay}T23:59:59`).toISOString() : null,
@@ -71,11 +71,7 @@ export default function OfferForm({
           ))}
         </select>
       </label>
-      <div className="grid grid-cols-2 gap-2">
-        <label className="block text-sm font-medium">
-          Prix affiché
-          <input className={inputClass} value={priceInfo} onChange={(e) => setPriceInfo(e.target.value)} placeholder="6,50 €" maxLength={40} />
-        </label>
+      <div>
         <label className="block text-sm font-medium">
           Gamme de prix
           <select className={inputClass} value={priceLevel} onChange={(e) => setPriceLevel(e.target.value)}>

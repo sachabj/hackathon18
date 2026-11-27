@@ -77,7 +77,7 @@ export default function Page() {
               {data.nearby.map((deal) => (
                 <li key={deal.id} className="sw-card p-3">
                   <h3 className={`font-medium ${deal.ended_by_merchant ? "text-[var(--color-muted)] line-through" : ""}`}>{deal.title}</h3>
-                  <p className="text-sm text-[var(--color-muted)]">{[deal.price_info, deal.place_name].filter(Boolean).join(" · ")}</p>
+                  <p className="text-sm text-[var(--color-muted)]">{deal.place_name}</p>
                   <button
                     type="button"
                     disabled={busy}

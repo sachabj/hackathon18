@@ -11,9 +11,6 @@ export const HOT = {
   reportWeight: 1.5,
   /** Exposant de l'âge : plus il est grand, plus une offre ancienne descend vite. */
   gravity: 1.2,
-  /** Badge « Tendance » : au moins N « J'y suis allé » sur la fenêtre. */
-  trendingMin: 3,
-  trendingWindowHours: 24,
 };
 
 /**
@@ -38,11 +35,4 @@ export function hotScore(deal: Pick<Deal, "created_at">, votes: Vote[], now: num
   const quantity = Math.log2(1 + confirmations);
   const ageHours = Math.max(0, (now - new Date(deal.created_at).getTime()) / HOUR);
   return (1 + momentum + quantity) / Math.pow(ageHours + 2, HOT.gravity);
-}
-
-/** Au moins `trendingMin` « J'y suis allé » dans les dernières `trendingWindowHours` heures. */
-export function isTrending(votes: Vote[] | undefined, now: number) {
-  if (!votes) return false;
-  const since = now - HOT.trendingWindowHours * HOUR;
-  return votes.filter((v) => v.value === 1 && new Date(v.created_at).getTime() >= since).length >= HOT.trendingMin;
 }

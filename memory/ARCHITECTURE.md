@@ -75,7 +75,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── deal/ReactionBar.tsx      # boutons « J'y suis allé (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
     │   ├── feed/SearchFilters.tsx    # filtres sous la recherche de l'accueil (Sacha)
-    │   ├── feed/DealCard.tsx         # (tâche 35 : épurée — titre, prix · lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
+    │   ├── feed/DealCard.tsx         # (tâches 35 et 37 : épurée — titre (avec l'avantage), lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
     │   ├── profile/                  # ActivityCard, InfluenceCard (rang Waze), PreferencesSummary, MyDealCard
@@ -114,8 +114,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ **à exécuter**
-- `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste « [Exemple] » sur des lieux OpenStreetMap, ODbL). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ · `015_demo_titles.sql` ⏳ **à exécuter**
+- `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste inventé sur des lieux OpenStreetMap, ODbL : titre normal, description « Exemple fictif (démo) … »). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
 - **Confidentialité (009)** : chacun ne lit que son profil ; `profiles.privacy_accepted_at` posée à l'inscription ; pseudo ≤ 40 ; `deals.author_id` nullable (`on delete set null`) ; RPC `my_kept_deals()` et `delete_my_account()` (garde les bons plans actifs avec plus de 👍 que de 👎 d'autres étudiants, hors offres officielles)
@@ -163,4 +163,4 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'y suis allé » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'y suis allé »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).
 - Sponsorisés toujours en tête (aucun autre bonus). L'accueil n'est pas concerné : ses onglets sont triés par compatibilité (par date sans profil), sponsorisés en tête.
-- Badge « Tendance » (`DealCard`) : ≥ 3 « J'y suis allé » dans les dernières 24 h.
+- Plus de badge « Tendance » (retiré, tâche 37).

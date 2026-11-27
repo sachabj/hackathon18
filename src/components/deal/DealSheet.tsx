@@ -122,7 +122,6 @@ export default function DealSheet({
         </div>
         <AuthorBadge deal={deal} className="mb-2" />
         <h2 className="text-xl leading-snug">{deal.title}</h2>
-        {deal.price_info && <p className="text-lg font-medium" style={{ color: "var(--color-forest)" }}>{deal.price_info}</p>}
         {deal.description && (
           <p className="mt-2 text-sm text-[var(--color-ink)]">
             <LinkedText text={deal.description} />

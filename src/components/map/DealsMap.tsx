@@ -177,7 +177,6 @@ export default function DealsMap({
                     </span>
                     <AuthorBadge deal={d} className="self-start" />
                     <strong className="text-base leading-tight">{d.title}</strong>
-                    {d.price_info && <span className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>{d.price_info}</span>}
                     {d.place_name && (
                       <span className="flex items-center gap-1 text-[var(--color-muted)]">
                         <PinIcon className="h-3 w-3" /> {d.place_name}

@@ -93,7 +93,6 @@ export default function PublishForm() {
   const [category, setCategory] = useState<DealCategory | null>(null);
   const [subcategory, setSubcategory] = useState<DealSubcategory | null>(null);
   const [description, setDescription] = useState("");
-  const [priceInfo, setPriceInfo] = useState("");
   const [priceLevel, setPriceLevel] = useState<number | null>(null);
   const [tags, setTags] = useState<ActivityId[]>([]);
   const [expiresAt, setExpiresAt] = useState("");
@@ -186,7 +185,6 @@ export default function PublishForm() {
     if (d.title) setTitle(d.title.slice(0, 80));
     if (d.category) setCategory(d.category);
     setSubcategory(d.category === "transport" ? d.subcategory : null);
-    if (d.price_info) setPriceInfo(d.price_info.slice(0, 80));
     if (d.price_level !== null) setPriceLevel(d.price_level);
     if (d.description) setDescription(d.description.slice(0, 500));
     if (d.tags.length) setTags(d.tags);
@@ -214,7 +212,6 @@ export default function PublishForm() {
     setCategory(null);
     setSubcategory(null);
     setDescription("");
-    setPriceInfo("");
     setPriceLevel(null);
     setTags([]);
     setExpiresAt("");
@@ -315,7 +312,6 @@ export default function PublishForm() {
         place_name: placeName(),
         lat: scope === "local" ? place?.lat : null,
         lng: scope === "local" ? place?.lng : null,
-        price_info: priceInfo.trim() || null,
         price_level: priceLevel,
         tags,
         expires_at: endOfDay(expiresAt),
@@ -508,7 +504,7 @@ export default function PublishForm() {
         </Section>
       )}
 
-      <Section title="Titre">
+      <Section title="Titre" hint="Dis l'avantage et son montant : c'est la seule ligne lue sur la carte.">
         <input
           className={inputClass}
           placeholder="Ex : -20 % sur le menu étudiant"
@@ -547,14 +543,7 @@ export default function PublishForm() {
         )}
       </Section>
 
-      <Section title="Prix ou réduction" hint="Ce que l'étudiant paie ou économise.">
-        <input
-          className={inputClass}
-          placeholder="Ex : 6 € au lieu de 9 €, 2 pour 1, gratuit…"
-          maxLength={80}
-          value={priceInfo}
-          onChange={(e) => setPriceInfo(e.target.value)}
-        />
+      <Section title="Niveau de prix" hint="Ce que l'étudiant paie : sert aux filtres de la recherche.">
         <div className="flex flex-wrap gap-2">
           {PRICE_LEVELS.map((p) => (
             <Chip
@@ -714,7 +703,6 @@ function ExistingDeals({
           <li key={d.id} className="space-y-2 rounded-xl p-3" style={{ backgroundColor: "var(--color-surface)" }}>
             <p className="text-sm">
               <span className="font-medium">{d.title}</span>
-              {d.price_info && <span className="text-[var(--color-muted)]"> · {d.price_info}</span>}
             </p>
             {d.description && <p className="text-xs text-[var(--color-muted)]">{d.description}</p>}
             {d.mine ? (

@@ -51,7 +51,7 @@ export default function OfferCard({
         </span>
       </div>
       <p className="text-sm text-[var(--color-muted)]">
-        {[offer.price_info, offer.expires_at && `jusqu'au ${formatDate(offer.expires_at)}`].filter(Boolean).join(" · ")}
+        {offer.expires_at && `Jusqu'au ${formatDate(offer.expires_at)}`}
       </p>
       {boosted && (
         <p className="mt-1 flex items-center gap-1 text-sm font-medium" style={{ color: "#92700c" }}>

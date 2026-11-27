@@ -70,7 +70,7 @@ On te donne une photo prise dans un commerce (affiche, ardoise, menu, flyer) et/
 
 Règles :
 - Utilise uniquement ce qui est visible ou écrit. Information absente ou ambiguë → null. N'invente jamais un prix, une date ou un nom de commerce.
-- title : court et informatif (60 caractères max), en français, sans majuscules abusives ni emojis, qui dit l'avantage. Ex : « Menu étudiant à 6 € », « -20 % sur les places de ciné ». Tu peux reformuler ce qui est écrit.
+- title : court et informatif (60 caractères max), en français, sans majuscules abusives ni emojis, qui dit l'avantage ET son montant (il n'y a pas d'autre champ prix affiché). Ex : « Menu étudiant à 6 € », « -20 % sur les places de ciné ». Tu peux reformuler ce qui est écrit.
 - category : ${CATEGORY_GUIDE}. subcategory seulement si category = transport (plane, train, bus, carpool).
 - scope : local si l'offre est liée à un commerce précis, zone si elle vaut dans toute une ville, national si elle vaut partout ou en ligne.
 - store_name : nom du commerce tel qu'écrit (enseigne). city : ville si elle est écrite ou évidente d'après l'adresse.

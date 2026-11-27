@@ -144,7 +144,7 @@ export async function fetchMyDeals() {
   return { userId, deals: (check(deals) as Deal[]).map(normalizeDeal), stats, statsError, fetchedAt: Date.now() };
 }
 
-export type MyDealInput = Pick<Deal, "title" | "description" | "price_info" | "expires_at" | "requirements" | "link_url">;
+export type MyDealInput = Pick<Deal, "title" | "description" | "expires_at" | "requirements" | "link_url">;
 
 export async function updateMyDeal(dealId: string, input: MyDealInput) {
   check(await getSupabase().from("deals").update(input).eq("id", dealId));
