@@ -393,3 +393,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : accord dans les métadonnées du compte (daté, versionné) ; position arrondie à ~10 m et jamais enregistrée ; contrôle de distance dans la base.
 - **Écartés** : `sharewood@gmail.com` (peut appartenir à un inconnu) ; position exigée pour les offres sans lieu (rien à vérifier).
 - **Qui** : Sacha (réponses aux questions de cadrage)
+
+## 2026-11-28 00h30 — « Plus dispo » seulement sur place (tâche 51)
+- **Décision** : sur une offre placée, « Plus dispo » est refusé sans position à 500 m au plus ; « J'y suis allé » reste permis partout (sans Flèches) ; offres sans lieu inchangées. Contrôle en base (021).
+- **Pourquoi** : trois signalements faits depuis chez soi archivaient une offre. Remplace, pour ce bouton, « on peut tout utiliser sans se localiser ».
+- **Écarté** : enregistrer le signalement lointain sans le compter pour l'archivage.
+- **Qui** : Sacha

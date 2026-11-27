@@ -24,7 +24,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - **Sonde en lecture (Sacha, 27/11 au soir)** : table de **017 présente** et fonction supprimée par **018 absente** → 017 et 018 appliquées.
 - ⏳ **019_golden_badge_text.sql à exécuter** (Sacha) : texte du Badge Doré dans la boutique.
 - ⏳ **020_location_rules.sql à exécuter** (Sacha, après 019) : Flèches seulement sur place ; **obligatoire avant `seed_arrows.sql`**. Relancer 020 si 016 ou 018 sont relancées.
-- Prochaine migration : numéro **021** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **021_gone_on_site.sql à exécuter** (Sacha, après 020) : « Plus dispo » seulement sur place.
+- Prochaine migration : numéro **022** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -91,7 +92,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 ### Localisation (tâches 49 et 51, Sacha)
 - **Tous** : toute position passe par `lib/location.ts` (`ensureLocationConsent` / `currentPosition`) ; ne pas appeler `navigator.geolocation` sans accord.
 - **Justin** : `DealsMap`, `useUserPosition`, `LocationPicker`, `DealSheet`, profil, `layout`, `/compte` modifiés ; `ReactionBar` demande `placed`. **Matteo** : `PublishForm` et `docs/ALGORITHMES.md` modifiés. **Anne-Lise** : `DealCard` (une propriété).
-- **Démo** : les deux offres du scénario sont sans lieu (rien à localiser) ; pour montrer un gain sur place, être à moins de 500 m de l'offre.
+- **Démo** : loin de Bruz, plus de « Plus dispo » sur les offres de la carte. Les deux offres du scénario sont sans lieu (rien à localiser) ; pour montrer un gain sur place, être à moins de 500 m de l'offre.
 
 ## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 65, toutes libres
 Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les questions de `CLAUDE.md`. « Taille » est une estimation (P petite · M moyenne · G grosse) ; « Domaine » indique qui connaît le code, sans attribution.
@@ -100,7 +101,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 |---|---|---|---|---|
 | 49 | **Profil > préférences : désactiver la localisation** (ne plus être localisé : carte, distances, réactions) | M | Sacha / Justin | À TESTER (Sacha) : accord (fenêtre Accepter / Refuser), interrupteur « Ma localisation » au profil (compte pour un commerçant), refus = position enregistrée effacée |
 | 50 | **Profil > préférences : application en anglais** | G | tous | TODO : tous les textes sont écrits en français dans le code ; à décider : toute l'appli ou les pages principales (les offres saisies restent dans leur langue) |
-| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | EN COURS (Sacha) : « Plus dispo » refusé hors des 500 m sur une offre placée |
+| 51 | **Réactions seulement sur place : rayon de 500 m** pour « J'y suis allé » et « Plus dispo » ; sans position, réaction refusée sur une offre placée | M | Justin / Sacha | À TESTER (Sacha) : ⏳ **lancer `020_location_rules.sql` puis `021_gone_on_site.sql`** ; sur une offre placée, Flèches seulement à 500 m (publication comprise), « Plus dispo » refusé au-delà ou sans position, « J'y suis allé » toujours permis ; offre sans lieu : +20 / +10 / +3 / +5, signalement libre |
 | 52 | **1re connexion : n'importe quelle ville de France** (plus seulement Bruz, Ker Lann, Rennes) | G | Justin / Sacha / Matteo | TODO : zones en base (`zones`, `zone_id`), carte, « Pour toi », publication « Une ville » ; recherche de ville possible via Photon ; migration |
 | 53 | **Nouvelles icônes** (réflexion ; « emojis » demandés aussi, mais la règle actuelle est : aucun emoji, `DESIGN_SHAREWOOD.md`) | P | Anne-Lise | TODO : choisir lesquelles |
 | 54 | **« Tes aides » plus générales** : la Carte Sortir est propre à Rennes, prévoir des aides valables partout en France | M | Sacha | TODO : lister les aides (inscription, conditions des offres, « Pour toi ») ; lié à la tâche 52 |

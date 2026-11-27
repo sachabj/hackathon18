@@ -25,7 +25,7 @@ Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 
 1. **sa date de fin est passée** ;
 2. **elle a été retirée** par son auteur (« Plus dispo » dans son profil) ou par un commerçant voisin (offre d'étudiant à moins de 75 m, même catégorie) ;
-3. **elle est archivée** : **3 étudiants différents** (hors auteur) l'ont signalée « Plus dispo ». C'est automatique et réversible : si l'un d'eux décoche son signalement, l'offre réapparaît.
+3. **elle est archivée** : **3 étudiants différents** (hors auteur) l'ont signalée « Plus dispo » (offre sur la carte : signalement accepté seulement à 500 m au plus). C'est automatique et réversible : si l'un d'eux décoche son signalement, l'offre réapparaît.
 
 **Aucune limite selon l'activité** : tous les étudiants voient toutes les offres, dès leur publication. Ne pas contribuer a une seule conséquence : on ne gagne pas de Flèches, donc pas de récompenses.
 
@@ -214,7 +214,7 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 - Le score « Hot » utilise les réactions **sans le poids** des étudiants.
 - La fiabilité n'intervient pas dans l'ordre des offres (seulement dans la couleur).
 - Une offre toute neuve passe devant une offre de 2 jours très confirmée sur la page carte (2.4).
-- La position au moment de la réaction ne change pas la fiabilité (elle ne sert qu'au calcul des Flèches, section 6) : une réaction faite loin, ou sans position, compte autant, y compris pour l'archivage.
+- La position ne pondère pas la fiabilité. Un « J'y suis allé » fait loin ou sans position compte autant qu'un autre ; un « Plus dispo » sur une offre de la carte n'est accepté que sur place (section 6).
 
 ---
 
@@ -243,9 +243,9 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 | « J'y suis allé » | +10, **sur place** | +3 |
 | « Plus dispo » (versées au 3e signalement) | +15, **sur place** | +5 |
 
-- **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : l'action est enregistrée, sans Flèches.
+- **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : la publication et « J'y suis allé » sont enregistrés sans Flèches, et « Plus dispo » est **refusé** sur une offre de la carte.
 - Publication : la vérification se fait dans les 15 minutes qui suivent, une seule fois.
 - Série de 3 jours ou plus : gains × 1,5 (arrondi). Au plus 5 votes et 3 publications récompensés par jour.
 - La position n'est jamais enregistrée par ces calculs.
 
-Réglages : `supabase/migrations/020_location_rules.sql` **et** `src/lib/arrows.ts` (`ARROWS`, `ARROWS_NO_PLACE`), rayon aussi dans `src/lib/constants.ts` (`NEARBY_M`).
+Réglages : `supabase/migrations/020_location_rules.sql` et `021_gone_on_site.sql`, **et** `src/lib/arrows.ts` (`ARROWS`, `ARROWS_NO_PLACE`), rayon aussi dans `src/lib/constants.ts` (`NEARBY_M`).

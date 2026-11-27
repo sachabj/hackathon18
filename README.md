@@ -24,13 +24,13 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Faire confiance
 - **Fiabilité façon Waze**, de « Douteux » à « Très fiable » : les avis récents et ceux des étudiants les plus justes et actifs pèsent davantage.
-- Une offre signalée « Plus dispo » par **3 étudiants** est archivée.
+- Une offre signalée « Plus dispo » par **3 étudiants** est archivée (sur la carte, le signalement se fait sur place).
 - Chaque offre indique si elle vient d'un **commerçant** ou d'un **étudiant**.
 - **Aucun accès limité** : tout le monde voit toutes les offres ; ne pas contribuer, c'est seulement ne pas gagner de Flèches.
 
 ### Récompenses
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
-- **Gagner sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m, à la publication comme à la réaction ; une offre sans lieu rapporte bien moins.
+- **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
 
 ### Espace commerçant
@@ -40,7 +40,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Compte et confidentialité
 - Publications anonymes, changement de mot de passe, export et suppression de ses données, politique de confidentialité.
-- **Localisation facultative et sous contrôle** : accord demandé avant tout partage (accepter ou refuser), retirable dans le profil ; envoyée chiffrée et non enregistrée lors d'une réaction ou d'une publication. Sans elle, tout fonctionne, seules les Flèches des offres sur la carte manquent.
+- **Localisation facultative et sous contrôle** : accord demandé avant tout partage (accepter ou refuser), retirable dans le profil ; envoyée chiffrée et non enregistrée lors d'une réaction ou d'une publication. Sans elle, l'application fonctionne ; sur les offres de la carte, il manque seulement les Flèches et le bouton « Plus dispo ».
 
 ## Limites actuelles
 - Démonstration : les données de démo mêlent des offres sourcées et des offres **inventées** (signalées « Exemple fictif » dans leur fiche) ; commerçants de démo et partenaires des récompenses sont **fictifs**.

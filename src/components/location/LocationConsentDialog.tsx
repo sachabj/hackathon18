@@ -58,7 +58,7 @@ export default function LocationConsentDialog() {
         </h2>
         <p>
           <strong>Pour quoi faire :</strong> vérifier que tu es à moins de {NEARBY_M} m d&apos;une offre pour gagner des
-          Flèches, te situer sur la carte et calculer les distances.
+          Flèches ou la signaler « Plus dispo », te situer sur la carte et calculer les distances.
         </p>
         <div className="rounded-2xl p-3" style={{ backgroundColor: "var(--color-sage)" }}>
           <p className="font-medium" style={{ color: "var(--color-forest)" }}>Ta position est sécurisée</p>
@@ -70,8 +70,9 @@ export default function LocationConsentDialog() {
           </ul>
         </div>
         <p>
-          C&apos;est facultatif : sans elle, tout fonctionne, mais les offres placées sur la carte ne rapportent pas de
-          Flèches. Tu changes d&apos;avis quand tu veux dans Profil, « Ma localisation ».
+          C&apos;est facultatif : sans elle, l&apos;application fonctionne, mais les offres placées sur la carte ne
+          rapportent pas de Flèches et tu ne peux pas les signaler « Plus dispo ». Tu changes d&apos;avis quand tu veux
+          dans Profil, « Ma localisation ».
         </p>
         <Link href="/confidentialite#localisation" target="_blank" className="inline-block underline">
           Politique de confidentialité

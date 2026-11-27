@@ -54,8 +54,8 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
           <li>« J&apos;y suis allé » : +{ARROWS.confirm}.</li>
           <li>« Plus dispo » : +{ARROWS.report}, versées quand 3 étudiants l&apos;ont signalée.</li>
           <li>
-            Pour une offre sur la carte, il faut partager ta position à moins de {NEARBY_M} m d&apos;elle, sinon aucune
-            Flèche.
+            Pour une offre sur la carte, il faut partager ta position à moins de {NEARBY_M} m d&apos;elle : sinon aucune
+            Flèche, et « Plus dispo » est refusé.
           </li>
           <li>
             Offre sans lieu précis : +{ARROWS_NO_PLACE.create} à la publication, +{ARROWS_NO_PLACE.bonus} aux 3

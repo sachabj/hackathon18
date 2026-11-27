@@ -48,8 +48,8 @@ export default function LocationSetting({ student = true, onChange }: { student?
         <p className="text-sm text-[var(--color-muted)]">
           {student
             ? on
-              ? `Activée : tu gagnes des Flèches à moins de ${NEARBY_M} m d'une offre. La désactiver efface la position enregistrée.`
-              : "Désactivée : tout fonctionne, mais les offres placées sur la carte ne rapportent pas de Flèches."
+              ? `Activée : à moins de ${NEARBY_M} m d'une offre, tu gagnes des Flèches et tu peux la signaler « Plus dispo ». La désactiver efface la position enregistrée.`
+              : "Désactivée : les offres placées sur la carte ne rapportent pas de Flèches et ne peuvent pas être signalées « Plus dispo »."
             : on
               ? "Activée : tu peux placer ton commerce avec ta position."
               : "Désactivée : place ton commerce en touchant la carte."}

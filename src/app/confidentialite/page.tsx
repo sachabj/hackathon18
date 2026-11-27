@@ -61,6 +61,7 @@ export default function Page() {
         </p>
         <ul>
           <li><strong>Réaction ou publication sur une offre placée</strong> : ta position, arrondie à environ 10 m, est comparée au lieu de l&apos;offre pour vérifier que tu es à moins de {NEARBY_M} m et verser les Flèches. Nous ne l&apos;enregistrons pas. Le gain enregistré, que toi seul vois, indique donc que tu étais près de cette offre à cette date.</li>
+          <li><strong>« Plus dispo » sur une offre placée</strong> : accepté seulement à moins de {NEARBY_M} m, avec le même contrôle. Le signalement enregistré indique donc que tu étais près de l&apos;offre ; comme tout vote, il porte un identifiant technique, sans ton nom.</li>
           <li><strong>Carte</strong> : ta position est suivie tant que la carte est ouverte et reste sur ton appareil. Le fournisseur du fond de carte reçoit la zone affichée.</li>
           <li><strong>« Me localiser » (préférences)</strong> : une position arrondie à environ 100 m est enregistrée pour calculer les distances. Toi seul peux la lire.</li>
           <li><strong>« Utiliser ma position » pour placer une offre ou un commerce</strong> : ce point précis devient son lieu public.</li>
@@ -70,8 +71,8 @@ export default function Page() {
           propre position enregistrée. Elle n&apos;est ni vendue ni utilisée pour de la publicité.
         </p>
         <p>
-          <strong>C&apos;est facultatif.</strong> Sans elle, tout fonctionne ; seules les Flèches des offres placées sur la
-          carte demandent d&apos;être localisé. Tu retires ton accord à tout moment dans Profil, « Ma localisation »
+          <strong>C&apos;est facultatif.</strong> Sans elle, l&apos;application fonctionne ; seuls les Flèches et le
+          signalement « Plus dispo » des offres placées sur la carte demandent d&apos;être localisé. Tu retires ton accord à tout moment dans Profil, « Ma localisation »
           (commerçant : « Compte et confidentialité ») : plus rien n&apos;est demandé et la position enregistrée est
           effacée. Un lieu déjà publié le reste tant que l&apos;offre existe. Tu peux aussi bloquer la localisation dans
           les réglages du navigateur.

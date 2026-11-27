@@ -8,7 +8,7 @@ import type { Point } from "./geo";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 
 /** Date du texte accepté : à changer si les usages de la position changent. */
-const CONSENT_VERSION = "2026-11-28";
+const CONSENT_VERSION = "2026-11-28-plus-dispo";
 
 export type LocationConsent = "granted" | "denied" | "unset";
 

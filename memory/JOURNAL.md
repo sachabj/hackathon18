@@ -438,3 +438,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 00h — Sacha (localisation, tâches 49 et 51)
 - Migration `020_location_rules.sql` (+ `schema.sql`) ; `lib/location.ts`, `components/location/` ; `arrows.ts`, `engagement.ts`, `useUserPosition`, `DealsMap`, `LocationPicker`, assistant de préférences, `PublishForm`, fiche et boutons de réaction, Activité, profil, compte, politique de confidentialité, `seed_arrows.sql` (sarah 495, +5 puis +8, 358 disponibles) ; README, algorithmes, mémoire.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 98 contrôles sur Postgres local + scénario de démo ; 37 contrôles dans Chrome avec un faux Supabase. **Pas essayé sur la vraie base ni sur téléphone ; conformité RGPD non relue par un juriste.**
+
+### 2026-11-28 00h30 — Sacha (« Plus dispo » sur place)
+- Migration `021_gone_on_site.sql` (+ `schema.sql`) ; textes de la fenêtre d'accord (nouvelle version, redemandée), du réglage, de la fiche, de l'Activité et de la politique de confidentialité ; README, algorithmes, mémoire.
+- Vérifié : tsc, lint (1 avertissement connu), build ; 109 contrôles sur Postgres local + démo ; 39 contrôles dans Chrome avec un faux Supabase. Pas essayé sur la vraie base ni sur téléphone.
