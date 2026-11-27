@@ -44,7 +44,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 24 | [Lot B] Carte : un seul bouton « revenir à ma localisation » (plus de Tout / Bruz / Ker Lann / Rennes) | TODO |
 | 25 | [Lot A] « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | TODO |
 | 26 | [Lot A] Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » | TODO |
-| 27 | [Lot D] Publication : relecture IA remplacée par une recherche de doublon sans IA (« Bon plan validé ») | TODO |
+| 27 | [Lot D] Publication : relecture IA remplacée par une recherche de doublon sans IA (« Bon plan validé ») | EN COURS (Matteo) |
 
 ## 🆕 Modifications demandées (tâches 18 à 27) — cadrées par Justin le 27/11, aucun code écrit
 **Toutes libres.** Avant de coder : mettre `EN COURS (prénom)` dans le tableau et pousser. **Prendre un lot entier** (les tâches d'un lot touchent les mêmes fichiers). Les règles de CLAUDE.md (questions avant de coder) restent valables.
