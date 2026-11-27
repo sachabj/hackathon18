@@ -38,6 +38,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | FAIT (Matteo) : « Déjà partagé ici » dès le choix du lieu (même `place_name`), zone / partout au clic sur Publier (même catégorie + zone), « Bon plan validé » ; `findDuplicateCandidates` remplacé par `src/lib/duplicates.ts` |
 | 28 | E | Carte Sortir n'est plus une catégorie mais une **condition** (`deals.requirements[]` : carte étudiante, Carte Sortir, boursier, -26 ans) ; lien d'offre (`deals.link_url`) + URL cliquables (migration 012, `reset_demo.sql` modifié) | À TESTER (Matteo) : 012 présente en base |
 | 29 | E | Réactions : « Toujours dispo » retiré (« J'y suis allé » = passage + confirmation) ; « J'y suis allé » et « Plus dispo » exclusifs et décochables (migration 013 : retirer son vote) | À TESTER (Matteo) : ⏳ **lancer `013_unvote.sql`** |
+| 30 | E | Fiabilité en code couleur (rouge / jaune / vert clair / vert foncé + mot court) à la place du % sur les cartes et la fiche | EN COURS (Matteo) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
