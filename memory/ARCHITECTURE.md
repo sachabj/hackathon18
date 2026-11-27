@@ -41,6 +41,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
     │   ├── geo.ts                    # distances, zone la plus proche
+    │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
     │   ├── merchant.ts               # espace commerçant : lecture / écriture, isBoosted()
     │   ├── useIsMerchant.ts          # hook : onglet « Commerce » de la NavBar
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
@@ -57,7 +58,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── page.tsx                  # / carte (Justin) + fil « Pour toi » et filtres (Sacha)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
-        ├── publier/page.tsx          # signaler un bon plan (Anne-Lise)
+        ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx
         ├── favoris/page.tsx          # favoris (Anne-Lise)
         ├── commercant/page.tsx       # espace commerçant (Justin)
         └── profil/page.tsx           # niveau, accès, simuler position (Matteo)

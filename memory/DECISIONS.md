@@ -86,3 +86,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Position** : contrairement au GPS de la carte (jamais enregistré), le bouton « Me localiser » du parcours enregistre une position arrondie (~100 m), seulement à la demande.
 - **Écartés** : adresse précise, budget par pôle.
 - **Qui** : Sacha
+
+## 2026-11-27 — Publication : lieu trouvé via Photon, saisie manuelle
+- **Décision** : `/publier` = formulaire manuel (pas d'extraction par IA). Lieu précis : nom du magasin + ville → recherche **Photon** (géocodeur OpenStreetMap, gratuit, sans clé, appelé depuis le navigateur) → l'étudiant choisit le lieu exact ; repli « utiliser ma position ». La catégorie (et une activité) est proposée d'après le type de lieu OSM, modifiable. Zone rattachée = zone la plus proche si le lieu est à moins de rayon + 5 km.
+- **Pourquoi** : simple et fiable pour la démo ; Photon accepte les appels navigateur (CORS) et la recherche par nom de commerce, contrairement à l'API Adresse (adresses seulement).
+- **Écartés** : extraction depuis une photo par IA (clé API, temps) ; Nominatim (pas fait pour la recherche répétée côté client) ; Google Places (clé payante).
+- **Qui** : Matteo
