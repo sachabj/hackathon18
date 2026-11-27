@@ -54,3 +54,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `003_column_grants.sql` appliquée, test e2e relancé : les 4 failles sont fermées → tâche 4 FAIT.
 - Build + lint OK ; en local (`next start`), les pages protégées redirigent vers `/login`.
 - Prochaine étape : import Vercel par le propriétaire du repo (procédure dans `ARCHITECTURE.md`).
+
+### 2026-11-27 — Justin (build cassé chez Sacha)
+- Cause : la règle `lib/` du `.gitignore` (modèle Python de GitHub) excluait `src/lib/` : client Supabase, types, constantes et règles n'avaient jamais été poussés (commit f3cd327). Le build passait en local seulement.
+- Correctif : règles ancrées à la racine (`/lib/`…), `src/lib/` ajouté au repo, vérifié par build sur un clone neuf.

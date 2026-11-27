@@ -51,6 +51,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ```
 
 ## Conventions de code
+- `.gitignore` : les règles héritées du modèle Python sont ancrées à la racine (`/lib/`, `/build/`…). Après ajout d'un dossier, vérifier avec `git status` qu'il est bien suivi.
 - **Pages interactives = composants client** (`"use client"`) qui lisent et écrivent dans Supabase via `getSupabase()`. La sécurité est assurée par les **policies RLS**, pas par le front.
 - Ne pas appeler `cookies()` dans un Server Component (avec `cacheComponents`, ça casse le build sans `<Suspense>`). L'auth côté serveur est gérée par `src/proxy.ts`.
 - Leaflet : composant carte en `"use client"`, chargé via `next/dynamic(..., { ssr: false })`. Le CSS Leaflet est déjà importé dans `globals.css`.
