@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useIsMerchant } from "@/lib/useIsMerchant";
 
 const LINKS = [
   { href: "/", label: "Carte", emoji: "🗺️" },
@@ -12,6 +13,8 @@ const LINKS = [
 
 export default function NavBar() {
   const pathname = usePathname();
+  const merchant = useIsMerchant(pathname);
+  const links = merchant ? [...LINKS, { href: "/commercant", label: "Commerce", emoji: "🏪" }] : LINKS;
   if (pathname.startsWith("/login") || pathname.startsWith("/onboarding")) return null;
   return (
     <nav
@@ -19,7 +22,7 @@ export default function NavBar() {
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <ul className="mx-auto flex max-w-md justify-around">
-        {LINKS.map((l) => {
+        {links.map((l) => {
           const active = l.href === "/" ? pathname === "/" : pathname.startsWith(l.href);
           return (
             <li key={l.href}>

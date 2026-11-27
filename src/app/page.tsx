@@ -7,6 +7,7 @@ import DealCard from "@/components/feed/DealCard";
 import DealsMap from "@/components/map/DealsMapLoader";
 import { APP_NAME, BUDGET_PROFILES, CATEGORIES, TRANSPORT_MODES, ZONES } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
+import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
 import { usePreferences } from "@/lib/usePreferences";
@@ -29,7 +30,9 @@ export default function Page() {
     tab === "forYou"
       ? ranked.filter((r) => r.match?.forYou)
       : [...ranked].sort((a, b) => b.deal.created_at.localeCompare(a.deal.created_at));
-  const shown = category ? inTab.filter((r) => r.deal.category === category) : inTab;
+  const filtered = category ? inTab.filter((r) => r.deal.category === category) : inTab;
+  // Offres mises en avant en tête (sans les ajouter à « Pour toi » si elles ne correspondent pas).
+  const shown = [...filtered].sort((a, b) => Number(isBoosted(b.deal)) - Number(isBoosted(a.deal)));
   const mapDeals = shown.map((r) => r.deal).filter((d) => d.scope === "local");
 
   // Les priorités de l'étudiant en premier.

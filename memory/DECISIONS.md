@@ -70,6 +70,13 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Alternatives écartées** : tuiles CARTO (clé désormais obligatoire) ; Apple / Google Maps (compte et clé) ; `maplibre-gl` 5 (faille XSS critique, d'où la version 6).
 - **Qui** : Justin
 
+## 2026-11-27 14h57 — Espace commerçant
+- **Décision** : choix « Étudiant / Commerçant » à l'inscription, activation immédiate ; offres officielles (créer, modifier, retirer, remettre), statistiques, mise en avant 7 jours (paiement simulé), retrait des bons plans d'étudiants voisins ; formulaire d'offre séparé de `/publier`.
+- **Garde-fous** (le statut n'est pas vérifié) : un commerce par compte, emplacement non modifiable depuis l'app, retrait limité à 75 m et à la même catégorie, auteur du retrait tracé et seul à pouvoir l'annuler.
+- **Risque accepté** : un faux commerçant peut publier des offres « officielles ». En production : vérification (SIRET) avant activation.
+- **À confirmer** : tarif de 9,90 € (proposé par Claude).
+- **Qui** : Justin
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

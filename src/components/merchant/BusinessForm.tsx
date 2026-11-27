@@ -1,0 +1,76 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import { CATEGORIES } from "@/lib/constants";
+import type { Point } from "@/lib/geo";
+import { BUSINESS_CATEGORIES, registerBusiness } from "@/lib/merchant";
+import type { DealCategory } from "@/lib/types";
+import { buttonClass, inputClass } from "./styles";
+
+const LocationPicker = dynamic(() => import("./LocationPicker"), {
+  ssr: false,
+  loading: () => <div className="h-64 rounded-2xl bg-zinc-100" />,
+});
+
+/** Première visite d'un commerçant : décrire son commerce. */
+export default function BusinessForm({ onDone }: { onDone: () => void }) {
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [category, setCategory] = useState<DealCategory>("restaurant");
+  const [position, setPosition] = useState<Point | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!position) return setError("Place ton commerce sur la carte.");
+    setSaving(true);
+    setError(null);
+    try {
+      await registerBusiness({ name, address, category, position });
+      onDone();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+    setSaving(false);
+  }
+
+  return (
+    <form onSubmit={submit} className="space-y-4">
+      <p className="text-sm text-zinc-500">
+        Décris ton commerce pour publier des offres officielles. L&apos;emplacement ne pourra plus être modifié.
+      </p>
+      <label className="block text-sm font-semibold">
+        Nom du commerce
+        <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} minLength={2} maxLength={80} required />
+      </label>
+      <label className="block text-sm font-semibold">
+        Adresse <span className="font-normal text-zinc-500">(facultatif)</span>
+        <input className={inputClass} value={address} onChange={(e) => setAddress(e.target.value)} maxLength={200} />
+      </label>
+      <label className="block text-sm font-semibold">
+        Activité
+        <select className={inputClass} value={category} onChange={(e) => setCategory(e.target.value as DealCategory)}>
+          {BUSINESS_CATEGORIES.map((c) => (
+            <option key={c} value={c}>
+              {CATEGORIES[c].emoji} {CATEGORIES[c].label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <div>
+        <p className="mb-1 text-sm font-semibold">Emplacement : touche la carte</p>
+        <LocationPicker value={position} onChange={setPosition} />
+      </div>
+      {error && (
+        <p role="alert" className="text-sm text-red-600">
+          {error}
+        </p>
+      )}
+      <button disabled={saving} className={buttonClass}>
+        {saving ? "Enregistrement…" : "Créer mon espace commerçant"}
+      </button>
+    </form>
+  );
+}

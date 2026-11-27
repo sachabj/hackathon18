@@ -5,6 +5,7 @@ import L from "leaflet";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
 import { CATEGORIES, ZONES } from "@/lib/constants";
+import { isBoosted } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useUserPosition } from "@/lib/useUserPosition";
 import BaseMap from "./BaseMap";
@@ -17,18 +18,23 @@ const zoneBounds = (z: (typeof ZONES)[number]) => L.latLng(z.lat, z.lng).toBound
 const ALL_BOUNDS = ZONES.reduce((b, z) => b.extend(zoneBounds(z)), L.latLngBounds([]));
 
 // Repères façon Waze (goutte colorée + emoji), en HTML : styles dans globals.css (.wz-pin).
-const ICONS = Object.fromEntries(
-  Object.entries(CATEGORIES).map(([key, { emoji, color }]) => [
-    key,
-    L.divIcon({
-      className: "wz-marker",
-      html: `<div class="wz-pin" style="--pin:${color}"><span>${emoji}</span></div>`,
-      iconSize: [40, 48],
-      iconAnchor: [20, 47],
-      popupAnchor: [0, -44],
-    }),
-  ]),
-) as Record<DealCategory, L.DivIcon>;
+function pins(boosted: boolean) {
+  return Object.fromEntries(
+    Object.entries(CATEGORIES).map(([key, { emoji, color }]) => [
+      key,
+      L.divIcon({
+        className: "wz-marker",
+        html: `<div class="wz-pin${boosted ? " wz-pin-boosted" : ""}" style="--pin:${color}"><span>${emoji}</span></div>`,
+        iconSize: [40, 48],
+        iconAnchor: [20, 47],
+        popupAnchor: [0, -44],
+      }),
+    ]),
+  ) as Record<DealCategory, L.DivIcon>;
+}
+const ICONS = pins(false);
+/** Offres mises en avant par un commerçant : contour doré, au-dessus des autres. */
+const BOOSTED_ICONS = pins(true);
 
 const USER_ICON = L.divIcon({
   className: "wz-marker",
@@ -140,7 +146,13 @@ export default function DealsMap({
           )}
           {deals.map((d) =>
             d.lat === null || d.lng === null ? null : (
-              <Marker key={d.id} position={[d.lat, d.lng]} icon={ICONS[d.category]} title={d.title}>
+              <Marker
+                key={d.id}
+                position={[d.lat, d.lng]}
+                icon={(isBoosted(d) ? BOOSTED_ICONS : ICONS)[d.category]}
+                zIndexOffset={isBoosted(d) ? 500 : 0}
+                title={d.title}
+              >
                 {/* Marges : la fiche ne doit pas passer sous les boutons de zone. */}
                 <Popup autoPanPaddingTopLeft={[16, 60]} autoPanPaddingBottomRight={[16, 24]} maxHeight={180}>
                   <div className="flex min-w-48 flex-col gap-1">
@@ -151,6 +163,7 @@ export default function DealsMap({
                       {CATEGORIES[d.category].emoji} {CATEGORIES[d.category].label}
                     </span>
                     <strong className="text-base leading-tight">{d.title}</strong>
+                    {isBoosted(d) && <span className="text-xs font-semibold text-amber-700">⭐ Sponsorisé</span>}
                     {d.is_official && (
                       <span className="text-xs font-semibold text-blue-600">✔ Offre officielle</span>
                     )}

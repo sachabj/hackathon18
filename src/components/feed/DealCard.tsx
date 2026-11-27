@@ -1,5 +1,6 @@
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
+import { isBoosted } from "@/lib/merchant";
 import type { Deal } from "@/lib/types";
 
 const formatDate = (iso: string) =>
@@ -12,8 +13,11 @@ export default function DealCard({ deal, match }: { deal: Deal; match?: Match })
     deal.place_name ??
     (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
 
+  const boosted = isBoosted(deal);
+
   return (
-    <article className="rounded-2xl border border-zinc-200 bg-white p-3 shadow-sm">
+    <article className={`rounded-2xl border bg-white p-3 shadow-sm ${boosted ? "border-amber-400" : "border-zinc-200"}`}>
+      {boosted && <p className="mb-1 text-xs font-bold text-amber-700">⭐ Sponsorisé</p>}
       <div className="flex items-start gap-3">
         <span
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[3px] text-xl"

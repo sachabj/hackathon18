@@ -41,12 +41,15 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
     │   ├── geo.ts                    # distances, zone la plus proche
+    │   ├── merchant.ts               # espace commerçant : lecture / écriture, isBoosted()
+    │   ├── useIsMerchant.ts          # hook : onglet « Commerce » de la NavBar
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
     │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil
+    │   ├── merchant/                 # BusinessForm, LocationPicker, OfferForm, OfferCard
     │   ├── preferences/              # PreferencesWizard (parcours en 6 étapes) + ChoiceTile
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
@@ -56,6 +59,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── publier/page.tsx          # signaler un bon plan (Anne-Lise)
         ├── favoris/page.tsx          # favoris (Anne-Lise)
+        ├── commercant/page.tsx       # espace commerçant (Justin)
         └── profil/page.tsx           # niveau, accès, simuler position (Matteo)
 ```
 
@@ -74,9 +78,12 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ⏳ **à exécuter**
 - `supabase/seed_demo.sql` : bons plans d'exemple fictifs (facultatif, après 004).
-- **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Pour créer un compte commerçant : Table Editor → profiles → `role = merchant`.
+- **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
+- `businesses` (un par compte commerçant, écriture via `register_business` seulement) : owner_id, name, address, category (restaurant | supermarket | activity | sport), zone_id, lat, lng
+- `deals.boosted_until` (mise en avant, via `boost_offer`) et `deals.ended_by` (via `set_nearby_deal_ended`) : non écrivables directement
+- Fonctions commerçant : `my_offer_stats()`, `deals_near_my_business()` (≤ 75 m, même catégorie, bons plans d'étudiants)
 - `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], updated_at
 - `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
 - `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités

@@ -112,3 +112,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 — Justin (espace commerçant, démarrage)
 - Tâche 13 prise ; tâche 6 (formulaire de publication) attribuée à Matteo (info Justin).
+
+### 2026-11-27 14h57 — Justin (espace commerçant)
+- `/commercant`, `supabase/migrations/005_merchant.sql` (+ `schema.sql`), `src/lib/merchant.ts`, `components/merchant/`, inscription, NavBar, carte, fil (badge « Sponsorisé »).
+- Vérifié : lint + build ; migration et droits sur un Postgres local (PGlite, 27 contrôles) ; parcours dans Chrome sans interface avec un faux Supabase. **Migration pas encore lancée sur la vraie base.**

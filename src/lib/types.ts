@@ -36,6 +36,10 @@ export interface Deal {
   price_level?: number | null;
   /** Activités liées (ids de ACTIVITIES) */
   tags?: string[] | null;
+  /** Mise en avant payée par le commerçant (migration 005) */
+  boosted_until?: string | null;
+  /** Commerçant qui a retiré le bon plan d'un étudiant */
+  ended_by?: string | null;
 }
 
 export interface Vote {
@@ -96,4 +100,24 @@ export interface Preferences {
   budget_profile: BudgetProfile | null;
   activities: ActivityId[];
   updated_at: string;
+}
+
+/** Ligne de la table `businesses` (un commerce par compte commerçant). */
+export interface Business {
+  owner_id: string;
+  name: string;
+  address: string | null;
+  category: DealCategory;
+  zone_id: string | null;
+  lat: number;
+  lng: number;
+  created_at: string;
+}
+
+/** Résultat de la fonction `my_offer_stats` */
+export interface OfferStats {
+  deal_id: string;
+  confirmations: number;
+  reports: number;
+  favorites: number;
 }

@@ -46,6 +46,14 @@ body {
   border-radius: 50% 50% 50% 4px;
   transform: rotate(-45deg);
 }
+.wz-pin-boosted {
+  transform: scale(1.2);
+  transform-origin: bottom center;
+}
+.wz-pin-boosted::before {
+  border: 3px solid #ffb800;
+  box-shadow: 0 0 0 2px #fff, 0 0 12px 3px rgb(255 184 0 / 0.8);
+}
 .wz-pin span {
   position: relative;
   width: 28px;

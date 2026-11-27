@@ -33,7 +33,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 5. **Favoris ❤️** : liker un bon plan pour l'enregistrer et ne pas le perdre.
 6. **Rappels de dates limites** pour les bons plans à échéance (dossier CROUS, renouvellement de la Carte Sortir, inscriptions au sport), en particulier ceux mis en favori.
 7. **Notification sur place** : « Un bon plan à signaler ici ? » / « Ce bon plan est-il toujours dispo ? ». Démo avec un bouton **« 📍 Simuler ma position »** (le web ne peut pas suivre la position en arrière-plan ; l'app mobile utiliserait le géofencing natif).
-8. **Espace commerçant** : les enseignes publient leurs offres avec un badge « ✔ Offre officielle », peuvent les déclarer terminées, et payent pour une mise en avant (= **modèle économique** du pitch).
+8. **Espace commerçant** : les enseignes publient leurs offres avec un badge « ✔ Offre officielle », peuvent les modifier et les déclarer terminées, voient leurs statistiques, retirent les signalements d'étudiants périmés près de chez eux (≤ 75 m, même catégorie) et payent pour une mise en avant (9,90 € / 7 jours, paiement simulé ; = **modèle économique** du pitch). Compte commerçant choisi à l'inscription.
 
 ## Refusé ❌
 - Comptes Asso / BDE.

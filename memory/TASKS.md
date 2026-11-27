@@ -29,7 +29,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement | TODO |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
 | 12 | Données de démo (vrais bons plans Bruz / Ker Lann / Rennes) | TODO |
-| 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) |
+| 13 | Espace commerçant : inscription, offres officielles, retrait, statistiques, mise en avant (`/commercant`) | EN COURS (Justin) : codé ; **migration 005 à exécuter** puis test sur la vraie base |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 
@@ -48,3 +48,8 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Matteo (tâche 10)** : ajouter dans `/profil` un lien « Mes préférences » vers `/onboarding`. `usePreferences()` donne le profil et les préférences.
 - **Justin** : `DealsMap.tsx` modifié (démontage quand la page est cachée, sinon plantage au retour ; prop `homeZoneId` = vue par défaut sans GPS).
 - **Sacha (de Justin)** : carte restylée et fusionnée avec tes changements (zone par défaut, démontage de la page cachée conservés) ; `src/app/page.tsx` inchangé. Faire `npm install` après le pull.
+
+## À prendre en compte (depuis l'espace commerçant)
+- **Tous** : lancer `supabase/migrations/005_merchant.sql` dans le SQL Editor.
+- **Sacha** : `src/app/page.tsx` (offres sponsorisées triées en tête) et `DealCard.tsx` (badge « Sponsorisé ») modifiés par Justin.
+- **Matteo (tâche 6)** : le formulaire commerçant est séparé (`components/merchant/OfferForm.tsx`) ; `/publier` reste à toi (ne pas envoyer `boosted_until` ni `ended_by`, non écrivables).

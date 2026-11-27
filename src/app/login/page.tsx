@@ -9,6 +9,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [merchant, setMerchant] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,8 +25,8 @@ export default function LoginPage() {
         : await supabase.auth.signUp({ email, password, options: { data: { username } } });
     setLoading(false);
     if (error) return setError(error.message);
-    // Après inscription → choix des préférences ; après connexion → carte.
-    window.location.href = mode === "signup" ? "/onboarding" : "/";
+    // Après inscription → préférences (étudiant) ou commerce ; après connexion → carte.
+    window.location.href = mode === "login" ? "/" : merchant ? "/commercant" : "/onboarding";
   }
 
   return (
@@ -34,6 +35,25 @@ export default function LoginPage() {
       <p className="mt-2 text-zinc-500 text-center">Le Waze des bons plans étudiants</p>
 
       <form onSubmit={submit} className="mt-8 w-full max-w-sm space-y-3">
+        {mode === "signup" && (
+          <fieldset className="grid grid-cols-2 gap-2">
+            <legend className="sr-only">Type de compte</legend>
+            {[
+              { value: false, label: "🎓 Étudiant" },
+              { value: true, label: "🏪 Commerçant" },
+            ].map((t) => (
+              <button
+                key={t.label}
+                type="button"
+                aria-pressed={merchant === t.value}
+                onClick={() => setMerchant(t.value)}
+                className={`rounded-lg border-2 py-2 text-sm font-semibold ${merchant === t.value ? "border-blue-600 bg-blue-50 text-blue-700" : "border-zinc-200 text-zinc-600"}`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </fieldset>
+        )}
         {mode === "signup" && (
           <input
             className="w-full rounded-lg border px-3 py-2"
