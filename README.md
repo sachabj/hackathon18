@@ -24,10 +24,10 @@ Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les 
 - **Fiabilité façon Waze**, de « Douteux » à « Très fiable » : les avis récents et ceux des étudiants les plus justes et actifs pèsent davantage.
 - Une offre signalée « Plus dispo » par **3 étudiants** est archivée.
 - Chaque offre indique si elle vient d'un **commerçant** ou d'un **étudiant**.
-- Après 7 jours sans contribution, les nouvelles offres apparaissent avec 24 h de retard.
+- **Aucun accès limité** : tout le monde voit toutes les offres ; ne pas contribuer, c'est seulement ne pas gagner de Flèches.
 
 ### Récompenses
-- **Les Flèches** : points gagnés en partageant et en vérifiant, séries de jours, rangs Éclaireur, Chasseur de bons plans et Robin des Étudiants.
+- **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, rangs Éclaireur, Chasseur de bons plans et Robin des Étudiants.
 - **Page « Ciblés »** : favoris, activité et boutique de récompenses avec bons à QR code.
 
 ### Espace commerçant

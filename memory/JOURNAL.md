@@ -342,3 +342,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 21h20 — Sacha (fin de l'accès limité, tâche 43)
 - Nouveau `018_no_access_limit.sql` (+ `schema.sql`). Modifiés : `rules.ts`, `ActivityCard`, `ActivityPanel`, `arrows.ts`, `PublishForm`, confidentialité, `types.ts`, `seed_arrows.sql`, `docs/ALGORITHMES.md`.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; 67 contrôles base et scénario de démo sur Postgres local ; 50 + 63 contrôles dans Chrome sans interface avec un faux Supabase. **018 pas lancée**, rien testé sur la vraie base ni sur téléphone.
+
+### 2026-11-27 soir — Sacha (README, tâche 43)
+- `README.md` : retard de 24 h retiré, plafond de 3 publications récompensées par jour ajouté (demande notée par Justin). Aucun code modifié.
