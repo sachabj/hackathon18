@@ -4,7 +4,9 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import CategoryIcon from "@/components/CategoryIcon";
+import ChainBadge from "@/components/ChainBadge";
 import { CalendarIcon, CheckBadgeIcon, CheckIcon, CloseIcon, PinIcon, ThumbsDownIcon, ThumbsUpIcon, WalkIcon } from "@/components/icons";
+import { isMajorChain } from "@/lib/chains";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { fetchEngagement, recordView, setVisited, vote, type Engagement } from "@/lib/engagement";
 import { reliability } from "@/lib/rules";
@@ -97,6 +99,7 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
             <CloseIcon className="h-4 w-4" />
           </button>
         </div>
+        {isMajorChain(deal) && <ChainBadge className="mb-2" />}
         <h2 className="text-xl leading-snug">{deal.title}</h2>
         {deal.price_info && <p className="text-lg font-medium" style={{ color: "var(--color-forest)" }}>{deal.price_info}</p>}
         {deal.description && <p className="mt-2 text-sm text-[var(--color-ink)]">{deal.description}</p>}

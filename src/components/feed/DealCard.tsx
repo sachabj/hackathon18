@@ -2,8 +2,10 @@
 
 import { useLayoutEffect, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
+import ChainBadge from "@/components/ChainBadge";
 import DealSheet from "@/components/deal/DealSheet";
 import { CalendarIcon, CameraIcon, CheckBadgeIcon, CloseIcon, HeartIcon, StarIcon } from "@/components/icons";
+import { isMajorChain } from "@/lib/chains";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -56,6 +58,7 @@ export default function DealCard({
           <StarIcon className="h-3.5 w-3.5" filled /> Sponsorisé
         </p>
       )}
+      {isMajorChain(deal) && <ChainBadge className="mb-2" />}
       <div className="flex items-start gap-3">
         <CategoryIcon category={deal.category} size={44} />
         <div className="min-w-0 flex-1">
