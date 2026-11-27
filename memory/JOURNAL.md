@@ -44,3 +44,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Schéma exécuté par l'équipe. Test e2e : inscription OK, mais « permission denied » sur toutes les tables → pas de GRANT par défaut pour `authenticated`.
 - Ajout de `supabase/migrations/002_grants.sql` (et des GRANT en fin de `schema.sql`) + convention migrations dans `ARCHITECTURE.md`.
 - Un compte de test `test.claude.<timestamp>@gmail.com` a été créé dans Supabase (à supprimer dans Authentication → Users).
+
+### 2026-11-27 — Justin (test BDD)
+- `002_grants.sql` appliquée. Test e2e OK : inscription, profil auto, préférences, publication, vote / re-vote, favoris privés, vue, RPC, retard 24 h des inactifs.
+- Failles trouvées (accès par colonne) : rôle commerçant auto-attribuable, `is_official` modifiable, bon plan antidatable, `last_contribution_at` modifiable → `003_column_grants.sql` écrite (à exécuter).
+- 2 nouveaux comptes `test.claude.a/b.*@gmail.com` créés (à supprimer dans Authentication → Users) ; bons plans de test supprimés.

@@ -183,3 +183,13 @@ grant select, insert, update on public.votes to authenticated;
 grant select, insert, delete on public.favorites to authenticated;
 grant select on public.user_contributions to authenticated;
 grant execute on function public.has_full_access(), public.is_merchant(), public.active_users_in_zone(text) to authenticated;
+
+-- Colonnes sensibles verrouillées (voir migrations/003_column_grants.sql)
+revoke update on public.profiles from authenticated;
+grant update (username, followed_categories, followed_zone_ids, onboarded) on public.profiles to authenticated;
+
+revoke insert, update on public.deals from authenticated;
+grant insert (title, description, category, subcategory, scope, zone_id, place_name, lat, lng,
+              price_info, expires_at, deadline_at, is_official, author_id) on public.deals to authenticated;
+grant update (title, description, category, subcategory, scope, zone_id, place_name, lat, lng,
+              price_info, expires_at, deadline_at, ended_by_merchant) on public.deals to authenticated;
