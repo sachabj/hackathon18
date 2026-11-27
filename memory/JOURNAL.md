@@ -378,3 +378,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Revient en partie sur la tâche 35 de Matteo (étiquette « Sponsorisé » retirée alors, voir `DECISIONS.md`) : jugé nécessaire après ce retour concret.
 - Vérifié : tsc + lint (1 avertissement connu) + build OK. Pas vu dans le navigateur (toujours indisponible dans cette session).
 - Trouvé sur le disque en début de requête, sans rapport avec cette demande : `src/app/login/page.tsx` était revenu à l'ancien style (bleu, emoji) d'avant la refonte visuelle, non committé. Mis de côté (`git stash`, non appliqué) plutôt que perdu ou réappliqué sans demander : à vérifier avec l'utilisateur.
+
+### 2026-11-27 soir — Justin (avertissement Next « instant navigation »)
+- `next.config.ts` : `experimental.instantInsights.validationLevel: "manual-warning"` (choix de Justin).
+- Cause : `RoleGate` n'affiche pas la page avant de connaître le type de compte ; message en développement seulement, sur toutes les pages étudiantes.
+- Vérifié : message reproduit puis disparu (`next dev`, Chrome sans interface, faux Supabase) ; tsc + lint (1 avertissement connu) + build.

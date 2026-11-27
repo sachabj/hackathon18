@@ -341,3 +341,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : même formulaire, allégé : lieu, titre, catégorie visibles ; prix, détails, conditions, lien, activités et dates sous « Plus de détails » (replié, nombre de champs remplis affiché) ; photo analysée dès qu'elle est prise ; accord pour publier la photo inchangé (case à cocher).
 - **Écartés** : liste des commerces autour de soi ; parcours « photo d'abord » ; champs en 2e étape ou supprimés.
 - **Qui** : Justin (réponses aux questions de cadrage ; accord de Matteo indiqué par Justin)
+
+## 2026-11-27 soir — Contrôle « instant navigation » limité
+- **Décision** : il ne s'applique plus qu'aux pages qui exportent `instant` (`next.config.ts`). Remplace le choix d'ignorer le message (Matteo, photo de preuve).
+- **Écarté** : rendre la page avant de connaître le type de compte (un commerçant verrait l'interface étudiante).
+- **Qui** : Justin
