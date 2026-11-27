@@ -351,3 +351,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : « Ciblés > Activité » = niveau sur une ligne, puis mes bons plans (déplacés du profil, lignes dépliables), puis l'historique. Chaque information à un seul endroit : les Flèches de publication et de bonus sur le bon plan, les votes et échanges dans l'historique (5 lignes, « Voir tout »).
 - **Retirés** : « Ta spécialité », compteur sur 7 jours, totaux de vues et passages, les « passages » (même geste que « J'y suis allé »).
 - **Qui** : Sacha
+
+## 🚨 2026-11-27 soir — Déploiement Vercel cassé (build-rate-limit) — à régler avant la deadline
+- **Constat** : les 3 derniers commits poussés (`9a3f9d3`, `adf2eb6`, `17087b2`) ont un déploiement Vercel en `failure`, raison `upgradeToPro=build-rate-limit` (vérifié via l'API GitHub, statuts de commit ; confirme le diagnostic de Justin dans `JOURNAL.md`). Le site en ligne tourne donc sur un ancien build et **n'a pas les derniers correctifs**, même si le code sur `main` est à jour.
+- **Pourquoi ça compte** : la deadline est demain 28/11 à 13h ; si le jury regarde le site déployé, il verra une version en retard. Tester sur le site en ligne en ce moment peut faire croire à un bug qui n'existe pas dans le code (déjà arrivé : retour utilisateur sur un correctif pourtant fonctionnel en local).
+- **À faire (décision de l'équipe, pas prise ici)** : soit attendre que la limite de builds Vercel se réinitialise, soit passer le projet Vercel en Pro (payant), soit limiter la fréquence des push le temps que ça se résorbe. Vérifier aussi le lien du projet (`https://vercel.com/hackathon29`).
+- **En attendant** : tester en local (`npm run dev`) plutôt que sur le site déployé pour juger si un correctif marche.
+- **Qui** : Anne-Lise (constat ; décision de résolution à prendre par l'équipe)

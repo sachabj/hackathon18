@@ -393,3 +393,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 soir — Justin (site pas à jour)
 - Diagnostic via les statuts publics GitHub : déploiements Vercel refusés (limite atteinte) depuis `9a3f9d3` ; dernier réussi `4b716f5`. `TASKS.md` annoté, aucun code modifié.
+
+### 2026-11-27 soir — Anne-Lise (retour « ça ne marche pas » → déploiement Vercel cassé, pas un bug de code)
+- Retour de l'utilisateur : le surlignage aubergine au clic ne s'affiche toujours pas en testant sur **le site déployé**.
+- Testé en isolation (page temporaire locale avec de fausses données, auth contournée temporairement dans `src/proxy.ts`, tout supprimé/annulé après coup, aucune écriture sur la vraie base) : le clic met bien `selectedId` à jour et le style calculé passe à `border-color: rgb(75,42,99) (aubergine) / border-width: 2px`. Le code (`DealCard.tsx`, `recherche/page.tsx`, CSS) fonctionne.
+- Cause réelle trouvée via l'API GitHub (`.../commits/<sha>/status`) : **les déploiements Vercel échouent depuis au moins 3 commits** (`9a3f9d3`, `adf2eb6`, `17087b2`) avec `failure` / `upgradeToPro=build-rate-limit`. Le site en ligne tourne donc sur un ancien build, sans les derniers correctifs (ni ceux d'aujourd'hui, ni peut-être d'autres avant) — **à signaler à toute l'équipe**, voir `DECISIONS.md`.
+- Aucun changement de code nécessaire. Fichiers de test temporaires et modification locale de `proxy.ts` supprimés/annulés ; `npx tsc --noEmit`, `npm run lint`, `npm run build` revérifiés propres après nettoyage.
