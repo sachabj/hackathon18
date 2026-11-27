@@ -142,6 +142,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : l'API Claude est payante et un abonnement Claude Pro ne donne pas de clé API ; Google propose une clé API Gemini avec une offre gratuite (Google AI Studio). L'abonnement Gemini Pro grand public ne donne pas non plus de clé API.
 - **Qui** : Matteo
 
+## 2026-11-27 17h15 — Relookage « plus professionnel »
+- **Décision** : nouveau jeu d'icônes sobres en SVG (`src/components/icons.tsx`), utilisé dans `NavBar.tsx` et pour le cœur favori (`DealCard.tsx`) à la place des emoji. En-tête de marque (`/`, `/favoris`) simplifié : petit carré bleu + nom en noir, sans emoji. `/favoris` : chaque catégorie est repliable (état mémorisé sur l'appareil, `localStorage`).
+- **Pourquoi** : demande d'Anne-Lise (« ça fait un peu bébé ») — trop d'emoji et de couleurs/arrondis ludiques.
+- **Périmètre** : volontairement limité aux pages d'Anne-Lise + aux deux fichiers partagés `NavBar`/`DealCard` (changement visuel seul, aucune route ni comportement modifié). La carte, `/commercant`, `/profil`, `/publier`, `/onboarding` et les emoji de `TRANSPORT_MODES`/`BUDGET_PROFILES` n'ont pas été touchés pour ne pas interférer avec le travail en cours de Justin, Matteo et Sacha (voir `TASKS.md`).
+- **Qui** : Anne-Lise
+
 ## 2026-11-27 — Modèle Gemini par défaut : gemini-3.5-flash
 - **Décision** : modèle par défaut `gemini-3.5-flash`, avec repli automatique sur `gemini-3.5-flash-lite` puis `gemini-3.8-flash`.
 - **Pourquoi** : au test réel, `gemini-3.8-flash` et `3.7-flash` renvoyaient « high demand » (503) à chaque appel, parfois après 25 s d'attente ; `gemini-2.5-flash` n'est plus ouvert aux nouveaux comptes (404). `gemini-3.5-flash` répond en 4 à 8 s.

@@ -2,16 +2,46 @@
 
 import { useEffect, useState } from "react";
 import DealCard from "@/components/feed/DealCard";
+import { ChevronDownIcon } from "@/components/icons";
 import { APP_NAME, CATEGORIES } from "@/lib/constants";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal, DealCategory } from "@/lib/types";
 import { useFavorites } from "@/lib/useFavorites";
+
+const COLLAPSED_KEY = "sharewood:favoris:collapsed";
+
+function readCollapsed(): Set<DealCategory> {
+  if (typeof window === "undefined") return new Set();
+  try {
+    const raw = window.localStorage.getItem(COLLAPSED_KEY);
+    return new Set(raw ? (JSON.parse(raw) as DealCategory[]) : []);
+  } catch {
+    return new Set();
+  }
+}
 
 export default function Page() {
   const { favoriteIds, loading: loadingFavorites, toggleFavorite } = useFavorites();
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
+  const [collapsed, setCollapsed] = useState<Set<DealCategory>>(() => new Set());
+
+  // Lu après le montage (localStorage n'existe pas côté serveur) : évite un décalage d'hydratation.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- synchro avec localStorage, pas d'alternative sans effet
+    setCollapsed(readCollapsed());
+  }, []);
+
+  function toggleCollapsed(category: DealCategory) {
+    setCollapsed((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      window.localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...next]));
+      return next;
+    });
+  }
 
   useEffect(() => {
     if (!isSupabaseConfigured || loadingFavorites) return;
@@ -63,13 +93,11 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-md px-4 pb-6">
       <header className="sticky top-0 z-10 -mx-4 flex items-center gap-2 border-b border-zinc-100 bg-white/95 px-4 py-3 backdrop-blur">
-        <span className="text-2xl" aria-hidden>
-          🪵
-        </span>
-        <p className="text-2xl font-extrabold tracking-tight text-blue-600">{APP_NAME}</p>
+        <span className="h-2.5 w-2.5 shrink-0 rounded-sm bg-blue-600" aria-hidden />
+        <p className="text-xl font-bold tracking-tight text-zinc-900">{APP_NAME}</p>
       </header>
 
-      <h1 className="mt-3 text-sm font-medium text-zinc-500">Mes favoris ❤️</h1>
+      <h1 className="mt-3 text-sm font-medium text-zinc-500">Mes favoris</h1>
 
       <p role="status" className="mt-2 text-sm text-zinc-500">
         {error ? (
@@ -77,30 +105,49 @@ export default function Page() {
         ) : busy ? (
           "Chargement…"
         ) : total === 0 ? (
-          "Aucun favori pour l'instant : touche 🤍 sur un bon plan pour l'ajouter ici."
+          "Aucun favori pour l'instant : touche le cœur sur un bon plan pour l'ajouter ici."
         ) : (
           `${total} favori${total > 1 ? "s" : ""}`
         )}
       </p>
 
       {!busy && groups.length > 0 && (
-        <div className="mt-3 space-y-5">
-          {groups.map(({ category, deals }) => (
-            <section key={category}>
-              <h2 className="mb-2 flex items-center gap-1.5 text-sm font-bold text-zinc-700">
-                <span aria-hidden>{CATEGORIES[category].emoji}</span>
-                {CATEGORIES[category].label}
-                <span className="font-normal text-zinc-400">({deals.length})</span>
-              </h2>
-              <ul className="space-y-3">
-                {deals.map((deal) => (
-                  <li key={deal.id}>
-                    <DealCard deal={deal} favorite onToggleFavorite={toggleFavorite} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+        <div className="mt-3 space-y-2">
+          {groups.map(({ category, deals }) => {
+            const isCollapsed = collapsed.has(category);
+            const panelId = `favoris-${category}`;
+            return (
+              <section key={category} className="rounded-lg border border-zinc-200">
+                <button
+                  type="button"
+                  onClick={() => toggleCollapsed(category)}
+                  aria-expanded={!isCollapsed}
+                  aria-controls={panelId}
+                  className="flex w-full items-center gap-2 px-3 py-2.5 text-left"
+                >
+                  <span
+                    className="h-2.5 w-2.5 shrink-0 rounded-full"
+                    style={{ backgroundColor: CATEGORIES[category].color }}
+                    aria-hidden
+                  />
+                  <span className="flex-1 text-sm font-semibold text-zinc-800">{CATEGORIES[category].label}</span>
+                  <span className="text-xs text-zinc-400">{deals.length}</span>
+                  <ChevronDownIcon
+                    className={`h-4 w-4 text-zinc-400 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
+                  />
+                </button>
+                {!isCollapsed && (
+                  <ul id={panelId} className="space-y-3 border-t border-zinc-100 p-3">
+                    {deals.map((deal) => (
+                      <li key={deal.id}>
+                        <DealCard deal={deal} favorite onToggleFavorite={toggleFavorite} />
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            );
+          })}
         </div>
       )}
     </div>

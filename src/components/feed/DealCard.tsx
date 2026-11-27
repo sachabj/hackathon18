@@ -2,6 +2,7 @@
 
 import { useLayoutEffect, useState } from "react";
 import DealSheet from "@/components/deal/DealSheet";
+import { HeartIcon } from "@/components/icons";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
@@ -74,10 +75,10 @@ export default function DealCard({
             type="button"
             aria-pressed={favorite}
             onClick={() => onToggleFavorite(deal.id)}
-            className="shrink-0 text-xl leading-none"
+            className={`shrink-0 transition active:scale-90 ${favorite ? "text-rose-600" : "text-zinc-300 hover:text-zinc-400"}`}
             title={favorite ? "Retirer des favoris" : "Ajouter aux favoris"}
           >
-            <span aria-hidden>{favorite ? "❤️" : "🤍"}</span>
+            <HeartIcon className="h-5 w-5" filled={favorite} />
             <span className="sr-only">{favorite ? "Retirer des favoris" : "Ajouter aux favoris"}</span>
           </button>
         )}

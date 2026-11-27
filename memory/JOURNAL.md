@@ -167,6 +167,13 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Clé Gemini ajoutée par Matteo dans son `.env.local` (pas dans git). `src/lib/ai/assist.ts` : repli automatique entre modèles Gemini, délai de 20 s par essai, modèle par défaut `gemini-3.5-flash` ; `.env.example`.
 - Vérifié **en vrai** (Playwright, vraie base, vrai Gemini) avec une affiche générée « Intermarché Bruz -20 % pâtes et riz, jusqu'au 20/12 » : champs bien remplis (titre, prix, conditions, catégorie Grandes surfaces, date, lieu Intermarché retrouvé) en 4,5 à 5,5 s ; relecture en 4,5 à 7,6 s ; doublon détecté au 2e envoi ; titre « SUPER PROMO!!!! 🔥🔥🔥 » → suggestion « Carte Avantage Jeune SNCF : 30 % de réduction ». Bons plans de test supprimés.
 
+### 2026-11-27 17h15 — Anne-Lise (favoris repliables + relookage pro)
+- Questions posées (nouvelle règle CLAUDE.md) : portée (toute l'appli), ce qui fait « bébé » (emoji + couleurs/arrondis), mémoriser le repli des catégories (oui, `localStorage`).
+- Nouveau `src/components/icons.tsx` (icônes SVG sobres). `NavBar.tsx` et `DealCard.tsx` (fichiers partagés) : emoji remplacés par ces icônes, aucun changement de comportement. `src/app/page.tsx` et `src/app/favoris/page.tsx` : en-tête simplifié (carré bleu + nom, sans emoji), copy sans emoji décoratif, arrondis adoucis (`rounded-lg` au lieu de `rounded-xl`/`-full` sur certains blocs).
+- `src/app/favoris/page.tsx` : chaque catégorie est maintenant une section repliable (bouton, chevron qui tourne), état mémorisé dans `localStorage` (clé `sharewood:favoris:collapsed`), lu après montage pour éviter un décalage d'hydratation (`eslint-disable` ciblé sur `react-hooks/set-state-in-effect`, justifié en commentaire).
+- Volontairement pas touché : carte, `/commercant`, `/profil`, `/publier`, `/onboarding`, emoji de `TRANSPORT_MODES`/`BUDGET_PROFILES` (voir `TASKS.md` et `DECISIONS.md`).
+- Vérifié : lint + build OK. Toujours pas d'outil de navigateur disponible dans cette session pour un test visuel réel.
+
 ### 2026-11-27 15h47 — Justin (profil, audience, votes)
 - `/profil`, `components/deal/`, `components/profile/`, `lib/engagement.ts`, `007_engagement.sql` (+ `schema.sql`) ; petites modifications de `DealCard`, `DealsMap`, `PreferencesWizard`, `rules.ts`.
 - 005 et 006 semblent appliquées (tables / colonnes présentes côté API). **007 à exécuter.**

@@ -25,7 +25,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via Photon (OSM), tous les champs saisis à la main | FAIT (testé sur la vraie base) |
 | 6b | Assistant IA de publication : photo / texte → formulaire, contrôle du titre, modération, doublons, photo de preuve dans le fil (Matteo) | FAIT : **testé en vrai avec Gemini** en local (clé de Matteo) ; **reste à ajouter `GEMINI_API_KEY` sur Vercel (Sacha)** + redéployer |
 | 7 | Votes 👍/👎 + score de fiabilité | FAIT (Justin) : boutons de vote sur la fiche + score de fiabilité ; à signaler à Anne-Lise ; **pas testé sur la vraie base** |
-| 8 | Favoris ❤️ | FAIT (Anne-Lise) : bouton cœur sur `DealCard`, page `/favoris` regroupée par catégorie (triée par échéance dans chaque groupe). Build + lint OK ; **pas testé dans un navigateur ni sur la vraie base** (aucun outil de navigateur ni script contre la vraie BDD disponible dans cette session) |
+| 8 | Favoris ❤️ | FAIT (Anne-Lise) : bouton cœur sur `DealCard`, page `/favoris` regroupée par catégorie, chaque catégorie repliable (mémorisé sur l'appareil) et triée par échéance dans le groupe. Relookage « plus pro » (voir `DECISIONS.md`). Build + lint OK ; **pas testé dans un navigateur ni sur la vraie base** (aucun outil de navigateur ni script contre la vraie BDD disponible dans cette session) |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
 | 10 | Accès 7 jours après contribution + niveaux + messages d'encouragement (page `/profil` : préférences, mes bons plans, audience) | FAIT (Justin, page `/profil`) : accès, niveau, encouragements, préférences, mes bons plans et audience ; **migration 007 à exécuter** puis test réel |
 | 11 | Notif sur place simulée (« toujours dispo ? ») | TODO |
@@ -80,3 +80,8 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 ## Profil, ajouts (tâche 17, cadrage)
 - À prévoir : mot de passe et déconnexion de tous les appareils · export et suppression du compte · information sur les données (dont envois à l'IA et à Photon) · position enregistrée effaçable · crédits calculés par la base, avec règles anti-abus.
 - Justin / Matteo : prévenir Sacha avant de modifier `/profil` ; les ajouts viseront des sous-pages pour limiter les conflits.
+
+## À prendre en compte (depuis le relookage « plus pro »)
+- **Tous** : nouveau fichier `src/components/icons.tsx` (icônes sobres en SVG, pas d'emoji) ; à réutiliser si vous retirez des emoji sur vos pages. `NavBar.tsx` et `DealCard.tsx` (fichiers partagés) ont été modifiés **uniquement visuellement** (icônes à la place des emoji) : aucun lien, route ou comportement changé.
+- **Périmètre volontairement pas touché** (pour ne pas marcher sur votre travail en cours) : pins et commandes de la carte (Justin), `/commercant` et `/profil` (Justin), `/publier` et `/onboarding` (Matteo/Sacha), emoji de `TRANSPORT_MODES` / `BUDGET_PROFILES` dans `constants.ts` (Sacha). Dites-moi si vous voulez que j'harmonise ces pages avec `icons.tsx` ou si vous préférez vous en charger.
+- **Sacha (tâche 16, homepage)** : toujours en attente de validation, pas de conflit avec ce qui a été fait ici.

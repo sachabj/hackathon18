@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChartIcon, HeartIcon, MapIcon, PlusIcon, StoreIcon, TagIcon, UserIcon } from "@/components/icons";
 import { useRole } from "@/lib/useRole";
 
 const LINKS = [
-  { href: "/", label: "Carte", emoji: "🗺️" },
-  { href: "/publier", label: "Signaler", emoji: "➕" },
-  { href: "/favoris", label: "Favoris", emoji: "❤️" },
-  { href: "/profil", label: "Profil", emoji: "👤" },
+  { href: "/", label: "Carte", Icon: MapIcon },
+  { href: "/publier", label: "Signaler", Icon: PlusIcon },
+  { href: "/favoris", label: "Favoris", Icon: HeartIcon },
+  { href: "/profil", label: "Profil", Icon: UserIcon },
 ];
 
 const MERCHANT_LINKS = [
-  { href: "/commercant", label: "Offres", emoji: "🏷️" },
-  { href: "/commercant/statistiques", label: "Statistiques", emoji: "📊" },
-  { href: "/commercant/compte", label: "Compte", emoji: "🏪" },
+  { href: "/commercant", label: "Offres", Icon: TagIcon },
+  { href: "/commercant/statistiques", label: "Statistiques", Icon: ChartIcon },
+  { href: "/commercant/compte", label: "Compte", Icon: StoreIcon },
 ];
 
 export default function NavBar() {
@@ -36,9 +37,9 @@ export default function NavBar() {
             <li key={l.href}>
               <Link
                 href={l.href}
-                className={`flex flex-col items-center px-3 py-2 text-xs ${active ? "text-blue-600 font-semibold" : "text-zinc-500"}`}
+                className={`flex flex-col items-center gap-0.5 px-3 py-2 text-xs ${active ? "text-blue-600 font-semibold" : "text-zinc-500"}`}
               >
-                <span className="text-xl">{l.emoji}</span>
+                <l.Icon className="h-5 w-5" />
                 {l.label}
               </Link>
             </li>

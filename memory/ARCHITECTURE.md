@@ -55,10 +55,11 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   └── useUserPosition.ts        # hook : position GPS suivie (non enregistrée), réutilisable (tâches 9, 11)
     ├── components/
-    │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil
+    │   ├── icons.tsx                 # icônes maison (traits, pas d'emoji) : Map, Plus, Heart, User, Tag, Chart, Store, ChevronDown
+    │   ├── NavBar.tsx                # barre du bas : Carte / Signaler / Favoris / Profil (icônes `icons.tsx`)
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
-    │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`)
+    │   ├── feed/DealCard.tsx         # carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon`)
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'y suis allé » (ouverte depuis le fil et la carte)
     │   ├── profile/                  # ActivityCard, PreferencesSummary, MyDealCard
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante

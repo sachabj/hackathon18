@@ -51,24 +51,22 @@ export default function Page() {
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col">
       <header className="sticky top-0 z-[1001] flex items-center gap-2 border-b border-zinc-100 bg-white/95 px-4 py-3 backdrop-blur">
-        <span className="text-2xl" aria-hidden>
-          🪵
-        </span>
-        <p className="text-2xl font-extrabold tracking-tight text-blue-600">{APP_NAME}</p>
+        <span className="h-2.5 w-2.5 shrink-0 rounded-sm bg-blue-600" aria-hidden />
+        <p className="text-xl font-bold tracking-tight text-zinc-900">{APP_NAME}</p>
       </header>
 
       <div className="px-4 py-3">
         <h1 className="text-sm font-medium text-zinc-500">
-          {profile?.username ? `Salut ${profile.username} 👋` : "Les bons plans étudiants"}
+          {profile?.username ? `Bonjour ${profile.username}` : "Les bons plans étudiants"}
         </h1>
         {me && (
           <Link
             href="/onboarding"
-            className="mt-2 flex items-center justify-between gap-2 rounded-xl bg-zinc-100 px-3 py-2 text-sm"
+            className="mt-2 flex items-center justify-between gap-2 rounded-lg border border-zinc-200 px-3 py-2 text-sm"
           >
             <span>
               {[
-                home && `📍 ${home.name}`,
+                home?.name,
                 me.transportModes.map((m) => TRANSPORT_MODES[m].emoji).join(""),
                 isTraveler(me) && `🧳${me.travelModes.map((m) => SUBCATEGORIES[m].emoji).join("")}`,
                 me.budget && `${BUDGET_PROFILES[me.budget].emoji} ${BUDGET_PROFILES[me.budget].label}`,
@@ -80,8 +78,8 @@ export default function Page() {
           </Link>
         )}
         {profile && !profile.onboarded && (
-          <Link href="/onboarding" className="mt-2 block rounded-xl bg-blue-600 px-4 py-3 text-white">
-            <span className="block font-semibold">🎯 Personnalise tes bons plans</span>
+          <Link href="/onboarding" className="mt-2 block rounded-lg bg-blue-600 px-4 py-3 text-white">
+            <span className="block font-semibold">Personnalise tes bons plans</span>
             <span className="block text-sm text-blue-100">
               1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
             </span>
