@@ -18,3 +18,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - 8 propositions de Claude ajoutées dans `PROJECT.md` (à valider).
 - `ARCHITECTURE.md` : modèle de données révisé (zones, scope local/zone/national, profiles.last_active_at) + contrainte sur la géolocalisation web.
 - `TASKS.md` : liste des tâches refaite (14 tâches).
+
+### 2026-11-27 ~12h30 — Justin
+- Propositions tranchées par l'équipe → `PROJECT.md` réécrit (nom **Waze-Etu**, 8 fonctionnalités validées, Asso refusé).
+- Stack validée ; modèle de données complété (favorites, role merchant, last_contribution_at) + règles métier dans `ARCHITECTURE.md`.
+- Équipe renseignée + répartition proposée dans `TASKS.md`.
+- Hook mémoire modifié : il affiche la liste des .md à lire au lieu de leur contenu (au-delà de ~10 Ko, la sortie d'un hook est tronquée).

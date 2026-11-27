@@ -1,4 +1,4 @@
-# hackathon18 — Le Waze des bons plans étudiants
+# hackathon18 — Waze-Etu, le Waze des bons plans étudiants
 
 Projet du hackathon ENSAI (27–28 nov. 2026). Une app communautaire pour voir et signaler les bons plans étudiants (restaurants, grandes surfaces, transports, bourses, sport, Carte Sortir, activités).
 

@@ -9,7 +9,7 @@ Projet de hackathon ENSAI (équipe de 4 étudiants 3A, 4 comptes Claude Code sur
 1. `git pull --rebase` (si le repo a un remote) pour récupérer le travail des autres.
 2. **Lire TOUS les fichiers Markdown du repo** (hors `node_modules`, `.git`) :
    `find . -name "*.md" -not -path "*/node_modules/*" -not -path "./.git/*"`
-   Un hook (`.claude/settings.json`) les injecte automatiquement à chaque prompt — s'il n'a pas tourné, les lire manuellement.
+   Un hook (`.claude/settings.json`) affiche leur liste à chaque prompt : **les lire tous en entier** (outil Read), même s'ils semblent déjà connus — un coéquipier a pu les modifier.
 3. Vérifier dans `memory/TASKS.md` que la tâche demandée n'est pas déjà prise par un autre membre.
 
 ### 2. APRÈS chaque requête (même petite)

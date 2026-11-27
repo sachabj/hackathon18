@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && echo '=== MÉMOIRE PROJET (tous les .md, injectés automatiquement) — à mettre à jour après la requête ===' && find . -name '*.md' -not -path '*/node_modules/*' -not -path './.git/*' -not -name 'CLAUDE.md' | sort | while read -r f; do echo; echo \"----- $f -----\"; cat \"$f\"; done"
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && echo '=== PROTOCOLE MÉMOIRE (CLAUDE.md) : 1) git pull --rebase origin main  2) LIRE EN ENTIER chacun de ces fichiers avec Read avant de répondre  3) les mettre à jour + commit + push à la fin ===' && find . -name '*.md' -not -path '*/node_modules/*' -not -path './.git/*' -not -name 'CLAUDE.md' | sort | while read -r f; do echo \"- $f ($(wc -l < \"$f\" | tr -d ' ') lignes)\"; done"
           }
         ]
       }

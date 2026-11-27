@@ -18,9 +18,15 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : brief détaillé donné par l'équipe.
 - **Qui** : équipe (transcrit par Justin)
 
+## 2026-11-27 — Stack, nom et fonctionnalités validés
+- **Stack** : Next.js + Tailwind + Supabase + Leaflet/OSM + Vercel.
+- **Nom** : Waze-Etu.
+- **Validé** : score de fiabilité (seuil adapté au nombre d'utilisateurs ; retrait immédiat si le commerçant dit que l'offre n'existe plus) · accès complet 7 jours après chaque contribution · niveaux d'activité avec messages d'encouragement par catégorie · favoris ❤️ + rappels de dates limites · espace commerçant · position simulée pour la démo.
+- **Refusé** : comptes Asso / BDE.
+- **Équipe** : Sacha, Anne-Lise, Matteo, Justin.
+- **Qui** : équipe (transcrit par Justin)
+
 ## EN ATTENTE DE VALIDATION
-- Stack technique (proposition dans ARCHITECTURE.md)
-- Web app vs app mobile
-- Nom de l'app (propositions dans PROJECT.md)
-- Les 8 propositions 💡 de Claude dans PROJECT.md
-- Ce que voit un utilisateur inactif
+- Accès limité d'un inactif (24 h de retard ?)
+- Compte obligatoire pour consulter ?
+- Répartition des tâches (proposition dans TASKS.md)
