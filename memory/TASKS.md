@@ -113,8 +113,8 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
 | 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | À TESTER (Justin) : boutons au-dessus du recentrage, zoom limité au niveau 19 ; essayé avec un faux Supabase |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
-| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | EN COURS (Sacha) : retrait d’une partie des ajouts au profil (voir avec Justin) |
-| 64 | **Profil plus complet** | M | Justin / Sacha | EN COURS (Sacha) : retrait d’une partie des ajouts au profil (voir avec Justin) |
+| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | TODO : codée puis retirée (Sacha, 28/11) ; le code reste dans le commit `a75ecf1` |
+| 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin / Sacha) : en-tête conservé (pseudo modifiable) ; impact, grade et Flèches, raccourcis retirés (Sacha, 28/11) |
 | 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 | 66 | **« J'y suis allé » devient « J'en ai profité »** (boutons, fiche, Ciblés, stats commerçant, confidentialité, info-bulle, README, doc, commentaires) | P | Matteo | FAIT (Matteo) : libellé seulement (vote +1 et passage inchangés) ; historique (JOURNAL, DECISIONS) et anciennes migrations non réécrits |
 
@@ -154,13 +154,13 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 - Vérifié : tsc + lint + build OK. `npm install` fait (dépendance `qrcode` de la tâche 42, manquante après le pull). Pas vu dans le navigateur (toujours indisponible dans cette session).
 
 ## Les Flèches : à régler (Sacha)
-- **Sans position, pas de pénalité** (décision provisoire, à revoir) : refuser la localisation, ou voter hors de l'app, contourne le barème de distance ; une position peut aussi être falsifiée.
+- **Position falsifiable** : elle vient du navigateur ; la règle des 500 m (020, 021) ne résiste pas à un utilisateur averti.
 - Publications récompensées plafonnées à 3 par jour (018) ; des comptes complices peuvent encore confirmer des offres bidon.
 - 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
 - **Récompenses** (tâche 42) : partenaires fictifs ; « Avant-Première » seulement enregistrée (aucune offre flash n'existe) ; aucun tirage de tombola codé ; le commerçant ne peut pas vérifier un code (c'est l'étudiant qui marque le bon utilisé).
 
 ## À prendre en compte (depuis le profil complet, Justin)
-- **Sacha** : le grade et les Flèches reviennent sur le profil sous forme de résumé (`ArrowsSummary`, avait été retiré en tâche 46) ; le détail reste dans « Ciblés ». `profil/page.tsx` réécrit, `LocationSetting` conservé : faire un pull avant d'y toucher.
+- **Justin** : à la demande de Sacha, « Mon impact », le résumé grade et Flèches et les raccourcis sont retirés du profil (`ImpactCard`, `ArrowsSummary`, `ProfileShortcuts` supprimés, récupérables dans `a75ecf1`) ; retour à une seule colonne ; l'en-tête reste. Ligne « Profil » du README mise à jour : penser aux diapos si elles montrent ces blocs.
 - Le pseudo se modifie aussi sur le profil (et toujours dans « Compte et confidentialité »).
 
 ## À prendre en compte (depuis l'affichage ordinateur, Justin)

@@ -461,3 +461,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 nuit — Justin (boutons de zoom, tâche 61)
 - `DealsMap.tsx` : boutons + et − au-dessus du recentrage, grisés aux limites ; zoom maximal fixé à 19. README, TASKS.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (390 px et 1440 px). Pas testé sur la vraie base ni sur téléphone ; non déployé.
+
+### 2026-11-28 00h52 — Sacha (profil allégé)
+- Retrait d’une partie des ajouts de Justin (tâches 63, 64) : `ImpactCard`, `ArrowsSummary`, `ProfileShortcuts` supprimés ; `app/profil/page.tsx` sur une colonne, en-tête conservé ; README, mémoire.
+- Vérifié : tsc, lint (1 avertissement connu), build ; Chrome avec un faux Supabase à 320, 390 et 1440 px. Non déployé.

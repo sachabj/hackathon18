@@ -415,3 +415,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : Pour toi, Restauration, Aides & bourses, Voyages, Culture & sport ; « Restauration » remplace « Quotidien » et garde les grandes surfaces ; « Voyager » devient « Voyages ».
 - **Écarté** : un 6e onglet pour les grandes surfaces.
 - **Qui** : Sacha
+
+## 2026-11-28 — Profil allégé (tâches 63 et 64)
+- **Décision** : retirer « Mon impact », le résumé grade et Flèches et les raccourcis ; garder le nouvel en-tête (pseudo modifiable).
+- **Pourquoi** : demande de Sacha ; Flèches et bons plans sont déjà dans « Ciblés ».
+- **Qui** : Sacha (travail initial de Justin, à prévenir)

@@ -32,7 +32,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
 - **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
-- **Profil** : pseudo modifiable, impact de ses bons plans (passages, offres partagées, confirmations), grade et Flèches, raccourcis, préférences et localisation.
+- **Profil** : pseudo modifiable, préférences et localisation.
 
 ### Espace commerçant
 - Publier, modifier et retirer ses offres officielles ; statistiques.
