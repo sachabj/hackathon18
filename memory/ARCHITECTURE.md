@@ -45,6 +45,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
+    │   ├── search.ts                 # recherche par mots de l'accueil (dans les offres déjà chargées, sans accents)
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── account.ts                # mot de passe, sessions, export, suppression du compte
     │   ├── places.ts                 # recherche de commerce (Photon / OSM, sans clé) + catégorie proposée d'après le type de lieu
@@ -78,8 +79,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / accueil : 3 « Pour toi » + « Réductions & aides » (offres sans lieu)
-        ├── recherche/page.tsx        # carte (Justin) + fil « Pour toi » / « Tout » et filtres (Sacha)
+        ├── page.tsx                  # / accueil : barre de recherche + onglets « Pour toi » et 4 rubriques (Sacha)
+        ├── recherche/page.tsx        # carte (Justin) + toutes les offres, filtre par catégorie (Sacha), tri Hot (Matteo)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
@@ -147,7 +148,11 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - Distances à vol d'oiseau depuis la position enregistrée, sinon le centre de la zone principale ; durées estimées.
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.
 
-## Tri « Hot » (`src/lib/hot.ts`, onglet « Tout » de Recherche)
+## Accueil (`src/app/page.tsx`)
+- Onglets : « Pour toi » (offres compatibles ; sinon les plus récentes) · Voyager (`transport`) · Aides & bourses (`scholarship`) · Culture & sport (`sport`, `activity`) · Quotidien (`restaurant`, `supermarket`). Les rubriques contiennent les offres sur la carte et sans lieu.
+- La recherche filtre l'onglet affiché (titre, description, lieu, prix, zone, catégorie, conditions) ; pendant une saisie, chaque onglet montre son nombre de résultats.
+
+## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'y suis allé » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'y suis allé »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).
-- Sponsorisés toujours en tête (aucun autre bonus). « Pour toi » reste trié par compatibilité ; l'accueil n'est pas concerné.
+- Sponsorisés toujours en tête (aucun autre bonus). L'accueil n'est pas concerné : ses onglets sont triés par compatibilité (par date sans profil), sponsorisés en tête.
 - Badge « Tendance » (`DealCard`) : ≥ 3 « J'y suis allé » dans les dernières 24 h.

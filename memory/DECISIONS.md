@@ -248,3 +248,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écarté** : bonus date limite proche ou offre officielle (choix de Matteo : seul le sponsoring passe devant) ; Hot sur l'accueil et sur « Pour toi ».
 - **Effet connu** : une offre toute neuve sans réaction passe devant une offre de 2 jours très confirmée (réglable : `HOT.gravity`).
 - **Qui** : Matteo
+
+## 2026-11-27 19h15 — Accueil en onglets (tâche 31)
+- **Décision** : sur l'accueil, sous la barre de recherche (vraie saisie), des onglets « Pour toi » puis les 4 rubriques (Voyager, Aides & bourses, Culture & sport, Quotidien) ; les rubriques rassemblent **toutes** les offres, sur la carte ou non. La page carte perd « Pour toi / Tout » et « Tous / Commerçants / Étudiants » et garde les catégories ; sa liste montre tout, triée « Hot ».
+- **Écartés** : onglets « Offres dématérialisées » et « Commerçants ».
+- **Remplace** : la section « Réductions & aides » (offres sans lieu seulement) et la bascule automatique de la tâche 25. Le badge « Commerçant / Étudiant » reste sur les cartes.
+- **Qui** : Sacha

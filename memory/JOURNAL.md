@@ -270,3 +270,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 19h00 — Matteo (tâche 32 : tri Hot)
 - Nouveau `src/lib/hot.ts` ; modifiés `src/app/recherche/page.tsx` (fichier de Sacha / Justin : tri de « Tout »), `src/components/feed/DealCard.tsx` (badge « Tendance »), `src/lib/useDeals.ts` (`loadedAt`).
 - Vérifié : tsc + lint (1 avertissement connu) + build ; formule testée en script (neuve sans vote 0,27 ; 2 j avec 5 passages récents 0,07 + Tendance ; mêmes passages il y a 40 h 0,05 ; 2 « Plus dispo » négatif). Pas testé dans le navigateur.
+
+### 2026-11-27 19h15 — Sacha (accueil en onglets, tâche 31)
+- `src/app/page.tsx` réécrit (recherche + onglets), nouveau `src/lib/search.ts`, `src/app/recherche/page.tsx` (filtres « Pour toi / Tout » et auteur retirés). Fusion avec le tri Hot de Matteo (tâche 32) : conservé sur la liste de Recherche.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; Chrome sans interface avec un faux Supabase (onglets, recherche, page carte, tri Hot, badge Tendance, profil non rempli). **Pas testé sur la vraie base ni sur téléphone.**

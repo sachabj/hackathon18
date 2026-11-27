@@ -28,7 +28,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 |---|---|---|---|
 | 18 | A | % de compatibilité remplacé par le % de fiabilité sur les cartes | À TESTER (Justin) |
 | 23 | A | Menu carte : enlever la barre du haut | À TESTER (Justin) |
-| 25 | A | « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | À TESTER (Justin) |
+| 25 | A | « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | Remplacée par la tâche 31 (ces onglets n'existent plus) |
 | 26 | A | Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » (inclut l'ancienne tâche 16) | À TESTER (Justin) |
 | 19 | B | Carte : enlever les cercles en pointillés des zones | À TESTER (Justin) |
 | 24 | B | Carte : un seul bouton « revenir à ma localisation » | À TESTER (Justin) |
@@ -42,7 +42,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 32 | E | Tri « Hot » de l'onglet « Tout » (réactions récentes, nombre de « J'y suis allé », fraîcheur) + badge « Tendance » | FAIT (Matteo) : `src/lib/hot.ts` (réglages dans `HOT`), `recherche/page.tsx`, `DealCard.tsx`, `useDeals.ts` (`loadedAt`) ; sans migration. ⚠️ **Sacha (tâche 31)** : le tri Hot est dans l'onglet « Tout » de `recherche/page.tsx` ; si cet onglet disparaît, garder `hotScore()` pour trier la liste restante (ou les rubriques de l'accueil) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
-- `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
+- Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
 - **Matteo** : le bouton « Voir sur la carte » de `PublishForm` pointe maintenant vers `/recherche` (modifié par Justin).
 - **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
 - **Anne-Lise** : `DealCard` affiche la fiabilité ; `/favoris` lit `votes(*)` ; barre du bas à 5 onglets.
@@ -54,6 +54,10 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 ### Bouton « Y aller » : FAIT (Justin)
 - Dans la fiche d'un bon plan placé sur la carte : Apple Plans sur appareil Apple, Google Maps ailleurs (`src/lib/directions.ts`).
 - **Matteo (tâche 28)** : `DealSheet.tsx` et `confidentialite/page.tsx` modifiés : faire un pull avant de les toucher.
+
+### Accueil et page carte (tâche 31, Sacha)
+- **Justin** : `app/page.tsx` réécrit ; sur `app/recherche/page.tsx`, retrait des filtres « Pour toi / Tout » et « Tous / Commerçants / Étudiants » (les badges des cartes restent) ; catégories et carte inchangées.
+- **Matteo** : `hotScore()` conservé : il trie maintenant la liste unique de `/recherche` (sponsorisées en tête) ; pas appliqué aux onglets de l'accueil.
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
@@ -76,7 +80,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 |---|---|---|
 | 11 | Notif sur place simulée (« toujours dispo ? ») + bouton « Simuler ma position » dans `/profil` | TODO |
 | 12 | Données de démo : `reset_demo.sql` (~150 bons plans à 15 km de Bruz, 20 étudiants, 12 commerces **fictifs**) ; **à lancer** (012 déjà présente) ; revérifier les prix sourcés avant la démo | EN COURS (Justin) : testé en local, copie locale à jour |
-| 31 | Accueil en onglets (« Pour toi » + les 4 rubriques) avec barre de recherche ; filtres « Pour toi / Tout » et « Commerçant / Étudiant » retirés de la page carte | EN COURS (Sacha) |
+| 31 | Accueil en onglets (« Pour toi » + les 4 rubriques) avec barre de recherche ; filtres « Pour toi / Tout » et « Commerçant / Étudiant » retirés de la page carte | À TESTER (Sacha) : codé et essayé avec un faux Supabase ; à voir sur la vraie base et sur téléphone ; sans migration |
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
