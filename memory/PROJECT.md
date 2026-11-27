@@ -35,6 +35,12 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 7. **Notification sur place** : « Un bon plan à signaler ici ? » / « Ce bon plan est-il toujours dispo ? ». Démo avec un bouton **« 📍 Simuler ma position »** (le web ne peut pas suivre la position en arrière-plan ; l'app mobile utiliserait le géofencing natif).
 8. **Espace commerçant** : les enseignes publient leurs offres avec un badge « ✔ Offre officielle », peuvent les modifier et les déclarer terminées, voient leurs statistiques, retirent les signalements d'étudiants périmés près de chez eux (≤ 75 m, même catégorie) et payent pour une mise en avant (9,90 € / 7 jours, paiement simulé ; = **modèle économique** du pitch). Compte commerçant choisi à l'inscription.
 
+## Évolutions décidées (pas encore codées, tâches 18 à 27 de `TASKS.md`) ✅
+- Accueil simple (3 offres « Pour toi » + « Réductions & aides »), carte dans un onglet « Recherche ».
+- Cartes : % de fiabilité à la place du % de compatibilité.
+- Inscription : localisation ou pays → ville-campus, fréquence de voyage + moyens, « Boursier ? ».
+- Publication : pré-remplissage IA conservé, doublons cherchés sans IA (« Bon plan validé »), plus de relecture IA.
+
 ## Refusé ❌
 - Comptes Asso / BDE.
 

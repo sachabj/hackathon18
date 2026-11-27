@@ -210,3 +210,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Demande explicite d'Anne-Lise allant plus loin que le document : **plus aucun emoji nulle part dans l'app** (remplacés par ces icônes, ou simplement retirés quand le texte est une chaîne brute sans JSX possible — `<option>`, libellés joints, raisons de `matching.ts`).
 - Fichiers touchés : à peu près tous les composants et pages (`constants.ts`, `rules.ts`, `offerStats.ts`, `matching.ts`, toute la préférence/profil/commerçant/publication/carte/fil, `page.tsx`, `favoris`, `login`, `confidentialite`, `compte`, `NavBar`, `account/*`, etc.) — changement **uniquement visuel**, aucune logique, donnée, route ni appel Supabase modifié.
 - Vérifié : `npx tsc --noEmit`, `npm run lint` et `npm run build` tous OK. Pas d'outil de navigateur disponible dans cette session pour un test visuel réel (comme à chaque fois) : à vérifier en lançant `npm run dev`.
+
+### 2026-11-27 17h15 — Justin (nouvelles modifications, cadrage)
+- 10 modifications demandées par l'équipe ajoutées dans `TASKS.md` (tâches 18 à 27, lots A à D, toutes libres) ; `PROJECT.md`, `DECISIONS.md`. Aucun code modifié.

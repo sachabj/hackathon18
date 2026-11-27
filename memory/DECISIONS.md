@@ -104,6 +104,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écarté** : créer ces comptes avec le mot de passe de démo.
 - **Qui** : Justin
 
+## 2026-11-27 17h15 — Nouvelles modifications (tâches 18 à 27)
+- **Décision** : accueil simplifié (3 offres « Pour toi » + « Réductions & aides ») et carte dans un onglet « Recherche » ; % de fiabilité à la place du % de compatibilité ; carte sans cercles de zone ni boutons de zone ; inscription avec menu pays / ville-campus (zones actuelles), fréquence de voyage + moyens, question « Boursier ? » à la place des choix Carte Sortir et Bourses ; publication : pré-remplissage IA gardé, relecture IA remplacée par une recherche de doublon sans IA où l'étudiant choisit.
+- **Écarté** : tout attribuer d'office (tâches libres) ; supprimer les catégories Carte Sortir et Bourses ; ajouter des campus.
+- **Qui** : Justin (réponses aux questions de cadrage)
+
 ## EN ATTENTE DE VALIDATION
 - (rien pour l'instant)
 

@@ -34,7 +34,38 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17 | Profil, ajouts : compte et sécurité, mes données (RGPD), autorisations, crédits (sur la page construite par Justin) | EN COURS (Sacha) : sécurité du compte et confidentialité codées (`/compte`, `/confidentialite`), **migration 009 à exécuter** puis test réel ; crédits et badges à faire |
-| 16 | Offres immatérielles (réductions SNCF, aides, Carte Sortir) : rubrique « Réductions & aides » reliée à la homepage | TODO — 💡 proposition à valider (Sacha + Anne-Lise) |
+| 16 | Offres immatérielles (réductions SNCF, aides) : rubrique « Réductions & aides » sur l'accueil | TODO — validée, **intégrée à la tâche 26** |
+| 18 | [Lot A] % de compatibilité remplacé par le % de fiabilité sur les cartes | TODO |
+| 19 | [Lot B] Carte : enlever les cercles en pointillés des zones | TODO |
+| 20 | [Lot C] 1re connexion : « Me localiser » + menu pays → ville-campus | TODO |
+| 21 | [Lot C] Inscription : une question « fréquence de voyage » + moyens | TODO |
+| 22 | [Lot C] Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration 010) | TODO |
+| 23 | [Lot A] Menu carte : enlever la barre du haut | TODO |
+| 24 | [Lot B] Carte : un seul bouton « revenir à ma localisation » (plus de Tout / Bruz / Ker Lann / Rennes) | TODO |
+| 25 | [Lot A] « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | TODO |
+| 26 | [Lot A] Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » | TODO |
+| 27 | [Lot D] Publication : relecture IA remplacée par une recherche de doublon sans IA (« Bon plan validé ») | TODO |
+
+## 🆕 Modifications demandées (tâches 18 à 27) — cadrées par Justin le 27/11, aucun code écrit
+**Toutes libres.** Avant de coder : mettre `EN COURS (prénom)` dans le tableau et pousser. **Prendre un lot entier** (les tâches d'un lot touchent les mêmes fichiers). Les règles de CLAUDE.md (questions avant de coder) restent valables.
+
+### Lot A — accueil, recherche, fil (`src/app/page.tsx`, `NavBar.tsx`, `DealCard.tsx`)
+- **26 Accueil** : page simple avec les 3 meilleures offres « Pour toi » (`rankDeals`), une entrée vers la recherche et une rubrique « Réductions & aides » (offres `scope !== "local"`, voir tâche 16). Nouvel onglet **« Recherche »** avec la carte ; NavBar : Accueil / Recherche / Partager / Favoris / Profil. *À confirmer* : onglets « Pour toi » / « Tout », filtres et liste complète dans « Recherche ».
+- **18 Score** : retirer le % de compatibilité affiché en haut à droite des cartes et mettre **au même endroit le % de fiabilité** (`reliability(votes)`, `rules.ts`). La compatibilité continue de trier « Pour toi ». Les votes sont déjà chargés par `useDeals` (`votes(*)`, à ajouter au type ; vérifier les favoris). Pas de `Date.now()` pendant le rendu. *À confirmer* : affichage quand il n'y a aucun vote.
+- **23 Barre du haut** : sur l'écran de la carte, enlever la barre « logo + ShareWood » (interprétation : les boutons de zone relèvent de la tâche 24).
+- **25 Bascule** : sur « Pour toi », choisir une catégorie absente du profil passe automatiquement sur « Tout » (sinon la liste est vide).
+
+### Lot B — carte (`src/components/map/DealsMap.tsx`)
+- **19** : supprimer les cercles en pointillés des zones (garder le point bleu et le cercle de précision GPS).
+- **24** : supprimer les boutons « Tout / Bruz / Ker Lann / Rennes » ; un seul bouton qui revient à la **position GPS**, ou à défaut à la **localisation choisie** à l'inscription (`homeZoneId`).
+
+### Lot C — inscription (`PreferencesWizard.tsx`, `matching.ts`, `preferences.ts`)
+- **20** : étape lieu = bouton « Me localiser » **et** menu Pays → Ville-campus. Choix : France → Rennes, Bruz, Ker Lann (zones actuelles, pas de migration). *À confirmer* : garder « Aussi des bons plans de… ».
+- **21** : remplacer « Tu rentres chez tes parents ? » et « Envie de voyager ? » par **« Tu voyages à quelle fréquence ? »** (Souvent / Parfois / Rarement), puis les moyens (train, avion, bus, covoiturage). Réutiliser la colonne `home_visits` (pas de migration) ; adapter `isTraveler`, les raisons de `matching.ts` et le récapitulatif.
+- **22** : retirer **Carte Sortir et Bourses & aides** des choix de catégories à l'inscription, demander **« Boursier : oui / non »** ; la réponse sert à proposer les offres d'aides. Les deux catégories restent pour les offres, filtres et publication. **Migration 010** (colonne dans `preferences` + GRANT), `schema.sql`, `confidentialite/page.tsx` et export des données à mettre à jour.
+
+### Lot D — publication (`PublishForm.tsx`, `lib/ai/*`, `api/assist/route.ts`)
+- **27** : **garder le pré-remplissage IA** (photo / texte) et la photo de preuve ; **supprimer la relecture IA** avant publication (titre, modération, doublon). La remplacer par une recherche de doublon **sans IA** (même catégorie, même lieu ou zone, titre / prix proches). Si une offre ressemble, **l'étudiant choisit** : « C'est la même » → vote 👍 sur l'existante + message **« Bon plan validé »** (pas de second bon plan) ; « Non, publier la mienne » → publication normale. Mettre à jour la mention IA (`AssistPanel`, confidentialité). Conséquence : plus de modération automatique. Prévoir le cas où l'offre trouvée est la sienne (pas de vote sur son propre bon plan).
 
 ## Pour démarrer sa tâche
 Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` : partir de là. Règles partagées dans `src/lib/rules.ts`, types dans `src/lib/types.ts`, catégories et zones dans `src/lib/constants.ts`.
