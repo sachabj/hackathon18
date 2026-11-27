@@ -103,3 +103,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 14h40 — Justin (lancer seed_demo)
 - Procédure expliquée (SQL Editor). ⚠️ L’auteur des exemples est le plus ancien profil : supprimer les comptes `test.claude.*` AVANT de lancer `seed_demo.sql` (sinon leur suppression efface les exemples).
 - La table `preferences` répond côté API (migration 004 apparemment appliquée) ; seed pas encore confirmé.
+
+### 2026-11-27 — Matteo (synchro)
+- `git pull --rebase` (87e397d → 76aa69e) + `npm install` (0 faille). Aucun code modifié.
