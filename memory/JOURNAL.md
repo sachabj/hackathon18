@@ -106,3 +106,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-27 — Matteo (synchro)
 - `git pull --rebase` (87e397d → 76aa69e) + `npm install` (0 faille). Aucun code modifié.
+
+### 2026-11-27 — Matteo (idée : publication par photo)
+- Relecture d'un prompt d'extraction (photo d'affiche en magasin → champs du bon plan). Aucun code écrit ; à discuter avec Anne-Lise (tâche 6) avant intégration.
