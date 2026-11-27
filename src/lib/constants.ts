@@ -88,6 +88,18 @@ export const HOME_VISITS: Record<HomeVisits, { label: string; Icon: IconComponen
   never: { label: "Rarement", Icon: SofaIcon, hint: "Ou presque jamais" },
 };
 
+/**
+ * Catégories réservées à ceux qui y ont droit : elles ne sont pas proposées comme priorités à l'inscription,
+ * et n'entrent dans « Pour toi » que selon les réponses « Boursier ? » / « Carte Sortir ? ».
+ */
+export const ELIGIBILITY_CATEGORIES: DealCategory[] = ["scholarship", "carte_sortir"];
+
+/** Page d'information sur la Carte Sortir. */
+export const CARTE_SORTIR_URL = "https://metropole.rennes.fr";
+
+/** Menu « pays → ville-campus » de l'inscription (ids de ZONES). */
+export const COUNTRIES = [{ id: "fr", name: "France", zoneIds: ["rennes", "bruz", "ker-lann"] }] as const;
+
 /** Moyens proposés pour les longs trajets (mêmes ids que deals.subcategory). */
 export const TRAVEL_MODES: DealSubcategory[] = ["train", "plane", "bus", "carpool"];
 

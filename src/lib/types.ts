@@ -53,6 +53,9 @@ export interface Vote {
   created_at: string;
 }
 
+/** Bon plan lu avec ses votes (`select("*, votes(*)")`) → fiabilité affichée sur les cartes. */
+export type DealWithVotes = Deal & { votes?: Vote[] };
+
 export interface Favorite {
   user_id: string;
   deal_id: string;
@@ -106,10 +109,13 @@ export interface Preferences {
   transport_modes: TransportMode[];
   budget_profile: BudgetProfile | null;
   activities: ActivityId[];
-  /** Retours chez les parents, envies de voyage (migration 006) */
+  /** Fréquence de voyage (migration 006 ; `wants_travel` n'est plus demandé) */
   home_visits?: HomeVisits | null;
   wants_travel?: boolean | null;
   travel_modes?: DealSubcategory[] | null;
+  /** Aides (migration 010) : null = pas répondu */
+  is_scholarship?: boolean | null;
+  has_carte_sortir?: boolean | null;
   updated_at: string;
 }
 

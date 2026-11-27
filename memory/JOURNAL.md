@@ -230,3 +230,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Vérifié : tsc + lint + build ; Playwright sur la vraie base (vote et insertion interceptés, rien d'écrit) : Intermarché Bruz → « Déjà partagé ici (1) » puis « C'est la même offre » → « Bon plan validé » ; transport « Partout » → « Carte Avantage Jeune SNCF » proposée, « Non, publier la mienne » → publié ; **0 appel à l'IA**.
 - Défaut D1 : corrigé côté app (pas de vote proposé sur son propre bon plan) ; règle en base encore à faire.
 - L'ancien compte de test a été effacé (reset_demo) ; nouveau : `test.claude.matteo.1795797148943@example.com` (aucun bon plan, à supprimer si besoin).
+
+### 2026-11-27 17h38 — Justin (tâches 18 à 26)
+- Nouveaux `app/page.tsx` (accueil), `app/recherche/page.tsx`, `010_student_aids.sql` ; modifiés : carte, `NavBar`, `RoleGate`, `DealCard`, favoris, parcours d'inscription, `matching`, préférences, confidentialité, `reset_demo.sql`.
+- Vérifié : types + lint (1 avertissement connu) + build ; base sur Postgres local (reset_demo avec et sans 010, RLS ; un « échec » attendu du test au 2e passage) ; parcours dans Chrome sans interface avec un faux Supabase, GPS refusé et autorisé. Corrigé au passage : la carte pouvait rester sur la zone au lieu du GPS (zoom animé). **Pas testé sur la vraie base ni sur téléphone.**

@@ -328,7 +328,7 @@ export default function PublishForm() {
           Ta contribution te donne 7 jours d&apos;accès complet aux nouveaux bons plans.
         </p>
         <div className="mt-8 flex w-full flex-col gap-3">
-          <Link href="/" className="sw-btn-primary">
+          <Link href="/recherche" className="sw-btn-primary">
             Voir sur la carte
           </Link>
           <button type="button" onClick={reset} className="sw-btn-secondary">

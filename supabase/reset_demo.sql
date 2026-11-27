@@ -87,6 +87,16 @@ begin
       u.home_visits, u.wants_travel, u.travel::text[]);
   end loop;
 
+  -- Aides (colonnes de la migration 010 ; ignoré tant qu'elle n'est pas lancée).
+  if exists (select 1 from information_schema.columns
+              where table_schema = 'public' and table_name = 'preferences' and column_name = 'is_scholarship') then
+    update public.preferences x
+       set is_scholarship = a.email in ('demo.ines@example.com', 'demo.yanis@example.com'),
+           has_carte_sortir = a.email = 'demo.sarah@example.com'
+      from auth.users a
+     where a.id = x.user_id and a.email like 'demo.%@example.com';
+  end if;
+
   -- ---------- Bons plans ----------
   insert into public.deals (title, description, category, subcategory, scope, zone_id, place_name, lat, lng,
     price_info, price_level, tags, expires_at, deadline_at, author_id, created_at)

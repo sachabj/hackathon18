@@ -196,3 +196,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : choix de Matteo (questions posées avant de coder), cadrage de Justin (tâche 27). Plus simple, gratuit et instantané.
 - **Conséquence** : plus de modération automatique (titres injurieux, spam) ; reste le signalement 👎 par les étudiants.
 - **Qui** : Matteo
+
+## 2026-11-27 17h38 — Accueil, recherche, carte et inscription (tâches 18 à 26)
+- **Accueil** : 3 offres « Pour toi » (sinon les plus récentes) + rubriques dépliables « Réductions & aides » ; **Recherche** : carte + fil complet, sans le résumé des préférences.
+- **Bascule** : une catégorie sans aucune offre « Pour toi » fait passer sur « Tout » (couvre « absente du profil » sans basculer quand il y a des trajets ou aides à montrer).
+- **Inscription** : voyage = une fréquence + moyens, même pour « Rarement » (priorité faible) ; « Boursier ? » et « Carte Sortir (ou droit) ? » déclarés par l'étudiant, qui décident de « Pour toi ».
+- **Écarté** : déduire l'éligibilité à la Carte Sortir de la bourse (conditions de ressources).
+- **Qui** : Justin (réponses aux questions de cadrage)

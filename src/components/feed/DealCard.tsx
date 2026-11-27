@@ -8,7 +8,8 @@ import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { isOwnPhotoUrl } from "@/lib/photos";
-import type { Deal } from "@/lib/types";
+import { trustPercent } from "@/lib/rules";
+import type { DealWithVotes } from "@/lib/types";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
@@ -20,7 +21,7 @@ export default function DealCard({
   favorite,
   onToggleFavorite,
 }: {
-  deal: Deal;
+  deal: DealWithVotes;
   match?: Match;
   /** Favori ou non ; le bouton cœur n'est affiché que si ce prop (et onToggleFavorite) est fourni. */
   favorite?: boolean;
@@ -32,6 +33,7 @@ export default function DealCard({
     (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
 
   const boosted = isBoosted(deal);
+  const trust = deal.votes ? trustPercent(deal.votes) : undefined;
   const [open, setOpen] = useState(false);
   const [zoom, setZoom] = useState(false);
   const photo = isOwnPhotoUrl(deal.photo_url) ? deal.photo_url : null;
@@ -67,12 +69,16 @@ export default function DealCard({
             {where ?? category.label}
           </p>
         </div>
-        {match?.forYou && (
+        {trust !== undefined && (
           <span
             className="sw-badge shrink-0"
-            style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}
+            style={
+              trust === null
+                ? { backgroundColor: "var(--color-lilac)", color: "var(--color-aubergine)" }
+                : { backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
+            }
           >
-            {match.score} %<span className="sr-only"> compatible avec ton profil</span>
+            {trust === null ? "Nouveau" : `${trust} % fiable`}
           </span>
         )}
         {onToggleFavorite && (

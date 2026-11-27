@@ -59,7 +59,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     ├── components/
     │   ├── icons.tsx                 # ~60 icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
-    │   ├── NavBar.tsx                # barre du bas : Carte / Partager / Favoris / Profil (icônes `icons.tsx`)
+    │   ├── NavBar.tsx                # barre du bas : Accueil / Recherche / Partager / Favoris / Profil (icônes `icons.tsx`)
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
@@ -72,7 +72,8 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...}/>), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / carte (Justin) + fil « Pour toi » et filtres (Sacha)
+        ├── page.tsx                  # / accueil : 3 « Pour toi » + « Réductions & aides » (offres sans lieu)
+        ├── recherche/page.tsx        # carte (Justin) + fil « Pour toi » / « Tout » et filtres (Sacha)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
         ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
@@ -100,7 +101,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11)
+- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ⏳ **à exécuter**
 - `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Une adresse à garder sans compte est ignorée et listée à la fin (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
@@ -109,6 +110,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - `deals.boosted_until` (mise en avant, via `boost_offer`) et `deals.ended_by` (via `set_nearby_deal_ended`) : non écrivables directement
 - Fonctions commerçant : `my_offer_stats()`, `deals_near_my_business()` (≤ 75 m, même catégorie, bons plans d'étudiants)
 - `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], home_visits (often | sometimes | never), wants_travel, travel_modes[] (ids de sous-catégories transport), updated_at
+- `preferences.is_scholarship`, `has_carte_sortir` (010, booléens facultatifs) ; `wants_travel` n'est plus demandé
 - `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
 - `deals.photo_url` (008) : photo de preuve, uniquement un lien vers le stockage public **`deal-photos`** (contrainte SQL) ; dépôt par l'auteur dans `<son id>/…` (policies `storage.objects`) via `src/lib/photos.ts` ; affichée dans le fil (`DealCard`)
 - `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités
@@ -129,7 +131,9 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 
 ## Personnalisation (`src/lib/matching.ts`)
 - Score sur 100 = points obtenus / points applicables (un critère non renseigné ne compte pas) : pôle de dépenses 40 (−4 par rang), localisation 25 (distance selon les transports, ou zone suivie), budget 20, activité ou transport emprunté 15.
-- **Voyages** : un transport longue distance (hors bus local) dans un mode choisi compte comme un pôle suivi (36 points si retours fréquents, sinon 28) pour qui rentre chez ses parents ou veut voyager.
+- **Voyages** : un transport longue distance (hors bus local) compte comme un pôle suivi selon la fréquence de voyage (souvent 36, parfois 28, rarement 16 et seulement dans un mode choisi).
+- **Aides** : `scholarship` et `carte_sortir` ne sont plus des priorités ; elles sont dans « Pour toi » seulement si l'étudiant a répondu oui à « Boursier » / « Carte Sortir » (et si l'offre est à portée).
+- Cartes : badge de **fiabilité** (`trustPercent`, « Nouveau » sans vote) ; la compatibilité ne sert qu'au tri et aux raisons.
 - **Budget** : change le score et l'ordre, mais ne retire jamais un bon plan.
 - **« Pour toi »** : score hors budget ≥ 55, à portée, et catégorie suivie, activité / transport aimé ou trajet utile. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).
 - Distances à vol d'oiseau depuis la position enregistrée, sinon le centre de la zone principale ; durées estimées.

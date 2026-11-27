@@ -35,6 +35,16 @@ export function reliability(votes: Vote[], now = Date.now()) {
   };
 }
 
+/**
+ * Fiabilité en %, ou null sans vote. Le rapport pondéré ne dépend pas de l'instant choisi : on prend celui
+ * du vote le plus récent, ce qui évite `Date.now()` pendant l'affichage.
+ */
+export function trustPercent(votes: Vote[]) {
+  const latest = Math.max(0, ...votes.map((v) => new Date(v.created_at).getTime()));
+  const { score } = reliability(votes, latest);
+  return score === null ? null : Math.round(score * 100);
+}
+
 /** Nombre de votes minimum avant de pouvoir masquer un bon plan : s'adapte au nb d'utilisateurs actifs de la zone. */
 export function minVotesToHide(activeUsersInZone: number) {
   return Math.min(10, Math.max(2, Math.ceil(activeUsersInZone * 0.05)));

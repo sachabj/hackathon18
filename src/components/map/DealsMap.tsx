@@ -2,7 +2,7 @@
 
 // Responsable : Justin (carte). Chargée uniquement côté client via DealsMapLoader.
 import L from "leaflet";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
 import CategoryIcon, { categoryIconSvg } from "@/components/CategoryIcon";
 import { CheckBadgeIcon, PinIcon, StarIcon } from "@/components/icons";
@@ -53,20 +53,24 @@ const formatDate = (iso: string) =>
 export default function DealsMap({
   deals,
   homeZoneId,
+  savedPosition,
 }: {
   deals: Deal[];
-  /** Zone principale de l'étudiant : vue par défaut tant que le GPS n'a pas répondu (ou s'il est refusé). */
+  /** Zone choisie à l'inscription : localisation de repli tant que le GPS n'a pas répondu (ou s'il est refusé). */
   homeZoneId?: string | null;
+  /** Position enregistrée par « Me localiser » à l'inscription, préférée au centre de la zone. */
+  savedPosition?: { lat: number; lng: number } | null;
 }) {
   const [map, setMap] = useState<L.Map | null>(null);
-  /** Vue choisie par l'utilisateur ; null tant qu'il n'a rien choisi. */
-  const [choice, setChoice] = useState<string | null>(null);
   const { position, error, retry } = useUserPosition();
   const home = ZONES.find((z) => z.id === homeZoneId);
-  const selected = choice ?? (position ? "me" : (home?.id ?? "all"));
+  const savedLat = savedPosition?.lat;
+  const savedLng = savedPosition?.lng;
   const [visible, setVisible] = useState(false);
   /** Bon plan dont la fiche est ouverte */
   const [detail, setDetail] = useState<Deal | null>(null);
+  /** La carte est-elle restée sur la localisation de l'étudiant (flèche pleine) ? */
+  const [centered, setCentered] = useState(true);
   /** Vrai dès que la vue ne doit plus être recentrée automatiquement. */
   const viewTaken = useRef(false);
 
@@ -78,21 +82,33 @@ export default function DealsMap({
     return () => {
       setVisible(false);
       setMap(null);
-      setChoice(null);
       setDetail(null);
+      setCentered(true);
       viewTaken.current = false;
     };
   }, []);
 
+  /** Vue sur la localisation choisie à l'inscription ; false s'il n'y en a pas. */
+  const showChosen = useCallback(() => {
+    if (!map) return false;
+    // Sans animation : un zoom animé en cours ferait ignorer le centrage sur le GPS arrivé juste après.
+    if (savedLat !== undefined && savedLng !== undefined)
+      map.setView([savedLat, savedLng], USER_ZOOM - 1, { animate: false });
+    else if (home)
+      map.fitBounds(L.latLng(home.lat, home.lng).toBounds(Math.max(home.radiusM, 3000) * 2), { animate: false });
+    else return false;
+    return true;
+  }, [map, home, savedLat, savedLng]);
+
   useEffect(() => {
-    if (!map || !home || position || viewTaken.current) return;
-    map.fitBounds(L.latLng(home.lat, home.lng).toBounds(Math.max(home.radiusM, 3000) * 2));
-  }, [map, home, position]);
+    if (!position && !viewTaken.current) showChosen();
+  }, [showChosen, position]);
 
   // L'utilisateur a déplacé la carte avant que le GPS réponde : on ne la lui reprend pas.
   useEffect(() => {
     const take = () => {
       viewTaken.current = true;
+      setCentered(false);
     };
     map?.on("dragstart", take);
     return () => {
@@ -104,23 +120,20 @@ export default function DealsMap({
   useEffect(() => {
     if (!map || !position || viewTaken.current) return;
     viewTaken.current = true;
-    map.setView([position.lat, position.lng], USER_ZOOM);
+    map.setView([position.lat, position.lng], USER_ZOOM, { animate: false });
   }, [map, position]);
 
-  function focus(id: string) {
-    viewTaken.current = true;
-    setChoice(id);
-    const zone = ZONES.find((z) => z.id === id);
-    map?.flyToBounds(zone ? zoneBounds(zone) : ALL_BOUNDS, { duration: 0.8 });
-  }
-
-  function locateMe() {
-    setChoice("me");
-    if (position) map?.flyTo([position.lat, position.lng], USER_ZOOM, { duration: 0.8 });
-    else {
-      viewTaken.current = false;
-      retry();
+  /** Retour à ma position GPS, sinon à la localisation choisie (le GPS est redemandé). */
+  function recenter() {
+    setCentered(true);
+    if (position) {
+      viewTaken.current = true;
+      map?.flyTo([position.lat, position.lng], USER_ZOOM, { duration: 0.8 });
+      return;
     }
+    viewTaken.current = false;
+    if (!showChosen()) map?.fitBounds(ALL_BOUNDS);
+    retry();
   }
 
   return (
@@ -129,15 +142,6 @@ export default function DealsMap({
       {visible && (
         <MapContainer ref={setMap} bounds={ALL_BOUNDS} zoomControl={false} className="h-full w-full">
           <BaseMap />
-          {ZONES.map((z) => (
-            <Circle
-              key={z.id}
-              center={[z.lat, z.lng]}
-              radius={z.radiusM}
-              interactive={false}
-              pathOptions={{ color: "#1e3a2f", weight: 1.5, opacity: 0.45, dashArray: "4 8", fillOpacity: 0.025 }}
-            />
-          ))}
           {position && (
             <>
               <Circle
@@ -161,8 +165,7 @@ export default function DealsMap({
                 title={d.title}
                 eventHandlers={{ popupopen: () => recordView(d) }}
               >
-                {/* Marges : la fiche ne doit pas passer sous les boutons de zone. */}
-                <Popup autoPanPaddingTopLeft={[16, 60]} autoPanPaddingBottomRight={[16, 24]} maxHeight={180}>
+                <Popup autoPanPaddingTopLeft={[16, 16]} autoPanPaddingBottomRight={[16, 24]} maxHeight={180}>
                   <div className="flex min-w-48 flex-col gap-1">
                     <span
                       className="sw-badge self-start"
@@ -208,24 +211,6 @@ export default function DealsMap({
 
       {detail && <DealSheet deal={detail} onClose={() => setDetail(null)} />}
 
-      {/* Choix de la zone, flottant au-dessus de la carte. */}
-      <div className="pointer-events-none absolute inset-x-1 top-1 z-[1000] flex justify-center">
-        <div className="pointer-events-auto flex max-w-full gap-2 overflow-x-auto p-2 [scrollbar-width:none]">
-          {[{ id: "all", name: "Tout" }, ...ZONES].map((z) => (
-            <button
-              key={z.id}
-              type="button"
-              onClick={() => focus(z.id)}
-              aria-pressed={selected === z.id}
-              className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition active:scale-95 ${selected === z.id ? "shadow-lg" : "wz-glass"}`}
-              style={selected === z.id ? { backgroundColor: "var(--color-forest)", color: "var(--color-surface)" } : { color: "var(--color-ink)" }}
-            >
-              {z.name}
-            </button>
-          ))}
-        </div>
-      </div>
-
       <div className="pointer-events-none absolute bottom-6 left-3 right-3 z-[1000] flex flex-col items-end gap-2 *:pointer-events-auto">
         {error && (
           <p role="alert" className="wz-glass self-stretch rounded-2xl px-4 py-2 text-sm text-red-600">
@@ -234,10 +219,10 @@ export default function DealsMap({
         )}
         <button
           type="button"
-          onClick={locateMe}
-          aria-label="Autour de moi"
-          title="Autour de moi"
-          aria-pressed={selected === "me"}
+          onClick={recenter}
+          aria-label="Revenir à ma localisation"
+          title="Revenir à ma localisation"
+          aria-pressed={centered}
           className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full transition active:scale-95 ${!position && !error ? "animate-pulse" : ""}`}
           style={{ color: "var(--color-forest)" }}
         >
@@ -245,7 +230,7 @@ export default function DealsMap({
           <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden>
             <path
               d="M21 3 3 10.5l7.8 2.7L13.5 21 21 3Z"
-              fill={selected === "me" && position ? "currentColor" : "none"}
+              fill={centered && position ? "currentColor" : "none"}
               stroke="currentColor"
               strokeWidth="2"
               strokeLinejoin="round"

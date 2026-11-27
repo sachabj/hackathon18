@@ -532,3 +532,9 @@ grant execute on function public.my_kept_deals(), public.delete_my_account() to 
 drop policy if exists "photos : voir les siennes" on storage.objects;
 create policy "photos : voir les siennes" on storage.objects for select to authenticated
   using (bucket_id = 'deal-photos' and (storage.foldername(name))[1] = auth.uid()::text);
+
+-- =====================================================================
+-- Aides : boursier, Carte Sortir (voir migrations/010_student_aids.sql)
+-- =====================================================================
+alter table public.preferences add column if not exists is_scholarship boolean;
+alter table public.preferences add column if not exists has_carte_sortir boolean;

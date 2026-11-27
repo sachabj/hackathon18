@@ -1,71 +1,61 @@
 "use client";
 
-// Carte : Justin · Fil, filtres et « Pour toi » : Sacha
+// Accueil : les meilleures offres « Pour toi », l'accès à la recherche et les réductions sans lieu.
 import Link from "next/link";
-import { Fragment, useState, type ComponentType } from "react";
-import CategoryIcon from "@/components/CategoryIcon";
+import { useState } from "react";
 import DealCard from "@/components/feed/DealCard";
-import { SuitcaseIcon, TargetIcon } from "@/components/icons";
-import DealsMap from "@/components/map/DealsMapLoader";
-import { APP_NAME, BUDGET_PROFILES, CATEGORIES, SUBCATEGORIES, TRANSPORT_MODES, ZONES } from "@/lib/constants";
-
-type IconComponent = ComponentType<{ className?: string }>;
-import { isTraveler, rankDeals, toStudentProfile, type Match } from "@/lib/matching";
+import { ArrowRightIcon, ChevronDownIcon, SearchIcon } from "@/components/icons";
+import { APP_NAME } from "@/lib/constants";
+import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
-import type { Deal, DealCategory } from "@/lib/types";
+import type { DealCategory, DealWithVotes } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
+
+const TOP_COUNT = 3;
+
+/** Rubriques des offres sans lieu précis (sur une zone ou partout), déduites de la catégorie. */
+const SECTIONS: { id: string; label: string; categories: DealCategory[] }[] = [
+  { id: "travel", label: "Voyager", categories: ["transport"] },
+  { id: "aids", label: "Aides & bourses", categories: ["scholarship"] },
+  { id: "culture", label: "Culture & sport", categories: ["carte_sortir", "sport", "activity"] },
+  { id: "daily", label: "Quotidien", categories: ["restaurant", "supermarket"] },
+];
 
 export default function Page() {
   const { deals, loading, error } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const [chosenTab, setTab] = useState<"forYou" | "all" | null>(null);
-  const [category, setCategory] = useState<DealCategory | null>(null);
+  const [open, setOpen] = useState<string | null>(null);
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
-  const tab = me ? (chosenTab ?? "forYou") : "all";
-  const ranked: { deal: Deal; match?: Match }[] = me
-    ? rankDeals(deals, me)
-    : deals.map((deal) => ({ deal }));
-  const forYouCount = ranked.filter((r) => r.match?.forYou).length;
+  const ranked: { deal: DealWithVotes; match?: Match }[] = me ? rankDeals(deals, me) : deals.map((deal) => ({ deal }));
+  const forYou = ranked.filter((r) => r.match?.forYou);
+  // Offres mises en avant en tête, puis les plus compatibles. Sans « Pour toi » : les plus récentes.
+  const top = (
+    forYou.length > 0
+      ? [...forYou].sort((a, b) => Number(isBoosted(b.deal)) - Number(isBoosted(a.deal)))
+      : deals.map((deal) => ranked.find((r) => r.deal.id === deal.id)!)
+  ).slice(0, TOP_COUNT);
 
-  // « Tout » reste chronologique ; « Pour toi » est trié par compatibilité.
-  const inTab =
-    tab === "forYou"
-      ? ranked.filter((r) => r.match?.forYou)
-      : [...ranked].sort((a, b) => b.deal.created_at.localeCompare(a.deal.created_at));
-  const filtered = category ? inTab.filter((r) => r.deal.category === category) : inTab;
-  // Offres mises en avant en tête (sans les ajouter à « Pour toi » si elles ne correspondent pas).
-  const shown = [...filtered].sort((a, b) => Number(isBoosted(b.deal)) - Number(isBoosted(a.deal)));
-  const mapDeals = shown.map((r) => r.deal).filter((d) => d.scope === "local");
-
-  // Les priorités de l'étudiant en premier.
-  const categories = (Object.keys(CATEGORIES) as DealCategory[]).sort((a, b) => {
-    const rank = (c: DealCategory) => {
-      const i = me?.categories.indexOf(c) ?? -1;
-      return i < 0 ? Infinity : i;
-    };
-    return rank(a) === rank(b) ? 0 : rank(a) - rank(b);
-  });
-  const home = ZONES.find((z) => z.id === me?.homeZoneId);
+  const remote = ranked.filter((r) => r.deal.scope !== "local");
+  const sections = SECTIONS.map((s) => ({
+    ...s,
+    items: remote.filter((r) => s.categories.includes(r.deal.category)),
+  })).filter((s) => s.items.length > 0);
   const busy = loading || loadingProfile;
 
-  // Puces de la bannière préférences : zone, transports, voyages, budget (icône + texte).
-  type Chip = { Icon: IconComponent | null; text: string };
-  const chips: Chip[] = [];
-  if (me) {
-    if (home) chips.push({ Icon: null, text: home.name });
-    for (const m of me.transportModes) chips.push({ Icon: TRANSPORT_MODES[m].Icon, text: TRANSPORT_MODES[m].label });
-    if (isTraveler(me)) chips.push({ Icon: SuitcaseIcon, text: me.travelModes.map((m) => SUBCATEGORIES[m].label).join(", ") });
-    if (me.budget) chips.push({ Icon: BUDGET_PROFILES[me.budget].Icon, text: BUDGET_PROFILES[me.budget].label });
-  }
+  const card = ({ deal, match }: (typeof ranked)[number]) => (
+    <li key={deal.id}>
+      <DealCard deal={deal} match={match} favorite={isFavorite(deal.id)} onToggleFavorite={toggleFavorite} />
+    </li>
+  );
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col">
+    <div className="mx-auto flex w-full max-w-md flex-col">
       <header
-        className="sticky top-0 z-[1001] flex items-center gap-2 px-4 py-3 backdrop-blur"
+        className="sticky top-0 z-10 flex items-center gap-2 px-4 py-3 backdrop-blur"
         style={{ borderBottom: "1px solid var(--color-border)", backgroundColor: "color-mix(in srgb, var(--color-surface) 95%, transparent)" }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
@@ -73,117 +63,76 @@ export default function Page() {
         <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
       </header>
 
-      <div className="px-4 py-3">
-        <h1 className="text-sm font-medium text-[var(--color-muted)]">
-          {profile?.username ? `Bonjour ${profile.username}` : "Les bons plans étudiants"}
-        </h1>
-        {me && chips.length > 0 && (
-          <Link
-            href="/onboarding"
-            className="mt-2 flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-sm"
-            style={{ borderColor: "var(--color-border)" }}
-          >
-            <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              {chips.map(({ Icon, text }, i) => (
-                <Fragment key={i}>
-                  <span className="flex items-center gap-1">
-                    {Icon && <Icon className="h-3.5 w-3.5" />} {text}
-                  </span>
-                </Fragment>
-              ))}
-            </span>
-            <span className="shrink-0 font-medium" style={{ color: "var(--color-forest)" }}>Modifier</span>
-          </Link>
-        )}
-        {profile && !profile.onboarded && (
-          <Link href="/onboarding" className="mt-2 block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
-            <span className="block font-medium">Personnalise tes bons plans</span>
-            <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
-              1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
-            </span>
-          </Link>
-        )}
-        {profileError && <p className="mt-2 text-sm text-red-600">{profileError}</p>}
-      </div>
-
-      {me && (
-        <div className="mx-4 grid grid-cols-2 rounded-full p-1 text-sm font-medium" style={{ backgroundColor: "var(--color-border)" }}>
-          {(["forYou", "all"] as const).map((t) => (
-            <button
-              key={t}
-              type="button"
-              aria-pressed={tab === t}
-              onClick={() => setTab(t)}
-              className="flex items-center justify-center gap-1.5 rounded-full py-2"
-              style={tab === t ? { backgroundColor: "var(--color-surface)", color: "var(--color-forest)", boxShadow: "0 1px 3px rgb(0 0 0 / 0.1)" } : { color: "var(--color-muted)" }}
-            >
-              {t === "forYou" ? (
-                <>
-                  <TargetIcon className="h-4 w-4" /> Pour toi ({forYouCount})
-                </>
-              ) : (
-                `Tout (${deals.length})`
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <div className="flex shrink-0 gap-2 overflow-x-auto px-4 py-3">
-        {[null, ...categories].map((c) => (
-          <button
-            key={c ?? "all"}
-            type="button"
-            aria-pressed={category === c}
-            onClick={() => setCategory(c)}
-            className="flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium"
-            style={
-              category === c
-                ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
-                : { borderColor: "var(--color-border)", color: "var(--color-ink)" }
-            }
-          >
-            {c && <CategoryIcon category={c} size={18} />} {c ? CATEGORIES[c].label : "Toutes"}
-          </button>
-        ))}
-      </div>
-
-      <div className="h-[40dvh] min-h-64">
-        <DealsMap deals={mapDeals} homeZoneId={me?.homeZoneId} />
-      </div>
-
-      <section className="px-4 py-4">
-        <h2 className="text-lg">
-          {tab === "forYou" ? "Sélectionnés pour toi" : "Fil des bons plans"}
-        </h2>
-        <p role="status" className="mt-1 text-sm text-[var(--color-muted)]">
-          {error ? (
-            <span className="text-red-600">Impossible de charger les bons plans : {error}</span>
-          ) : busy ? (
-            "Chargement des bons plans…"
-          ) : shown.length > 0 ? (
-            `${shown.length} bon${shown.length > 1 ? "s" : ""} plan${shown.length > 1 ? "s" : ""}, dont ${mapDeals.length} sur la carte`
-          ) : tab === "forYou" ? (
-            "Rien ne correspond à ton profil pour le moment : regarde l'onglet « Tout » ou élargis tes préférences."
-          ) : (
-            "Aucun bon plan pour le moment."
+      <div className="space-y-6 px-4 py-4">
+        <div className="space-y-3">
+          <h1 className="text-2xl">{profile?.username ? `Bonjour ${profile.username}` : "Les bons plans étudiants"}</h1>
+          {profile && !profile.onboarded && (
+            <Link href="/onboarding" className="block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
+              <span className="block font-medium">Personnalise tes bons plans</span>
+              <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
+                1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
+              </span>
+            </Link>
           )}
-        </p>
-        {!busy && (
-          <ul className="mt-3 space-y-3">
-            {shown.map(({ deal, match }) => (
-              <li key={deal.id}>
-                <DealCard
-                  deal={deal}
-                  match={match}
-                  favorite={isFavorite(deal.id)}
-                  onToggleFavorite={toggleFavorite}
-                />
-              </li>
-            ))}
-          </ul>
+          <Link href="/recherche" className="sw-card flex items-center gap-3 p-4">
+            <SearchIcon className="h-6 w-6 shrink-0 text-[var(--color-forest)]" />
+            <span className="flex-1">
+              <span className="block font-medium">Rechercher un bon plan</span>
+              <span className="block text-sm text-[var(--color-muted)]">La carte autour de toi et toutes les offres</span>
+            </span>
+            <ArrowRightIcon className="h-5 w-5 shrink-0 text-[var(--color-forest)]" />
+          </Link>
+          {profileError && <p className="text-sm text-red-600">{profileError}</p>}
+          {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
+          {busy && <p className="text-sm text-[var(--color-muted)]">Chargement des bons plans…</p>}
+        </div>
+
+        {!busy && !error && (
+          <section>
+            <h2 className="text-lg">{forYou.length > 0 ? "Pour toi" : "Les derniers bons plans"}</h2>
+            {me && forYou.length === 0 && deals.length > 0 && (
+              <p className="mt-1 text-sm text-[var(--color-muted)]">Rien ne correspond encore à ton profil.</p>
+            )}
+            {top.length === 0 ? (
+              <p className="mt-1 text-sm text-[var(--color-muted)]">Aucun bon plan pour le moment.</p>
+            ) : (
+              <ul className="mt-3 space-y-3">{top.map(card)}</ul>
+            )}
+          </section>
         )}
-      </section>
+
+        {!busy && sections.length > 0 && (
+          <section>
+            <h2 className="text-lg">Réductions &amp; aides</h2>
+            <p className="text-sm text-[var(--color-muted)]">Valables dans toute une ville ou partout.</p>
+            <div className="mt-3 space-y-2">
+              {sections.map((s) => {
+                const expanded = open === s.id;
+                return (
+                  <div key={s.id} className="rounded-lg border" style={{ borderColor: "var(--color-border)" }}>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(expanded ? null : s.id)}
+                      aria-expanded={expanded}
+                      aria-controls={`section-${s.id}`}
+                      className="flex w-full items-center gap-2 px-3 py-3 text-left"
+                    >
+                      <span className="flex-1 font-medium">{s.label}</span>
+                      <span className="text-xs text-[var(--color-muted)]">{s.items.length}</span>
+                      <ChevronDownIcon className={`h-4 w-4 text-[var(--color-muted)] transition-transform ${expanded ? "rotate-180" : ""}`} />
+                    </button>
+                    {expanded && (
+                      <ul id={`section-${s.id}`} className="space-y-3 p-3" style={{ borderTop: "1px solid var(--color-border)" }}>
+                        {s.items.map(card)}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+      </div>
     </div>
   );
 }

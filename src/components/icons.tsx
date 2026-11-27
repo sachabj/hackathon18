@@ -83,6 +83,9 @@ function Stroke({ className = "h-5 w-5", viewBox = "0 0 24 24", children }: Icon
   );
 }
 
+export function SearchIcon({ className }: IconProps) {
+  return <Stroke className={className}><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></Stroke>;
+}
 export function ArrowRightIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M5 12h14" /><path d="M13 5l7 7-7 7" /></Stroke>;
 }

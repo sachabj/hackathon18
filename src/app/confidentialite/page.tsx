@@ -38,6 +38,7 @@ export default function Page() {
         <ul>
           <li><strong>Email et mot de passe</strong> (le mot de passe est stocké haché par notre hébergeur) : te connecter.</li>
           <li><strong>Pseudo, zones, centres d&apos;intérêt, transports, voyages, budget</strong> : personnaliser tes bons plans.</li>
+          <li><strong>Boursier et Carte Sortir (oui / non)</strong>, facultatifs : te proposer seulement les aides auxquelles tu as droit.</li>
           <li><strong>Position approximative (~100 m)</strong>, seulement si tu touches « Me localiser » : calculer les distances. La carte, elle, suit ta position sans l&apos;enregistrer.</li>
           <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager. Avec « Utiliser ma position actuelle », le lieu publié est ta position précise.</li>
           <li><strong>Votes, favoris, vues, « J&apos;y suis allé », date de ta dernière contribution</strong> : fiabilité des offres, tes favoris, ton accès et ton niveau.</li>
@@ -52,7 +53,7 @@ export default function Page() {
       <Block title="Ce que les autres voient">
         <ul>
           <li>Les publications sont anonymes : ni ton pseudo ni ton email ne sont montrés aux autres utilisateurs.</li>
-          <li>Tes préférences, ton budget, ta position et tes favoris ne sont lisibles que par toi.</li>
+          <li>Tes préférences, ton budget, tes réponses sur les aides, ta position et tes favoris ne sont lisibles que par toi.</li>
           <li>Tes bons plans et tes votes portent un identifiant technique, sans ton nom.</li>
           <li>L&apos;application montre à l&apos;auteur d&apos;un bon plan seulement des totaux (vues, passages, favoris, votes).</li>
           <li>Une photo publiée est accessible à toute personne qui a son lien.</li>

@@ -7,8 +7,9 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## Base de données
-- Migrations **004 à 009 présentes sur la vraie base** (tables, colonnes et fonction 009 détectées via l'API le 27/11 ; stockage `deal-photos` répond). Rien à exécuter pour le code actuel.
-- Prochaine migration : numéro **010** (le premier qui en crée une le prend ; vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- Migrations **004 à 009 présentes sur la vraie base** (détectées via l'API le 27/11 ; stockage `deal-photos` répond).
+- ⏳ **010_student_aids.sql à exécuter.**
+- Prochaine migration : numéro **011** (le premier qui en crée une le prend ; vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -19,52 +20,27 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 | Anne-Lise | Favoris, design |
 
 ## 🔴 À faire en priorité : modifications demandées (18 à 27)
-Lots A, B et C pris par Justin, lot D par Matteo (**ne pas y toucher en parallèle**, y compris les fichiers de Sacha concernés par le lot C). **Prendre un lot entier** : ses tâches touchent les mêmes fichiers.
+Lots A, B et C codés par Justin, lot D fait par Matteo.
 
 | # | Lot | Tâche | Statut |
 |---|---|---|---|
-| 18 | A | % de compatibilité remplacé par le % de fiabilité sur les cartes | EN COURS (Justin) |
-| 23 | A | Menu carte : enlever la barre du haut | EN COURS (Justin) |
-| 25 | A | « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | EN COURS (Justin) |
-| 26 | A | Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » (inclut l'ancienne tâche 16) | EN COURS (Justin) |
-| 19 | B | Carte : enlever les cercles en pointillés des zones | EN COURS (Justin) |
-| 24 | B | Carte : un seul bouton « revenir à ma localisation » | EN COURS (Justin) |
-| 20 | C | 1re connexion : « Me localiser » + menu pays → ville-campus | EN COURS (Justin) |
-| 21 | C | Inscription : une question « fréquence de voyage » + moyens | EN COURS (Justin) |
-| 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | EN COURS (Justin) |
+| 18 | A | % de compatibilité remplacé par le % de fiabilité sur les cartes | À TESTER (Justin) |
+| 23 | A | Menu carte : enlever la barre du haut | À TESTER (Justin) |
+| 25 | A | « Pour toi » → bascule auto sur « Tout » si catégorie hors profil | À TESTER (Justin) |
+| 26 | A | Accueil simple (résumé + réductions) et carte dans un onglet « Recherche » (inclut l'ancienne tâche 16) | À TESTER (Justin) |
+| 19 | B | Carte : enlever les cercles en pointillés des zones | À TESTER (Justin) |
+| 24 | B | Carte : un seul bouton « revenir à ma localisation » | À TESTER (Justin) |
+| 20 | C | 1re connexion : « Me localiser » + menu pays → ville-campus | À TESTER (Justin) |
+| 21 | C | Inscription : une question « fréquence de voyage » + moyens | À TESTER (Justin) |
+| 22 | C | Inscription : « Boursier ? » à la place des choix Carte Sortir et Bourses (migration) | À TESTER (Justin) |
 | 27 | D | Publication : relecture IA remplacée par une recherche de doublon sans IA | FAIT (Matteo) : « Déjà partagé ici » dès le choix du lieu (même `place_name`), zone / partout au clic sur Publier (même catégorie + zone), « Bon plan validé » ; `findDuplicateCandidates` remplacé par `src/lib/duplicates.ts` |
 
-### Lot A — accueil, recherche, fil (`app/page.tsx`, `NavBar.tsx`, `DealCard.tsx`)
-- **26** : accueil = 3 meilleures offres « Pour toi » (`rankDeals`), une entrée vers la recherche et une rubrique « Réductions & aides » (`scope !== "local"` ; rubriques possibles d'après `category` : Voyager = transport, Aides = scholarship, Culture & sport = carte_sortir / sport / activity, Quotidien = restaurant / supermarket). Nouvel onglet **« Recherche »** avec la carte ; barre du bas : Accueil / Recherche / Partager / Favoris / Profil.
-  - Ajouter la nouvelle route à `STUDENT_PATHS` (`RoleGate.tsx`) ; dans `NavBar`, `/` ne doit être actif que sur l'adresse exacte (déjà le cas).
-  - Le bouton « Voir sur la carte » après publication (`PublishForm`, fichier du lot D) pointe vers `/` : prévenir Matteo pour le rediriger.
-  - Garder les offres sponsorisées en tête.
-  - *À confirmer* : « Pour toi » / « Tout », filtres et liste complète dans « Recherche » ; contenu de l'accueil pour un étudiant sans préférences.
-- **18** : retirer le % de compatibilité en haut à droite des cartes (`DealCard`, affiché si `match.forYou`) et mettre **au même endroit le % de fiabilité** (`reliability(votes)`, `rules.ts`). La compatibilité continue de trier « Pour toi ».
-  - `useDeals` charge déjà `votes(*)` : l'ajouter au type renvoyé. `/favoris` fait `select("*")` : ajouter `votes(*)`.
-  - Pas de `Date.now()` pendant le rendu (dater au chargement). Voir le défaut D4.
-  - *À confirmer* : affichage quand il n'y a aucun vote (`score === null`).
-- **23** : enlever la barre « logo + ShareWood » de l'écran de la carte (interprétation à confirmer ; les boutons de zone relèvent de la tâche 24).
-- **25** : sur « Pour toi », choisir une catégorie absente du profil passe sur « Tout ». *À noter* : des trajets peuvent être dans « Pour toi » sans que « Transports » soit suivi.
-
-### Lot B — carte (`components/map/DealsMap.tsx`)
-- **19** : supprimer les `Circle` en pointillés des zones (garder le point bleu et le cercle de précision GPS). `ZONES` reste utile pour la vue par défaut.
-- **24** : supprimer les boutons « Tout / Bruz / Ker Lann / Rennes » ; un seul bouton revient à la **position GPS**, sinon à la **localisation choisie** (position enregistrée par « Me localiser » si elle existe, sinon centre de `homeZoneId` ; aujourd'hui seule la zone est passée à la carte). Réduire ensuite la marge haute des fiches (`autoPanPaddingTopLeft`). Conserver le démontage de la carte quand la page est cachée.
-
-### Lot C — inscription (`PreferencesWizard.tsx`, `matching.ts`, `preferences.ts`, `PreferencesSummary.tsx`)
-- **20** : étape lieu = bouton « Me localiser » **et** menu Pays → Ville-campus : France → Rennes, Bruz, Ker Lann (pas de migration). *À confirmer* : garder « Aussi des bons plans de… ».
-- **21** : remplacer les deux questions par **« Tu voyages à quelle fréquence ? »** (Souvent / Parfois / Rarement), puis les moyens. Réutiliser `home_visits` ; la colonne `wants_travel` reste en base mais n'est plus demandée. ⚠️ `isTraveler` l'utilise, et les moyens ne sont enregistrés que si `isTraveler` : décider quoi faire pour « Rarement ». Adapter les raisons de `matching.ts` et les deux récapitulatifs.
-- **22** : retirer Carte Sortir et Bourses & aides **des choix d'inscription** (les catégories restent pour les offres, filtres et publication) ; demander « Boursier : oui / non » et s'en servir pour proposer les aides.
-  - Migration (colonne dans `preferences`, mêmes droits), `schema.sql`, `types.ts`, `confidentialite/page.tsx`. L'export et la suppression du compte la prennent en compte automatiquement.
-  - ⚠️ Le repli `PGRST204` de `saveMyPreferences` ignorerait la nouvelle colonne sans erreur.
-  - ⚠️ Le récapitulatif relie ses lignes aux étapes **par leur position** : garder le même ordre en ajoutant l'étape.
-  - Les profils existants (dont les comptes de démo) peuvent déjà suivre ces deux catégories.
-
-### Lot D — publication (`PublishForm.tsx`, `lib/ai/*`, `api/assist/route.ts`) — Matteo
-- **27** : **garder le pré-remplissage IA** et la photo de preuve ; **supprimer la relecture IA** (`reviewBeforePublish`, `reviewDeal`, action `review`, titre et modération). Recherche de doublon **sans IA** : `findDuplicateCandidates` existe déjà (même catégorie, ≤ 300 m ou même zone, 60 jours) ; ajouter la proximité du titre / prix. Si une offre ressemble, **l'étudiant choisit** : « C'est la même » → vote 👍 + message **« Bon plan validé »** ; « Non, publier la mienne » → publication.
-  - Exclure ses propres bons plans (défaut D1).
-  - Mettre à jour `confidentialite/page.tsx` (envoi à l'IA « à la publication »), `.env.example` et le commentaire de la route.
-  - Conséquence : plus de modération automatique.
+### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
+- ⚠️ **Lancer `supabase/migrations/010_student_aids.sql`** (SQL Editor) : sans elle, les réponses « Boursier » / « Carte Sortir » ne sont pas enregistrées (le reste du profil l'est).
+- `/` = accueil (3 « Pour toi » + « Réductions & aides ») · `/recherche` = onglets, catégories, carte et liste.
+- **Matteo** : le bouton « Voir sur la carte » de `PublishForm` pointe maintenant vers `/recherche` (modifié par Justin).
+- **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
+- **Anne-Lise** : `DealCard` affiche la fiabilité ; `/favoris` lit `votes(*)` ; barre du bas à 5 onglets.
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
@@ -80,6 +56,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | D7 | Basse | Longueurs maximales différentes : publication titre 80 / prix 80, modification et offre commerçant 100 / 40 ; aucune limite en base | TODO |
 | D8 | Basse | Restes de l'ancien style : `themeColor` bleu (`layout.tsx`), gris `zinc` dans `RoleGate`, `DealsMapLoader`, `BusinessForm` | TODO |
 | D9 | Basse | `/api/assist` sans limite par utilisateur (un compte peut épuiser le quota de la clé) | TODO |
+| D10 | Moyenne | Inscription : une tuile choisie ne change ni de fond ni de bordure (seule la coche s'affiche) : `.sw-card` l'emporte sur les classes Tailwind de `ChoiceTile` (vu dans le navigateur) | TODO |
 
 ## Autres tâches
 | # | Tâche | Statut |
@@ -111,10 +88,10 @@ Terminées : 1 (mémoire + git), 2 (stack, nom), 3 (squelette + déploiement htt
 - Un compte commerçant ne voit pas les pages étudiantes (`RoleGate`) : tester avec un compte étudiant.
 - Pas d'emoji dans l'app : `components/icons.tsx`, `CategoryIcon`, classes `.sw-*` (`DESIGN_SHAREWOOD.md`).
 - `/profil` : prévenir Sacha avant de le modifier (ajouts en sous-pages) ; garder `LogoutButton` et `AccountLink`.
+- Publication : l'IA ne reçoit rien au moment de publier, seulement avec « Pré-remplir avec l'IA » ; les doublons passent par `src/lib/duplicates.ts` (plus de modération automatique).
 - Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter).
 
 ## Planning (deadline sam. 28/11 13h00)
-- **Ven. soir** : tâches 18 à 27, défauts hauts
+- **Ven. soir** : défauts hauts, migration 010
 - **Sam. matin** : tests réels, données de démo, finitions
 - **Sam. 11h–13h** : gel du code, pitch, répétition
-- **Sacha** : `src/app/confidentialite/page.tsx` modifié par Matteo (tâche 27) : l'IA ne reçoit plus rien à la publication, seulement avec « Pré-remplir avec l'IA ».

@@ -7,20 +7,19 @@ import { useEffect, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import {
   ArrowLeftIcon,
-  BuildingsIcon,
+  CheckIcon,
   CloseIcon,
-  GlobeIcon,
-  GraduationCapIcon,
-  HomeIcon,
   PinIcon,
-  SmileIcon,
   SuitcaseIcon,
   TargetIcon,
 } from "@/components/icons";
 import {
   ACTIVITIES,
   BUDGET_PROFILES,
+  CARTE_SORTIR_URL,
   CATEGORIES,
+  COUNTRIES,
+  ELIGIBILITY_CATEGORIES,
   HOME_VISITS,
   SUBCATEGORIES,
   TRANSPORT_MODES,
@@ -33,6 +32,7 @@ import { fetchMyPreferences, saveMyPreferences } from "@/lib/preferences";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { ActivityId, BudgetProfile, DealCategory, HomeVisits, TransportMode } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
+import { preferenceRows } from "@/components/profile/PreferencesSummary";
 import ChoiceTile from "./ChoiceTile";
 
 /** Au-delà, la position GPS n'est pas gardée : elle rendrait tous les bons plans « trop loin ». */
@@ -47,15 +47,17 @@ const EMPTY: StudentProfile = {
   budget: null,
   activities: [],
   homeVisits: null,
-  wantsTravel: null,
   travelModes: [],
+  isScholar: null,
+  hasCarteSortir: null,
 };
 
 const STEPS = [
-  { id: "zone", title: "Où es-tu ?", subtitle: "Choisis ta zone principale, là où tu passes le plus de temps." },
+  { id: "zone", title: "Où es-tu ?", subtitle: "Localise-toi, ou choisis ton pays puis ta ville ou ton campus." },
   { id: "transport", title: "Au quotidien, tu te déplaces comment ?", subtitle: "Pour ne te proposer que ce qui est à ta portée. Plusieurs choix possibles." },
-  { id: "travel", title: "Et les longs trajets ?", subtitle: "Pour repérer les billets et les covoiturages qui te serviront." },
+  { id: "travel", title: "Tu voyages à quelle fréquence ?", subtitle: "Longs trajets : pour repérer les billets et les covoiturages qui te serviront." },
   { id: "budget", title: "Ton budget ?", subtitle: "Visible uniquement par toi." },
+  { id: "aids", title: "Tes aides", subtitle: "Pour ne te proposer que celles auxquelles tu as droit. Visible uniquement par toi." },
   { id: "categories", title: "Tes pôles de dépenses", subtitle: "Touche-les dans l'ordre d'importance : les 3 premiers sont tes priorités." },
   { id: "activities", title: "Qu'est-ce que tu aimes faire ?", subtitle: "On mettra ces sorties en avant." },
   { id: "recap", title: "Ton profil est prêt", subtitle: "Tu pourras le modifier quand tu veux." },
@@ -78,6 +80,7 @@ export default function PreferencesWizard() {
   const [saving, setSaving] = useState(false);
   const [locating, setLocating] = useState(false);
   const [gpsMessage, setGpsMessage] = useState<string | null>(null);
+  const [countryId, setCountryId] = useState<string>(COUNTRIES[0].id);
 
   // Relancé à chaque retour sur la page (Next conserve l'état) : on repart du profil enregistré.
   useEffect(() => {
@@ -163,9 +166,11 @@ export default function PreferencesWizard() {
     current.id === "zone" ? !me.homeZoneId : current.id === "categories" ? me.categories.length === 0 : false;
   const skippable =
     (current.id === "transport" && me.transportModes.length === 0) ||
-    (current.id === "travel" && !me.homeVisits && me.wantsTravel === null) ||
+    (current.id === "travel" && !me.homeVisits) ||
+    (current.id === "aids" && me.isScholar === null && me.hasCarteSortir === null) ||
     (current.id === "budget" && !me.budget) ||
     (current.id === "activities" && me.activities.length === 0);
+  const country = COUNTRIES.find((c) => c.id === countryId) ?? COUNTRIES[0];
   const matches = rankDeals(deals, me).filter((r) => r.match.forYou).length;
 
   return (
@@ -223,32 +228,40 @@ export default function PreferencesWizard() {
             </button>
             <p className="text-center text-xs text-[var(--color-muted)]">
               Facultatif : ta position est arrondie (~100 m), enregistrée avec ton profil et visible par toi seul.
-              Toucher une zone à la main l&apos;efface.
+              Choisir dans le menu l&apos;efface.
             </p>
             {gpsMessage && (
               <p role="status" className="text-sm text-[var(--color-muted)]">
                 {gpsMessage}
               </p>
             )}
-            <div className="grid grid-cols-3 gap-2">
-              {ZONES.map((z) => (
-                <ChoiceTile
-                  key={z.id}
-                  icon={
-                    z.id === "rennes" ? (
-                      <BuildingsIcon className="h-7 w-7" />
-                    ) : z.id === "ker-lann" ? (
-                      <GraduationCapIcon className="h-7 w-7" />
-                    ) : (
-                      <HomeIcon className="h-7 w-7" />
-                    )
-                  }
-                  label={z.name}
-                  selected={me.homeZoneId === z.id}
-                  onClick={() => chooseHome(z.id)}
-                />
-              ))}
-            </div>
+            <label className="block text-sm font-medium">
+              Pays
+              <select className="sw-field mt-1" value={country.id} onChange={(e) => setCountryId(e.target.value)}>
+                {COUNTRIES.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="block text-sm font-medium">
+              Ville ou campus
+              <select
+                className="sw-field mt-1"
+                value={me.homeZoneId ?? ""}
+                onChange={(e) => e.target.value && chooseHome(e.target.value)}
+              >
+                <option value="" disabled>
+                  Choisis ta ville ou ton campus
+                </option>
+                {ZONES.filter((z) => (country.zoneIds as readonly string[]).includes(z.id)).map((z) => (
+                  <option key={z.id} value={z.id}>
+                    {z.name}
+                  </option>
+                ))}
+              </select>
+            </label>
             {me.homeZoneId && (
               <div>
                 <p className="text-sm font-medium">Aussi des bons plans de :</p>
@@ -293,47 +306,26 @@ export default function PreferencesWizard() {
 
         {current.id === "travel" && (
           <div className="space-y-5">
-            <fieldset>
-              <legend className="mb-2 flex items-center gap-1.5 text-sm font-medium">
-                <HomeIcon className="h-4 w-4" /> Tu rentres chez tes parents ?
-              </legend>
-              <div className="grid grid-cols-3 gap-2">
-                {keys<HomeVisits>(HOME_VISITS).map((v) => {
-                  const { Icon, label, hint } = HOME_VISITS[v];
-                  return (
-                    <ChoiceTile
-                      key={v}
-                      icon={<Icon className="h-7 w-7" />}
-                      label={label}
-                      hint={hint}
-                      selected={me.homeVisits === v}
-                      onClick={() => update({ homeVisits: me.homeVisits === v ? null : v })}
-                    />
-                  );
-                })}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="mb-2 flex items-center gap-1.5 text-sm font-medium">
-                <SuitcaseIcon className="h-4 w-4" /> Envie de voyager de temps en temps ?
-              </legend>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { value: true, icon: <GlobeIcon className="h-7 w-7" />, label: "Oui, ça me tente" },
-                  { value: false, icon: <SmileIcon className="h-7 w-7" />, label: "Pas pour l'instant" },
-                ].map(({ value, ...tile }) => (
+            <div className="grid grid-cols-3 gap-2">
+              {keys<HomeVisits>(HOME_VISITS).map((v) => {
+                const { Icon, label, hint } = HOME_VISITS[v];
+                return (
                   <ChoiceTile
-                    key={tile.label}
-                    {...tile}
-                    selected={me.wantsTravel === value}
-                    onClick={() => update({ wantsTravel: me.wantsTravel === value ? null : value })}
+                    key={v}
+                    icon={<Icon className="h-7 w-7" />}
+                    label={label}
+                    hint={hint}
+                    selected={me.homeVisits === v}
+                    onClick={() => update({ homeVisits: me.homeVisits === v ? null : v })}
                   />
-                ))}
-              </div>
-            </fieldset>
+                );
+              })}
+            </div>
             {isTraveler(me) && (
               <fieldset>
-                <legend className="mb-2 text-sm font-medium">Avec quoi ? (plusieurs choix possibles)</legend>
+                <legend className="mb-2 flex items-center gap-1.5 text-sm font-medium">
+                  <SuitcaseIcon className="h-4 w-4" /> Avec quoi ? (plusieurs choix possibles)
+                </legend>
                 <div className="grid grid-cols-4 gap-2">
                   {TRAVEL_MODES.map((m) => {
                     const { Icon, label } = SUBCATEGORIES[m];
@@ -372,9 +364,42 @@ export default function PreferencesWizard() {
           </div>
         )}
 
+        {current.id === "aids" && (
+          <div className="space-y-5">
+            {(
+              [
+                { key: "isScholar", question: "Tu es boursier ?" },
+                { key: "hasCarteSortir", question: "Tu as la Carte Sortir, ou tu y as droit ?" },
+              ] as const
+            ).map(({ key, question }) => (
+              <fieldset key={key}>
+                <legend className="mb-2 text-sm font-medium">{question}</legend>
+                <div className="grid grid-cols-2 gap-2">
+                  {[true, false].map((value) => (
+                    <ChoiceTile
+                      key={String(value)}
+                      row
+                      icon={value ? <CheckIcon className="h-5 w-5" /> : <CloseIcon className="h-5 w-5" />}
+                      label={value ? "Oui" : "Non"}
+                      selected={me[key] === value}
+                      onClick={() => update({ [key]: me[key] === value ? null : value })}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+            ))}
+            <p className="text-xs text-[var(--color-muted)]">
+              La Carte Sortir est un dispositif de Rennes Métropole, sous conditions de ressources.{" "}
+              <a href={CARTE_SORTIR_URL} target="_blank" rel="noreferrer" className="underline">
+                Se renseigner
+              </a>
+            </p>
+          </div>
+        )}
+
         {current.id === "categories" && (
           <div className="grid grid-cols-2 gap-2">
-            {keys<DealCategory>(CATEGORIES).map((c) => {
+            {keys<DealCategory>(CATEGORIES).filter((c) => !ELIGIBILITY_CATEGORIES.includes(c)).map((c) => {
               const rank = me.categories.indexOf(c);
               return (
                 <ChoiceTile
@@ -409,44 +434,11 @@ export default function PreferencesWizard() {
 
         {current.id === "recap" && (
           <dl className="sw-card divide-y divide-[var(--color-border)]" style={{ borderWidth: 2 }}>
-            {[
-              {
-                label: "Zones",
-                value: ZONES.filter((z) => me.zoneIds.includes(z.id))
-                  .map((z) => (z.id === me.homeZoneId ? `${z.name} (principale)` : z.name))
-                  .join(" · "),
-              },
-              {
-                label: "Quotidien",
-                value: me.transportModes.map((m) => TRANSPORT_MODES[m].label).join(" · "),
-              },
-              {
-                label: "Voyages",
-                value: [
-                  me.homeVisits && `Chez les parents : ${HOME_VISITS[me.homeVisits].label.toLowerCase()}`,
-                  me.wantsTravel !== null && (me.wantsTravel ? "Envie de voyager" : "Pas de voyage prévu"),
-                  isTraveler(me) && me.travelModes.map((m) => SUBCATEGORIES[m].label).join(", "),
-                ]
-                  .filter(Boolean)
-                  .join(" · "),
-              },
-              {
-                label: "Budget",
-                value: me.budget ? BUDGET_PROFILES[me.budget].label : "",
-              },
-              {
-                label: "Priorités",
-                value: me.categories.map((c) => CATEGORIES[c].label).join(" · "),
-              },
-              {
-                label: "Activités",
-                value: me.activities.map((a) => ACTIVITIES[a].label).join(" · "),
-              },
-            ].map((row, i) => (
+            {preferenceRows(me).map((row) => (
               <button
                 key={row.label}
                 type="button"
-                onClick={() => setStep(i)}
+                onClick={() => setStep(STEPS.findIndex((x) => x.id === row.step))}
                 className="flex w-full items-start gap-3 p-3 text-left"
                 style={{ borderColor: "var(--color-border)" }}
               >

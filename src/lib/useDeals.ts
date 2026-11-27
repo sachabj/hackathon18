@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { ZONES } from "./constants";
 import { isDealHidden } from "./rules";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
-import type { Deal, Vote } from "./types";
+import type { DealWithVotes, Vote } from "./types";
 
 /** Bons plans visibles (RLS + règles de masquage), du plus récent au plus ancien. */
 export function useDeals() {
-  const [deals, setDeals] = useState<Deal[]>([]);
+  const [deals, setDeals] = useState<DealWithVotes[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +31,7 @@ export function useDeals() {
         const activeUsers = new Map<string, number>(
           ZONES.map((z, i) => [z.id, Number(zoneResults[i].data ?? 0)]),
         );
-        const rows = dealsResult.data as (Deal & { votes: Vote[] })[];
+        const rows = dealsResult.data as (DealWithVotes & { votes: Vote[] })[];
         setDeals(
           rows.filter((d) => !isDealHidden(d, d.votes, activeUsers.get(d.zone_id ?? "") ?? 0)),
         );

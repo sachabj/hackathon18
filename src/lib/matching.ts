@@ -1,5 +1,5 @@
 // Compatibilité entre un bon plan et le profil d'un étudiant (voir memory/ARCHITECTURE.md § Personnalisation).
-import { ACTIVITIES, CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
+import { ACTIVITIES, CATEGORIES, ELIGIBILITY_CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
 import { distanceKm, formatDistance } from "./geo";
 import type {
   ActivityId,
@@ -22,8 +22,9 @@ export interface StudentProfile {
   budget: BudgetProfile | null;
   activities: ActivityId[];
   homeVisits: HomeVisits | null;
-  wantsTravel: boolean | null;
   travelModes: DealSubcategory[];
+  isScholar: boolean | null;
+  hasCarteSortir: boolean | null;
 }
 
 export function toStudentProfile(
@@ -31,14 +32,14 @@ export function toStudentProfile(
   prefs: Preferences | null,
 ): StudentProfile {
   return {
-    categories: profile.followed_categories,
+    // Les anciennes priorités « bourses » / « Carte Sortir » sont remplacées par les questions d'aides.
+    categories: profile.followed_categories.filter((c) => !ELIGIBILITY_CATEGORIES.includes(c)),
     zoneIds: profile.followed_zone_ids,
     homeZoneId: prefs?.home_zone_id ?? null,
     position: prefs?.lat != null && prefs.lng != null ? { lat: prefs.lat, lng: prefs.lng } : null,
     // L'avion n'est plus un transport du quotidien : les anciennes réponses passent dans les voyages.
     transportModes: (prefs?.transport_modes ?? []).filter((m) => m !== "plane"),
     homeVisits: prefs?.home_visits ?? null,
-    wantsTravel: prefs?.wants_travel ?? null,
     travelModes: [
       ...new Set<DealSubcategory>([
         ...(prefs?.travel_modes ?? []),
@@ -47,6 +48,8 @@ export function toStudentProfile(
     ],
     budget: prefs?.budget_profile ?? null,
     activities: prefs?.activities ?? [],
+    isScholar: prefs?.is_scholarship ?? null,
+    hasCarteSortir: prefs?.has_carte_sortir ?? null,
   };
 }
 
@@ -61,12 +64,12 @@ const BUDGET_POINTS: Record<BudgetProfile, [number, number, number, number]> = {
 const DEFAULT_REACH_KM = 3;
 export const FOR_YOU_MIN_SCORE = 55;
 /** Points de pôle de dépenses accordés à un trajet utile, même si « Transports » n'est pas suivi. */
-const TRAVEL_POINTS = { often: 36, other: 28 };
+const TRAVEL_POINTS: Record<HomeVisits, number> = { often: 36, sometimes: 28, never: 16 };
+/** Points accordés à une aide à laquelle l'étudiant a droit. */
+const AID_POINTS = 36;
 
-export const goesHome = (me: Pick<StudentProfile, "homeVisits">) =>
-  me.homeVisits === "often" || me.homeVisits === "sometimes";
-export const isTraveler = (me: Pick<StudentProfile, "homeVisits" | "wantsTravel">) =>
-  goesHome(me) || me.wantsTravel === true;
+/** A répondu à la question de fréquence : on connaît (et on enregistre) ses moyens de voyage. */
+export const isTraveler = (me: Pick<StudentProfile, "homeVisits">) => me.homeVisits !== null;
 
 /** Durée estimée avec le premier moyen de transport de l'étudiant qui couvre la distance. */
 function travelTime(km: number, modes: TransportMode[]) {
@@ -93,20 +96,31 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   const reasons: string[] = [];
   const warnings: string[] = [];
 
-  // 1. Pôle de dépenses, ou trajet utile pour rentrer chez ses parents / voyager
+  // 1. Pôle de dépenses, trajet utile, ou aide à laquelle on a droit
   const rank = me.categories.indexOf(deal.category);
+  // null = catégorie ouverte à tous ; sinon, a-t-on dit y avoir droit ?
+  const eligible =
+    deal.category === "scholarship"
+      ? me.isScholar === true
+      : deal.category === "carte_sortir"
+        ? me.hasCarteSortir === true
+        : null;
+  // Qui voyage rarement ne voit que les trajets dans les moyens qu'il a choisis.
   const travel =
     deal.category === "transport" &&
     // Un abonnement de bus local n'est pas un voyage.
     !(deal.subcategory === "bus" && deal.scope !== "national") &&
-    isTraveler(me) &&
-    (!deal.subcategory || me.travelModes.length === 0 || me.travelModes.includes(deal.subcategory));
-  if (me.categories.length > 0 || travel) {
+    me.homeVisits !== null &&
+    (me.homeVisits === "never"
+      ? deal.subcategory !== null && me.travelModes.includes(deal.subcategory)
+      : !deal.subcategory || me.travelModes.length === 0 || me.travelModes.includes(deal.subcategory));
+  if (me.categories.length > 0 || travel || eligible) {
     max += WEIGHTS.category;
     const rankPoints = rank >= 0 ? WEIGHTS.category - 4 * Math.min(rank, 3) : 0;
-    const travelPoints = !travel ? 0 : me.homeVisits === "often" ? TRAVEL_POINTS.often : TRAVEL_POINTS.other;
-    earned += Math.max(rankPoints, travelPoints);
-    if (travel) reasons.push(goesHome(me) ? "Pour rentrer chez tes parents" : "Pour tes envies de voyage");
+    const travelPoints = travel && me.homeVisits ? TRAVEL_POINTS[me.homeVisits] : 0;
+    earned += Math.max(rankPoints, travelPoints, eligible ? AID_POINTS : 0);
+    if (eligible) reasons.push(deal.category === "scholarship" ? "Tu es boursier" : "Avec ta Carte Sortir");
+    if (travel) reasons.push("Pour tes voyages");
     if (rank >= 0) {
       const { label } = CATEGORIES[deal.category];
       reasons.push(rank < 3 ? `Ta priorité n°${rank + 1}` : `Tu suis ${label}`);
@@ -191,7 +205,9 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   return {
     score: percent(earned + budgetEarned, max + budgetMax),
     forYou:
-      relevance !== null && relevance >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest || travel),
+      eligible !== null
+        ? eligible && reachable
+        : relevance !== null && relevance >= FOR_YOU_MIN_SCORE && reachable && (rank >= 0 || interest || travel),
     reasons,
     warnings,
   };

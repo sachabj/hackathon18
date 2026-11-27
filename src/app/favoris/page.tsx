@@ -6,7 +6,7 @@ import DealCard from "@/components/feed/DealCard";
 import { ChevronDownIcon } from "@/components/icons";
 import { APP_NAME, CATEGORIES } from "@/lib/constants";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
-import type { Deal, DealCategory } from "@/lib/types";
+import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
 import { useFavorites } from "@/lib/useFavorites";
 
 const COLLAPSED_KEY = "sharewood:favoris:collapsed";
@@ -23,7 +23,7 @@ function readCollapsed(): Set<DealCategory> {
 
 export default function Page() {
   const { favoriteIds, loading: loadingFavorites, toggleFavorite } = useFavorites();
-  const [deals, setDeals] = useState<Deal[]>([]);
+  const [deals, setDeals] = useState<DealWithVotes[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState<Set<DealCategory>>(() => new Set());
@@ -57,10 +57,10 @@ export default function Page() {
         return;
       }
       const supabase = getSupabase();
-      const { data, error } = await supabase.from("deals").select("*").in("id", [...favoriteIds]);
+      const { data, error } = await supabase.from("deals").select("*, votes(*)").in("id", [...favoriteIds]);
       if (cancelled) return;
       if (error) setError(error.message);
-      else setDeals((data ?? []) as Deal[]);
+      else setDeals((data ?? []) as DealWithVotes[]);
       setLoading(false);
     }
 

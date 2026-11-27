@@ -33,12 +33,16 @@ export async function saveMyPreferences(userId: string, me: StudentProfile) {
   };
   const travel = {
     home_visits: me.homeVisits,
-    wants_travel: me.wantsTravel,
+    wants_travel: null,
     travel_modes: isTraveler(me) ? me.travelModes : [],
   };
-  let privatePart = await supabase.from("preferences").upsert({ ...base, ...travel });
-  // Colonnes voyage absentes (migration 006 pas encore lancée) : on enregistre au moins le reste.
-  if (privatePart.error?.code === "PGRST204") privatePart = await supabase.from("preferences").upsert(base);
+  const aids = { is_scholarship: me.isScholar, has_carte_sortir: me.hasCarteSortir };
+  let privatePart = await supabase.from("preferences").upsert({ ...base, ...travel, ...aids });
+  // Colonnes absentes (migration 010 pas encore lancée) : on enregistre au moins le reste.
+  if (privatePart.error?.code === "PGRST204") {
+    console.warn("Réponses « aides » non enregistrées : lancer supabase/migrations/010_student_aids.sql.");
+    privatePart = await supabase.from("preferences").upsert({ ...base, ...travel });
+  }
   if (privatePart.error) throw new Error(readableError(privatePart.error));
 
   const publicPart = await supabase

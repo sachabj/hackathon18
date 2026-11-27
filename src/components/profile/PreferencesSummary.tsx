@@ -10,9 +10,12 @@ import {
 } from "@/lib/constants";
 import { isTraveler, type StudentProfile } from "@/lib/matching";
 
-/** Résumé des préférences : chaque ligne ouvre directement son étape du parcours. */
-export default function PreferencesSummary({ me }: { me: StudentProfile }) {
-  const rows = [
+const yesNo = (value: boolean | null, label: string) =>
+  value === null ? "" : `${label} : ${value ? "oui" : "non"}`;
+
+/** Une ligne par étape du parcours (`step` = id de l'étape) : récapitulatif et profil. */
+export function preferenceRows(me: StudentProfile) {
+  return [
     {
       step: "zone",
       label: "Zones",
@@ -29,8 +32,7 @@ export default function PreferencesSummary({ me }: { me: StudentProfile }) {
       step: "travel",
       label: "Voyages",
       value: [
-        me.homeVisits && `Chez les parents : ${HOME_VISITS[me.homeVisits].label.toLowerCase()}`,
-        me.wantsTravel !== null && (me.wantsTravel ? "Envie de voyager" : "Pas de voyage prévu"),
+        me.homeVisits && HOME_VISITS[me.homeVisits].label,
         isTraveler(me) && me.travelModes.map((m) => SUBCATEGORIES[m].label).join(", "),
       ]
         .filter(Boolean)
@@ -40,6 +42,11 @@ export default function PreferencesSummary({ me }: { me: StudentProfile }) {
       step: "budget",
       label: "Budget",
       value: me.budget ? BUDGET_PROFILES[me.budget].label : "",
+    },
+    {
+      step: "aids",
+      label: "Aides",
+      value: [yesNo(me.isScholar, "Boursier"), yesNo(me.hasCarteSortir, "Carte Sortir")].filter(Boolean).join(" · "),
     },
     {
       step: "categories",
@@ -52,10 +59,13 @@ export default function PreferencesSummary({ me }: { me: StudentProfile }) {
       value: me.activities.map((a) => ACTIVITIES[a].label).join(" · "),
     },
   ];
+}
 
+/** Résumé des préférences : chaque ligne ouvre directement son étape du parcours. */
+export default function PreferencesSummary({ me }: { me: StudentProfile }) {
   return (
     <ul className="sw-card divide-y divide-[var(--color-border)]">
-      {rows.map((row) => (
+      {preferenceRows(me).map((row) => (
         <li key={row.step}>
           <Link href={`/onboarding?etape=${row.step}`} className="flex items-start gap-3 p-3 text-sm">
             <span className="w-20 shrink-0 text-[var(--color-muted)]">{row.label}</span>

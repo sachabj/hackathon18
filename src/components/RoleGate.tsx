@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useRole } from "@/lib/useRole";
 
 /** Pages de l'interface étudiante : un commerçant est renvoyé vers son espace. */
-const STUDENT_PATHS = ["/publier", "/favoris", "/profil", "/onboarding"];
+const STUDENT_PATHS = ["/recherche", "/publier", "/favoris", "/profil", "/onboarding"];
 
 export default function RoleGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
