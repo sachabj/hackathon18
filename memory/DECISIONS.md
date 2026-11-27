@@ -121,6 +121,11 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : contrôle qualité et anti-doublons demandés ; publier depuis une photo est plus rapide pour la démo.
 - **Qui** : Matteo
 
+## 2026-11-27 16h40 — Favoris par catégorie + en-tête de marque
+- **Décision** : la page `/favoris` regroupe les bons plans par catégorie (plutôt qu'une seule liste triée par échéance) ; `/` et `/favoris` ont une barre de marque fixe en haut (nom du site en grand, icône) pendant que le contenu défile dessous.
+- **Pourquoi** : retrouver facilement un favori quand on en a beaucoup ; rendre l'app plus « sérieuse », moins brouillon, à la demande d'Anne-Lise.
+- **Qui** : Anne-Lise
+
 ## 2026-11-27 — Gemini pour l'assistant de publication
 - **Décision** : l'assistant `/api/assist` utilise **Gemini** quand `GEMINI_API_KEY` est définie (prioritaire), sinon Claude. Même prompt et même schéma JSON pour les deux ; les valeurs renvoyées sont revérifiées (listes de catégories, dates…) avant d'arriver dans le formulaire.
 - **Pourquoi** : l'API Claude est payante et un abonnement Claude Pro ne donne pas de clé API ; Google propose une clé API Gemini avec une offre gratuite (Google AI Studio). L'abonnement Gemini Pro grand public ne donne pas non plus de clé API.

@@ -50,9 +50,15 @@ export default function Page() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col">
-      <header className="px-4 py-3">
-        <p className="text-sm font-bold text-blue-600">{APP_NAME}</p>
-        <h1 className="text-xl font-bold">
+      <header className="sticky top-0 z-[1001] flex items-center gap-2 border-b border-zinc-100 bg-white/95 px-4 py-3 backdrop-blur">
+        <span className="text-2xl" aria-hidden>
+          🪵
+        </span>
+        <p className="text-2xl font-extrabold tracking-tight text-blue-600">{APP_NAME}</p>
+      </header>
+
+      <div className="px-4 py-3">
+        <h1 className="text-sm font-medium text-zinc-500">
           {profile?.username ? `Salut ${profile.username} 👋` : "Les bons plans étudiants"}
         </h1>
         {me && (
@@ -82,7 +88,7 @@ export default function Page() {
           </Link>
         )}
         {profileError && <p className="mt-2 text-sm text-red-600">{profileError}</p>}
-      </header>
+      </div>
 
       {me && (
         <div className="mx-4 grid grid-cols-2 rounded-full bg-zinc-100 p-1 text-sm font-semibold">

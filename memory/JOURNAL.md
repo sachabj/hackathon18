@@ -147,6 +147,12 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Besoin précisé : la partie transport vise les réductions SNCF utiles aux étudiants, à classer parmi les offres immatérielles ; homepage prévue par Anne-Lise.
 - Proposition notée dans `TASKS.md` (tâche 16, à valider). Aucun code modifié.
 
+### 2026-11-27 16h40 — Anne-Lise (favoris par catégorie + en-tête de marque)
+- `src/app/favoris/page.tsx` : les favoris sont désormais regroupés par catégorie (ordre de `CATEGORIES`), triés par échéance dans chaque groupe, pour se repérer facilement quand on en a beaucoup.
+- Nom du site plus visible sur `/` et `/favoris` : barre de marque fixe en haut (nom en grand + icône 🪵), le reste du contenu défile dessous. Demande : « que ça fasse plus vrai site, vrai app, que ça fasse sérieux ».
+- Pas touché à la carte ni à la structure du fil (zone, onglets, filtres) : la proposition de homepage de Sacha (tâche 16, réductions & aides) reste entière à faire/valider.
+- Vérifié : lint + build OK. Pas testé dans un navigateur (toujours indisponible dans cette session).
+
 ### 2026-11-27 16h30 — Matteo (Gemini pour l'assistant IA)
 - `src/lib/ai/assist.ts` (fournisseur Gemini ou Claude selon la clé, revérification des champs), `src/app/api/assist/route.ts` (erreurs Gemini : quota, clé, modèle), `.env.example` ; dépendance `@google/genai`.
 - Vérifié : lint + build. **Appel réel à Gemini pas testé (pas de clé sur ce poste)** ; nom du modèle par défaut repris de la doc du SDK, modifiable via `GEMINI_MODEL`.
