@@ -11,7 +11,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - **010 et 011 exécutées** (Justin, 27/11 ; colonnes de la 010 vérifiées via l'API).
 - **012 présente sur la vraie base** (colonne `link_url` détectée via l'API le 27/11).
 - ⏳ **013_unvote.sql à exécuter** (Matteo) : sans elle, décocher une réaction affiche « base pas à jour » (cocher marche).
-- Prochaine migration : numéro **014** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- Prochaine migration : numéro **015** (014 prise par Matteo) (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -40,6 +40,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 29 | E | Réactions : « Toujours dispo » retiré (« J'y suis allé » = passage + confirmation) ; « J'y suis allé » et « Plus dispo » exclusifs et décochables (migration 013 : retirer son vote) | À TESTER (Matteo) : ⏳ **lancer `013_unvote.sql`** |
 | 30 | E | Fiabilité en code couleur (rouge / jaune / vert clair / vert foncé + mot court) à la place du % sur les cartes et la fiche | FAIT (Matteo) : `TRUST_LEVELS` / `trustLevel()` dans `rules.ts`, `components/deal/TrustBadge.tsx` ; fenêtre de la carte et stats commerçant inchangées |
 | 32 | E | Tri « Hot » de l'onglet « Tout » (réactions récentes, nombre de « J'y suis allé », fraîcheur) + badge « Tendance » | FAIT (Matteo) : `src/lib/hot.ts` (réglages dans `HOT`), `recherche/page.tsx`, `DealCard.tsx`, `useDeals.ts` (`loadedAt`) ; sans migration. ⚠️ **Sacha (tâche 31)** : le tri Hot est dans l'onglet « Tout » de `recherche/page.tsx` ; si cet onglet disparaît, garder `hotScore()` pour trier la liste restante (ou les rubriques de l'accueil) |
+| 33 | E | Fiabilité façon Waze : poids par utilisateur (justesse passée, ancienneté / activité), confiance qui s'érode, « Plus dispo » récent ×1,5, masquage selon le poids, rang dans le profil (migration 014) | EN COURS (Matteo) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
