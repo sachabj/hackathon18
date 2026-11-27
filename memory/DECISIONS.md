@@ -358,3 +358,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **À faire (décision de l'équipe, pas prise ici)** : soit attendre que la limite de builds Vercel se réinitialise, soit passer le projet Vercel en Pro (payant), soit limiter la fréquence des push le temps que ça se résorbe. Vérifier aussi le lien du projet (`https://vercel.com/hackathon29`).
 - **En attendant** : tester en local (`npm run dev`) plutôt que sur le site déployé pour juger si un correctif marche.
 - **Qui** : Anne-Lise (constat ; décision de résolution à prendre par l'équipe)
+
+## 2026-11-27 soir — Second déploiement Vercel
+- **Décision** : nouveau projet `sharewood-ensai` sur le compte Vercel de Justin, déployé à la demande, car l'ancien projet refuse les déploiements (limite atteinte).
+- **Écarté pour l'instant** : attendre 24 h (après la deadline) ; passer en Pro (payant).
+- **Qui** : Justin

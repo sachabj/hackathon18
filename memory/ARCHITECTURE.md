@@ -23,6 +23,8 @@ Supabase (une seule fois) : SQL Editor → coller `supabase/schema.sql` → Run.
 ## Déploiement (Vercel)
 Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` et `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` (serveur uniquement, ⏳ **à ajouter** pour activer l'IA) → chaque push sur `main` redéploie. URL publique : **https://hackathon18-t1lb.vercel.app** ✅. Après un changement de variable d'environnement : redéployer.
 
+**Second déploiement (secours)** : https://sharewood-ensai.vercel.app, projet `sharewood-ensai` du compte de Justin, déployé en ligne de commande depuis un clone propre (non relié à GitHub).
+
 ## Arborescence
 ```
 /

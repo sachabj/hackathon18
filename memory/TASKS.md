@@ -8,6 +8,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 
 ## 🚨 Site en ligne bloqué (27/11 au soir)
 - Vercel refuse les déploiements depuis `9a3f9d3` : « Deployment rate limited — retry in 24 hours ». **Le site affiche encore `4b716f5`** : ni « Partager » rapide (45), ni la sélection surlignée d'Anne-Lise, ni l'Activité allégée (47). Attendre dépasse la deadline : **Sacha** (propriétaire Vercel) ou un second compte Vercel doit redéployer.
+- **Contournement en place (Justin)** : **https://sharewood-ensai.vercel.app** (équipe Vercel « Hackathon 18 » de Justin, mêmes base et clés, `GEMINI_API_KEY` ajoutée). **Pas de mise à jour au push** : demander à Justin de redéployer.
 - D'ici là, **regrouper les push** (chaque push, même de mémoire seule, demande un déploiement).
 
 ## Base de données

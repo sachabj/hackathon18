@@ -2,7 +2,7 @@
 
 Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les bons plans** autour d'eux et disent s'ils sont toujours valables. Projet du hackathon ENSAI (27–28 novembre 2026), zone de démo : Bruz, Ker Lann et Rennes.
 
-**En ligne : https://hackathon18-t1lb.vercel.app** (compte obligatoire)
+**En ligne : https://sharewood-ensai.vercel.app** (compte obligatoire)
 
 ## Ce que fait l'application
 
@@ -69,7 +69,7 @@ Dans Supabase → SQL Editor :
 Pour la démo, désactiver « Confirm email » (Authentication → Sign In / Providers → Email).
 
 ### Mise en ligne
-Chaque push sur `main` redéploie sur Vercel. Les variables d'environnement se règlent sur Vercel ; après un changement, redéployer.
+https://sharewood-ensai.vercel.app est mis à jour **à la demande** (`npx vercel deploy --prod` depuis une copie propre de `main`). L'ancien projet (https://hackathon18-t1lb.vercel.app) redéploie à chaque push, quand la limite de Vercel le permet. Les variables d'environnement se règlent sur Vercel ; après un changement, redéployer.
 
 ## Pour en savoir plus
 - [Algorithmes de classement et de fiabilité](docs/ALGORITHMES.md)
