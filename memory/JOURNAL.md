@@ -320,3 +320,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-27 20h45 — Matteo (tâche 39 : sans « Bonjour »)
 - `src/app/page.tsx` et `src/app/recherche/page.tsx` : titre « Bonjour <pseudo> » remplacé par un titre invisible (lecteurs d'écran) ; sur Recherche, le bloc d'en-tête n'est affiché que s'il contient l'invitation à personnaliser ou une erreur.
 - Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur.
+
+### 2026-11-27 20h18 — Sacha (Les Flèches, tâche 17b)
+- Nouveaux : `016_arrows.sql` (+ `schema.sql`), `seed_arrows.sql`, `lib/arrows.ts`, `lib/useMyArrows.ts`, `components/arrows/`. Modifiés : `engagement`, `rules`, `useDeals`, `useDealReactions`, `duplicates`, `account`, `offerStats`, `types`, `ReactionBar`, `QuickReactions`, `DealSheet`, `MyDealCard`, `OfferCard`, `PublishForm`, `icons`, `layout`, accueil, recherche, favoris, profil, confidentialité, `globals.css`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; 36 contrôles de la migration et scripts de démo sur Postgres local ; 29 contrôles des Flèches et 63 de régression dans Chrome sans interface avec un faux Supabase. **016 et seed_arrows pas lancés sur la vraie base**, rien testé sur la vraie base ni sur téléphone.

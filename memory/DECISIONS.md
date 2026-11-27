@@ -294,3 +294,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : plus de « Bonjour <pseudo> » (ni « Les bons plans étudiants ») en haut de l'Accueil et de Recherche : la page commence par la recherche ou la carte ; un titre `sr-only` reste pour les lecteurs d'écran. Règle pour la suite : pas de mots de politesse ou de remplissage dans l'interface.
 - **Pourquoi** : demande de Matteo (« mots superflus »), portée confirmée avant de coder ; « Fil des bons plans », le compteur de Recherche et « Mes favoris » sont gardés.
 - **Qui** : Matteo
+
+## 2026-11-27 20h18 — Les Flèches (tâche 17b)
+- **Décision** : points « Flèches » calculés par la base (+50 publication, +30 à 3 confirmations, +10 confirmation, +15 signalement corroboré, × 1,5 en série de 3 jours, 5 votes payés par jour) ; rangs à 150 et 500. Boutons « J'y suis allé » / « Plus dispo » conservés, avec le gain affiché. **3 signalements archivent l'offre** et remplacent le masquage pondéré. Distance connue : moitié au-delà de 500 m, rien au-delà de 2 km ; **sans position, pas de pénalité pour l'instant (à revoir)**. Les autres niveaux du profil sont gardés.
+- **Écartés** : renommer les boutons « Toujours dispo » / « Offre expirée » ; refuser le vote à distance ; emojis (règle de l'équipe : icônes dessinées).
+- **Choix par défaut** : vote retiré ou offre supprimée → gains retirés ; pas de points rétroactifs ; solde privé ; commerçants sans Flèches.
+- **Qui** : Sacha

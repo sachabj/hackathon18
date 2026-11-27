@@ -1,5 +1,6 @@
 "use client";
 
+import ArrowBadge from "@/components/arrows/ArrowBadge";
 import { useEffect, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import DealCard from "@/components/feed/DealCard";
@@ -106,6 +107,7 @@ export default function Page() {
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
         <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0" aria-hidden />
         <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
+        <ArrowBadge className="ml-auto" />
       </header>
 
       <h1 className="mt-3 text-sm font-medium text-[var(--color-muted)]">Mes favoris</h1>

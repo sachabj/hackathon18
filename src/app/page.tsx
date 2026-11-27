@@ -2,6 +2,7 @@
 
 // Accueil : barre de recherche, puis les offres rangées en onglets (« Pour toi » et les rubriques).
 // Pendant une recherche, une seule liste de résultats remplace les onglets.
+import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
 import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import DealCard from "@/components/feed/DealCard";
@@ -161,6 +162,7 @@ export default function Page() {
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
         <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0" aria-hidden />
         <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
+        <ArrowBadge className="ml-auto" />
       </header>
 
       <div className="space-y-4 px-4 py-4">

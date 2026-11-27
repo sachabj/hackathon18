@@ -48,6 +48,8 @@ export interface Deal {
   boosted_until?: string | null;
   /** Commerçant qui a retiré le bon plan d'un étudiant */
   ended_by?: string | null;
+  /** Signalée expirée par 3 étudiants (migration 016) ; non écrivable par l'app */
+  archived_at?: string | null;
   /** Conditions pour en profiter (migration 012) */
   requirements?: DealRequirement[] | null;
   /** Lien vers l'offre, http(s) uniquement (migration 012) */

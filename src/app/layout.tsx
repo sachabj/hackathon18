@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import ArrowToast from "@/components/arrows/ArrowToast";
 import NavBar from "@/components/NavBar";
 import RoleGate from "@/components/RoleGate";
 import SupabaseBanner from "@/components/SupabaseBanner";
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <RoleGate>{children}</RoleGate>
         </main>
         <NavBar />
+        <ArrowToast />
       </body>
     </html>
   );

@@ -22,8 +22,6 @@ export const LATEST_REPORT_BOOST = 1.5;
  */
 export const TRUST_PRIOR = 0.5;
 export const TRUST_PRIOR_WEIGHT = 1;
-/** En dessous de ce score, le bon plan est masqué (si les « Plus dispo » pèsent assez lourd). */
-export const HIDE_BELOW_SCORE = 0.3;
 
 /** Masses pondérées des réactions d'une offre ; poids de 1 pour tous (repli sans la migration 014). */
 export function voteMasses(votes: Vote[], now: number): DealTrust {
@@ -93,26 +91,17 @@ export function dealTrustLevel(votes: Vote[], now: number, trust?: DealTrust | n
   return trustLevel(reliability(votes, now, trust).score);
 }
 
-/** Masse de « Plus dispo » nécessaire pour masquer un bon plan : s'adapte au nb d'utilisateurs actifs de la zone. */
-export function minVotesToHide(activeUsersInZone: number) {
-  return Math.min(10, Math.max(2, Math.ceil(activeUsersInZone * 0.05)));
-}
-
 /**
- * Masquage façon Waze : la somme pondérée des « Plus dispo » récents doit atteindre le seuil de la zone
- * (deux étudiants expérimentés suffisent là où il faudrait plus de débutants) et le score passer sous 0,3.
+ * Une offre signalée « Plus dispo » par 3 étudiants est archivée (migration 016, `deals.archived_at`) :
+ * c'est le seul masquage lié aux réactions ; la fiabilité pondérée ne sert qu'à la couleur du badge.
  */
-export function isDealHidden(
-  deal: Deal,
-  votes: Vote[],
-  activeUsersInZone: number,
-  now = Date.now(),
-  trust?: DealTrust | null,
-) {
-  if (deal.ended_by_merchant) return true;
+export const ARCHIVE_REPORTS = 3;
+
+export function isDealHidden(deal: Deal, votes: Vote[], now = Date.now()) {
+  if (deal.ended_by_merchant || deal.archived_at) return true;
   if (deal.expires_at && new Date(deal.expires_at).getTime() < now) return true;
-  const { score, masses } = reliability(votes, now, trust);
-  return score !== null && masses.neg >= minVotesToHide(activeUsersInZone) && score < HIDE_BELOW_SCORE;
+  // Compté aussi ici : la règle vaut même avant la migration 016.
+  return votes.filter((v) => v.value === -1 && v.user_id !== deal.author_id).length >= ARCHIVE_REPORTS;
 }
 
 /** Rang d'influence d'un étudiant (fonction `my_influence`), comme les niveaux Waze. Du plus haut au plus bas. */

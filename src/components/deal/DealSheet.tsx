@@ -12,7 +12,7 @@ import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { fetchEngagement, recordView, setReaction, type Engagement, type Reaction, type Reactions } from "@/lib/engagement";
 import { isOwnPhotoUrl } from "@/lib/photos";
-import { recentCounts, reliability, trustLevel } from "@/lib/rules";
+import { ARCHIVE_REPORTS, recentCounts, reliability, trustLevel } from "@/lib/rules";
 import TrustBadge from "@/components/deal/TrustBadge";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal } from "@/lib/types";
@@ -92,6 +92,7 @@ export default function DealSheet({
         vote: myVote,
         visited: !!data.visit?.mine,
         visitsAvailable: data.visit !== null,
+        placed: deal.lat !== null && deal.lng !== null,
       }),
     );
   }
@@ -181,14 +182,30 @@ export default function DealSheet({
           <div className="mt-4 rounded-2xl p-3" style={{ backgroundColor: "var(--color-paper)" }}>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
               <TrustBadge level={trustLevel(trust.score)} />
-              {trust.score === null && <span>Pas encore de réaction</span>}
-              {trust.lastConfirmedAt !== null && (
-                <span>
-                  Confirmé {ago(data.at - trust.lastConfirmedAt)} par {trust.confirmations} étudiant
-                  {trust.confirmations > 1 ? "s" : ""}
-                </span>
-              )}
+              <span>
+                {trust.confirmations > 0
+                  ? `Confirmé actif par ${trust.confirmations} étudiant${trust.confirmations > 1 ? "s" : ""}`
+                  : "Pas encore confirmé"}
+              </span>
             </div>
+            {trust.lastConfirmedAt !== null && (
+              <p className="mt-1 text-sm text-[var(--color-muted)]">
+                Dernière vérification : {ago(data.at - trust.lastConfirmedAt)} (
+                {formatDate(new Date(trust.lastConfirmedAt).toISOString())})
+              </p>
+            )}
+            {trust.reports >= ARCHIVE_REPORTS ? (
+              <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
+                Offre archivée : signalée expirée par {trust.reports} étudiants.
+              </p>
+            ) : (
+              trust.reports > 0 && (
+                <p className="mt-1 text-sm" style={{ color: "var(--color-aubergine)" }}>
+                  Signalée expirée par {trust.reports} étudiant{trust.reports > 1 ? "s" : ""} sur {ARCHIVE_REPORTS} avant
+                  archivage.
+                </p>
+              )
+            )}
           </div>
         )}
 

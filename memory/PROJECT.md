@@ -26,7 +26,7 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 ## Fonctionnalités validées ✅
 1. **Préférences** : zone principale (+ GPS facultatif) et zones suivies (Bruz, Ker Lann, Rennes), transports, budget (Serré / Équilibré / Confort), pôles de dépenses par ordre de priorité, activités préférées, longs trajets (retours chez les parents, envie de voyager) → fil **« Pour toi »** avec score de compatibilité et raisons.
 2. **Score de fiabilité façon Waze** (l'avis des étudiants fiables et actifs pèse plus, la confiance s'érode sans confirmation récente, un « Plus dispo » récent pèse plus lourd ; rang Débutant / Confirmé / Expert dans le profil) sur chaque bon plan en code couleur (ex : pastille verte « Très fiable · confirmé il y a 2 h par 6 étudiants » ; rouge « Douteux », jaune « À vérifier », vert clair « Fiable »), calculé à partir des « J’y suis allé » (confirmation) et des « Plus dispo » (décochables), les votes récents comptant plus.
-   - Le bon plan est masqué quand le score passe sous un seuil. **Le nombre de votes nécessaire s'adapte au nombre d'utilisateurs actifs dans la zone** : peu d'utilisateurs → peu de votes suffisent.
+   - Le bon plan est **archivé** (masqué) quand 3 étudiants le signalent « Plus dispo ».
    - Si **le commerçant indique que l'offre n'existe plus** → elle est retirée immédiatement.
 3. **Accès complet pendant 7 jours après chaque contribution** (signaler ou confirmer un bon plan remet le compteur à 7 jours). Compteur visible : « 🔓 Accès complet encore 4 jours ».
    - Accès limité pour un inactif ✅ : les nouveaux bons plans ne lui sont visibles qu'**après 24 h**.
@@ -63,4 +63,4 @@ Deux sortes de bons plans : **localisés** (sur la carte) et **sur une zone ou n
 ## Compte ✅
 - **Un compte est obligatoire pour tout**, y compris pour consulter.
 - **Publications anonymes** ; page « Compte et confidentialité » (sécurité, mes données, suppression) et politique de confidentialité.
-- **Crédits et badges** (à faire) : gagnés en interagissant avec les offres (publier > confirmer) ; badges, progression, avantages d'entreprises partenaires.
+- **Les Flèches** ✅ (codé) : points gagnés en partageant et en réagissant (publier > confirmer), série, rangs Éclaireur → Chasseur de bons plans → Robin des Étudiants. **À venir** : les récompenses (avantages d'entreprises partenaires).

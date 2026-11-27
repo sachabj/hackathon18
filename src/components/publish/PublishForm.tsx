@@ -15,6 +15,8 @@ import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplica
 import { distanceKm, nearestZone } from "@/lib/geo";
 import { normalizeLink } from "@/lib/links";
 import { kindLabel, searchPlaces, suggestActivity, suggestCategory, type Place } from "@/lib/places";
+import { announceCreation } from "@/lib/arrows";
+import { vote } from "@/lib/engagement";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { ActivityId, DealCategory, DealRequirement, DealScope, DealSubcategory } from "@/lib/types";
 import { uploadDealPhoto } from "@/lib/photos";
@@ -274,11 +276,13 @@ export default function PublishForm() {
   async function confirmExisting(dealId: string) {
     setSubmitting(true);
     setError(null);
-    const { error } = await getSupabase()
-      .from("votes")
-      .upsert({ deal_id: dealId, value: 1 }, { onConflict: "deal_id,user_id" });
-    setSubmitting(false);
-    if (error) return setError(`Confirmation impossible : ${error.message}`);
+    try {
+      await vote(dealId, 1);
+    } catch (err) {
+      return setError(`Confirmation impossible : ${(err as Error).message}`);
+    } finally {
+      setSubmitting(false);
+    }
     setSimilar(null);
     setDone("confirmed");
   }
@@ -330,6 +334,7 @@ export default function PublishForm() {
     if (error) return setError(`Publication impossible : ${error.message}`);
     setSimilar(null);
     setDone("published");
+    announceCreation();
   }
 
   if (done) {

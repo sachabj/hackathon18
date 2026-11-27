@@ -1,4 +1,6 @@
 // Réactions aux bons plans (vues, passages, votes) et gestion de ses propres signalements.
+import { announce, currentPosition, outcomeNotice, type ArrowOutcome } from "./arrows";
+import type { Point } from "./geo";
 import { removeDealPhoto } from "./photos";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import { fetchDealTrust } from "./trust";
@@ -75,9 +77,22 @@ export async function fetchReactions(dealId: string): Promise<Reactions> {
   return { votes: check(votes) as Vote[], trust: trust ? (trust.get(dealId) ?? { pos: 0, neg: 0 }) : null };
 }
 
-/** Un vote par étudiant et par bon plan ; revoter (même valeur comprise) le rafraîchit. */
-export async function vote(dealId: string, value: 1 | -1) {
-  check(await getSupabase().from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));
+/**
+ * Un vote par étudiant et par bon plan ; revoter (même valeur comprise) le rafraîchit.
+ * La position, facultative, sert au barème des Flèches selon la distance.
+ */
+export async function vote(dealId: string, value: 1 | -1, position: Point | null = null) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase.rpc("react_to_deal", {
+    p_deal_id: dealId,
+    p_value: value,
+    p_lat: position?.lat ?? null,
+    p_lng: position?.lng ?? null,
+  });
+  if (!error) return announce(data ? outcomeNotice(data as ArrowOutcome) : null);
+  // Sans la migration 016 (fonction absente) : vote simple, sans Flèches.
+  if (error.code !== "PGRST202") throw new Error(error.message);
+  check(await supabase.from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));
 }
 
 /** Retire son vote (migration 013). */
@@ -90,6 +105,7 @@ export async function removeVote(dealId: string, userId: string) {
         : error.message,
     );
   }
+  announce();
 }
 
 export type Reaction = "visited" | "gone" | null;
@@ -98,16 +114,18 @@ export type Reaction = "visited" | "gone" | null;
  * Réaction d'un étudiant (tâche 29) : « J'y suis allé » = passage + confirmation (vote +1),
  * « Plus dispo » = vote -1. Les deux s'excluent ; null retire tout.
  * `visitsAvailable` : false tant que la migration 007 manque (on ne touche alors qu'aux votes).
+ * `placed` : offre située sur la carte, la position est alors demandée pour les Flèches.
  */
 export async function setReaction(
   dealId: string,
   userId: string,
   reaction: Reaction,
-  current: { vote?: 1 | -1; visited: boolean; visitsAvailable: boolean },
+  current: { vote?: 1 | -1; visited: boolean; visitsAvailable: boolean; placed?: boolean },
 ) {
-  if (reaction === "visited") await vote(dealId, 1);
-  else if (reaction === "gone") await vote(dealId, -1);
-  else if (current.vote !== undefined) await removeVote(dealId, userId);
+  if (reaction) {
+    const position = current.placed ? await currentPosition() : null;
+    await vote(dealId, reaction === "visited" ? 1 : -1, position);
+  } else if (current.vote !== undefined) await removeVote(dealId, userId);
 
   if (!current.visitsAvailable) return;
   const visited = reaction === "visited";
@@ -160,4 +178,5 @@ export async function deleteMyDeal(dealId: string) {
   check(await getSupabase().from("deals").delete().eq("id", dealId));
   const photo = (data as Deal | null)?.photo_url;
   if (photo) await removeDealPhoto(photo);
+  announce(); // les Flèches de cette offre sont retirées
 }

@@ -50,11 +50,13 @@ export default function MyDealCard({
   const expired = !!deal.expires_at && new Date(deal.expires_at).getTime() < now;
   const status = byMerchant
     ? "Retiré par un commerçant"
-    : deal.ended_by_merchant
-      ? "Plus dispo"
-      : expired
-        ? "Expiré"
-        : "En ligne";
+    : deal.archived_at
+      ? "Archivé : signalé expiré"
+      : deal.ended_by_merchant
+        ? "Plus dispo"
+        : expired
+          ? "Expiré"
+          : "En ligne";
 
   function startEdit() {
     setTitle(deal.title);

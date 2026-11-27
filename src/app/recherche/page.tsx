@@ -1,6 +1,7 @@
 "use client";
 
 // Onglet « Recherche ». Carte : Justin · Fil et catégories : Sacha
+import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
 import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
@@ -57,6 +58,7 @@ export default function Page() {
         {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
         <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0" aria-hidden />
         <p className="text-xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</p>
+        <ArrowBadge className="ml-auto" />
       </header>
 
       {/* Pas de formule d'accueil (« Bonjour … ») ; titre pour les lecteurs d'écran. */}

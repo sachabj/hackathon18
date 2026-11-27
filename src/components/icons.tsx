@@ -160,6 +160,16 @@ export function ThumbsDownIcon({ className }: IconProps) {
 export function ProhibitedIcon({ className }: IconProps) {
   return <Stroke className={className}><circle cx="12" cy="12" r="9" /><path d="M6 6l12 12" /></Stroke>;
 }
+/** Flèche tirée vers le haut à droite : la monnaie « Les Flèches ». */
+export function ArrowShotIcon({ className }: IconProps) {
+  return (
+    <Stroke className={className}>
+      {/* hampe, pointe pleine, empennage */}
+      <path d="M4 20 16 8" /><path d="M20.5 3.5 12.8 5.6l5.6 5.6Z" fill="currentColor" />
+      <path d="M3.5 15.5h5v5" /><path d="M6.8 12.2h5v5" />
+    </Stroke>
+  );
+}
 export function FlameIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M12 2c2 3-1 4-1 7a3 3 0 0 0 6 0c1.5 2 1 4 1 5a6 6 0 0 1-12 0c0-4 2-5 3-8 .5 1 1 2 1 3 0-3 1-5 2-7Z" /></Stroke>;
 }

@@ -30,7 +30,7 @@ export default function OfferCard({
   const [paying, setPaying] = useState(false);
   const [now] = useState(() => Date.now());
   const expired = !!offer.expires_at && new Date(offer.expires_at).getTime() < now;
-  const online = !offer.ended_by_merchant && !expired;
+  const online = !offer.ended_by_merchant && !expired && !offer.archived_at;
   const boosted = online && isBoosted(offer, now);
 
   return (
@@ -47,7 +47,7 @@ export default function OfferCard({
               : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
           }
         >
-          {online ? "En ligne" : expired ? "Expirée" : "Retirée"}
+          {online ? "En ligne" : expired ? "Expirée" : offer.ended_by_merchant ? "Retirée" : "Archivée"}
         </span>
       </div>
       <p className="text-sm text-[var(--color-muted)]">

@@ -13,7 +13,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **013_unvote.sql à exécuter** (Matteo) : sans elle, décocher une réaction affiche « base pas à jour » (cocher marche).
 - ⏳ **014_voter_weights.sql à exécuter** (Matteo, après 013) : poids des étudiants pour la fiabilité.
 - ⏳ **015_demo_titles.sql** (Matteo, données seulement) : retire « [Exemple] » des titres déjà en base.
-- Prochaine migration : numéro **016** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **016_arrows.sql à exécuter** (Sacha, après 013 et 014) : Flèches et archivage à 3 signalements ; puis, pour la démo, `reset_demo.sql` et `seed_arrows.sql`.
+- Prochaine migration : numéro **017** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -49,7 +50,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 38 | E | Carte d'un bon plan : lieu · distance sur une ligne pleine largeur (icône repère), sous la ligne titre / fiabilité / cœur | FAIT (Matteo) : `DealCard.tsx` ; pas vu dans le navigateur |
 | 39 | E | Plus de formule d'accueil « Bonjour <pseudo> » / « Les bons plans étudiants » en haut de l'Accueil et de Recherche (titre gardé pour les lecteurs d'écran) | FAIT (Matteo) : `app/page.tsx`, `app/recherche/page.tsx` (fichiers de Sacha / Justin) |
 | 36 | E | Filtres sous la recherche (prix, moyen + temps de trajet, conditions, tri) ; « gratuit », « pas cher », « près de moi » compris dans la saisie. « Ouvert maintenant » remis à plus tard (aucune donnée d'horaires) | À TESTER (Sacha) : `lib/search.ts`, `lib/searchFilters.ts`, `components/feed/SearchFilters.tsx`, `app/page.tsx` |
-| 37 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
+| 40 | E | Filtre « Ouvert maintenant » : aucune donnée d'horaires (il faudrait une saisie à la publication + migration, ou un service externe) | TODO, remis à plus tard (Sacha) |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
 - Depuis la tâche 31 (Sacha) : `/` = recherche + onglets « Pour toi » / Voyager / Aides & bourses / Culture & sport / Quotidien · `/recherche` = catégories, carte et liste de toutes les offres.
@@ -95,7 +96,18 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 | 14 | Rappels de dates limites | TODO |
 | 15 | Pitch / slides (modèle économique commerçants) | TODO |
 | 17a | Compte et confidentialité (`/compte`, `/confidentialite`) | À TESTER (Sacha) ; remplir `PRIVACY_CONTACT` (`constants.ts`) pour afficher un contact |
-| 17b | « Les Flèches » : points calculés par la base (barème, série, plafond, distance, archivage à 3 signalements), rangs, solde dans les en-têtes, fiche, profil, données de démo. Touche des fichiers de Matteo (réactions, fiabilité/masquage) et de Justin (fiche, profil). Récompenses ensuite | EN COURS (Sacha) : migration **016** prise |
+| 17b | « Les Flèches » : points calculés par la base (barème, série × 1,5, 5 votes payés par jour, moitié au-delà de 500 m et rien au-delà de 2 km, archivage à 3 signalements), rangs, solde dans les en-têtes, fiche, profil, données de démo | À TESTER (Sacha) : ⏳ **lancer `016_arrows.sql`**, puis `seed_arrows.sql` ; testé sur Postgres local et faux Supabase seulement |
+
+## Les Flèches : à régler (Sacha)
+- **Sans position, pas de pénalité** (décision provisoire, à revoir) : refuser la localisation, ou voter hors de l'app, contourne le barème de distance ; une position peut aussi être falsifiée.
+- **Publication non plafonnée** : +50 par offre, des offres bidon en série rapportent sans limite (plafond à décider).
+- 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
+- **Récompenses** : prochaine étape, à cadrer.
+
+## À prendre en compte (depuis les Flèches, Sacha)
+- **Matteo** : le masquage pondéré (tâche 33) est remplacé par l'archivage à 3 signalements (`isDealHidden(deal, votes, now)` ; `minVotesToHide` supprimé) ; la fiabilité pondérée ne sert plus qu'à la couleur. `vote()` passe par la RPC `react_to_deal` (toujours l'utiliser, y compris dans `PublishForm`) ; « +10 / +15 » ajoutés sur les boutons de réaction ; `DealSheet`, `ReactionBar`, `duplicates.ts` modifiés.
+- **Justin** : `profil/page.tsx` (carte Flèches en haut, le reste conservé), statut « Archivé » dans `MyDealCard` / `OfferCard` / `offerStats` ; après `reset_demo.sql`, lancer `seed_arrows.sql` (rien à changer dans ton script).
+- **Anne-Lise** : solde de Flèches ajouté dans l'en-tête des favoris ; nouvelle icône `ArrowShotIcon`.
 
 ## Codé : état des essais
 | # | Fonction | Statut |

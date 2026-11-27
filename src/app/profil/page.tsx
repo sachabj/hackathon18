@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import AccountLink from "@/components/account/AccountLink";
+import ArrowsCard from "@/components/arrows/ArrowsCard";
 import LogoutButton from "@/components/LogoutButton";
 import { TargetIcon } from "@/components/icons";
 import ActivityCard from "@/components/profile/ActivityCard";
@@ -82,6 +83,8 @@ export default function Page() {
         )}
         {!account && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">Chargement…</p>}
       </div>
+
+      {account && <ArrowsCard />}
 
       {account && <ActivityCard profile={account.profile} contributions={account.contributions} now={account.fetchedAt} />}
 

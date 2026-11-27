@@ -17,7 +17,8 @@ export interface ExistingDeal {
   mine: boolean;
 }
 
-const COLUMNS = "id, title, price_info, description, place_name, author_id, expires_at, ended_by_merchant";
+// `*` : la colonne archived_at n'existe qu'après la migration 016.
+const COLUMNS = "*";
 
 async function toExisting(rows: Deal[] | null): Promise<ExistingDeal[]> {
   const {
@@ -25,7 +26,7 @@ async function toExisting(rows: Deal[] | null): Promise<ExistingDeal[]> {
   } = await getSupabase().auth.getUser();
   const now = Date.now();
   return (rows ?? [])
-    .filter((d) => !d.ended_by_merchant && !(d.expires_at && new Date(d.expires_at).getTime() < now))
+    .filter((d) => !d.ended_by_merchant && !d.archived_at && !(d.expires_at && new Date(d.expires_at).getTime() < now))
     .map((d) => ({
       id: d.id,
       title: d.title,

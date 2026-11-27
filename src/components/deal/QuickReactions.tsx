@@ -9,7 +9,7 @@ export default function QuickReactions({ deal }: { deal: DealWithVotes }) {
   const r = useDealReactions(deal);
   return (
     <div>
-      <ReactionBar size="sm" counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />
+      <ReactionBar size="sm" showGain={false} counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />
       {r.error && (
         <p role="alert" className="mt-1 text-xs text-red-600">
           {r.error}

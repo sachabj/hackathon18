@@ -12,7 +12,9 @@ export const METRICS: Record<Metric, { label: string; Icon: ComponentType<{ clas
 };
 
 export const isOnline = (offer: Deal, now: number) =>
-  !offer.ended_by_merchant && (!offer.expires_at || new Date(offer.expires_at).getTime() >= now);
+  !offer.ended_by_merchant &&
+  !offer.archived_at &&
+  (!offer.expires_at || new Date(offer.expires_at).getTime() >= now);
 
 export function summarize(offers: Deal[], stats: Record<string, OfferStats>, now: number) {
   const rows = offers.map((offer) => ({

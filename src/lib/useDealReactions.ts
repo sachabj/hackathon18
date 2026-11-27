@@ -33,6 +33,7 @@ export function useDealReactions(deal: DealWithVotes) {
         vote: myVote,
         visited: myVote === 1,
         visitsAvailable: true,
+        placed: deal.lat !== null && deal.lng !== null,
       });
       remember(await fetchReactions(deal.id));
     } catch (e) {
