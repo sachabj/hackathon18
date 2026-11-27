@@ -5,6 +5,7 @@ import DealSheet from "@/components/deal/DealSheet";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
+import { isOwnPhotoUrl } from "@/lib/photos";
 import type { Deal } from "@/lib/types";
 
 const formatDate = (iso: string) =>
@@ -30,8 +31,16 @@ export default function DealCard({
 
   const boosted = isBoosted(deal);
   const [open, setOpen] = useState(false);
+  const [zoom, setZoom] = useState(false);
+  const photo = isOwnPhotoUrl(deal.photo_url) ? deal.photo_url : null;
   // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
-  useLayoutEffect(() => () => setOpen(false), []);
+  useLayoutEffect(
+    () => () => {
+      setOpen(false);
+      setZoom(false);
+    },
+    [],
+  );
 
   return (
     <article className={`rounded-2xl border bg-white p-3 shadow-sm ${boosted ? "border-amber-400" : "border-zinc-200"}`}>
@@ -75,6 +84,30 @@ export default function DealCard({
       </div>
 
       {deal.description && <p className="mt-2 text-sm text-zinc-700">{deal.description}</p>}
+
+      {/* Photo de preuve (Matteo) : miniature, en grand au toucher. */}
+      {photo && (
+        <button type="button" onClick={() => setZoom(true)} className="mt-2 flex items-center gap-2 text-left">
+          {/* eslint-disable-next-line @next/next/no-img-element -- image du stockage Supabase */}
+          <img src={photo} alt="Photo de l'offre" loading="lazy" className="h-16 w-16 rounded-lg border border-zinc-200 object-cover" />
+          <span className="text-xs text-zinc-500">📷 Photo prise sur place</span>
+        </button>
+      )}
+      {zoom && photo && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo de l'offre"
+          onClick={() => setZoom(false)}
+          className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/80 p-4"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- image du stockage Supabase */}
+          <img src={photo} alt="Photo de l'offre" className="max-h-full max-w-full rounded-xl" />
+          <button type="button" className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-sm font-semibold">
+            Fermer ✕
+          </button>
+        </div>
+      )}
 
       {match && (match.reasons.length > 0 || match.warnings.length > 0) && (
         <ul className="mt-2 flex flex-wrap gap-1.5">

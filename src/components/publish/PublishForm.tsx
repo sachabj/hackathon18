@@ -12,6 +12,7 @@ import { distanceKm, nearestZone } from "@/lib/geo";
 import { kindLabel, searchPlaces, suggestActivity, suggestCategory, type Place } from "@/lib/places";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { ActivityId, DealCategory, DealScope, DealSubcategory } from "@/lib/types";
+import { uploadDealPhoto } from "@/lib/photos";
 import { usePreferences } from "@/lib/usePreferences";
 import AssistPanel from "./AssistPanel";
 
@@ -93,6 +94,8 @@ export default function PublishForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<null | "published" | "confirmed">(null);
+  /** Photo analysée par l'IA, jointe au bon plan comme preuve. */
+  const [proofPhoto, setProofPhoto] = useState<{ data: string; preview: string } | null>(null);
   /** Relecture IA affichée avant publication (titre, modération, doublon). */
   const [review, setReview] = useState<{ result: AssistReview; duplicate: DuplicateCandidate | null } | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
@@ -151,8 +154,9 @@ export default function PublishForm() {
   }
 
   /** Brouillon de l'IA → formulaire (seuls les champs trouvés remplacent la saisie). */
-  function applyDraft(d: AssistDraft) {
+  function applyDraft(d: AssistDraft, photo: { data: string; preview: string } | null) {
     setReview(null);
+    if (photo) setProofPhoto(photo);
     if (d.title) setTitle(d.title.slice(0, 80));
     if (d.category) setCategory(d.category);
     setSubcategory(d.category === "transport" ? d.subcategory : null);
@@ -187,6 +191,7 @@ export default function PublishForm() {
     setTags([]);
     setExpiresAt("");
     setDeadlineAt("");
+    setProofPhoto(null);
     setError(null);
     setReview(null);
     setDone(null);
@@ -262,9 +267,16 @@ export default function PublishForm() {
     if (!category) return;
     setSubmitting(true);
     setError(null);
-    const { error } = await getSupabase()
-      .from("deals")
-      .insert({
+    // Photo de preuve (celle analysée par l'IA) : si le dépôt échoue, on publie sans elle.
+    let photo_url: string | null = null;
+    if (proofPhoto) {
+      try {
+        photo_url = await uploadDealPhoto(proofPhoto.data);
+      } catch (err) {
+        console.warn("Photo de preuve non enregistrée :", err);
+      }
+    }
+    const row: Record<string, unknown> = {
         title: title.trim(),
         description: description.trim() || null,
         category,
@@ -279,7 +291,13 @@ export default function PublishForm() {
         tags,
         expires_at: endOfDay(expiresAt),
         deadline_at: category && DEADLINE_CATEGORIES.includes(category) ? endOfDay(deadlineAt) : null,
-      });
+    };
+    const supabase = getSupabase();
+    let { error } = await supabase.from("deals").insert(photo_url ? { ...row, photo_url } : row);
+    // Migration 008 pas encore lancée : la colonne photo_url n'existe pas → on publie sans la photo.
+    if (error && photo_url && /photo_url/.test(error.message)) {
+      ({ error } = await supabase.from("deals").insert(row));
+    }
     setSubmitting(false);
     if (error) return setError(`Publication impossible : ${error.message}`);
     setReview(null);
@@ -526,6 +544,16 @@ export default function PublishForm() {
         )}
       </Section>
 
+      {proofPhoto && (
+        <div className="flex items-center gap-3 rounded-2xl border border-zinc-200 bg-white p-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- aperçu local (data URL) */}
+          <img src={proofPhoto.preview} alt="Photo de preuve" className="h-14 w-14 rounded-lg object-cover" />
+          <p className="flex-1 text-sm text-zinc-700">📷 Photo jointe comme preuve, visible dans le fil.</p>
+          <button type="button" onClick={() => setProofPhoto(null)} className="text-sm font-semibold text-zinc-500">
+            Retirer
+          </button>
+        </div>
+      )}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {review ? (
         <ReviewPanel

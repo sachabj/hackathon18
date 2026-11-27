@@ -92,7 +92,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ✅ · `006_travel.sql` ✅ · `007_engagement.sql` ⏳ **à exécuter**
+- Migrations appliquées : `schema.sql` ✅ · `002_grants.sql` ✅ · `003_column_grants.sql` ✅ · `004_preferences.sql` ✅ (la table répond) · `005_merchant.sql` ✅ · `006_travel.sql` ✅ · `007_engagement.sql` ⏳ **à exécuter** · `008_deal_photos.sql` ⏳ **à exécuter**
 - `supabase/reset_demo.sql` (après 007) : ⚠️ efface les comptes non listés puis crée 8 étudiants de démo et 23 bons plans (14 sourcés, 9 « [Exemple] »). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`). Remplace `seed_demo.sql`.
 - `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at`, ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
@@ -101,6 +101,7 @@ Import du repo sur vercel.com (par sachabj, propriétaire) avec les variables `N
 - Fonctions commerçant : `my_offer_stats()`, `deals_near_my_business()` (≤ 75 m, même catégorie, bons plans d'étudiants)
 - `preferences` (**privée**, RLS : propriétaire seul) : user_id, home_zone_id, lat, lng (facultatifs, arrondis), transport_modes[], budget_profile (tight | balanced | comfort), activities[], home_visits (often | sometimes | never), wants_travel, travel_modes[] (ids de sous-catégories transport), updated_at
 - `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
+- `deals.photo_url` (008) : photo de preuve, uniquement un lien vers le stockage public **`deal-photos`** (contrainte SQL) ; dépôt par l'auteur dans `<son id>/…` (policies `storage.objects`) via `src/lib/photos.ts` ; affichée dans le fil (`DealCard`)
 - `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités
 - `zones` : id (`bruz`, `ker-lann`, `rennes`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at, onboarded — **créé automatiquement à l'inscription** (trigger)

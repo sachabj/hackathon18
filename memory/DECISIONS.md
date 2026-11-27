@@ -146,3 +146,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : modèle par défaut `gemini-3.5-flash`, avec repli automatique sur `gemini-3.5-flash-lite` puis `gemini-3.8-flash`.
 - **Pourquoi** : au test réel, `gemini-3.8-flash` et `3.7-flash` renvoyaient « high demand » (503) à chaque appel, parfois après 25 s d'attente ; `gemini-2.5-flash` n'est plus ouvert aux nouveaux comptes (404). `gemini-3.5-flash` répond en 4 à 8 s.
 - **Qui** : Matteo
+
+## 2026-11-27 — Photo de preuve d'un bon plan
+- **Décision** : la photo analysée par l'assistant IA est gardée comme preuve (l'étudiant peut la retirer avant de publier) ; pas de photo sans passer par l'IA. Affichée **dans le fil seulement** (miniature dans `DealCard`, donc aussi dans les favoris ; en grand au toucher), pas sur la carte. Stockage Supabase **public** `deal-photos`.
+- **Pourquoi** : choix de Matteo (questions posées avant de coder). Lien public : simple et rapide, ce sont des photos d'affiches de magasin.
+- **Avertissement Next « Instant navigation »** sur `/` : ignoré (contrôle affiché seulement en développement, sans effet sur le site), choix de Matteo.
+- **Qui** : Matteo

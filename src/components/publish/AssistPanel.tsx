@@ -8,7 +8,12 @@ import type { AssistDraft } from "@/lib/ai/types";
 
 type Photo = Awaited<ReturnType<typeof photoToJpeg>>;
 
-export default function AssistPanel({ onDraft }: { onDraft: (draft: AssistDraft) => void }) {
+/** `photo` : la photo analysée (gardée comme preuve du bon plan), ou null si seul un texte a été analysé. */
+export default function AssistPanel({
+  onDraft,
+}: {
+  onDraft: (draft: AssistDraft, photo: { data: string; preview: string } | null) => void;
+}) {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [showText, setShowText] = useState(false);
   const [text, setText] = useState("");
@@ -34,7 +39,7 @@ export default function AssistPanel({ onDraft }: { onDraft: (draft: AssistDraft)
         text: text.trim() || undefined,
         image: photo ? { media_type: photo.media_type, data: photo.data } : undefined,
       });
-      onDraft(draft);
+      onDraft(draft, photo ? { data: photo.data, preview: photo.preview } : null);
       const check = draft.confidence === "basse" ? "Lecture difficile : vérifie bien chaque champ." : "Vérifie les champs pré-remplis avant de publier.";
       setMessage({ tone: draft.confidence === "basse" ? "warn" : "ok", text: [check, draft.notes].filter(Boolean).join(" ") });
     } catch (e) {

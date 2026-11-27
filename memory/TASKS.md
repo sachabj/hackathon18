@@ -23,7 +23,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `FAIT` · `BLOQUÉ (raison)`
 | 5c | Localisation GPS : carte centrée sur l'utilisateur + « Autour de moi » (Justin) | FAIT |
 | 5b | Fil + filtres par catégorie (Sacha) : onglets « Pour toi » / « Tout » dans `src/app/page.tsx` | FAIT |
 | 6 | Formulaire de publication (local / zone / national) — Matteo : magasin + ville → lieu exact via Photon (OSM), tous les champs saisis à la main | FAIT (testé sur la vraie base) |
-| 6b | Assistant IA de publication : photo / texte → formulaire, contrôle du titre, modération, doublons (Matteo) | FAIT : **testé en vrai avec Gemini** en local (clé de Matteo) ; **reste à ajouter `GEMINI_API_KEY` sur Vercel (Sacha)** + redéployer |
+| 6b | Assistant IA de publication : photo / texte → formulaire, contrôle du titre, modération, doublons, photo de preuve dans le fil (Matteo) | FAIT : **testé en vrai avec Gemini** en local (clé de Matteo) ; **reste à ajouter `GEMINI_API_KEY` sur Vercel (Sacha)** + redéployer |
 | 7 | Votes 👍/👎 + score de fiabilité | FAIT (Justin) : boutons de vote sur la fiche + score de fiabilité ; à signaler à Anne-Lise ; **pas testé sur la vraie base** |
 | 8 | Favoris ❤️ | FAIT (Anne-Lise) : bouton cœur sur `DealCard`, page `/favoris` regroupée par catégorie (triée par échéance dans chaque groupe). Build + lint OK ; **pas testé dans un navigateur ni sur la vraie base** (aucun outil de navigateur ni script contre la vraie BDD disponible dans cette session) |
 | 9 | Préférences : parcours d'inscription personnalisé + fil « Pour toi » (repris de Matteo, avec son accord) | EN COURS (Sacha) : codé, voyages ajoutés ; 004 appliquée ; **migration 006 à exécuter** puis test sur la vraie base |
@@ -71,3 +71,7 @@ Chaque page a un fichier vide avec un commentaire `// Responsable` + `// TODO` :
 - **Anne-Lise** : votes faits (`components/deal/DealSheet.tsx`) ; `DealCard` ouvre désormais cette fiche (cœur favori inchangé).
 - **Matteo** : `/profil` est construit ; reste la tâche 11 (« Simuler ma position »).
 - **Sacha** : le parcours accepte `/onboarding?etape=<id>` (une seule rubrique, bouton « Enregistrer », retour au profil).
+
+## À prendre en compte (depuis la photo de preuve, Matteo)
+- **Tous** : lancer `supabase/migrations/008_deal_photos.sql` dans le SQL Editor (colonne `deals.photo_url` + stockage `deal-photos`). Sans elle, les bons plans sont publiés sans photo.
+- **Sacha** : `src/components/feed/DealCard.tsx` modifié par Matteo (miniature de la photo de preuve + affichage en grand), à conserver.

@@ -36,6 +36,8 @@ export interface Deal {
   price_level?: number | null;
   /** Activités liées (ids de ACTIVITIES) */
   tags?: string[] | null;
+  /** Photo de preuve (stockage public `deal-photos`, migration 008) */
+  photo_url?: string | null;
   /** Mise en avant payée par le commerçant (migration 005) */
   boosted_until?: string | null;
   /** Commerçant qui a retiré le bon plan d'un étudiant */
