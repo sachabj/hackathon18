@@ -580,3 +580,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : le lien reste dans « Ciblés » même quand une école est déjà choisie, pour pouvoir en changer.
 - **Remplace** : affichage seulement tant qu'aucune école n'est choisie.
 - **Qui** : Sacha
+
+## 2026-11-28 07h45 — Diapo 3 : vidéos au clic, pas en autoplay (tâche 15)
+- **Décision** : les 3 boucles vidéo de la diapo 3 ne se lancent plus automatiquement ensemble à l'ouverture (`autoplay`) ; chaque téléphone a ses propres petits boutons lecture/pause (`\phonevideo` → option `controls` du paquet `animate`), pour les lancer un par un, au rythme du discours.
+- **Pourquoi** : demande d'Anne-Lise — les 3 vidéos démarrant toutes en même temps à l'ouverture du PDF rendaient la diapo illisible pendant l'oral.
+- **Limite inchangée** : toujours seulement dans Adobe Acrobat / Adobe Reader (voir la décision du même jour sur les vidéos de la diapo 3) ; sans Acrobat, la 1ère image fixe s'affiche, sans boutons.
+- **Qui** : Anne-Lise

@@ -693,3 +693,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 07h39 — Sacha (lien toujours affiché, tâche 81)
 - `SchoolRanking` : « Choisis ton lieu d’études » reste visible même avec une école choisie. Vérifié : tsc, lint, build, Chrome avec un faux Supabase.
+
+### 2026-11-28 07h45 — Anne-Lise (diapo 3 : vidéos au clic, tâche 15)
+- Demande : les 3 vidéos ne doivent pas se lancer toutes en même temps à l'ouverture. `pitch/sharewood.tex` : macro `\phonevideo` passée de `autoplay` à `controls` (paquet `animate`) — chaque téléphone affiche désormais ses propres petits boutons lecture/pause, pour les lancer un par un ; note d'orateur et commentaire mis à jour en conséquence.
+- `pitch/README.md` : section diapo 3 mise à jour (plus d'autoplay, boutons par téléphone).
+- Aide apportée à Anne-Lise pour installer Adobe Acrobat Reader et recompiler le PDF via Overleaf (archive locale `sharewood-overleaf.zip`, régénérée avec ce changement ; ajoutée au `.gitignore`, jamais committée).
+- **PDF toujours pas recompilé par Claude** (aucun moteur LaTeX sur ce poste) : à recompiler et à vérifier dans Adobe Acrobat Reader que les 3 boutons apparaissent et lancent bien chaque vidéo, avant la répétition (C4).

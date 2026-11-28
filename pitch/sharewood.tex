@@ -53,13 +53,15 @@
     \node[anchor=north west, inner sep=0pt] at ({#1+12},{#2+12}) {\includegraphics[width=#3\pxu]{#4}};
   \end{scope}}
 % Comme \phone, mais en boucle vidéo (images numérotées #5...#5, de #6 à #7, à #4 im/s).
-% N'anime qu'ouvert dans Adobe Acrobat/Reader ; les autres lecteurs n'affichent que la première image.
+% Chaque téléphone a ses propres petits boutons lecture/pause (pas d'autoplay) : on lance chaque
+% vidéo au clic, l'une après l'autre. N'anime qu'ouvert dans Adobe Acrobat/Reader ; les autres
+% lecteurs n'affichent que la première image (ni animation, ni boutons).
 \newcommand{\phonevideo}[7]{%
   \pgfmathsetmacro{\ph}{#3*2.16410}%
   \fill[black!92, rounded corners=48\pxu] (#1,#2) rectangle +({#3+24},{\ph+24});
   \begin{scope}
     \clip[rounded corners=36\pxu] ({#1+12},{#2+12}) rectangle +(#3,\ph);
-    \node[anchor=north west, inner sep=0pt] at ({#1+12},{#2+12}) {\animategraphics[autoplay,loop,width=#3\pxu]{#4}{#5}{#6}{#7}};
+    \node[anchor=north west, inner sep=0pt] at ({#1+12},{#2+12}) {\animategraphics[controls,loop,width=#3\pxu]{#4}{#5}{#6}{#7}};
   \end{scope}}
 % Liste à puces compacte, utilisable dans un \txt.
 \newcommand{\puce}[1]{\hangindent=1.1em\hangafter=1 \makebox[1.1em][l]{\textbullet}#1\par\vspace{0.35em}}
@@ -131,7 +133,7 @@
   \ctxt{1546}{282}{500}{32}{ink}{Mes Flèches, mes bons}
   \phonevideo{1384}{350}{300}{8}{animrecompenses}{0}{53}
 }
-\note{Je vous montre comment ça marche concrètement. (Les 3 téléphones jouent en boucle : ouvrir ce PDF avec Adobe Acrobat Reader, sinon seule la première image s'affiche — vérifié avant la répétition.) À gauche, je cherche une offre sur la carte ou avec la barre de recherche, je la confirme avec « J'en ai profité » et je la mets en favori. Au milieu, je partage un bon plan en quelques secondes. À droite, mes Flèches gagnées et la boutique de récompenses.}
+\note{Je vous montre comment ça marche concrètement. (Ouvrir ce PDF avec Adobe Acrobat Reader, sinon seule la première image s'affiche, sans les boutons. Chaque téléphone a son propre bouton lecture : cliquer dessus pour lancer sa vidéo, l'une après l'autre, au rythme du discours — pas d'autoplay simultané.) Je clique sur le 1er : je cherche une offre sur la carte ou avec la barre de recherche, je la confirme avec « J'en ai profité » et je la mets en favori. Je clique sur le 2e : je partage un bon plan en quelques secondes. Je clique sur le 3e : mes Flèches gagnées et la boutique de récompenses.}
 \end{frame}
 
 % =============================== 4. TROIS PILIERS ===============================
