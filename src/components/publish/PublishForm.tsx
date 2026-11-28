@@ -269,12 +269,12 @@ export default function PublishForm() {
     if (!isSupabaseConfigured) return setError(t("Supabase n'est pas encore configuré."));
     if (!title.trim()) return setError(t("Donne un titre au bon plan."));
     if (!category) return setError(t("Choisis une catégorie."));
-    if (scope === "local" && !place) return setError("Choisis le lieu exact dans la liste (ou utilise ta position).");
+    if (scope === "local" && !place) return setError(t("Choisis le lieu exact dans la liste (ou utilise ta position)."));
     try {
       normalizeLink(link);
     } catch (err) {
       setShowDetails(true); // le champ en cause est replié
-      return setError((err as Error).message);
+      return setError(t((err as Error).message)); // message de lib/links (aussi utilisé par le serveur)
     }
     if (scope === "local") return publish();
 

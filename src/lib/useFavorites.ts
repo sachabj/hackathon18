@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { announce } from "./arrows";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
+import { tr } from "./i18n";
 
 const RETRY = "Vérifie ta connexion puis réessaie.";
 
@@ -28,7 +29,7 @@ export function useFavorites() {
       if (cancelled) return;
       if (error) {
         setError(error.message);
-        announce({ title: "Favoris indisponibles", detail: RETRY, error: true });
+        announce({ title: tr("Favoris indisponibles"), detail: tr(RETRY), error: true });
       } else setFavoriteIds(new Set((data ?? []).map((f) => f.deal_id as string)));
       setLoading(false);
     }
@@ -65,7 +66,7 @@ export function useFavorites() {
     if (error) {
       // Retour en arrière si l'écriture échoue (partout).
       announceFavorite({ dealId, favorite: wasFavorite });
-      announce({ title: "Favori non enregistré", detail: RETRY, error: true });
+      announce({ title: tr("Favori non enregistré"), detail: tr(RETRY), error: true });
     }
   }
 

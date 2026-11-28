@@ -10,8 +10,10 @@ import { ArrowLeftIcon } from "@/components/icons";
 import LocationSetting from "@/components/location/LocationSetting";
 import { fetchAccountInfo } from "@/lib/account";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { useT } from "@/lib/i18n";
 
 export default function Page() {
+  const t = useT();
   const router = useRouter();
   const [info, setInfo] = useState<Awaited<ReturnType<typeof fetchAccountInfo>> | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,14 +40,14 @@ export default function Page() {
   return (
     <div className="mx-auto w-full max-w-md lg:max-w-2xl space-y-4 px-4 py-6">
       <button type="button" onClick={() => router.back()} className="flex items-center gap-1 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
-        <ArrowLeftIcon className="h-4 w-4" /> Retour
+        <ArrowLeftIcon className="h-4 w-4" /> {t("Retour")}
       </button>
       <div>
-        <h1 className="text-2xl">Compte et confidentialité</h1>
+        <h1 className="text-2xl">{t("Compte et confidentialité")}</h1>
         <p className="text-sm text-[var(--color-muted)]">{info?.email}</p>
       </div>
       {error && <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-      {!info && !error && <p className="text-sm text-[var(--color-muted)]">Chargement…</p>}
+      {!info && !error && <p className="text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>}
       {info && (
         <div key={visit} className="space-y-4">
           <SecuritySection email={info.email} />

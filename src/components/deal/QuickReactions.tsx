@@ -4,13 +4,15 @@
 import ReactionBar from "@/components/deal/ReactionBar";
 import type { DealWithVotes } from "@/lib/types";
 import { useDealReactions } from "@/lib/useDealReactions";
+import { useT } from "@/lib/i18n";
 
 export default function QuickReactions({ deal }: { deal: DealWithVotes }) {
+  const t = useT();
   const r = useDealReactions(deal);
   if (r.ended) {
     return (
       <p role="status" className="text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-        Offre terminée.
+        {t("Offre terminée.")}
       </p>
     );
   }

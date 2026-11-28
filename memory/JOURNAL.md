@@ -733,3 +733,9 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 09h32 — Matteo (questions du jury, sans code)
 - Lecture du projet complet ; liste des questions qu'un jury poserait après le pitch et la démo (modèle économique, concurrence, démarrage, triche, algorithmes, RGPD, IA, Erasmus), avec pistes de réponse tirées du code et des limites connues. C4 complétée dans `TASKS.md`. Aucun code modifié.
+
+### 2026-11-28 10h15 — Justin (check global, derniers textes traduits)
+- Contrôles : tsc, lint, build, `npm audit` (0 faille) ; base en mémoire : `schema.sql` + relance des 31 migrations (seule 002 échoue, attendu : fonction supprimée par 018) + chaîne de démo complète, 2 passages ; navigateur sans écran avec faux Supabase : 22 écrans étudiants et 6 commerçants, FR et EN, 390 et 1440 px, aucune erreur ni débordement.
+- Traduits : en-tête de la page Compte, « Offre terminée. » (fenêtre de la carte), chargement de la carte, erreurs de lien, de recherche de lieu, des favoris, du lieu manquant, du mot de passe, de l'assistant (16 textes). Les erreurs de `lib/links.ts` sont traduites à l'affichage : ce fichier sert aussi côté serveur.
+- Fichiers : `compte/page.tsx`, `QuickReactions`, `DealsMapLoader`, `PublishForm`, `MyDealCard`, `places.ts`, `useFavorites.ts`, `en.ts`. Uniformisation du code (dates, couleurs, classes dupliquées) remise après la démo.
+

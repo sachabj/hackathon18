@@ -853,4 +853,18 @@ export const EN: Record<string, string> = {
   "Du plus proche au plus loin du centre de {place}.": "Nearest first, from the centre of {place}.",
   "Active ta localisation ou choisis ta ville dans tes préférences pour trier par distance.":
     "Turn on location or choose your city in your preferences to sort by distance.",
+  "Retour": "Back",
+  "Offre terminée.": "Deal ended.",
+  "Chargement de la carte…": "Loading the map…",
+  "Le lien n'est pas valide (ex : https://www.exemple.fr/offre).": "The link is not valid (e.g. https://www.example.com/deal).",
+  "Seuls les liens http(s) sont acceptés.": "Only http(s) links are accepted.",
+  "Recherche du lieu indisponible pour le moment.": "Place search is unavailable for now.",
+  "Favoris indisponibles": "Favourites unavailable",
+  "Favori non enregistré": "Favourite not saved",
+  "Vérifie ta connexion puis réessaie.": "Check your connection and try again.",
+  "Choisis le lieu exact dans la liste (ou utilise ta position).": "Pick the exact place from the list (or use your location).",
+  "Mot de passe actuel incorrect.": "Current password is incorrect.",
+  "Le nouveau mot de passe doit être différent de l'ancien.": "The new password must be different from the old one.",
+  "Assistant injoignable (réseau).": "Assistant unreachable (network).",
+  "Assistant indisponible.": "Assistant unavailable.",
 };

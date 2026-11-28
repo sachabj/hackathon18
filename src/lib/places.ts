@@ -2,6 +2,7 @@
 // Responsable : Matteo (tâche 6).
 import { MAP_CENTER } from "./constants";
 import type { ActivityId, DealCategory } from "./types";
+import { tr } from "./i18n";
 
 export interface Place {
   /** Identifiant OSM, unique */
@@ -45,7 +46,7 @@ export async function searchPlaces(
     lon: String(near.lng),
   });
   const res = await fetch(`https://photon.komoot.io/api/?${params}`, { signal });
-  if (!res.ok) throw new Error("Recherche du lieu indisponible pour le moment.");
+  if (!res.ok) throw new Error(tr("Recherche du lieu indisponible pour le moment."));
   const { features } = (await res.json()) as { features: PhotonFeature[] };
 
   const seen = new Set<string>();

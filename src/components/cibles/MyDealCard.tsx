@@ -98,7 +98,7 @@ export default function MyDealCard({
     try {
       link_url = normalizeLink(link);
     } catch (err) {
-      return setLinkError((err as Error).message);
+      return setLinkError(t((err as Error).message)); // message de lib/links (aussi utilisé par le serveur)
     }
     setLinkError(null);
     const saved = await onSave({
