@@ -59,7 +59,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 15 | Pitch | 6 diapos LaTeX (`pitch/`) ; diapo 3 = image de la vidéo promo, QR code et lien YouTube https://youtube.com/shorts/NvxBMh5c1zU (vérifiés : QR décodé, liens du PDF) ; PDF recompilé le 28/11 à 11h30 | répétition (C4) ; déposer `pitch/sharewood.pdf` et le lien YouTube sur le site de rendu ; Anne-Lise à prévenir (sa diapo 3 est remplacée) | équipe |
+| 15 | Pitch | 6 diapos LaTeX (`pitch/`) ; version PowerPoint `pitch/sharewood.pptx` avec la vidéo intégrée (lecture au clic, diapo 3) ; diapo 3 = image de la vidéo promo, QR code et lien YouTube https://youtube.com/shorts/NvxBMh5c1zU (vérifiés : QR décodé, liens du PDF) ; PDF recompilé le 28/11 à 11h30 | répétition (C4) ; déposer `pitch/sharewood.pdf` et le lien YouTube sur le site de rendu ; Anne-Lise à prévenir (sa diapo 3 est remplacée) | équipe |
 
 ## 3. 📋 Reste à faire
 
@@ -68,8 +68,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|
 | C9 | **Remettre la démo dans son état de départ juste avant de présenter** : sur le site, demo.sarah est à 495 Flèches et « Expos gratuites » est déjà confirmée (scénario joué en répétition), et la base a encore toutes les offres inventées. `node scripts/build_demo_sql.mjs` puis lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés) ; sinon, au minimum `seed_arrows.sql` | Justin |
 | C11 | Retirer les 300 Flèches de test données à un compte par Matteo (ligne `welcome` dans `arrow_events`), sinon elles faussent le classement des écoles | Matteo |
-| C4 | **Répéter le pitch** ; diapo 3 : cliquer sur le téléphone ou le lien ouvre la vidéo sur YouTube (sinon ouvrir `pitch/sharewood-promo.mp4` à la main) ; préparer le commentaire (vidéo sans son) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
-| C15 | EN COURS (Justin) : version PowerPoint du pitch avec la vidéo intégrée (`pitch/sharewood.pptx`) | Justin |
+| C4 | **Répéter le pitch** ; si présentation en PowerPoint (`pitch/sharewood.pptx`), ouvrir le fichier sur l'ordinateur de présentation et vérifier que la vidéo de la diapo 3 se lance au clic ; diapo 3 : cliquer sur le téléphone ou le lien ouvre la vidéo sur YouTube (sinon ouvrir `pitch/sharewood-promo.mp4` à la main) ; préparer le commentaire (vidéo sans son) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟢 Bonus

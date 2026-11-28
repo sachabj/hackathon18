@@ -27,6 +27,12 @@ Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, re
 - Mise en ligne YouTube (titre, description, miniature, réglages) : [`promo/youtube.md`](promo/youtube.md).
 - Remplace les 3 boucles vidéo d'Anne-Lise (retirées le 28/11, toujours dans l'historique git). Repli en présentation : ouvrir [`sharewood-promo.mp4`](sharewood-promo.mp4) à la main.
 
+## Version PowerPoint (vidéo intégrée)
+- [`sharewood.pptx`](sharewood.pptx) (12 Mo) : les 6 diapos du PDF en images, avec les notes d'orateur ; **la vidéo promo est dans le fichier**, dans le téléphone de la diapo 3 : un clic dessus la lance (59 s, sans son). QR code, lien YouTube et lien de l'appli restent cliquables.
+- Textes non modifiables dans PowerPoint : modifier `sharewood.tex`, recompiler le PDF, puis refaire le .pptx :
+  `gs -sDEVICE=png16m -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -g2560x1440 -dPDFFitPage -o /tmp/s/slide%d.png sharewood.pdf`, une image PNG de la vidéo (`sips -s format png images/promo-affiche.jpg --out /tmp/s/cover.png`), les notes en JSON, puis `NODE_PATH=<dossier avec pptxgenjs>/node_modules node promo/pptx.cjs /tmp/s notes.json /tmp/s/cover.png sharewood.pptx && python3 promo/pptx_fix.py sharewood.pptx`.
+- Pas essayé dans PowerPoint ni Keynote (absents de ce poste) : rendu vérifié avec LibreOffice. **Ouvrir le fichier sur l'ordinateur de présentation et cliquer sur la vidéo avant de présenter.**
+
 ## La vidéo promo (format téléphone)
 - [`sharewood-promo.mp4`](sharewood-promo.mp4) : 59 s, 1080 × 1920 capturé en vraie résolution, 60 i/s, sans son (piste muette), données d'exemple (compte « Sarah », offres « (démo) »).
 - Parcours : profil en quelques gestes → accueil et carte → recherche « piscine » et « J'en ai profité » → partage d'une offre prise en photo → profil, activité et boutique ; cinq intercalaires (« Un profil qui te ressemble », « Repère les vrais bons plans », « Partage en quelques secondes », « Solidarité récompensée », « ShareWood »).

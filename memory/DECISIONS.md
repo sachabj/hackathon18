@@ -631,3 +631,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Remplace** : le lien local `run:` vers le MP4 (ne marche pas dans un PDF déposé en ligne).
 - **Écartés** : vidéo hébergée sur le site Vercel (déploiement après le gel) ; lien GitHub (télécharge au lieu de lire).
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 11h45 — Version PowerPoint du pitch
+- **Décision** : `pitch/sharewood.pptx` = copie fidèle du PDF (diapos en images 2560 × 1440, notes d'orateur) avec la vidéo promo intégrée dans le téléphone de la diapo 3, lancée au clic ; liens (QR code, YouTube, appli) rétablis par des zones transparentes. Le PDF avec QR code et lien YouTube reste la version à déposer.
+- **Écartés** : diapos refaites en PowerPoint (plus long, polices absentes d'Office) ; lecture automatique.
+- **Qui** : Justin (réponses aux questions de cadrage)

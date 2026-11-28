@@ -764,3 +764,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 11h30 — Justin (lien YouTube dans le pitch)
 - Vidéo mise en ligne par Justin : https://youtube.com/shorts/NvxBMh5c1zU (accessible sans compte, vérifié). `\demourl` renseigné (sans `?feature=share`), adresse affichée sans « https:// » (`xstring` ; « :// » ne marche pas, le « : » est actif en français). PDF recompilé : QR code décodé = le lien, 3 zones cliquables vers YouTube. `README.md` (lien pour le jury), `pitch/README.md`, `youtube.md`, mémoire.
+
+### 2026-11-28 11h45 — Justin (pitch en PowerPoint avec la vidéo)
+- Nouveaux `pitch/promo/pptx.cjs` (pptxgenjs, installé hors du dépôt) et `pitch/promo/pptx_fix.py` (numéros de formes uniques, archive sans dossiers) → `pitch/sharewood.pptx` (12 Mo, vidéo de 10 Mo embarquée, lecture au clic). `pitch/README.md`, mémoire.
+- Vérifié : validation OOXML réussie, notes présentes, rendu LibreOffice des 6 diapos (vidéo avec son image d'aperçu, liens invisibles). Pas ouvert dans PowerPoint ni Keynote (absents de ce poste).
