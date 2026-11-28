@@ -768,3 +768,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 11h45 — Justin (pitch en PowerPoint avec la vidéo)
 - Nouveaux `pitch/promo/pptx.cjs` (pptxgenjs, installé hors du dépôt) et `pitch/promo/pptx_fix.py` (numéros de formes uniques, archive sans dossiers) → `pitch/sharewood.pptx` (12 Mo, vidéo de 10 Mo embarquée, lecture au clic). `pitch/README.md`, mémoire.
 - Vérifié : validation OOXML réussie, notes présentes, rendu LibreOffice des 6 diapos (vidéo avec son image d'aperçu, liens invisibles). Pas ouvert dans PowerPoint ni Keynote (absents de ce poste).
+
+### 2026-11-28 11h50 — Justin (vérification avant le rendu)
+- Dépôt synchronisé ; aucun code modifié depuis le déploiement de `fa25bd5` (C5 close) ; PDF compilé depuis la dernière version de `sharewood.tex`, PowerPoint construit depuis ce PDF ; site et vidéo YouTube accessibles ; aucun secret dans les fichiers suivis (seuls `.env.example` et le mot de passe à remplir de `reset_demo.sql`).

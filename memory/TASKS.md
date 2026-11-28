@@ -7,7 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `fa25bd5`, 28/11 à 10h08** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + icônes Lucide, logo animé, lien « lieu d'études » (Sacha), derniers textes traduits. Peut servir de déploiement final si aucun code n'est poussé avant 11h.
+- **Dernier déploiement : `fa25bd5`, 28/11 à 10h08** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + icônes Lucide, logo animé, lien « lieu d'études » (Sacha), derniers textes traduits. **Déploiement final** : aucun code modifié depuis (vérifié à 11h50), gel du code passé.
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)
@@ -69,7 +69,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C9 | **Remettre la démo dans son état de départ juste avant de présenter** : sur le site, demo.sarah est à 495 Flèches et « Expos gratuites » est déjà confirmée (scénario joué en répétition), et la base a encore toutes les offres inventées. `node scripts/build_demo_sql.mjs` puis lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés) ; sinon, au minimum `seed_arrows.sql` | Justin |
 | C11 | Retirer les 300 Flèches de test données à un compte par Matteo (ligne `welcome` dans `arrow_events`), sinon elles faussent le classement des écoles | Matteo |
 | C4 | **Répéter le pitch** ; si présentation en PowerPoint (`pitch/sharewood.pptx`), ouvrir le fichier sur l'ordinateur de présentation et vérifier que la vidéo de la diapo 3 se lance au clic ; diapo 3 : cliquer sur le téléphone ou le lien ouvre la vidéo sur YouTube (sinon ouvrir `pitch/sharewood-promo.mp4` à la main) ; préparer le commentaire (vidéo sans son) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
-| C5 | Gel du code à 11h, dernier déploiement | Justin |
+| C16 | **Rendu** : déposer `pitch/sharewood.pdf` sur le site de rendu et coller le lien YouTube https://youtube.com/shorts/NvxBMh5c1zU dans le formulaire (vérifié le 28/11 à 11h50 : PDF à jour, vidéo accessible sans compte, site en ligne, aucun secret dans le dépôt) | Justin |
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |
