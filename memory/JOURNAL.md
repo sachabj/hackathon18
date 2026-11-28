@@ -662,3 +662,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Justin (pouce sur « J'en ai profité »)
 - `ReactionBar` : icône pouce levé à la place du marcheur (coche conservée quand le bouton est choisi). Vérifié : tsc, lint, build. Pas vu à l'écran.
+
+### 2026-11-28 07h14 — Justin (déploiement)
+- `12a12a9` en ligne (icône pouce, tri « Plus proches » de Matteo). Vérifié : build Vercel, pages publiques et redirection. Pages connectées non vues.
