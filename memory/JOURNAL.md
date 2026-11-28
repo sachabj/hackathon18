@@ -489,3 +489,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 01h40 — Justin (vraies données, tâche 65 : étude)
 - Sources recherchées et interrogées en lecture (CROUS, OpenAgenda, Aides Jeunes) ; proposition faite à Justin, choix en attente. Aucun code modifié.
+
+### 2026-11-28 — Matteo (bilan pitch et démo)
+- Lecture de la mémoire, du README et de `pitch/` : liste de ce qui manque pour le pitch et la démo (vidéo, scénario écrit, données de démo, migrations à confirmer, essai réel). Aucun code modifié.
