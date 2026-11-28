@@ -58,7 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons validés par le commerçant (« Valider un bon », migration 030) | partenaires fictifs ; « Avant-Première » sans offre flash ; aucun tirage de tombola | Sacha |
 | 50 | Anglais | parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, politique de confidentialité, messages d'erreur de la base | Sacha |
-| 13 | Mise en avant | fonctionne (9,90 € / 7 jours) | paiement simulé ; statut de commerçant non vérifié | Justin |
+| 13 | Mise en avant | fonctionne (9,90 € / 7 jours) | EN COURS (Justin) : écran de paiement simulé, reçus, migration **031** réservée | Justin |
 | 17a | Confidentialité | page à jour | contact **fictif** (`PRIVACY_CONTACT`) à remplacer avant une vraie mise en service | Sacha |
 
 ## 3. 📋 Reste à faire
