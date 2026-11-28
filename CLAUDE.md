@@ -21,7 +21,7 @@ Pour toute demande qui modifie le projet (code, base de données, design, périm
 ### 2. APRÈS chaque requête (même petite)
 Mettre à jour la mémoire, **dans le même commit que le code** :
 - `memory/JOURNAL.md` → **ajouter** une entrée (date-heure, membre, ce qui a été fait, fichiers touchés).
-- `memory/TASKS.md` → **toujours**, à chaque requête : passer ce qui vient d'être fait dans « Déjà fait » (ou « En cours » si c'est partiel), ajouter à « Reste à faire » ce qui a été découvert ou demandé (étape à lancer par l'utilisateur, migration, défaut, idée retenue), retirer ou corriger les lignes devenues fausses, et tenir à jour les étapes critiques (C0, C1…) et la ligne « Dernier déploiement ». Le fichier doit refléter l'état réel à la fin de chaque réponse.
+- `memory/TASKS.md` → **toujours**, à chaque requête : **retirer de « Reste à faire » (et des défauts) tout ce qui est terminé** et le résumer dans « Déjà fait » (ou « En cours » si c'est partiel) : « Reste à faire » ne contient que ce qui reste vraiment à faire, jamais de ligne « FAIT » ; ajouter à « Reste à faire » ce qui a été découvert ou demandé (étape à lancer par l'utilisateur, migration, défaut, idée retenue), retirer ou corriger les lignes devenues fausses, et tenir à jour les étapes critiques (C0, C1…) et la ligne « Dernier déploiement ». Le fichier doit refléter l'état réel à la fin de chaque réponse.
 - `memory/ARCHITECTURE.md` → si la structure, la stack, le modèle de données ou les routes ont changé.
 - `memory/DECISIONS.md` → si une décision a été prise (techno, scope, design…), avec le pourquoi.
 - `memory/PROJECT.md` → si la vision / le périmètre fonctionnel a changé.

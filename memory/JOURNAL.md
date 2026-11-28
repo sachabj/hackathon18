@@ -549,3 +549,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 04h — Justin (règle TASKS.md)
 - `CLAUDE.md` : `TASKS.md` doit être mis à jour à chaque requête (fait, en cours, reste à faire, étapes critiques, dernier déploiement). Aucun code modifié.
+
+### 2026-11-28 04h10 — Justin (TASKS.md épuré)
+- Retirés de « Reste à faire » : C0, C0b, C2, l'encart « Important » (tout fait), la tâche 75 (codée, déplacée dans « Déjà fait ») ; liste des défauts corrigés retirée. Règle de `CLAUDE.md` précisée : « Reste à faire » ne contient que ce qui reste à faire.

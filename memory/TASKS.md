@@ -43,6 +43,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) | Matteo, Justin | — |
 | Défauts | D3 à D5, D7 à D9, D11 à D14 (76) : voir partie 4 | Justin | vraie base et téléphone |
 | Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone ; **lancer 026** |
+| Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) | Matteo | pas vues dans un navigateur ni sur téléphone |
 
 Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67), 63 (par 68). Défauts corrigés avant la revue : D1 (vote sur son offre), D2 (copie locale du script de démo), D6 (lecteurs d'écran), D10 (tuile choisie).
 
@@ -62,17 +63,11 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (avant la démo de 13h)
 | # | Action | Qui |
 |---|---|---|
-| C0 | Lancer `025_limits.sql` | FAIT (Justin, 28/11) |
-| C0b | Lancer `026_same_reaction_gain.sql` | FAIT (Justin, 28/11) |
 | C1 | **Remplir la vraie base pour la démo** (SQL Editor, 3 scripts dans cet ordre) : 1) `supabase/reset_demo.local.sql` (copie de Justin, déjà remplie : ⚠️ efface tous les comptes sauf les 4 listés en haut, et toutes leurs offres ; crée 20 étudiants, 12 commerces fictifs, ~150 offres) ; 2) `seed_arrows.sql` (historique de Flèches, offres scénarisées) ; 3) `import_sources.sql` (54 vraies offres) | Justin |
 | C1b | **Déployer** les tâches importantes (`e4bce40` et suivants) : demande de Justin | Justin |
-| C2 | Vérifier les migrations 013, 015, 019, 021 et 025 | FAIT (Justin, 28/11) : toutes présentes |
-| C3 | **Essai complet en ligne, sur téléphone** : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
+| C3 | **Essai complet en ligne, sur téléphone** (y compris les corrections D3 à D14 et les animations de la tâche 75) : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Vidéo du pitch** (1 min maximum) et répétition | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
-
-### 🟠 Important
-Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Migration 026 lancée.
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |
@@ -88,7 +83,6 @@ Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Migration 02
 | 71 | **Signaler un contenu** (arnaque, inapproprié, mauvaise info), distinct de « Plus dispo » : motifs, table (migration), seuil de masquage, lecture comme `support_messages` | M | TODO (idée retenue par Matteo, non cadrée) |
 | 72 | **Alertes** « préviens-moi quand une offre correspond à… » : prototype web = alertes enregistrées, vérification à l'ouverture et en direct (Supabase Realtime), notification du navigateur appli ouverte ; vrai push hors délai | M à G | TODO (idée retenue par Matteo, non cadrée) |
 | 73 | **Manifest (PWA installable)** : « Ajouter à l'écran d'accueil », plein écran, icône ; aucun manifest aujourd'hui ; nécessaire aux notifications sur iPhone | P | TODO (idée retenue par Matteo, non cadrée) |
-| 75 | **Micro-animations** : réaction (rebond, compteur qui défile, fiabilité en fondu, « +N » qui vole vers le solde), fiche qui monte du bas et se ferme en glissant la poignée, cartes en cascade (8 premières, au chargement et aux filtres), cœur qui grossit avec un anneau. Coupées si « moins d'animations ». `lib/motion.ts`, `ArrowFlight.tsx` (layout), `ReactionBar`, `TrustBadge`, `DealSheet` (**Justin** : fermeture via `close()`, poignée), `DealCard` (**Anne-Lise** : cœur), listes de l'accueil, de Recherche et des favoris (`data-cascade`), `ArrowBadge` (`data-arrow-target`), `arrows.ts` (**Sacha** : champ `gain` des messages), `globals.css` | M | À TESTER (Matteo) : tsc, lint, build OK ; pas vu dans le navigateur ni sur téléphone ; sans migration |
 
 ## 4. 🐞 Bugs, points bloquants et vérifications
 
@@ -131,19 +125,7 @@ select
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Défauts
-**Aucun défaut ouvert connu.** Corrigés le 28/11 (tâche 76), à essayer sur la vraie base et sur téléphone :
-| # | Correction |
-|---|---|
-| D3 | Favori terminé : mention « Terminée », grisé, en bas de sa catégorie, sans réactions |
-| D4 | Une réaction (carte, fil, fiche) met à jour la liste et le repère aussitôt ; l'ordre ne change qu'à la visite suivante |
-| D5 | Échec d'un favori : message à l'écran |
-| D7 | Titre : 100 caractères partout, et en base avec la 025 |
-| D8 | Couleurs de l'application pour la barre du navigateur et les chargements |
-| D9 | Assistant IA : 30 analyses par jour et par compte (**demande la 025**) |
-| D11 | Barre du bas entière à 320 px |
-| D12 | Offres douteuses échues retirées avant l'affichage commerçant et la recherche de doublons |
-| D13 | Fiche d'une offre terminée : bandeau avec la raison, sans réactions ni « Y aller » |
-| D14 | Inscription avec confirmation par email : message au lieu d'un retour muet |
+**Aucun défaut ouvert connu.** (Les corrections D3 à D14 sont à essayer en vrai avec C3.)
 
 ### Cas limites et limites assumées
 - La position vient du navigateur : falsifiable. Des comptes complices peuvent confirmer des offres bidon ou en retirer une (6 signalements en 48 h). Parrainage et « étudiants aidés » sont gonflables.
