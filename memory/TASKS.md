@@ -28,7 +28,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - **021_gone_on_site.sql exécutée** (Justin, 28/11, non vérifiable avec la clé publique) : « Plus dispo » seulement sur place.
 - **022_profile_impact_referral.sql présente sur la vraie base** (sonde du 28/11 à 01h31) (Sacha, après 021) : étudiants aidés, parrainage, école, aide. Relancer 022 si 016 ou 018 sont relancées (elles remplacent la contrainte ou le trigger d'inscription). **Obligatoire avant `seed_arrows.sql`.**
 - Messages « Aide et signaler un bug » : à lire dans Supabase → Table Editor → `support_messages`.
-- Migration **023** réservée par Sacha (tâche 69), **024** par Justin (tâche 65). Prochaine : **025** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **023_doubtful_deals.sql à exécuter** (Sacha, après 022) : « Douteux » puis retrait des offres signalées. Relancer 023 si 016, 018 ou 020 sont relancées. **Obligatoire avant `seed_arrows.sql`.**
+- Migration **024** réservée par Justin (tâche 65). Prochaine : **025** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -101,6 +102,10 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Justin** : `profil/page.tsx` réécrit ; `ProfileHeader` affiche grade et Flèches, le crayon ouvre « Informations personnelles » ; `AccountLink` ne sert plus qu'à l'espace commerçant ; `DealSheet`, `DataSection`, `login/page.tsx`, `proxy.ts` modifiés. Diapos à vérifier.
 - **Matteo** : `docs/ALGORITHMES.md` (§ 7), `ArrowHistory`, `globals.css`.
 
+### Retrait des offres (tâche 69, Sacha)
+- **Justin** : une offre n’est plus archivée au 3e « Plus dispo » : **la diapo « Trois signalements, et l’offre disparaît » (`pitch/sharewood.tex`) est à corriger**. `OfferCard` affiche « Douteux » ; `MyDealCard` aussi.
+- **Matteo** : `useDeals`, `rules.ts` (`ARCHIVE_REPORTS` remplacé, `dealTrustLevel` prend « douteux »), `useDealReactions`, `engagement.ts`, `docs/ALGORITHMES.md`.
+
 ## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 65, toutes libres
 Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les questions de `CLAUDE.md`. « Taille » est une estimation (P petite · M moyenne · G grosse) ; « Domaine » indique qui connaît le code, sans attribution.
 
@@ -166,7 +171,7 @@ Relevés en lisant le code, pas encore reproduits dans l'app.
 ## Les Flèches : à régler (Sacha)
 - **Position falsifiable** : elle vient du navigateur ; la règle des 500 m (020, 021) ne résiste pas à un utilisateur averti.
 - Publications récompensées plafonnées à 3 par jour (018) ; des comptes complices peuvent encore confirmer des offres bidon.
-- 3 « Plus dispo » archivent une offre, officielle ou non, quel que soit le nombre de confirmations ; les signalements ne périment pas.
+- Offre officielle ou non : mêmes règles de retrait (023) ; les signalements ne périment pas (3 anciens suffisent à la rendre « Douteux ») ; six comptes complices peuvent la retirer en 48 h.
 - **Récompenses** (tâche 42) : partenaires fictifs ; « Avant-Première » seulement enregistrée (aucune offre flash n'existe) ; aucun tirage de tombola codé ; le commerçant ne peut pas vérifier un code (c'est l'étudiant qui marque le bon utilisé).
 
 ## À prendre en compte (depuis le profil complet, Justin)

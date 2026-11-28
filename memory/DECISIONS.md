@@ -438,3 +438,10 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : compter les actions et les appeler « étudiants » ; chiffres fixes dans l'écran ; +100 dès l'inscription (faux comptes) ; « précisions sur une offre » (trop long avant la démo) ; emoji de la maquette (règle du projet).
 - **Choix techniques** : le code de parrainage signe aussi les liens d'offre ; un lien partagé compte pour la personne qui l'envoie et pour l'auteur de l'offre ; sections dépliables sur une seule page.
 - **Qui** : Sacha (réponses aux questions de cadrage)
+
+## 2026-11-28 nuit — Retrait des offres signalées (tâches 69 et 58)
+- **Décisions** : au 3e « Plus dispo », « Douteux » et visible ; 3 « J'en ai profité » postérieurs la sauvent (signalements remis à zéro) ; sinon retirée après 2 semaines ; 6 signalements en 48 h : retrait immédiat ; « supprimer » = retirée de l'appli, gardée en base ; Flèches des signalements versées au retrait.
+- **Remplace** : l'archivage immédiat au 3e signalement (tâche 17b).
+- **Choix techniques** : pas de tâche planifiée, les échéances sont traitées au chargement de l'application ; retrait définitif ; aucun gain sur une offre retirée.
+- **Écartés** : sauvetage par une seule confirmation ou par un favori ; effacement définitif.
+- **Qui** : Sacha (réponses aux questions de cadrage)
