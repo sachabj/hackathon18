@@ -644,3 +644,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 06h29 — Justin (déploiement)
 - `c23bb11` en ligne à la demande (aucun changement de code depuis `bc65a9c`). Vérifié : pages publiques et redirections sans compte. Pages connectées non vues.
+
+### 2026-11-28 — Justin (essais en ligne)
+- Paiement de la mise en avant (C6), offre flash et tirage de la tombola (C8) essayés sur le site par Justin : ils fonctionnent. Retirés de « Reste à faire ». Aucun code modifié.
