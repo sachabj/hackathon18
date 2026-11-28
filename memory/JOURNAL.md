@@ -486,3 +486,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 01h31 — Justin (déploiement)
 - `cc37d6c` (refonte du profil, filtres d'accueil, zoom) mis en ligne sur https://sharewood-ensai.vercel.app ; objets de la 022 détectés (sonde en lecture). Vérifié : pages publiques et redirections ; connexion non essayée.
+
+### 2026-11-28 01h40 — Justin (vraies données, tâche 65 : étude)
+- Sources recherchées et interrogées en lecture (CROUS, OpenAgenda, Aides Jeunes) ; proposition faite à Justin, choix en attente. Aucun code modifié.
