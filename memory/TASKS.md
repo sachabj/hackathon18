@@ -7,7 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `0dceeef`, 28/11 à 05h57** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + paiement simulé de la mise en avant avec reçus (13), messages d'erreur de la base en anglais (50).
+- **Dernier déploiement : `bc65a9c`, 28/11 à 06h18** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + tombola et Avant-Première (42), inscription et espace commerçant en anglais (50).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)
@@ -47,7 +47,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Vidéo de démo | `pitch/demo-16x9.mp4` et `demo-telephone.mp4` (40 s, données d'exemple, sans son) ; retournage : `pitch/video/tourner.sh` | Justin | à regarder par l'équipe |
 | Données de démo | Sur la vraie base : 20 étudiants, 12 commerces fictifs, ~150 offres, Flèches de démo ; prix des 14 offres sourcées revérifiés le 28/11 vers 6h, aucun écart (12) | Justin | — |
 | Vraies offres | 54 offres importées (événements, aides, Intermarché) et offre Burger King (`import_burgerking.sql`, lancé), badge « Source officielle » ; aucune offre étudiante officielle trouvée pour McDonald's, Carrefour, Super U, Auchan (65) | Justin | voir l'offre Burger King sur le site |
-| Tombola, Avant-Première | Tirage par SQL (`draw_raffle`), résultat sur le ticket ; offre flash du commerçant visible 1 h avant par les détenteurs (42) | Justin | **lancer 032** puis déployer ; vraie base et téléphone |
+| Tombola, Avant-Première | Tirage par SQL (`draw_raffle`), résultat sur le ticket ; offre flash du commerçant visible 1 h avant par les détenteurs (42) | Justin | en ligne ; vraie base et téléphone |
 | Défauts | D3 à D5, D7 à D9, D11 à D14 (76) | Justin | essayés sur téléphone (C3) |
 | Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone |
 | Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) | Matteo | pas vues dans un navigateur ni sur téléphone |
@@ -68,7 +68,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 | C6 | **Essayer un paiement** de mise en avant sur le site en ligne avec un compte commerçant (puis « Compte », « Mes paiements ») | Justin |
-| C8 | **Tombola et Avant-Première (42)** : lancer `032_raffle_early_access.sql`, déployer, essayer une offre flash (commerçant) puis un tirage (`select * from public.draw_raffle();`) | Justin |
+| C8 | **Essayer sur le site en ligne** (032 lancée, déployé) : une offre flash avec un compte commerçant, puis un ticket et un tirage (`select * from public.draw_raffle();`) | Justin |
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |

@@ -634,3 +634,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 06h35 — Justin (anglais : inscription et commerçant, tâche 50)
 - Assistant de préférences, espace commerçant (paiement, bons, statistiques), récapitulatif des préférences et lien « Compte » passés par `t()` ; erreurs de `lib/merchant` traduites ; environ 140 textes ajoutés à `en.ts`. Fichiers de Sacha touchés. 032 lancée par Justin (vérifiée par sonde).
 - Vérifié : tsc, lint, build ; navigateur sans écran en anglais (offres, formulaire, paiement, statistiques, compte, 8 étapes de l'inscription). Pas vu en français à l'écran ni sur téléphone.
+
+### 2026-11-28 06h18 — Justin (déploiement)
+- `bc65a9c` en ligne (tâches 42 et 50 ; un premier déploiement de `ab30417`, juste avant la résolution d'un conflit, ne contenait pas la 50). Vérifié : build, pages publiques, redirection sans compte. Pages connectées non vues.
