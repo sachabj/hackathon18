@@ -1,4 +1,5 @@
 // Réactions aux bons plans (vues, passages, votes) et gestion de ses propres signalements.
+import type { DealState } from "./rules";
 import { announce, outcomeNotice, type ArrowOutcome } from "./arrows";
 import { currentPosition } from "./location";
 import type { Point } from "./geo";
@@ -44,19 +45,29 @@ export interface Engagement {
   visit: { mine: boolean; count: number } | null;
   /** Masses pondérées par le poids des étudiants (migration 014), null → calcul local. */
   trust: DealTrust | null;
+  /** Douteuse, retirée… (tenu par la base) ; null si l'offre n'a pas pu être relue. */
+  state: DealState | null;
+}
+
+/** `*` : les colonnes d'état n'existent qu'après les migrations 016 et 023. */
+async function fetchDealState(dealId: string) {
+  const { data } = await getSupabase().from("deals").select("*").eq("id", dealId).maybeSingle();
+  return data as DealState | null;
 }
 
 export async function fetchEngagement(dealId: string): Promise<Engagement> {
   const supabase = getSupabase();
   const userId = await currentUserId();
   if (!userId) throw new Error("Session expirée : reconnecte-toi.");
-  const [votes, mine, count, trust] = await Promise.all([
+  const [votes, mine, count, trust, state] = await Promise.all([
     supabase.from("votes").select("*").eq("deal_id", dealId),
     supabase.from("deal_visits").select("deal_id").eq("deal_id", dealId).eq("user_id", userId),
     supabase.rpc("deal_visit_count", { p_deal_id: dealId }),
     fetchDealTrust([dealId]),
+    fetchDealState(dealId),
   ]);
   return {
+    state,
     userId,
     votes: check(votes) as Vote[],
     visit: mine.error || count.error ? null : { mine: (mine.data ?? []).length > 0, count: Number(count.data) },
@@ -68,14 +79,16 @@ export async function fetchEngagement(dealId: string): Promise<Engagement> {
 export interface Reactions {
   votes: Vote[];
   trust: DealTrust | null;
+  state: DealState | null;
 }
 
 export async function fetchReactions(dealId: string): Promise<Reactions> {
-  const [votes, trust] = await Promise.all([
+  const [votes, trust, state] = await Promise.all([
     getSupabase().from("votes").select("*").eq("deal_id", dealId),
     fetchDealTrust([dealId]),
+    fetchDealState(dealId),
   ]);
-  return { votes: check(votes) as Vote[], trust: trust ? (trust.get(dealId) ?? { pos: 0, neg: 0 }) : null };
+  return { state, votes: check(votes) as Vote[], trust: trust ? (trust.get(dealId) ?? { pos: 0, neg: 0 }) : null };
 }
 
 /**

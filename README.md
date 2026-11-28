@@ -24,7 +24,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Faire confiance
 - **Fiabilité façon Waze**, de « Douteux » à « Très fiable » : les avis récents et ceux des étudiants les plus justes et actifs pèsent davantage.
-- Une offre signalée « Plus dispo » par **3 étudiants** est archivée (sur la carte, le signalement se fait sur place).
+- Au **3e « Plus dispo »**, une offre devient « Douteux » : sans 3 « J'en ai profité » dans les **2 semaines**, elle est retirée ; **6 signalements en 48 h** la retirent tout de suite (sur la carte, le signalement se fait sur place).
 - Chaque offre indique si elle vient d'un **commerçant** ou d'un **étudiant**.
 - **Aucun accès limité** : tout le monde voit toutes les offres ; ne pas contribuer, c'est seulement ne pas gagner de Flèches.
 

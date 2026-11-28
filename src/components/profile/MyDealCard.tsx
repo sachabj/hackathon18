@@ -7,6 +7,7 @@ import { DAILY_PAID_CREATIONS } from "@/lib/arrows";
 import { REQUIREMENTS, NEARBY_M } from "@/lib/constants";
 import type { MyDealInput } from "@/lib/engagement";
 import { normalizeLink } from "@/lib/links";
+import { DOUBT_DAYS, RESCUE_CONFIRMATIONS } from "@/lib/rules";
 import type { Deal, DealAudience, DealRequirement } from "@/lib/types";
 
 const formatDate = (iso: string) =>
@@ -64,7 +65,7 @@ export default function MyDealCard({
   const status = byMerchant
     ? "Retiré par un commerçant"
     : deal.archived_at
-      ? "Archivé : signalé expiré"
+      ? "Retiré : signalé « Plus dispo »"
       : deal.ended_by_merchant
         ? "Plus dispo"
         : expired
@@ -169,6 +170,9 @@ export default function MyDealCard({
 
   const earned = (gains?.create ?? 0) + (gains?.bonus ?? 0);
   const panelId = `bon-plan-${deal.id}`;
+  /** Signalé « Plus dispo » : il reste en ligne jusqu'à l'échéance. */
+  const doubtful = status === "En ligne" && !!deal.doubtful_since;
+  const deadline = doubtful ? new Date(new Date(deal.doubtful_since!).getTime() + DOUBT_DAYS * 86_400_000).toISOString() : null;
 
   return (
     <article className="sw-card">
@@ -188,13 +192,15 @@ export default function MyDealCard({
           <span
             className="shrink-0 rounded-full px-2 py-0.5 text-xs"
             style={
-              status === "En ligne"
+              doubtful
+                ? { backgroundColor: "var(--color-lilac)", color: "var(--color-aubergine)" }
+                : status === "En ligne"
                 ? { backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }
                 : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
             }
           >
             {/* Le motif complet est donné une fois la ligne ouverte. */}
-            {deal.archived_at ? "Archivé" : byMerchant ? "Retiré" : status}
+            {deal.archived_at || byMerchant ? "Retiré" : doubtful ? "Douteux" : status}
           </span>
           {earned > 0 && (
             <span className="flex shrink-0 items-center gap-0.5 tabular-nums" style={{ color: "var(--color-forest)" }}>
@@ -217,6 +223,11 @@ export default function MyDealCard({
               .filter(Boolean)
               .join(" · ")}
           </p>
+          {deadline && (
+            <p style={{ color: "var(--color-aubergine)" }}>
+              Douteux : sans {RESCUE_CONFIRMATIONS} « J&apos;en ai profité » d&apos;ici le {formatDate(deadline)}, il sera retiré.
+            </p>
+          )}
           {audience && (
             <p>
               {[

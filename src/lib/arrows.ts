@@ -136,7 +136,8 @@ export async function fetchArrowLog(): Promise<ArrowLine[] | null> {
 /** Résultat d'un vote renvoyé par `react_to_deal`. */
 export interface ArrowOutcome {
   /** "noloc" : position non partagée ; "far" : à plus de 500 m d'une offre placée */
-  status: "paid" | "pending" | "noloc" | "far" | "limit" | "already";
+  /** "closed" : offre déjà retirée */
+  status: "paid" | "pending" | "noloc" | "far" | "limit" | "already" | "closed";
   kind: "confirm" | "report";
   amount: number;
   multiplier: number;
@@ -159,13 +160,15 @@ export function outcomeNotice(o: ArrowOutcome): ArrowNotice | null {
     case "paid":
       return {
         title: `+${o.amount} Flèches`,
-        detail: detail(o.kind === "confirm" ? "Offre confirmée" : "Signalement corroboré, offre archivée"),
+        detail: detail(o.kind === "confirm" ? "Offre confirmée" : "Signalement corroboré, offre retirée"),
       };
     case "pending":
       return {
         title: "Signalement enregistré",
-        detail: detail(`+${o.amount} Flèches quand 3 étudiants l'auront signalée`),
+        detail: detail(`+${o.amount} Flèches si l'offre est retirée`),
       };
+    case "closed":
+      return { title: "Réaction enregistrée, sans Flèches", detail: "Cette offre est déjà retirée." };
     case "noloc":
       return { title: "Réaction enregistrée, sans Flèches", detail: NEEDS_POSITION };
     case "far":

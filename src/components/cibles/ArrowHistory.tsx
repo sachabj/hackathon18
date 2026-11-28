@@ -54,7 +54,7 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
             {DAILY_PAID_CREATIONS} publications récompensées par jour).
           </li>
           <li>« J&apos;en ai profité » : +{ARROWS.confirm}.</li>
-          <li>« Plus dispo » : +{ARROWS.report}, versées quand 3 étudiants l&apos;ont signalée.</li>
+          <li>« Plus dispo » : +{ARROWS.report}, versées si l&apos;offre est retirée (perdues si elle est sauvée).</li>
           <li>
             Pour une offre sur la carte, il faut partager ta position à moins de {NEARBY_M} m d&apos;elle : sinon aucune
             Flèche, et « Plus dispo » est refusé.

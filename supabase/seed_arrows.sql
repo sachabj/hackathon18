@@ -1,7 +1,7 @@
 -- =====================================================================
 -- ShareWood — données de démo « Les Flèches », récompenses et profil (étudiants aidés, parrainage).
 -- Prérequis : migrations 016_arrows.sql, 017_rewards.sql, 020_location_rules.sql et
--- 022_profile_impact_referral.sql, puis reset_demo.sql (comptes demo.…@example.com).
+-- 022_profile_impact_referral.sql et 023_doubtful_deals.sql, puis reset_demo.sql (comptes demo.…@example.com).
 -- ⚠️ À lancer le jour de la démo : les séries sont calculées à partir de la date d'exécution.
 -- À coller dans Supabase → SQL Editor → Run. Ne touche qu'aux comptes de démo et à trois de leurs offres.
 -- Relançable : remet les scénarios à zéro (utile après une répétition). Historique INVENTÉ.
@@ -17,7 +17,8 @@
 -- En direct, connecté en demo.sarah (la série passe à 3 jours : gains × 1,5) :
 --   1. « Carte Avantage Jeune » : J'en ai profité → +5, elle passe Robin des Étudiants (500) ;
 --      3e confirmation, son auteur (demo.hugo) gagne le bonus (+10).
---   2. « Covoiturage Bruz → Rennes » : Plus dispo → 3e signalement, +8 (508), offre archivée.
+--   2. « Covoiturage Bruz → Rennes » (« Douteux », 5 signalements récents) : Plus dispo → 6e en 48 h,
+--      offre retirée, +8 (508).
 --   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 358 disponibles,
 --      le rang ne bouge pas ; montrer le bon, puis « Marquer comme utilisé en caisse ».
 -- Les offres des étapes 1 et 2 sont sans lieu précis : petits montants, et la position ne change rien.
@@ -45,8 +46,8 @@ declare
 begin
   if to_regclass('public.arrow_events') is null or to_regclass('public.user_rewards') is null
      or to_regprocedure('public.claim_creation_arrows(uuid, float8, float8)') is null
-     or to_regclass('public.referrals') is null then
-    raise exception 'Lance d''abord les migrations 016, 017, 020 et 022_profile_impact_referral.sql.';
+     or to_regclass('public.referrals') is null or to_regprocedure('public.settle_doubtful_deals()') is null then
+    raise exception 'Lance d''abord les migrations 016, 017, 020, 022 et 023_doubtful_deals.sql.';
   end if;
   if not exists (select 1 from auth.users where email = 'demo.sarah@example.com') then
     raise exception 'Lance d''abord supabase/reset_demo.sql (comptes de démo absents).';
@@ -64,13 +65,21 @@ begin
 
   -- ---------- Votes des trois scénarios ----------
   delete from public.votes where deal_id in (bonus_deal, report_deal, archived_deal);
+  -- Un retrait est définitif dans l'application : le script, lui, remet les trois offres à zéro.
+  update public.deals set archived_at = null, doubtful_since = null, reports_reset_at = null
+   where id in (bonus_deal, report_deal, archived_deal);
   insert into public.votes (deal_id, user_id, value)
   select v.deal, a.id, v.value
   from (values
     (bonus_deal, 'demo.lea@example.com', 1), (bonus_deal, 'demo.ines@example.com', 1),
+    -- Cinq signalements : « Douteux » ; le sixième, en direct, la retire.
     (report_deal, 'demo.lea@example.com', -1), (report_deal, 'demo.ines@example.com', -1),
+    (report_deal, 'demo.tom@example.com', -1), (report_deal, 'demo.yanis@example.com', -1),
+    (report_deal, 'demo.chloe@example.com', -1),
+    -- Six signalements : déjà retirée.
     (archived_deal, 'demo.lea@example.com', -1), (archived_deal, 'demo.hugo@example.com', -1),
-    (archived_deal, 'demo.ines@example.com', -1)
+    (archived_deal, 'demo.ines@example.com', -1), (archived_deal, 'demo.tom@example.com', -1),
+    (archived_deal, 'demo.yanis@example.com', -1), (archived_deal, 'demo.malo@example.com', -1)
   ) as v(deal, email, value)
   join auth.users a on a.email = v.email;
 
@@ -130,7 +139,7 @@ begin
     end loop;
   end loop;
 
-  -- Signalements déjà faits sur l'offre à archiver en direct : en attente du 3e.
+  -- Signalements déjà faits sur l'offre à retirer en direct : en attente du retrait.
   insert into public.arrow_events (user_id, deal_id, kind, base, amount, paid, created_at)
   select a.id, report_deal, 'report', 5, 5, false, now() - interval '2 days'
   from auth.users a where a.email in ('demo.lea@example.com', 'demo.ines@example.com');

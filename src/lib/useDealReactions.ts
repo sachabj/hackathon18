@@ -3,7 +3,7 @@
 // Réagir à un bon plan en un geste (tâche 35), depuis la carte du fil ou la fenêtre de la carte.
 import { useState } from "react";
 import { fetchReactions, setReaction, type Reaction, type Reactions } from "./engagement";
-import { dealTrustLevel, recentCounts } from "./rules";
+import { dealTrustLevel, doubtStatus, recentCounts } from "./rules";
 import type { DealWithVotes } from "./types";
 import { useCurrentUserId } from "./useCurrentUserId";
 
@@ -48,7 +48,7 @@ export function useDealReactions(deal: DealWithVotes) {
     reaction,
     own: !!userId && userId === deal.author_id,
     /** `undefined` : la liste n'a pas chargé les votes (pas de badge). */
-    trust: deal.votes ? dealTrustLevel(votes, now, masses) : undefined,
+    trust: deal.votes ? dealTrustLevel(votes, now, masses, !!doubtStatus(live?.state ?? deal, votes)) : undefined,
     counts: recentCounts(votes, now),
     busy: busy || !userId,
     error,

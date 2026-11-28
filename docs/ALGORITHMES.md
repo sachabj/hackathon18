@@ -25,7 +25,12 @@ Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 
 1. **sa date de fin est passée** ;
 2. **elle a été retirée** par son auteur (« Plus dispo » dans son profil) ou par un commerçant voisin (offre d'étudiant à moins de 75 m, même catégorie) ;
-3. **elle est archivée** : **3 étudiants différents** (hors auteur) l'ont signalée « Plus dispo » (offre sur la carte : signalement accepté seulement à 500 m au plus). C'est automatique et réversible : si l'un d'eux décoche son signalement, l'offre réapparaît.
+3. **elle est retirée après des signalements** « Plus dispo » (étudiants différents, hors auteur ; offre sur la carte : signalement accepté seulement à 500 m au plus) :
+   - au **3e**, elle devient **« Douteux »** (toujours visible, badge forcé) ;
+   - **3 « J'en ai profité »** reçus ensuite la sauvent : les signalements précédents ne comptent plus et leurs Flèches en attente sont perdues ;
+   - sinon, au bout de **2 semaines**, elle est retirée ;
+   - **6 signalements en 48 h**, sans confirmation entre-temps, la retirent tout de suite.
+   Le retrait est définitif ; les Flèches des signalements sont versées à ce moment-là. Si un signalement est décoché et qu'il en reste moins de 3, l'offre redevient normale.
 
 **Aucune limite selon l'activité** : tous les étudiants voient toutes les offres, dès leur publication. Ne pas contribuer a une seule conséquence : on ne gagne pas de Flèches, donc pas de récompenses.
 
@@ -44,7 +49,7 @@ Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 | **Accueil, recherche par mots** | Résultats exacts, puis « résultats proches ». Dans chaque groupe : sponsorisées → **pertinence** (2.5) → compatibilité. Le tri choisi dans les filtres (« Les plus proches », « Les moins chers ») remplace cet ordre. |
 | **Recherche (page carte)** | Sponsorisées → **score « Hot »** (2.4) → plus récentes. |
 
-La **fiabilité** (section 3) ne change pas l'ordre : elle sert à la couleur du badge. Seul le nombre de signalements peut faire disparaître une offre (archivage, section 1).
+La **fiabilité** (section 3) ne change pas l'ordre : elle sert à la couleur du badge. Seul le nombre de signalements peut faire disparaître une offre (retrait, section 1).
 
 ### 2.2 Les offres sponsorisées
 
@@ -202,7 +207,7 @@ Les boutons affichent **« J'en ai profité (12) »** et **« Plus dispo (2) »*
 
 ### 3.5 Disparition d'une offre
 
-La fiabilité ne masque rien. Une offre disparaît seulement quand **3 étudiants** l'ont signalée « Plus dispo » (archivage, voir section 1), ou si elle est expirée ou retirée.
+La fiabilité ne masque rien. Une offre disparaît seulement après des signalements « Plus dispo » (voir section 1), ou si elle est expirée ou retirée.
 
 ### 3.6 Si la base n'est pas à jour
 
@@ -232,7 +237,7 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 | Seuils de couleur (0,85 / 0,65 / 0,40) | | `src/lib/rules.ts` (`TRUST_LEVELS`) |
 | Poids d'un étudiant (justesse, activité, ancienneté, bornes 0,5–2) | | `supabase/migrations/014_voter_weights.sql` (`voter_stats`) |
 | Fenêtre des compteurs (30 jours) | | `src/lib/rules.ts` (`COUNT_WINDOW_DAYS`) |
-| Archivage (3 signalements) | | `src/lib/rules.ts` (`ARCHIVE_REPORTS`) **et** `supabase/migrations/016_arrows.sql` |
+| Retrait des offres (3 / 3 / 14 jours / 6 en 48 h) | | `src/lib/rules.ts` (`DOUBT_REPORTS`…) **et** `supabase/migrations/023_doubtful_deals.sql` |
 
 ---
 
@@ -243,7 +248,7 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 | Publier un bon plan | +50, **sur place** | +20 |
 | 3 confirmations reçues (si la publication a rapporté) | +30 | +10 |
 | « J'en ai profité » | +10, **sur place** | +3 |
-| « Plus dispo » (versées au 3e signalement) | +15, **sur place** | +5 |
+| « Plus dispo » (versées au retrait de l'offre) | +15, **sur place** | +5 |
 
 - **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : la publication et « J'en ai profité » sont enregistrés sans Flèches, et « Plus dispo » est **refusé** sur une offre de la carte.
 - Publication : la vérification se fait dans les 15 minutes qui suivent, une seule fois.
@@ -258,7 +263,7 @@ Réglages : `supabase/migrations/020_location_rules.sql` et `021_gone_on_site.sq
 
 **Étudiants aidés** (profil) = nombre de **personnes différentes** (étudiants, hors soi) ayant fait au moins un de ces gestes : confirmer un de mes bons plans (« J'en ai profité »), le mettre en favori, toucher « Y aller » dessus, ouvrir un lien que j'ai partagé, ou ouvrir un lien vers mon offre partagé par quelqu'un d'autre. Une personne ne compte qu'une fois ; « grâce à tes bons plans » (gestes sur mes offres) + « grâce à tes partages » (les autres) = total. Un favori retiré ou une offre supprimée ne compte plus.
 
-Mes « Plus dispo » confirmés (offre archivée) sont affichés **à part** : on ne sait pas qui a évité le déplacement.
+Mes « Plus dispo » confirmés (offre retirée) sont affichés **à part** : on ne sait pas qui a évité le déplacement.
 
 **Parrainage** : +100 Flèches au parrain et +50 au filleul à la **première publication ou réaction** du filleul ; au plus 10 parrainages payés par parrain (le filleul reçoit toujours ses 50). Sans série ni plafond quotidien ; ces Flèches comptent pour le grade.
 

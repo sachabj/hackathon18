@@ -21,6 +21,10 @@ export function useDeals() {
 
     async function load() {
       const supabase = getSupabase();
+      // Retire les offres douteuses arrivées à échéance (migration 023) ; sans attendre : `isDealHidden` les masque déjà.
+      supabase.rpc("settle_doubtful_deals").then(({ error }) => {
+        if (error && error.code !== "PGRST202") console.warn("Offres douteuses non traitées :", error.message);
+      });
       const dealsResult = await supabase.from("deals").select("*, votes(*)").order("created_at", { ascending: false });
       if (cancelled) return;
 

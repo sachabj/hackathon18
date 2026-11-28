@@ -15,7 +15,15 @@ import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { fetchEngagement, recordView, setReaction, type Engagement, type Reaction, type Reactions } from "@/lib/engagement";
 import { isOwnPhotoUrl } from "@/lib/photos";
-import { ARCHIVE_REPORTS, recentCounts, reliability, trustLevel } from "@/lib/rules";
+import {
+  activeReports,
+  DOUBT_REPORTS,
+  doubtStatus,
+  recentCounts,
+  reliability,
+  RESCUE_CONFIRMATIONS,
+  trustLevel,
+} from "@/lib/rules";
 import TrustBadge from "@/components/deal/TrustBadge";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal } from "@/lib/types";
@@ -75,7 +83,7 @@ export default function DealSheet({
       await action();
       const fresh = await fetchEngagement(deal.id);
       setData({ ...fresh, at: Date.now() });
-      onReactionsChange?.({ votes: fresh.votes, trust: fresh.trust });
+      onReactionsChange?.({ votes: fresh.votes, trust: fresh.trust, state: fresh.state });
     } catch (e) {
       setError((e as Error).message);
     }
@@ -84,6 +92,10 @@ export default function DealSheet({
 
   const own = data?.userId === deal.author_id;
   const trust = data ? reliability(data.votes, data.at, data.trust) : null;
+  /** État relu après chaque réaction (douteuse, retirée). */
+  const state = data?.state ?? deal;
+  const doubt = data ? doubtStatus(state, data.votes) : null;
+  const reports = data ? activeReports(state, data.votes) : 0;
   const myVote = data?.votes.find((v) => v.user_id === data.userId)?.value;
   // « J'en ai profité » vaut confirmation : actif s'il y a un passage ou une confirmation (« C'est la même offre »).
   const reaction: Reaction = myVote === -1 ? "gone" : myVote === 1 || data?.visit?.mine ? "visited" : null;
@@ -184,7 +196,7 @@ export default function DealSheet({
         {trust && data && (
           <div className="mt-4 rounded-2xl p-3" style={{ backgroundColor: "var(--color-paper)" }}>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
-              <TrustBadge level={trustLevel(trust.score)} />
+              <TrustBadge level={doubt ? "doubtful" : trustLevel(trust.score)} />
               <span>
                 {trust.confirmations > 0
                   ? `Confirmé actif par ${trust.confirmations} étudiant${trust.confirmations > 1 ? "s" : ""}`
@@ -197,15 +209,21 @@ export default function DealSheet({
                 {formatDate(new Date(trust.lastConfirmedAt).toISOString())})
               </p>
             )}
-            {trust.reports >= ARCHIVE_REPORTS ? (
+            {state.archived_at ? (
               <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-                Offre archivée : signalée expirée par {trust.reports} étudiants.
+                Offre retirée : signalée « Plus dispo » par des étudiants.
+              </p>
+            ) : doubt ? (
+              <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
+                {reports} étudiants la disent « Plus dispo ». Sans {RESCUE_CONFIRMATIONS} « J&apos;en ai profité » d&apos;ici le{" "}
+                {formatDate(new Date(doubt.deadline).toISOString())}, elle sera retirée ({Math.min(doubt.saved, RESCUE_CONFIRMATIONS)} sur{" "}
+                {RESCUE_CONFIRMATIONS}).
               </p>
             ) : (
-              trust.reports > 0 && (
+              reports > 0 && (
                 <p className="mt-1 text-sm" style={{ color: "var(--color-aubergine)" }}>
-                  Signalée expirée par {trust.reports} étudiant{trust.reports > 1 ? "s" : ""} sur {ARCHIVE_REPORTS} avant
-                  archivage.
+                  Signalée « Plus dispo » par {reports} étudiant{reports > 1 ? "s" : ""} sur {DOUBT_REPORTS} avant de passer en
+                  « Douteux ».
                 </p>
               )
             )}

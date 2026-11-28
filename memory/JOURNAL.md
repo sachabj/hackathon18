@@ -492,3 +492,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (bilan pitch et démo)
 - Lecture de la mémoire, du README et de `pitch/` : liste de ce qui manque pour le pitch et la démo (vidéo, scénario écrit, données de démo, migrations à confirmer, essai réel). Aucun code modifié.
+
+### 2026-11-28 01h48 — Sacha (retrait des offres, tâche 69)
+- Migration `023_doubtful_deals.sql` (+ `schema.sql`) ; `rules.ts`, `useDeals`, `useDealReactions`, `engagement.ts`, `arrows.ts`, `DealSheet`, `MyDealCard`, `OfferCard`, aide, `seed_arrows.sql` (covoiturage « Douteux » à 5 signalements, le 6e la retire) ; README, algorithmes, mémoire.
+- Vérifié : tsc, lint (1 avertissement connu), build ; 156 contrôles sur Postgres local + scénario de démo ; 11 contrôles dans Chrome avec un faux Supabase. **Pas essayé sur la vraie base ni sur téléphone ; non déployé.**

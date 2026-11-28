@@ -5,11 +5,15 @@ import { useState } from "react";
 import { Feedback, inputClass, primaryClass, useAction } from "@/components/account/ui";
 import { sendSupportMessage } from "@/lib/community";
 import { NEARBY_M } from "@/lib/constants";
+import { BURST_HOURS, BURST_REPORTS, DOUBT_DAYS, DOUBT_REPORTS, RESCUE_CONFIRMATIONS } from "@/lib/rules";
 
 const QUESTIONS = [
   ["Pourquoi je ne gagne pas de Flèches ?", `Sur une offre placée sur la carte, il faut partager ta position à moins de ${NEARBY_M} m. Il y a aussi 5 votes et 3 publications récompensés par jour.`],
   ["Pourquoi « Plus dispo » est refusé ?", `Pour une offre sur la carte, il se signale sur place, à moins de ${NEARBY_M} m.`],
-  ["Quand une offre disparaît-elle ?", "Quand sa date est passée, quand elle est retirée, ou quand 3 étudiants la signalent « Plus dispo »."],
+  [
+    "Quand une offre disparaît-elle ?",
+    `Quand sa date est passée ou qu'elle est retirée. Après ${DOUBT_REPORTS} « Plus dispo », elle devient « Douteux » : sans ${RESCUE_CONFIRMATIONS} « J'en ai profité » sous ${DOUBT_DAYS} jours, elle est retirée. ${BURST_REPORTS} signalements en ${BURST_HOURS} h la retirent tout de suite.`,
+  ],
   ["Mon nom est-il visible ?", "Non : les publications sont anonymes."],
 ];
 

@@ -86,22 +86,47 @@ export function trustLevel(score: number | null): TrustLevel | null {
   return (Object.keys(TRUST_LEVELS) as TrustLevel[]).find((l) => score >= TRUST_LEVELS[l].min) ?? "doubtful";
 }
 
-/** Niveau de fiabilité d'une offre affiché sur les cartes. */
-export function dealTrustLevel(votes: Vote[], now: number, trust?: DealTrust | null) {
-  return trustLevel(reliability(votes, now, trust).score);
+/** Niveau de fiabilité d'une offre affiché sur les cartes ; une offre « douteuse » l'est quel que soit son score. */
+export function dealTrustLevel(votes: Vote[], now: number, trust?: DealTrust | null, doubtful = false) {
+  return doubtful ? "doubtful" : trustLevel(reliability(votes, now, trust).score);
 }
 
-/**
- * Une offre signalée « Plus dispo » par 3 étudiants est archivée (migration 016, `deals.archived_at`) :
- * c'est le seul masquage lié aux réactions ; la fiabilité pondérée ne sert qu'à la couleur du badge.
- */
-export const ARCHIVE_REPORTS = 3;
+// ---------- Retrait des offres signalées (tâche 69 ; mêmes seuils dans la migration 023) ----------
+/** Signalements « Plus dispo » qui font passer une offre en « Douteux ». */
+export const DOUBT_REPORTS = 3;
+/** Délai laissé à une offre douteuse. */
+export const DOUBT_DAYS = 14;
+/** « J'en ai profité » nécessaires, pendant ce délai, pour la sauver. */
+export const RESCUE_CONFIRMATIONS = 3;
+/** Autant de signalements en si peu de temps, sans confirmation entre-temps : retrait immédiat. */
+export const BURST_REPORTS = 6;
+export const BURST_HOURS = 48;
 
+/** État d'une offre, tenu par la base. */
+export type DealState = Pick<Deal, "doubtful_since" | "reports_reset_at" | "archived_at" | "author_id">;
+
+const others = (deal: DealState, votes: Vote[], value: 1 | -1, after: number) =>
+  votes.filter((v) => v.value === value && v.user_id !== deal.author_id && new Date(v.created_at).getTime() > after);
+
+/** Signalements qui comptent : ceux faits depuis le dernier sauvetage de l'offre. */
+export const activeReports = (deal: DealState, votes: Vote[]) =>
+  others(deal, votes, -1, deal.reports_reset_at ? new Date(deal.reports_reset_at).getTime() : -Infinity).length;
+
+/** Offre douteuse : date limite et confirmations déjà reçues ; null sinon. */
+export function doubtStatus(deal: DealState, votes: Vote[]) {
+  if (!deal.doubtful_since || deal.archived_at) return null;
+  const since = new Date(deal.doubtful_since).getTime();
+  const deadline = since + DOUBT_DAYS * DAY;
+  const saved = others(deal, votes, 1, since).filter((v) => new Date(v.created_at).getTime() <= deadline).length;
+  return { deadline, saved };
+}
+
+/** Masquée : retirée, terminée, expirée, ou douteuse et arrivée à échéance (avant que la base l'ait enregistré). */
 export function isDealHidden(deal: Deal, votes: Vote[], now = Date.now()) {
   if (deal.ended_by_merchant || deal.archived_at) return true;
   if (deal.expires_at && new Date(deal.expires_at).getTime() < now) return true;
-  // Compté aussi ici : la règle vaut même avant la migration 016.
-  return votes.filter((v) => v.value === -1 && v.user_id !== deal.author_id).length >= ARCHIVE_REPORTS;
+  const doubt = doubtStatus(deal, votes);
+  return !!doubt && now >= doubt.deadline && doubt.saved < RESCUE_CONFIRMATIONS;
 }
 
 // ---------- Niveaux d'activité ----------

@@ -47,7 +47,7 @@ export default function OfferCard({
               : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
           }
         >
-          {online ? "En ligne" : expired ? "Expirée" : offer.ended_by_merchant ? "Retirée" : "Archivée"}
+          {online ? (offer.doubtful_since ? "Douteux" : "En ligne") : expired ? "Expirée" : offer.ended_by_merchant ? "Retirée" : "Archivée"}
         </span>
       </div>
       <p className="text-sm text-[var(--color-muted)]">
