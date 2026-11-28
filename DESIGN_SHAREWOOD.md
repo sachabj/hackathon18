@@ -58,6 +58,8 @@ Utilise-le :
 - comme favicon (`src/app/icon.svg` = copie du logo).
 
 ## 6. Icônes de catégories
+> Depuis la tâche 53, les dessins viennent de la bibliothèque **Lucide** (viewBox `0 0 24 24`, trait 1.9, icône à ~58 % du rond) : cette règle remplace les valeurs de taille et de trait ci-dessous. Choix et conditions : Lucide aussi (`icons.tsx`).
+
 Crée `src/components/CategoryIcon.tsx` : un composant qui prend la catégorie en prop et affiche un **rond coloré** (40px par défaut, taille réglable) contenant une **icône au trait** (SVG viewBox `0 0 48 48`, `fill="none"`, `stroke="currentColor"`, `stroke-width="2.6"`, `stroke-linecap="round"`, `stroke-linejoin="round"`, icône à ~52 % du diamètre du rond).
 
 Associe chaque catégorie existante dans le code à son icône (adapte les clés aux noms réellement utilisés dans le projet) :
