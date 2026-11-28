@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import ArrowBadge from "@/components/arrows/ArrowBadge";
 import ArrowsCard from "@/components/arrows/ArrowsCard";
+import SchoolRanking from "@/components/cibles/SchoolRanking";
 import ActivityPanel from "@/components/cibles/ActivityPanel";
 import FavoritesPanel from "@/components/cibles/FavoritesPanel";
 import RewardsPanel from "@/components/rewards/RewardsPanel";
@@ -46,7 +47,10 @@ export default function Page() {
 
       <h1 className="sr-only">{t("Ciblés")}</h1>
       <div className="space-y-4 pt-4 lg:grid lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0 lg:pt-6">
-        <ArrowsCard />
+        <div className="space-y-4">
+          <ArrowsCard />
+          <SchoolRanking />
+        </div>
         <div>
           <Tabs label={t("Ciblés")} idPrefix="cibles" tabs={TABS.map((x) => ({ ...x, label: t(x.label) }))} selected={tab} onSelect={setTab} />
           <div id="cibles-panel" role="tabpanel" aria-labelledby={`cibles-${tab}`} className="pt-3">

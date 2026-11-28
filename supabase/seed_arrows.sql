@@ -1,7 +1,7 @@
 -- =====================================================================
 -- ShareWood — données de démo « Les Flèches », récompenses et profil (étudiants aidés, parrainage).
 -- Prérequis : migrations 016_arrows.sql, 017_rewards.sql, 020_location_rules.sql et
--- 022_profile_impact_referral.sql et 023_doubtful_deals.sql, puis reset_demo.sql (comptes demo.…@example.com).
+-- 022_profile_impact_referral.sql et 023_doubtful_deals.sql (028 facultative : écoles), puis reset_demo.sql (comptes demo.…@example.com).
 -- ⚠️ À lancer le jour de la démo : les séries sont calculées à partir de la date d'exécution.
 -- À coller dans Supabase → SQL Editor → Run. Ne touche qu'aux comptes de démo et à trois de leurs offres.
 -- Relançable : remet les scénarios à zéro (utile après une répétition). Historique INVENTÉ.
@@ -171,6 +171,39 @@ begin
       values (uid, 'referral', 100, 100, now() - make_interval(days => 5 + i)),
              (p.id, 'welcome', 50, 50, now() - make_interval(days => 5 + i));
   end loop;
+
+  -- ---------- Écoles des étudiants de démo et activité de la semaine (classement, migration 028) ----------
+  -- Sans la 028, rien n'est fait. Les gains ajoutés vont aux comptes hors des six ci-dessus (leurs totaux ne changent pas).
+  if exists (select 1 from information_schema.columns
+              where table_schema = 'public' and table_name = 'preferences' and column_name = 'school_id') then
+    execute $q$
+      update public.preferences pr set school_id = v.school
+        from (values
+          ('demo.sarah@example.com', 'ensai'), ('demo.lea@example.com', 'ensai'), ('demo.malo@example.com', 'ensai'),
+          ('demo.nolan@example.com', 'ensai'), ('demo.zoe@example.com', 'ensai'),
+          ('demo.yanis@example.com', 'univ-rennes'), ('demo.gabin@example.com', 'univ-rennes'),
+          ('demo.enzo@example.com', 'univ-rennes'), ('demo.noah@example.com', 'univ-rennes'),
+          ('demo.camille@example.com', 'rennes2'), ('demo.manon@example.com', 'rennes2'), ('demo.hugo@example.com', 'rennes2'),
+          ('demo.ines@example.com', 'insa'), ('demo.tom@example.com', 'insa'), ('demo.theo@example.com', 'insa'),
+          ('demo.lucas@example.com', 'insa'),
+          ('demo.jade@example.com', 'rsb'), ('demo.louise@example.com', 'rsb'), ('demo.chloe@example.com', 'rsb'),
+          ('demo.maelle@example.com', 'rsb')
+        ) as v(email, school)
+        join auth.users a on a.email = v.email
+       where pr.user_id = a.id
+    $q$;
+    insert into public.arrow_events (user_id, kind, base, amount, created_at)
+    select a.id, 'confirm', 10, 10, now() - make_interval(days => 1 + (g % 6), mins => g)
+      from (values
+        ('demo.nolan@example.com', 6), ('demo.zoe@example.com', 4), ('demo.gabin@example.com', 5),
+        ('demo.enzo@example.com', 3), ('demo.noah@example.com', 2), ('demo.yanis@example.com', 4),
+        ('demo.camille@example.com', 7), ('demo.manon@example.com', 3), ('demo.theo@example.com', 4),
+        ('demo.lucas@example.com', 2), ('demo.jade@example.com', 3), ('demo.louise@example.com', 2),
+        ('demo.chloe@example.com', 5), ('demo.maelle@example.com', 1)
+      ) as v(email, n)
+      join auth.users a on a.email = v.email
+      cross join lateral generate_series(1, v.n) g;
+  end if;
 
   -- ---------- 42 étudiants aidés par demo.sarah (inventés) ----------
   for i in 1 .. 42 loop

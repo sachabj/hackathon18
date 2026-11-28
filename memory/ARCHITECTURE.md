@@ -91,7 +91,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
     │   ├── NavBar.tsx                # Accueil / Recherche / Partager / Ciblés / Profil : en bas sur téléphone, en haut sur ordinateur
     │   ├── Tabs.tsx                  # onglets rectangulaires (page Ciblés)
-    │   ├── cibles/                   # FavoritesPanel, ActivityPanel (ActivityCard, MyDeals → MyDealCard, ArrowHistory)
+    │   ├── cibles/                   # FavoritesPanel, ActivityPanel (ActivityCard, MyDeals → MyDealCard, ArrowHistory), SchoolRanking (classement des écoles, `lib/schools.ts`)
     │   ├── rewards/                  # RewardsPanel, RedeemDialog, Voucher (QR)
     │   ├── Modal.tsx                 # fenêtre commune (boutique, accord de localisation)
     │   ├── publish/                  # PublishForm, AssistPanel
@@ -176,6 +176,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 
 - **Sources officielles (024)** : `deals.source_name` / `source_checked_at` (non écrivables par l'app ; lien obligatoire) → badge « Source officielle ». Offres importées par le compte technique `sources@example.com` (créé par le script, effacé par `reset_demo.sql`), `is_official` faux.
 
+- **Écoles (028)** : table `schools` (liste fixe, lecture seule), `preferences.school_id` (école de la liste ; « Autre » = `preferences.school`, texte libre) ; RPC `school_ranking()` (totaux par école seulement, à partir de 3 membres). `seed_arrows.sql` répartit les étudiants de démo dans 5 écoles. Formule : `docs/ALGORITHMES.md` § 8.
 - **Limites (025)** : `deals_title_length` (titre ≤ 100, `not valid`) ; `ai_usage` (compteur par compte et par jour, lecture seule) et RPC `use_ai_quota()` appelée par `/api/assist` ; sans la migration, pas de limite.
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
@@ -262,11 +263,12 @@ select
   exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021,
   to_regprocedure('public.use_ai_quota()') is not null as m025,
   pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026,
-  to_regprocedure('public.ensure_zone(text,text,float8,float8,int)') is not null as m027;
+  to_regprocedure('public.ensure_zone(text,text,float8,float8,int)') is not null as m027,
+  to_regprocedure('public.school_ranking()') is not null as m028;
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
-- **Présentes sur la vraie base : 002 à 027** (027 vérifiée par Justin le 28/11 : `ensure_zone` existe). Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- **Présentes sur la vraie base : 002 à 027** (027 vérifiée par Justin le 28/11). **À lancer : 028** (classement des écoles), puis relancer `seed_arrows.sql` pour les écoles de démo. 029 réservée par Matteo ; prochaine libre : **030**. Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Cas limites et limites assumées

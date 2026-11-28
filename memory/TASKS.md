@@ -36,6 +36,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Langue | Français / anglais : parcours étudiant traduit (connexion, navigation, accueil, recherche, carte, fiche, publication, Ciblés, profil, localisation) ; choix au profil et sur la connexion, retenu sur l'appareil (50) | Sacha | téléphone |
 | Favoris | Par catégorie, dans « Ciblés » (8) ; cœur aussi dans la fenêtre d'un repère et la fiche, synchronisé partout (77) | Anne-Lise | vraie base |
 | Ciblés | Flèches, grades, activité, mes bons plans, boutique et bons à QR code ; aucun accès limité (10, 17b, 42, 43, 44, 46, 47) | Sacha | testé en local seulement |
+| Écoles | Compétition entre écoles : école choisie dans une liste, classement dans « Ciblés » (70) | Justin | navigateur sans écran ; vraie base après la 028 |
 | Profil | Étudiants aidés, parrainage, menu des réglages, localisation retirable, aide et bug (49, 64, 68) | Sacha, Justin | vraie base |
 | Compte | Mot de passe, appareils, export, suppression, politique de confidentialité (17a) | Sacha | vraie base |
 | Commerçant | Offres, retrait, statistiques, mise en avant, offres d'étudiants voisines (13) | Justin | vraie base |
@@ -65,6 +66,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (deadline : samedi 28/11 à 13h ; gel du code à 11h)
 | # | Action | Qui |
 |---|---|---|
+| C0 | **Lancer `028_school_ranking.sql`**, puis **relancer `seed_arrows.sql`** (écoles des étudiants de démo) dans le SQL Editor. Sans la 028, le classement n'apparaît pas et l'école reste un texte libre | Justin |
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
@@ -75,7 +77,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
 | 53 | Nouvelles icônes (« emojis » demandés aussi, mais la règle actuelle est : aucun emoji) | P | TODO (Anne-Lise) |
 | 59 | Récompense de publication différée (délai et nombre d'étudiants à choisir) ; migration ; aujourd'hui +50 sur place, +20 sans lieu | M | TODO (Sacha) |
-| 70 | **Compétition entre écoles** : école choisie dans une liste (+ « Autre »), classement par Flèches de la semaine par membre actif (3 membres minimum), carte dans « Ciblés », écoles des étudiants de démo ; migration **028** réservée | M | EN COURS (Justin, idée de Matteo) |
 | 71 | **Signaler un contenu** : lien discret « Signaler ce bon plan » en bas de la fiche, 5 motifs (arnaque, inapproprié, infos fausses, doublon, autre) + description (obligatoire pour « Autre »), offre masquée pour l'auteur du signalement ; table `deal_reports` (migration **029** réservée), secours sur l'appareil | M | EN COURS (Matteo) |
 | 72 | **Alertes** « préviens-moi quand une offre correspond à… » : prototype web = alertes enregistrées, vérification à l'ouverture et en direct (Supabase Realtime), notification du navigateur appli ouverte ; vrai push hors délai | M à G | TODO (idée retenue par Matteo, non cadrée) |
 | 73 | **Manifest (PWA installable)** : « Ajouter à l'écran d'accueil », plein écran, icône ; aucun manifest aujourd'hui ; nécessaire aux notifications sur iPhone | P | TODO (idée retenue par Matteo, non cadrée) |

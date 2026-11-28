@@ -114,6 +114,7 @@ export default function Page() {
                 username={account.info.username}
                 email={account.info.email}
                 school={account.preferences?.school ?? ""}
+                schoolId={account.preferences?.school_id ?? null}
                 city={zoneById(account.preferences?.home_zone_id)?.name ?? null}
                 onSaved={reload}
               />

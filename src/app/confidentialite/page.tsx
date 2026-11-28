@@ -39,7 +39,7 @@ export default function Page() {
           <li><strong>Email et mot de passe</strong> (le mot de passe est stocké haché par notre hébergeur) : te connecter.</li>
           <li><strong>Pseudo, zones, centres d&apos;intérêt, transports, voyages, budget</strong> : personnaliser tes bons plans.</li>
           <li><strong>Boursier et Carte Sortir (oui / non)</strong>, facultatifs : te proposer seulement les aides auxquelles tu as droit.</li>
-          <li><strong>École ou université</strong>, facultative : compléter ton profil. Toi seul la vois.</li>
+          <li><strong>École ou université</strong>, facultative : compléter ton profil et, si elle est choisie dans la liste, faire gagner ton école au classement des écoles. Personne ne voit ton école : le classement ne montre que des totaux par école (Flèches de la semaine, nombre de membres), à partir de 3 membres.</li>
           <li><strong>« Y aller » touché et liens partagés ouverts</strong> (offre, date, comptes concernés) : compter les étudiants que chacun a aidés.</li>
           <li><strong>Parrainage</strong> : ton code, qui t&apos;a invité ou qui tu as invité, et la date de la première action : verser les Flèches.</li>
           <li><strong>Messages à l&apos;équipe</strong> (aide, bug) : les traiter.</li>

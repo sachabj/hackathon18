@@ -577,3 +577,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h25 — Justin (TASKS.md : règles et planning sortis)
 - « Règles à connaître avant de modifier le code » déplacées dans `ARCHITECTURE.md` ; planning périmé retiré (deadline et gel de 11h indiqués sur la partie Critique).
+
+### 2026-11-28 05h50 — Justin (compétition entre écoles, tâche 70)
+- Migration **028** (`028_school_ranking.sql`, reportée dans `schema.sql`) : table `schools` (10 écoles de Rennes et Bruz), `preferences.school_id`, RPC `school_ranking()`. `lib/schools.ts`, `components/cibles/SchoolRanking.tsx` (page Ciblés), choix de l'école dans `PersonalInfo` (liste + « Autre »), confidentialité, `en.ts`, `seed_arrows.sql` (écoles et activité de la semaine des étudiants de démo, ENSAI en tête), ALGORITHMES § 8. **028 pas encore lancée.**
+- Vérifié : tsc, lint, build ; Postgres local (classement, droits, schéma = migrations, démo rejouée 2 fois, 75 appels) ; navigateur sans écran (6 contrôles). Pas sur téléphone.

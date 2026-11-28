@@ -36,6 +36,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Notification sur place (démo)** : « Simuler ma position » dans le profil affiche « Tu es près de… : toujours dispo ? » devant l'offre choisie ; la réaction suit les règles habituelles.
 - **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
+- **Compétition entre écoles** : chacun choisit son école dans le profil ; la page « Ciblés » classe les écoles par Flèches gagnées sur 7 jours et par membre actif (à partir de 3 membres, seuls des totaux par école sont affichés).
 - **Profil** : grade et Flèches, **étudiants aidés** (chacun compte une fois : confirmation, favori, « Y aller » ou lien partagé ouvert) et menu des réglages (préférences, récompenses, historique, informations, sécurité, confidentialité, aide).
 - **Parrainage** : code et lien à partager ; +100 Flèches au parrain et +50 au filleul, à la première publication ou réaction du filleul (10 parrainages payés au maximum).
 
@@ -77,7 +78,7 @@ La clé `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` est facultative (assistant de pu
 Dans Supabase → SQL Editor :
 - **projet neuf** : exécuter [`supabase/schema.sql`](supabase/schema.sql) ;
 - **base existante** : exécuter dans l'ordre les fichiers de [`supabase/migrations/`](supabase/migrations/) pas encore appliqués (état et requête de contrôle dans [`memory/ARCHITECTURE.md`](memory/ARCHITECTURE.md), « Vérifications, base et limites ») ;
-- **limites** : la migration `025` borne les titres et l'assistant IA ; la `026` donne le même gain aux deux réactions ;
+- **limites** : la migration `025` borne les titres et l'assistant IA ; la `026` donne le même gain aux deux réactions ; la `028` ajoute le classement des écoles ;
 - **données de démo** : [`reset_demo.sql`](supabase/reset_demo.sql) (⚠️ **supprime les comptes** non listés en haut du script ; lire ses consignes), puis [`seed_arrows.sql`](supabase/seed_arrows.sql) le jour de la démo ;
 - **vraies informations** : migration `024`, puis [`import_sources.sql`](supabase/import_sources.sql) (régénéré par `node scripts/import_sources.mjs` ; à relancer après `reset_demo.sql`).
 

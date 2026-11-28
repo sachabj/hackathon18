@@ -270,3 +270,22 @@ Mes « Plus dispo » confirmés (offre retirée) sont affichés **à part** : on
 **Parrainage** : +100 Flèches au parrain et +50 au filleul à la **première publication ou réaction** du filleul ; au plus 10 parrainages payés par parrain (le filleul reçoit toujours ses 50). Sans série ni plafond quotidien ; ces Flèches comptent pour le grade.
 
 Réglages : `supabase/migrations/022_profile_impact_referral.sql` (`my_impact`, `referral_on_activity`) et `src/lib/community.ts` (`REFERRAL`).
+
+## 8. Classement des écoles
+
+Sur la page « Ciblés », les écoles sont classées par leur **score** :
+
+```
+score = Flèches gagnées ces 7 derniers jours par les membres de l'école ÷ nombre de membres actifs
+```
+
+- **Membre** : étudiant qui a choisi cette école dans la liste du profil (« Autre » ne compte pas).
+- **Membre actif** : membre qui a gagné au moins une Flèche sur la période. Diviser par les actifs permet à une petite école (ENSAI) de battre une grande université : on mesure l'engagement, pas la taille.
+- Une école n'est classée qu'à partir de **3 membres** (personne ne peut deviner les points d'un étudiant).
+- À score égal, le total de Flèches départage.
+- Seules les Flèches versées comptent (pas les signalements en attente ni les dépenses de la boutique).
+
+Exemple : ENSAI, 5 membres actifs, 700 Flèches cette semaine → **140** ; Rennes 2, 3 membres actifs, 310 Flèches → **103**.
+
+Réglages : `supabase/migrations/028_school_ranking.sql` (`school_ranking()`) et `src/lib/schools.ts` (`SCHOOL_MIN_MEMBERS`).
+

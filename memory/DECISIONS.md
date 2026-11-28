@@ -494,3 +494,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décisions** : cœur des favoris dans la fenêtre d'un repère et dans la fiche, synchronisé partout ; doublon en partageant : « Voir mon bon plan » (ligne dépliée dans Ciblés > Activité) ou « Voir l'offre » (carte centrée, fiche si sans lieu), « C'est la même offre » gardé.
 - **Écartés** : cœur dans la fenêtre seulement ; confirmer puis y aller automatiquement.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 05h50 — Compétition entre écoles (tâche 70)
+- **Décisions** : école choisie dans une liste fixe (« Autre » = texte libre, hors classement) ; score = Flèches versées sur 7 jours ÷ membres actifs, écoles d'au moins 3 membres ; carte dans « Ciblés » ; écoles données aux étudiants de démo.
+- **Choix de Claude, à confirmer** : « cette semaine » = 7 derniers jours glissants (pas de remise à zéro le lundi) ; 10 écoles de Rennes et Bruz.
+- **Écartés** : texte libre regroupé ; total brut par école (les grandes universités gagneraient toujours) ; affichage dans le profil.
+- **Qui** : Justin (réponses aux questions de cadrage) ; idée de Matteo

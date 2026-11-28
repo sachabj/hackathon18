@@ -142,6 +142,8 @@ export interface Preferences {
   updated_at: string;
   /** École ou université, facultative (migration 022) */
   school?: string | null;
+  /** École de la liste (migration 028) : compte au classement des écoles */
+  school_id?: string | null;
 }
 
 /** Ligne de la table `businesses` (un commerce par compte commerçant). */
