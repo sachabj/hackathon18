@@ -59,7 +59,7 @@ begin
       where not exists (select 1 from unnest(keep) k where lower(trim(k)) = lower(a.email)));
   delete from auth.users a
    where not exists (select 1 from unnest(keep) k where lower(trim(k)) = lower(a.email));
-  delete from public.deals where description like 'Exemple fictif (démo)%'; -- ancien seed_demo.sql
+  delete from public.deals where description like 'Exemple fictif (démo)%'; -- exemples de l'ancien jeu de données (seed_demo.sql, supprimé)
 
   -- ---------- Étudiants de démo ----------
   for u in

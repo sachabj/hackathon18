@@ -2,7 +2,7 @@
 
 // « Mes bons plans » (déplacés du profil de Justin) : lignes dépliables avec leurs Flèches.
 import Link from "next/link";
-import MyDealCard, { type DealGains } from "@/components/profile/MyDealCard";
+import MyDealCard, { type DealGains } from "@/components/cibles/MyDealCard";
 import { deleteMyDeal, fetchMyDeals, setMyDealEnded, updateMyDeal } from "@/lib/engagement";
 
 export type Mine = Awaited<ReturnType<typeof fetchMyDeals>>;

@@ -3,7 +3,7 @@
 // Confirmation d'un échange, puis animation de succès et bon obtenu.
 import { useState } from "react";
 import { ArrowShotIcon, CheckIcon } from "@/components/icons";
-import Modal from "@/components/rewards/Modal";
+import Modal from "@/components/Modal";
 import Voucher from "@/components/rewards/Voucher";
 import { redeemReward, type Reward, type UserReward } from "@/lib/rewards";
 

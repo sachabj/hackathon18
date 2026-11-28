@@ -1,16 +1,9 @@
-// Icônes sobres (traits, pas d'emoji), même style que l'icône « Autour de moi » de DealsMap.
+// Icônes sobres (traits, pas d'emoji ; voir DESIGN_SHAREWOOD.md).
+import type { ReactNode } from "react";
+
 type IconProps = { className?: string };
 
 const base = "none" as const;
-
-export function MapIcon({ className = "h-5 w-5" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill={base} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2Z" />
-      <path d="M9 4v14M15 6v14" />
-    </svg>
-  );
-}
 
 export function PlusIcon({ className = "h-5 w-5" }: IconProps) {
   return (
@@ -72,9 +65,6 @@ export function ChevronDownIcon({ className = "h-5 w-5" }: IconProps) {
   );
 }
 
-// ---------- Icônes ajoutées pour le relookage (DESIGN_SHAREWOOD.md) : remplacent tous les émoji ----------
-import type { ReactNode } from "react";
-
 function Stroke({ className = "h-5 w-5", viewBox = "0 0 24 24", children }: IconProps & { viewBox?: string; children: ReactNode }) {
   return (
     <svg viewBox={viewBox} className={className} fill={base} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -88,9 +78,6 @@ export function NavigationIcon({ className }: IconProps) {
 }
 export function SearchIcon({ className }: IconProps) {
   return <Stroke className={className}><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></Stroke>;
-}
-export function ArrowRightIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M5 12h14" /><path d="M13 5l7 7-7 7" /></Stroke>;
 }
 export function ArrowLeftIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M19 12H5" /><path d="M11 5l-7 7 7 7" /></Stroke>;
@@ -115,14 +102,8 @@ export function TrashIcon({ className }: IconProps) {
     </Stroke>
   );
 }
-export function EyeIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></Stroke>;
-}
 export function LockClosedIcon({ className }: IconProps) {
   return <Stroke className={className}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></Stroke>;
-}
-export function LockOpenIcon({ className }: IconProps) {
-  return <Stroke className={className}><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 7.1-2.5" /></Stroke>;
 }
 export function LogoutIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4" /><path d="M15 16l4-4-4-4" /><path d="M19 12H9" /></Stroke>;
@@ -141,14 +122,6 @@ export function StarIcon({ className, filled = false }: IconProps & { filled?: b
     <svg viewBox="0 0 24 24" className={className ?? "h-5 w-5"} fill={filled ? "currentColor" : base} stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden>
       <path d="M12 3.5l2.6 5.4 5.9.9-4.3 4.2 1 5.9L12 17l-5.2 2.9 1-5.9-4.3-4.2 5.9-.9L12 3.5Z" />
     </svg>
-  );
-}
-export function CheckBadgeIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <path d="M12 2l3 2 3.5-.5.5 3.5 2 3-2 3-.5 3.5-3.5-.5-3 2-3-2-3.5.5-.5-3.5-2-3 2-3 .5-3.5L9 4Z" />
-      <path d="M8.5 12.3l2.3 2.3L15.8 9.3" />
-    </Stroke>
   );
 }
 export function ThumbsUpIcon({ className }: IconProps) {
@@ -205,14 +178,6 @@ export function TargetIcon({ className }: IconProps) {
     <Stroke className={className}>
       <circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="4" />
       <circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none" />
-    </Stroke>
-  );
-}
-export function SmileIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <circle cx="12" cy="12" r="9" /><path d="M8 14c1 1.5 2.5 2 4 2s3-.5 4-2" />
-      <path d="M8.5 9.5h.01" /><path d="M15.5 9.5h.01" />
     </Stroke>
   );
 }

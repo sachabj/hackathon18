@@ -5,7 +5,7 @@ Applique ce design à toute l'appli (Next.js, dossier courant). **Ne change ni l
 ## 1. Style général
 Éditorial, élégant, calme et chaleureux, qui convient à tout le monde (étudiants comme commerçants, jeunes comme plus âgés). Beaucoup d'espace blanc, coins très arrondis, pas d'ombres lourdes, pas de dégradés, pas d'emojis.
 
-## 2. Polices (via `next/font/google`, chargées dans `src/app/layout.tsx`)
+## 2. Polices (fichiers auto-hébergés dans `public/fonts/`, déclarés dans `src/app/globals.css`)
 - **Titres (h1, h2, h3, nom de l'appli)** : `Newsreader`, graisse 400–500, letter-spacing -0.01em à -0.02em, interligne ~1.15.
 - **Slogan et citations** : `Newsreader` en italique, couleur gris texte.
 - **Tout le reste (texte, boutons, formulaires, étiquettes)** : `Inter`, graisse 400 (500 pour les boutons et les libellés).

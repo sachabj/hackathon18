@@ -33,8 +33,6 @@ const STROKE: Record<DealCategory, string> = {
   sport: "#1E3A2F",
 };
 
-export const CATEGORY_ICON_BG = BG;
-
 /** Icône seule en SVG brut (pour un marqueur Leaflet `divIcon`, qui attend du HTML, pas du JSX). */
 export function categoryIconSvg(category: DealCategory, size = 20) {
   return `<svg viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" stroke="${STROKE[category]}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[category]}</svg>`;

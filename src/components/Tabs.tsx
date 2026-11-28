@@ -1,6 +1,6 @@
 "use client";
 
-// Onglets rectangulaires (accueil, Ciblés) : cases sur une ligne (égales, élargies si un mot ne tient pas), flèches du clavier.
+// Onglets rectangulaires (page Ciblés) : cases sur une ligne (égales, élargies si un mot ne tient pas), flèches du clavier.
 import type { KeyboardEvent } from "react";
 
 export default function Tabs<T extends string>({

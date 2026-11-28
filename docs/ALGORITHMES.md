@@ -2,7 +2,7 @@
 
 Ce document explique, sans avoir à lire le code, **dans quel ordre les bons plans apparaissent** et **comment leur fiabilité est calculée**. Chaque règle est illustrée par un exemple chiffré. La dernière section indique où régler chaque paramètre.
 
-> État au 27/11/2026 (tâches 32, 33, 35, 37 et 17b). Si vous changez une formule, mettez ce fichier à jour.
+> État au 28/11/2026. Si vous changez une formule, mettez ce fichier à jour.
 
 ---
 
@@ -24,7 +24,7 @@ Ce document explique, sans avoir à lire le code, **dans quel ordre les bons pla
 Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 
 1. **sa date de fin est passée** ;
-2. **elle a été retirée** par son auteur (« Plus dispo » dans son profil) ou par un commerçant voisin (offre d'étudiant à moins de 75 m, même catégorie) ;
+2. **elle a été retirée** par son auteur (« Plus dispo » dans « Ciblés », onglet Activité) ou par un commerçant voisin (offre d'étudiant à moins de 75 m, même catégorie) ;
 3. **elle est retirée après des signalements** « Plus dispo » (étudiants différents, hors auteur ; offre sur la carte : signalement accepté seulement à 500 m au plus) :
    - au **3e**, elle devient **« Douteux »** (toujours visible, badge forcé) ;
    - **3 « J'en ai profité »** reçus ensuite la sauvent : les signalements précédents ne comptent plus et leurs Flèches en attente sont perdues ;
@@ -46,14 +46,14 @@ Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 | **Accueil, sans filtre principal** (« Pour toi » désactivé) | Toutes les offres : sponsorisées → compatibilité → plus récentes (sans profil : sponsorisées → plus récentes). |
 | **Accueil, « Mes favoris »** | Échéance la plus proche d'abord (date limite, puis fin de l'offre), les offres sans date à la fin. |
 | **Accueil, puces de catégorie** | Ne changent pas l'ordre : elles gardent seulement les offres des catégories choisies (plusieurs possibles). |
-| **Accueil, recherche par mots** | Résultats exacts, puis « résultats proches ». Dans chaque groupe : sponsorisées → **pertinence** (2.5) → compatibilité. Le tri choisi dans les filtres (« Les plus proches », « Les moins chers ») remplace cet ordre. |
-| **Recherche (page carte)** | Sponsorisées → **score « Hot »** (2.4) → plus récentes. |
+| **Recherche, avec des mots saisis** | Résultats exacts, puis « résultats proches ». Dans chaque groupe : sponsorisées → **pertinence** (2.5) → compatibilité. Le tri choisi dans les filtres (« Les plus proches », « Les moins chers ») remplace cet ordre. |
+| **Recherche, sans saisie** (fil sous la carte) | Sponsorisées → **score « Hot »** (2.4) → plus récentes. |
 
 La **fiabilité** (section 3) ne change pas l'ordre : elle sert à la couleur du badge. Seul le nombre de signalements peut faire disparaître une offre (retrait, section 1).
 
 ### 2.2 Les offres sponsorisées
 
-Une offre est sponsorisée tant que sa mise en avant n'est pas terminée (7 jours après le paiement) et que le commerçant ne l'a pas retirée. Elle passe **avant toutes les autres** sur chaque écran, sans changer l'ordre entre les offres non sponsorisées. Elle n'est **jamais ajoutée** à « Pour toi » si elle ne correspond pas au profil.
+Une offre est sponsorisée tant que sa mise en avant n'est pas terminée (7 jours après le paiement) et que le commerçant ne l'a pas retirée. Elle passe **avant les autres**, sans changer l'ordre entre les offres non sponsorisées (sauf dans « Mes favoris », quand « Pour toi » n'a rien à proposer, ou avec un tri par prix ou par distance). Elle n'est **jamais ajoutée** à « Pour toi » si elle ne correspond pas au profil.
 
 ### 2.3 Compatibilité « Pour toi »
 
@@ -94,7 +94,7 @@ Cas particuliers :
 - Sans budget : 61 / 65 = **94** ≥ 55, à portée, catégorie suivie → **dans « Pour toi »**.
 - Avec le budget (Serré, € → 18 / 20) : score affiché = 79 / 85 = **93**.
 
-### 2.4 Score « Hot » (page carte)
+### 2.4 Score « Hot » (page Recherche)
 
 Inspiré de Reddit et Hacker News : il fait monter ce qui **marche en ce moment** et laisse descendre ce qui vieillit.
 
@@ -116,7 +116,7 @@ Hot = (1 + élan + quantité) / (âge en heures + 2) ^ 1,2
 
 Effet voulu : une offre neuve a sa chance d'être vue, puis seules celles que les étudiants confirment restent en haut. Effet connu : une offre toute neuve sans réaction passe devant une offre de 2 jours très confirmée (baisser l'exposant pour l'éviter).
 
-### 2.5 Recherche par mots (accueil)
+### 2.5 Recherche par mots (page Recherche)
 
 La recherche se fait dans l'application (la saisie n'est envoyée à aucun service).
 

@@ -72,21 +72,17 @@ export interface Vote {
   created_at: string;
 }
 
-/** Bon plan lu avec ses votes (`select("*, votes(*)")`) → fiabilité affichée sur les cartes. */
 /** Masses pondérées des réactions d'une offre (fonction `deal_trust`, migration 014). */
 export interface DealTrust {
   pos: number;
   neg: number;
 }
 
-/** `trust` : masses calculées par la base (poids des étudiants) ; absent → calcul local à poids égal. */
+/**
+ * Bon plan lu avec ses votes (`select("*, votes(*)")`) → fiabilité affichée sur les cartes.
+ * `trust` : masses calculées par la base (poids des étudiants) ; absent → calcul local à poids égal.
+ */
 export type DealWithVotes = Deal & { votes?: Vote[]; trust?: DealTrust | null };
-
-export interface Favorite {
-  user_id: string;
-  deal_id: string;
-  created_at: string;
-}
 
 export interface Profile {
   id: string;

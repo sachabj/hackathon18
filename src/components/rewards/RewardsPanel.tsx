@@ -3,7 +3,7 @@
 // Onglet « Récompenses » : solde disponible, mes bons, boutique.
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { ArrowShotIcon, ChevronDownIcon, TicketIcon } from "@/components/icons";
-import Modal from "@/components/rewards/Modal";
+import Modal from "@/components/Modal";
 import RedeemDialog from "@/components/rewards/RedeemDialog";
 import Voucher from "@/components/rewards/Voucher";
 import { fetchShop, REWARD_CATEGORIES, type OwnedReward, type Reward } from "@/lib/rewards";

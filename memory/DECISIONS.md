@@ -450,3 +450,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : import par script vers un fichier SQL relu puis lancé à la main ; sources : événements OpenAgenda (gratuits ou étudiants, 15 km de Bruz, 60 jours) et 15 aides choisies d'Aides Jeunes ; badge « Source officielle » (migration 024). Enseignes : seulement les offres vérifiées, sur les magasins proches.
 - **Écartés** : affichage en direct ; recopie de catalogues ; offres tirées de sites de bons plans ; généraliser une offre locale de McDonald's ; restos U (non retenus).
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 02h — Revue du dépôt et suivi des tâches (tâche 74)
+- **Décision** : `memory/TASKS.md` reste le seul fichier de tâches, réorganisé en « Déjà fait / En cours / Reste à faire / Bugs et vérifications » ; nettoyage sans changement de comportement ; rangement limité à 3 composants ; ancien jeu `seed_demo.sql` supprimé ; diapo 2 du pitch alignée sur la règle « Douteux ».
+- **Écartés** : second `TASKS.md` à la racine ou déplacement du fichier ; grande réorganisation des dossiers (travail en parallèle) ; correction des défauts pendant la revue (signalés seulement) ; retrait du code de secours des migrations avant confirmation de la vraie base.
+- **Qui** : Justin (réponses aux questions de cadrage)

@@ -1,4 +1,4 @@
-// Filtres affichés sous la barre de recherche de l'accueil.
+// Filtres affichés au-dessus des résultats de la page /recherche.
 import Link from "next/link";
 import { REQUIREMENTS, TRANSPORT_MODES } from "@/lib/constants";
 import { DURATIONS, FILTER_MODES, PRICE_FILTERS, SORTS, type SearchFilters as Filters } from "@/lib/searchFilters";

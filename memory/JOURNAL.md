@@ -512,3 +512,11 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (idées retenues, sans code)
 - Brainstorming des fonctions manquantes ; retenues par Matteo : compétition entre écoles, signalement de contenu, alertes, manifest → tâches 70 à 73 (TODO, non cadrées) dans `TASKS.md`. Gain en euros écarté pour l'instant (prix réels inconnus). Aucun code modifié.
+
+### 2026-11-28 02h20 — Justin (revue du dépôt, tâche 74)
+- Lecture de tout le code, du SQL et des documents. Aucun changement de comportement.
+- Retiré : 6 icônes, `CATEGORY_ICON_BG` et le type `Favorite` jamais utilisés, `supabase/seed_demo.sql` ; `.gitignore` raccourci (liste des fichiers ignorés inchangée sur ce poste).
+- Déplacés : `MyDealCard` et `ActivityCard` → `components/cibles/`, `Modal` → `components/`. **Faire un pull avant d'y toucher.**
+- Corrigé : avertissement lint de `LogoutButton`, commentaires périmés, commentaire de `.env.example`, plafonds de l'aide pris dans `lib/arrows`, diapo 2 du pitch (PDF recompilé), documents (ARCHITECTURE, ALGORITHMES, PROJECT, DESIGN, README).
+- `TASKS.md` réécrit en 4 parties : déjà fait, en cours, reste à faire, bugs et vérifications (nouveaux défauts D12 à D14).
+- Vérifié : tsc, lint (0 avertissement), build, `npm audit`, knip ; Postgres local : `schema.sql` = migrations, scripts de démo rejoués 2 fois, 75 appels de l'app avec droits utilisateur. Pas vu dans un navigateur ni sur la vraie base.

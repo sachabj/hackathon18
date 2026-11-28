@@ -52,17 +52,17 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── directions.ts             # lien d'itinéraire (Apple Plans / Google Maps) du bouton « Y aller »
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
-    │   ├── rules.ts                  # règles métier : fiabilité, archivage, niveaux d'activité
+    │   ├── rules.ts                  # règles métier : fiabilité, retrait des offres, niveaux d'activité
     │   ├── rewards.ts                # boutique : catalogue, échanges, bons
     │   ├── arrows.ts                 # Flèches : barème affiché, grades, messages de gain, vérification des publications (+ useMyArrows.ts)
     │   ├── useDealReactions.ts       # réagir en un geste depuis une carte (vote + passage, relecture des votes et masses)
     │   ├── useCurrentUserId.ts       # id de l'utilisateur connecté (session locale)
     │   ├── trust.ts                  # fiabilité pondérée : withTrust() (rpc deal_trust)
-    │   ├── hot.ts                    # tri « Hot » de l'onglet « Tout » + badge « Tendance » (réglages : HOT)
+    │   ├── hot.ts                    # tri « Hot » du fil de Recherche (réglages : HOT)
     │   ├── matching.ts               # compatibilité bon plan ↔ étudiant (score, raisons)
     │   ├── preferences.ts            # lecture / écriture des préférences
     │   ├── usePreferences.ts         # hook : profil + préférences de l'utilisateur
-    │   ├── search.ts                 # recherche de l'accueil : pertinence, fautes de frappe, mots proches (offres déjà chargées)
+    │   ├── search.ts                 # recherche (page Recherche) : pertinence, fautes de frappe, mots proches (offres déjà chargées)
     │   ├── searchFilters.ts          # filtres, tri et expressions (« pas cher »…) de la recherche
     │   ├── geo.ts                    # distances, zone la plus proche
     │   ├── account.ts                # mot de passe, sessions, export, suppression du compte
@@ -71,7 +71,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── ai/assist.ts              # SERVEUR : appels Gemini ou Claude (extraction photo/texte → formulaire ; plus de relecture IA)
     │   ├── duplicates.ts             # doublons SANS IA à la publication : offres du même lieu (place_name identique) / même catégorie + zone
     │   ├── ai/client.ts              # navigateur : appel de /api/assist (pré-remplissage), compression photo
-    │   ├── ai/types.ts               # types partagés AssistDraft / AssistReview
+    │   ├── ai/types.ts               # type partagé AssistDraft
     │   ├── merchant.ts               # espace commerçant : lecture / écriture, isBoosted()
     │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
     │   ├── useDashboard.ts           # hook : données de l'espace commerçant
@@ -80,32 +80,36 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── useFavorites.ts           # hook : favoris de l'utilisateur (table `favorites`), ajout/retrait optimiste
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
     │   ├── location.ts               # accord de localisation (RGPD) et position ponctuelle ; composants dans components/location/
-    │   └── useUserPosition.ts        # hook : position GPS suivie avec accord (non enregistrée), réutilisable (tâches 9, 11)
+    │   ├── useUserPosition.ts        # hook : position GPS suivie avec accord (non enregistrée), réutilisable (tâche 11)
+    │   └── usePreferences.ts, useMyArrows.ts, share.ts, photos.ts   # profil, Flèches, partage de lien, photo de preuve
     ├── components/
-    │   ├── icons.tsx                 # ~60 icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
-    │   ├── AuthorBadge.tsx           # badge « Commerçant » (offre officielle) / « Étudiant »
+    │   ├── icons.tsx                 # icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
+    │   ├── AuthorBadge.tsx           # badge « Source officielle » / « Commerçant » (offre officielle) / « Étudiant »
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
-    │   ├── NavBar.tsx                # barre du bas : Accueil / Recherche / Partager / Ciblés / Profil (icônes `icons.tsx`)
-    │   ├── Tabs.tsx                  # onglets rectangulaires (accueil, Ciblés)
-    │   ├── cibles/                   # FavoritesPanel, ActivityPanel (niveau, MyDeals, ArrowHistory)
-    │   ├── rewards/                  # RewardsPanel, RedeemDialog, Voucher (QR), Modal
+    │   ├── NavBar.tsx                # Accueil / Recherche / Partager / Ciblés / Profil : en bas sur téléphone, en haut sur ordinateur
+    │   ├── Tabs.tsx                  # onglets rectangulaires (page Ciblés)
+    │   ├── cibles/                   # FavoritesPanel, ActivityPanel (ActivityCard, MyDeals → MyDealCard, ArrowHistory)
+    │   ├── rewards/                  # RewardsPanel, RedeemDialog, Voucher (QR)
+    │   ├── Modal.tsx                 # fenêtre commune (boutique, accord de localisation)
+    │   ├── publish/                  # PublishForm, AssistPanel
+    │   ├── location/                 # LocationConsentDialog, LocationSetting, LocationNotice, DealLocationNote
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── deal/ReactionBar.tsx      # boutons « J'en ai profité (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
     │   ├── arrows/                   # ArrowBadge (en-têtes), ArrowToast (layout), ArrowsCard (page « Ciblés »)
-    │   ├── feed/SearchFilters.tsx    # filtres sous la recherche de Recherche (Sacha ; déplacée depuis l'accueil)
+    │   ├── feed/SearchFilters.tsx    # filtres des résultats de la page Recherche (Sacha)
     │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon` ; prop optionnel `onSelect(dealId)` : si l'offre a un lieu, toucher la carte la sélectionne sur `DealsMap` au lieu d'ouvrir sa fiche — utilisé par Recherche seulement ; prop `selected` : contour aubergine, même couleur que le repère choisi sur la carte). Offre sponsorisée : cadre doré **et** étiquette « Sponsorisé » (icône `SparklesIcon`), indépendante du surlignage de sélection.
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'en ai profité » (ouverte depuis le fil et la carte)
     │   ├── deal/DealExtras.tsx       # LinkedText (URL cliquables), RequirementBadges (conditions), OfferLink (« Voir l'offre »)
-    │   ├── profile/                  # ActivityCard (niveau sur une ligne) et MyDealCard (ligne dépliable), affichés dans « Ciblés » ; profil : ProfileHeader, ImpactCard, ReferralCard, SettingsMenu (groupes, sections dépliables), PersonalInfo, NotificationsPanel (bientôt), HelpPanel, PreferencesSummary
+    │   ├── profile/                  # profil : ProfileHeader, ImpactCard, ReferralCard, SettingsMenu (groupes, sections dépliables), PersonalInfo, NotificationsPanel (bientôt), HelpPanel, PreferencesSummary
     │   ├── RoleGate.tsx              # (layout) commerçant → /commercant, jamais l'interface étudiante
     │   ├── merchant/                 # MerchantPage, BusinessForm, LocationPicker, OfferForm, OfferCard, OfferChart
     │   ├── preferences/              # PreferencesWizard (parcours en 7 étapes) + ChoiceTile
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...} selectedId?/>, centre et met en avant — `.wz-pin-selected` — l'offre choisie dans une liste de Recherche), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / accueil : onglets « Pour toi » et 4 rubriques seulement (Sacha)
+        ├── page.tsx                  # / accueil : puces « Pour toi », « Mes favoris » et catégories (Sacha, Matteo)
         ├── recherche/page.tsx        # carte (Justin) + barre de recherche et filtres (Sacha, déplacés depuis l'accueil) + tri Hot (Matteo) ; pas de filtre par catégorie (retiré, tâche demandée par Anne-Lise)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
@@ -121,7 +125,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 
 ## Conventions de code
 - **Écrans** : téléphone par défaut ; ordinateur à partir de `lg:` (1024 px). `NavBar` passe en haut (hauteur 4 rem, marges de `main` dans `globals.css`, classes `.sw-nav` / `.sw-main`) et les en-têtes de page (logo + Flèches) sont masqués (`lg:hidden`). Recherche : liste à gauche (défile), carte à droite sur `100dvh - 4rem`. Accueil et Favoris en grille ; Partager, Profil, Compte, préférences en colonne `lg:max-w-2xl` ; fiches centrées.
-- `.gitignore` : les règles héritées du modèle Python sont ancrées à la racine (`/lib/`, `/build/`…). Après ajout d'un dossier, vérifier avec `git status` qu'il est bien suivi.
+- `.gitignore` : court, propre au projet ; `/build/` et `/dist/` sont ancrés à la racine. Après ajout d'un dossier, vérifier avec `git status` qu'il est bien suivi.
 - **Pages interactives = composants client** (`"use client"`) qui lisent et écrivent dans Supabase via `getSupabase()`. La sécurité est assurée par les **policies RLS**, pas par le front.
 - Ne pas appeler `cookies()` dans un Server Component (avec `cacheComponents`, ça casse le build sans `<Suspense>`). L'auth côté serveur est gérée par `src/proxy.ts`.
 - Leaflet : composant carte en `"use client"`, chargé via `next/dynamic(..., { ssr: false })`. Le CSS Leaflet est déjà importé dans `globals.css`.
@@ -136,12 +140,11 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- Migrations appliquées : `schema.sql`, `002` à `009` ✅ (004 à 009 détectées via l'API le 27/11) · `010_student_aids.sql` ✅ · `011_no_self_vote.sql` ✅ · `012_requirements_links.sql` ✅ (détectée par Justin) · `013_unvote.sql` ⏳ · `014_voter_weights.sql` ⏳ · `015_demo_titles.sql` ⏳ · `016_arrows.sql` ⏳ · `017_rewards.sql` ⏳ · `018_no_access_limit.sql` ⏳ · `019_golden_badge_text.sql` ⏳ · `020_location_rules.sql` ⏳ · `021_gone_on_site.sql` ✅ (Justin) · `022_profile_impact_referral.sql` ✅ (détectée par Justin) · `023_doubtful_deals.sql` ⏳ **à exécuter** · le 27/11 au soir, 017 et 018 détectées sur la vraie base (sonde en lecture)
+- État des migrations sur la vraie base : tenu dans `TASKS.md` uniquement. Vérifié en local le 28/11 : `schema.sql` donne la même base que le schéma d'origine suivi des migrations 002 à 024 (seule différence : l'ancienne valeur `carte_sortir` du type `deal_category`).
 - `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste inventé sur des lieux OpenStreetMap, ODbL : titre normal, description « Exemple fictif (démo) … »). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
-- `supabase/seed_demo.sql` : ancien jeu d'exemples fictifs.
 - **Récompenses (017)** : `rewards` (catalogue de 6, inséré par la migration ; partenaires fictifs « (démo) ») et `user_rewards` (prix payé, code `SW-XXXXXX`, `used_at`), en lecture seule pour l'app. RPC `redeem_reward(id)` (verrou par étudiant, vérifie le solde, dépense et active l'avantage) et `use_reward(id)` (bon commerçant, une fois). **Double compteur** calculé, non stocké : `total_arrows_earned` (gains → rang) et `current_arrows_balance` (gains − dépenses), renvoyés par `my_arrows()`. `profiles.golden_badge` et `early_access_until` non écrivables.
 - `supabase/seed_arrows.sql` (après 016, 017, 020, 022, 023 et `reset_demo.sql`, relançable ; ajoute aussi le profil de sarah : 3 filleuls et 42 comptes `demo.publicNN` sans mot de passe) : historique inventé donnant des rangs différents à six comptes de démo + trois offres scénarisées (3e confirmation, 3e signalement, déjà archivée) ; démo conseillée en `demo.sarah`.
-- **Les Flèches (016)** : `arrow_events` (journal : create 50, bonus 30, confirm 10, report 15 ; `paid` false = signalement en attente) et `activity_days` (série), lisibles par leur seul propriétaire, **écrits uniquement par des triggers** sur `deals` et `votes`. `deals.archived_at` (non écrivable) posé au 3e « Plus dispo ». RPC `react_to_deal(deal, value, lat?, lng?)` (invoker : droits de `votes` ; position non enregistrée) et `my_arrows()`. Un vote retiré ou une offre supprimée retire les gains correspondants (les votants d'une offre supprimée gardent les leurs). Barème en double dans `src/lib/arrows.ts`. **Depuis 020** : barème selon le lieu (voir `docs/ALGORITHMES.md` § 6) ; une offre placée reçoit une ligne de publication à 0, relevée par `claim_creation_arrows(deal, lat?, lng?)` (auteur, 15 min, ≤ 500 m, position non enregistrée). **021** : trigger `votes_presence` (avant écriture) qui refuse un vote -1 de l'app sur une offre placée sans position à 500 m ; les scripts SQL Editor ne sont pas contrôlés.
+- **Les Flèches (016)** : `arrow_events` (journal : create 50, bonus 30, confirm 10, report 15 ; `paid` false = signalement en attente) et `activity_days` (série), lisibles par leur seul propriétaire, **écrits uniquement par des triggers** sur `deals` et `votes`. `deals.archived_at` (non écrivable) marque une offre retirée (règles de 023 ci-dessous). RPC `react_to_deal(deal, value, lat?, lng?)` (invoker : droits de `votes` ; position non enregistrée) et `my_arrows()`. Un vote retiré ou une offre supprimée retire les gains correspondants (les votants d'une offre supprimée gardent les leurs). Barème en double dans `src/lib/arrows.ts`. **Depuis 020** : barème selon le lieu (voir `docs/ALGORITHMES.md` § 6) ; une offre placée reçoit une ligne de publication à 0, relevée par `claim_creation_arrows(deal, lat?, lng?)` (auteur, 15 min, ≤ 500 m, position non enregistrée). **021** : trigger `votes_presence` (avant écriture) qui refuse un vote -1 de l'app sur une offre placée sans position à 500 m ; les scripts SQL Editor ne sont pas contrôlés.
 - **Retrait (023)** : `deals.doubtful_since` et `reports_reset_at` (non écrivables) ; `arrow_refresh_deal` applique les règles à chaque changement de vote, `settle_doubtful_deals()` (appelée par `useDeals`) retire les offres échues. Un retrait (`archived_at`) est définitif.
 - **Profil (022)** : `preferences.school` ; `deal_directions` (« Y aller », une ligne par étudiant et offre) ; `deal_shares` (lien ouvert, écrit par `record_share_open`) ; `referral_codes`, `referrals` (écrites par la base : code via `ensure_referral_code`, parrain retenu à l'inscription par `handle_new_user`, versement par un trigger sur `activity_days`) ; `support_messages` (10 par jour). RPC `my_impact`, `my_referrals`, `check_referral_code` (ouverte sans compte). `arrow_events.kind` accepte `referral` et `welcome`.
 - **Colonnes verrouillées (003)** : l'app ne peut pas écrire `profiles.role` ni `profiles.last_contribution_at` (plus relevée depuis 018), ni `deals.created_at`, ni modifier `is_official` / `author_id` après publication. Toute nouvelle colonne de `profiles` ou `deals` doit être ajoutée aux GRANT. Devenir commerçant : choix « Commerçant » à l'inscription puis fiche du commerce (`register_business`).
@@ -153,7 +156,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - `preferences.is_scholarship`, `has_carte_sortir` (010, booléens facultatifs) ; `wants_travel` n'est plus demandé
 - `deals.price_level` (0 gratuit … 3) et `deals.tags[]` (ids d'activités)
 - `deals.requirements text[]` (012) : conditions parmi `student_card | carte_sortir | scholarship | under_26` (contrainte SQL) ; `deals.link_url` (012) : lien http(s) ≤ 500 caractères (contrainte SQL). **`carte_sortir` n'est plus une catégorie** : valeur gardée dans le type `deal_category` des bases existantes mais interdite par `deals_no_carte_sortir_category` ; retirée du type dans `schema.sql`
-- `deals.photo_url` (008) : photo de preuve, uniquement un lien vers le stockage public **`deal-photos`** (contrainte SQL) ; dépôt par l'auteur dans `<son id>/…` (policies `storage.objects`) via `src/lib/photos.ts` ; affichée dans le fil (`DealCard`)
+- `deals.photo_url` (008) : photo de preuve, uniquement un lien vers le stockage public **`deal-photos`** (contrainte SQL) ; dépôt par l'auteur dans `<son id>/…` (policies `storage.objects`) via `src/lib/photos.ts` ; affichée dans la fiche (`DealSheet`)
 - `profiles.followed_categories` est **ordonné** : les 3 premières sont les priorités
 - `zones` : id (`bruz`, `ker-lann`, `rennes`), name, center_lat, center_lng, radius_m — coordonnées vérifiées (OpenStreetMap)
 - `profiles` : id (= auth.users), username, role (student | merchant), followed_categories[], followed_zone_ids[], last_contribution_at (inutilisée depuis 018), onboarded — **créé automatiquement à l'inscription** (trigger)
@@ -168,7 +171,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - **Sources officielles (024)** : `deals.source_name` / `source_checked_at` (non écrivables par l'app ; lien obligatoire) → badge « Source officielle ». Offres importées par le compte technique `sources@example.com` (créé par le script, effacé par `reset_demo.sql`), `is_official` faux.
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
-- **Fiabilité façon Waze (tâche 33)** : masse d'une réaction = poids de l'étudiant × 0,5^(âge / 48 h), un « Plus dispo » postérieur à la dernière confirmation × 1,5. Score = (masse des « J'en ai profité » + 0,5) / (masse totale + 1) : sans réaction récente il redescend vers 0,5 (« À vérifier »). Affiché en couleur (`TRUST_LEVELS`, `TrustBadge`) : vert foncé ≥ 0,85 · vert clair ≥ 0,65 · jaune ≥ 0,4 · rouge · « Nouveau » sans réaction. La fiabilité ne masque plus rien : une offre est **masquée** si 3 étudiants la signalent « Plus dispo » (archivée, `ARCHIVE_REPORTS`), si elle est retirée ou expirée.
+- **Fiabilité façon Waze (tâche 33)** : masse d'une réaction = poids de l'étudiant × 0,5^(âge / 48 h), un « Plus dispo » postérieur à la dernière confirmation × 1,5. Score = (masse des « J'en ai profité » + 0,5) / (masse totale + 1) : sans réaction récente il redescend vers 0,5 (« À vérifier »). Affiché en couleur (`TRUST_LEVELS`, `TrustBadge`) : vert foncé ≥ 0,85 · vert clair ≥ 0,65 · jaune ≥ 0,4 · rouge · « Nouveau » sans réaction. La fiabilité ne masque rien : une offre est **masquée** si elle est retirée (signalements ci-dessous, auteur, commerçant) ou expirée.
 - **Retrait des offres (tâche 69)** : « Douteux » au 3e « Plus dispo » ; sauvée par 3 « J'en ai profité » postérieurs ; sinon retirée à 14 jours ; 6 signalements en 48 h sans confirmation entre-temps : retrait immédiat. Flèches des signalements versées au retrait. Constantes dans `rules.ts` et la migration 023.
 - **Flèches** : voir « Base de données » ; rangs (`RANKS`) : Éclaireur < 150 ≤ Chasseur de bons plans < 500 ≤ Robin des Étudiants. Gains × 1,5 dès 3 jours d'activité d'affilée (heure de Paris), 5 votes payés par jour, offre placée : Flèches seulement à 500 m au plus avec la position ; sans lieu : montants réduits (020).
 - **Poids d'un étudiant** (`voter_stats()`, SQL, jamais exposé un par un ; 0,5 à 2) = (0,4 + 0,9 × justesse lissée (a+2)/(n+3)) × (1 + 0,5 × activité 30 j) × 0,6 si compte < 3 jours. `deal_trust(ids)` renvoie les masses par offre  (le poids n'est affiché nulle part depuis la tâche 44 ; la RPC `my_influence()` n'est plus appelée). Sans 014 : poids 1 pour tous.
@@ -180,9 +183,9 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - **Voyages** : un transport longue distance (hors bus local) compte comme un pôle suivi selon la fréquence de voyage (souvent 36, parfois 28, rarement 16 et seulement dans un mode choisi).
 - **Aides** : `scholarship` n'est plus une priorité ; une bourse est dans « Pour toi » seulement si l'étudiant a répondu oui à « Boursier » (et si l'offre est à portée).
 - **Conditions** (`deals.requirements`) : `carte_sortir` / `scholarship` → répondu non à la question correspondante = jamais « Pour toi » ; oui = « Pour toi » si à portée, avec la raison « Avec ta Carte Sortir » / « Tu es boursier » ; pas répondu = score normal. `student_card` / `under_26` : simple badge.
-- Cartes : badge de **fiabilité** (`trustPercent`, « Nouveau » sans vote) ; la compatibilité ne sert qu'au tri et aux raisons.
+- Cartes : badge de **fiabilité** (`TrustBadge`, « Nouveau » sans vote) ; la compatibilité ne sert qu'au tri et à « Pour toi ».
 - **Budget** : change le score et l'ordre, mais ne retire jamais un bon plan.
-- **« Pour toi »** : score hors budget ≥ 55, à portée, et catégorie suivie, activité / transport aimé ou trajet utile. Chaque carte affiche les raisons (« Ta priorité n°1 », « ≈ 8 min à vélo »…).
+- **« Pour toi »** : score hors budget ≥ 55, à portée, et catégorie suivie, activité / transport aimé ou trajet utile. Les cartes n'affichent que la distance ou la durée (« ≈ 8 min à vélo ») ; les autres raisons sont calculées mais pas montrées (tâche 35).
 - Distances à vol d'oiseau depuis la position enregistrée, sinon le centre de la zone principale ; durées estimées.
 - ⚠️ Next conserve les pages quittées (`<Activity>`) : les effets sont relancés au retour ; tout composant qui manipule le DOM (Leaflet) doit le supporter.
 
@@ -197,5 +200,4 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'en ai profité » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'en ai profité »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).
-- Sponsorisés toujours en tête (aucun autre bonus). L'accueil n'est pas concerné : ses onglets sont triés par compatibilité (par date sans profil), sponsorisés en tête.
-- Plus de badge « Tendance » (retiré, tâche 37).
+- Sponsorisés toujours en tête (aucun autre bonus). L'accueil n'est pas concerné : il trie par compatibilité (par date sans profil) ou, pour « Mes favoris », par échéance.

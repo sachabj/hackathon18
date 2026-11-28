@@ -3,12 +3,13 @@
 // Aide : questions fréquentes et message à l'équipe (enregistré en base, migration 022).
 import { useState } from "react";
 import { Feedback, inputClass, primaryClass, useAction } from "@/components/account/ui";
+import { DAILY_PAID_CREATIONS, DAILY_PAID_VOTES } from "@/lib/arrows";
 import { sendSupportMessage } from "@/lib/community";
 import { NEARBY_M } from "@/lib/constants";
 import { BURST_HOURS, BURST_REPORTS, DOUBT_DAYS, DOUBT_REPORTS, RESCUE_CONFIRMATIONS } from "@/lib/rules";
 
 const QUESTIONS = [
-  ["Pourquoi je ne gagne pas de Flèches ?", `Sur une offre placée sur la carte, il faut partager ta position à moins de ${NEARBY_M} m. Il y a aussi 5 votes et 3 publications récompensés par jour.`],
+  ["Pourquoi je ne gagne pas de Flèches ?", `Sur une offre placée sur la carte, il faut partager ta position à moins de ${NEARBY_M} m. Il y a aussi ${DAILY_PAID_VOTES} votes et ${DAILY_PAID_CREATIONS} publications récompensés par jour.`],
   ["Pourquoi « Plus dispo » est refusé ?", `Pour une offre sur la carte, il se signale sur place, à moins de ${NEARBY_M} m.`],
   [
     "Quand une offre disparaît-elle ?",

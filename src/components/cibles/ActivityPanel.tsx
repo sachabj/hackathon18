@@ -4,8 +4,8 @@
 import { useCallback, useEffect, useState } from "react";
 import ArrowHistory from "@/components/cibles/ArrowHistory";
 import MyDeals, { type Mine } from "@/components/cibles/MyDeals";
-import ActivityCard from "@/components/profile/ActivityCard";
-import type { DealGains } from "@/components/profile/MyDealCard";
+import ActivityCard from "@/components/cibles/ActivityCard";
+import type { DealGains } from "@/components/cibles/MyDealCard";
 import { fetchArrowLog, onArrows, type ArrowLine } from "@/lib/arrows";
 import { fetchMyDeals } from "@/lib/engagement";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";

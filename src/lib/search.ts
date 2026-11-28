@@ -1,4 +1,4 @@
-// Recherche de l'accueil : parmi les bons plans déjà chargés (la saisie n'est envoyée à aucun serveur).
+// Recherche (page /recherche) : parmi les bons plans déjà chargés (la saisie n'est envoyée à aucun serveur).
 // Comprend les accents, les pluriels, les abréviations (SAME), les fautes de frappe et des mots proches (RELATED).
 import { ACTIVITIES, CATEGORIES, REQUIREMENTS, SUBCATEGORIES, ZONES } from "./constants";
 import { isBoosted } from "./merchant";

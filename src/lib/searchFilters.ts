@@ -1,4 +1,4 @@
-// Filtres et tri des résultats de la recherche (accueil).
+// Filtres et tri des résultats de la recherche (page /recherche).
 import { TRANSPORT_MODES } from "./constants";
 import { distanceKm, type Point } from "./geo";
 import { travelMinutes } from "./matching";

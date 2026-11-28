@@ -15,7 +15,6 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Fiche** : détails, photo, lien vers l'offre, boutons « Y aller » (Apple Plans ou Google Maps) et « Partager » (le lien ouvre l'offre après connexion).
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
 - **Favoris** pour garder une offre sous la main.
-
 - **Sources officielles** : événements gratuits ou étudiants (OpenAgenda) et aides aux étudiants (Aides Jeunes), signalés par un badge, avec leur lien et la date de vérification.
 
 ### Partager et vérifier

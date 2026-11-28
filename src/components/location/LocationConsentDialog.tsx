@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LockClosedIcon } from "@/components/icons";
-import Modal from "@/components/rewards/Modal";
+import Modal from "@/components/Modal";
 import { NEARBY_M } from "@/lib/constants";
 import { registerConsentDialog, saveLocationConsent } from "@/lib/location";
 

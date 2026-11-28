@@ -19,6 +19,7 @@ export default function LogoutButton() {
       return;
     }
     // Rechargement complet : aucune page conservée en mémoire ne doit garder les données du compte.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- rechargement voulu
     window.location.href = "/login";
   }
 
