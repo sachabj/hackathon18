@@ -727,3 +727,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (pitch : 6 diapos)
 - Diapo « Erasmus » retirée (6 diapos ; conclusion inchangée, sa carte « Jusqu'en Erasmus » reste) ; diapo 3 : « 1 · Rechercher », « 2 · Partager », « 3 · Récompenser ». PDF recompilé et vérifié. Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`, `pitch/README.md`, mémoire.
+
+### 2026-11-28 — Matteo (pitch : diapo 5)
+- Diapo « Modèle » : titre « ADAPTABILITÉ · ÉGALITÉ · FACILITÉ » (majuscules, police sans empattement Inter en gras, points violets) au lieu de « Un modèle gratuit pour les étudiants » ; carte jaune : « Le temps » / « Rapidité et Facilité » au lieu du tarif de 9,90 €. PDF recompilé et vérifié. Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`, `pitch/README.md`.
