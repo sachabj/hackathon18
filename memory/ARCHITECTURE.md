@@ -89,6 +89,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── icons.tsx                 # icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
     │   ├── AuthorBadge.tsx           # badge « Source officielle » / « Commerçant » (offre officielle) / « Étudiant »
     │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
+    │   ├── LaunchSplash.tsx          # logo animé à l'ouverture (0,5 s min, 4 s max ; attend tant qu'un `data-app-loading` est affiché)
     │   ├── NavBar.tsx                # Accueil / Recherche / Partager / Ciblés / Profil : en bas sur téléphone, en haut sur ordinateur
     │   ├── Tabs.tsx                  # onglets rectangulaires (page Ciblés)
     │   ├── cibles/                   # FavoritesPanel, ActivityPanel (ActivityCard, MyDeals → MyDealCard, ArrowHistory), SchoolRanking (classement des écoles, `lib/schools.ts`)

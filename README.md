@@ -6,7 +6,7 @@ Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les 
 
 ## Ce que fait l'application
 
-Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en haut, carte à côté de la liste, offres en colonnes.
+Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en haut, carte à côté de la liste, offres en colonnes. À l'ouverture, le logo s'anime pendant le chargement.
 
 ### Trouver un bon plan
 - **Accueil** : filtres « Pour toi », « Mes favoris » et une puce par catégorie (plusieurs catégories combinables) ; puce **« Plus proches »** : du plus proche au plus loin de sa position (avec accord), sinon de la ville choisie à l'inscription, offres sans lieu à la fin.

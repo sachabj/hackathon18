@@ -51,14 +51,13 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Reset démo | `node scripts/build_demo_sql.mjs` : un seul fichier SQL pour remettre la démo à zéro, offres inventées réduites à 38 sur 107 (`reduce_demo.sql`) | Justin | pas lancé sur la vraie base |
 | Défauts | D3 à D5, D7 à D9, D11 à D14 (76) | Justin | essayés sur téléphone (C3) |
 | Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone |
-| Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) | Matteo | pas vues dans un navigateur ni sur téléphone |
+| Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) ; logo animé à l’ouverture, 0,5 s (82) | Matteo | pas vues dans un navigateur ni sur téléphone |
 
 Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67), 63 (par 68). Défauts corrigés avant la revue : D1 (vote sur son offre), D2 (copie locale du script de démo), D6 (lecteurs d'écran), D10 (tuile choisie).
 
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 82 | Logo animé à l’ouverture de l’appli (0,5 s) | — | EN COURS : touche `layout.tsx`, `RoleGate`, `globals.css` | Sacha |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 : le paradoxe « Hyperconnectés, mais mal informés » en deux colonnes (Matteo, remplace la version d'Anne-Lise), diapo 3 avec 3 boucles vidéo intégrées au PDF, lancées **au clic** (boutons lecture/pause par téléphone, pas d'autoplay simultané) (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | PDF recompilé le 28/11 vers 8h30 (Matteo, Tectonic) ; diapo 3 à corriger (C3b) ; vérifier le rendu diapo 1 et que les 3 boutons de la diapo 3 apparaissent et lancent bien chaque vidéo **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
 
 ## 3. 📋 Reste à faire

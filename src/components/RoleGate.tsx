@@ -28,7 +28,8 @@ export default function RoleGate({ children }: { children: React.ReactNode }) {
 
   // On n'affiche pas l'interface étudiante avant de savoir qui est connecté.
   if (redirect || (role === null && studentPage)) {
-    return <p className="p-6 text-center text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>;
+    // `data-app-loading` : le logo d'ouverture reste affiché pendant ce temps.
+    return <p data-app-loading className="p-6 text-center text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>;
   }
   return children;
 }

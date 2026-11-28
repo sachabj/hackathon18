@@ -713,3 +713,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (diapo 1 allégée)
 - Petites phrases des deux cartes retirées ; carte de droite : « Et pourtant, personne ne nous parle des bons plans. » (au lieu du bouche-à-oreille) ; cartes moins hautes. PDF recompilé et vérifié en image. Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`.
+
+### 2026-11-28 08h37 — Sacha (logo à l’ouverture, tâche 82)
+- Nouveau `components/LaunchSplash.tsx`, styles `.sw-splash` (`globals.css`), `layout.tsx`, attribut `data-app-loading` dans `RoleGate` ; README, mémoire.
+- Vérifié : tsc, lint, build ; 8 contrôles dans Chrome avec un faux Supabase (durées, rechargement, chargement lent, sans JavaScript). Pas essayé sur téléphone ; non déployé.

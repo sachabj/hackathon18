@@ -591,3 +591,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : la diapo 1 ouvre sur « Hyperconnectés, mais mal informés » en deux colonnes opposées, sans montant ni commerce nommé (comme la version d'Anne-Lise qu'elle remplace) ; la note d'orateur est le texte de Matteo, sans présentation de l'équipe (les noms restent écrits en haut de la diapo).
 - **Écartés** : trois cartes de constats ; version minimaliste (titre et phrase seuls).
 - **Qui** : Matteo (réponses aux questions de cadrage) ; Anne-Lise à prévenir
+
+## 2026-11-28 08h40 — Logo animé à l'ouverture (tâche 82)
+- **Décision** : au lancement et au rechargement (jamais en changeant d'onglet), logo plein écran au moins 0,5 s : apparition en rebond, puis l'étiquette se balance ; maintenu tant que l'appli charge, 4 s au plus.
+- **Qui** : Sacha

@@ -363,3 +363,35 @@ h1, h2, h3 {
 /* Sections dépliées du menu du profil : les cartes des réglages y sont à plat. */
 .sw-menu-panel .sw-card { border: 0; background: transparent; box-shadow: none; padding: 0; }
 .sw-menu-panel > .sw-card + .sw-card { border-top: 1px solid var(--color-border); border-radius: 0; padding-top: 1rem; }
+
+/* Logo à l'ouverture (tâche 82, LaunchSplash). */
+.sw-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  /* Si le JavaScript ne démarre pas, l'écran s'efface tout de même. */
+  animation: sw-splash-out 0.3s ease-in 6s forwards;
+  transition: opacity 0.18s ease-out;
+}
+.sw-splash-leaving { opacity: 0; pointer-events: none; }
+.sw-splash-logo { animation: sw-splash-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+.sw-splash-tag { transform-origin: 75px 68px; animation: sw-splash-swing 0.5s ease-in-out infinite; }
+@keyframes sw-splash-pop {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes sw-splash-swing {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(14deg); }
+  75% { transform: rotate(-14deg); }
+}
+@keyframes sw-splash-out {
+  to { opacity: 0; visibility: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sw-splash-logo, .sw-splash-tag { animation: none; }
+}
