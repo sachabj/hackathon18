@@ -651,7 +651,7 @@ export const EN: Record<string, string> = {
   "Classement des écoles": "School leaderboard",
   "Flèches gagnées ces 7 derniers jours, par membre actif. Une école est classée à partir de {n} membres.": "Arrows earned over the last 7 days, per active member. A school is ranked from {n} members.",
   "Pas encore assez de membres pour un classement.": "Not enough members for a leaderboard yet.",
-  "Choisis ton école dans ton profil pour la faire gagner": "Pick your school in your profile to help it win",
+  "Choisis ton lieu d'études": "Choose where you study",
   "Ton école sera classée à partir de {n} membres (aujourd'hui {m}) : invite tes amis !": "Your school will be ranked from {n} members (currently {m}): invite your friends!",
   "École ou université (facultatif)": "School or university (optional)",
   "Autre": "Other",

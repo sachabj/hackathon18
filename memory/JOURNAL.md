@@ -686,3 +686,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 07h17 — Justin (déploiement)
 - `389d084` en ligne (compteurs à zéro masqués ; tâche 80 de Sacha). Vérifié : tsc, lint, build ; pages publiques et redirection. Pages connectées non vues.
+
+### 2026-11-28 07h35 — Sacha (lien lieu d’études, tâche 81)
+- `SchoolRanking` (texte et lien `/profil?section=infos`), `profil/page.tsx` (ouvre et montre la section), marge de défilement dans `SettingsMenu`, `en.ts`. **Justin** : ta phrase du classement est changée.
+- Vérifié : tsc, lint, build ; 18 contrôles dans Chrome avec un faux Supabase (390 et 1440 px, FR et EN). Pas essayé sur la vraie base ni sur téléphone.

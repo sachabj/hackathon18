@@ -36,7 +36,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Langue | Français / anglais : parcours étudiant, assistant de préférences, espace commerçant et messages d'erreur de la base ; choix au profil et sur la connexion, retenu sur l'appareil ; seule la politique de confidentialité reste en français (50, S6) | Sacha, Justin | téléphone ; changement de langue côté commerçant |
 | Favoris | Par catégorie, dans « Ciblés » (8) ; cœur aussi dans la fenêtre d'un repère et la fiche, synchronisé partout (77) | Anne-Lise | vraie base |
 | Ciblés | Flèches, grades, activité, mes bons plans, boutique et bons à QR code ; aucun accès limité (10, 17b, 42, 43, 44, 46, 47) | Sacha | testé en local seulement |
-| Écoles | Compétition entre écoles : école choisie dans une liste, classement dans « Ciblés » (70) | Justin | 028 et écoles de démo lancées ; à voir sur téléphone |
+| Écoles | Compétition entre écoles : école choisie dans une liste, classement dans « Ciblés » (70), lien « Choisis ton lieu d’études » vers Profil > Informations personnelles (81) | Justin | 028 et écoles de démo lancées ; à voir sur téléphone |
 | Signalement | « Signaler ce bon plan » en bas de la fiche (5 motifs), offre masquée pour son auteur, table `deal_reports` (71, migration 029 lancée) | Matteo | pas vu dans un navigateur ni sur téléphone |
 | Notifications | Dans l'appli ouverte : « Bons plans à proximité » (150 m, réglable), « mes offres confirmées » à l'ouverture ; interrupteurs du profil actifs (68) | Justin | à voir sur téléphone |
 | Profil | Étudiants aidés, parrainage, menu des réglages, localisation retirable, aide et bug (49, 64, 68) | Sacha, Justin | vraie base |
@@ -58,7 +58,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 81 | Ciblés : « Choisis ton lieu d’études » ouvre Profil > Informations personnelles | — | EN COURS : touche `SchoolRanking` (Justin), `profil/page.tsx` | Sacha |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré, texte retravaillé pour ne plus couper « question »), diapo 3 avec 3 boucles vidéo intégrées au PDF (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | **PDF pas recompilé depuis les derniers changements de Claude** (aucun moteur LaTeX sur ce poste) ; vérifier le rendu diapo 1 et que les 3 boucles de la diapo 3 jouent **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
 
 ## 3. 📋 Reste à faire

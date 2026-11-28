@@ -65,6 +65,25 @@ export default function Page() {
     requestAnimationFrame(() => document.getElementById("reglage-infos")?.scrollIntoView({ behavior: "smooth", block: "start" }));
   }
 
+  /** Arrivée par un lien `?section=infos` (« Ciblés ») : la section s'ouvre et vient à l'écran. */
+  const [linked, setLinked] = useState(false);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("section") !== "infos") return;
+    /* eslint-disable react-hooks/set-state-in-effect -- lu dans l'adresse après le montage (page statique) */
+    setOpen("infos");
+    setLinked(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
+    return () => setLinked(false);
+  }, []);
+  useEffect(() => {
+    if (!linked || !account) return;
+    const show = () => document.getElementById("reglage-infos")?.scrollIntoView({ block: "start" });
+    show();
+    // Les cartes du dessus (étudiants aidés, parrainage) arrivent après coup et repoussent la section.
+    const timer = setTimeout(show, 700);
+    return () => clearTimeout(timer);
+  }, [linked, account]);
+
   const section = { open, onToggle: setOpen };
 
   return (

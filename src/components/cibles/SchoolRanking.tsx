@@ -76,8 +76,8 @@ export default function SchoolRanking() {
         <p className="text-sm text-[var(--color-muted)]">{t("Pas encore assez de membres pour un classement.")}</p>
       )}
       {!data.my_school ? (
-        <Link href="/profil" className="block text-sm font-medium underline" style={{ color: "var(--color-forest)" }}>
-          {t("Choisis ton école dans ton profil pour la faire gagner")}
+        <Link href="/profil?section=infos" className="block text-sm font-medium underline" style={{ color: "var(--color-forest)" }}>
+          {t("Choisis ton lieu d'études")}
         </Link>
       ) : (
         !mine && (

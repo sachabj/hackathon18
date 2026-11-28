@@ -60,7 +60,8 @@ export function MenuSection<T extends string>({
 }) {
   const expanded = open === id;
   return (
-    <li id={`reglage-${id}`}>
+    // Sur ordinateur, la barre de navigation est en haut : marge pour le défilement jusqu'à la section.
+    <li id={`reglage-${id}`} className="lg:scroll-mt-20">
       <button
         type="button"
         onClick={() => onToggle(expanded ? null : id)}

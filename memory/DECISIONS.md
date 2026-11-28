@@ -571,3 +571,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décisions** : toucher une offre de la liste (fil ou résultats) ouvre sa fiche, la carte se centrant derrière ; « Voir l'offre » devient un petit lien sous la description.
 - **Remplace** : la sélection sur la carte sans ouvrir la fiche (Anne-Lise) et le gros bouton de lien.
 - **Qui** : Sacha (réponses aux questions de cadrage)
+
+## 2026-11-28 07h40 — Lien vers le lieu d'études (tâche 81)
+- **Décision** : dans « Ciblés », « Choisis ton lieu d'études » ouvre directement Profil > Informations personnelles ; affiché seulement tant qu'aucune école n'est choisie.
+- **Qui** : Sacha
