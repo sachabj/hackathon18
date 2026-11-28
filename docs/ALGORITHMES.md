@@ -37,8 +37,10 @@ Une offre n'apparaît nulle part (accueil, carte, recherche) si :
 
 | Écran | Ordre d'affichage |
 |---|---|
-| **Accueil, onglet « Pour toi »** | Sponsorisées → **compatibilité** (2.3) → plus récentes. Si aucune offre n'est compatible (ou profil non rempli) : toutes les offres, **les plus récentes d'abord**. |
-| **Accueil, rubriques** (Restauration, Aides & bourses, Voyages, Culture & sport) | Sponsorisées → compatibilité → plus récentes (sans profil : sponsorisées → plus récentes). |
+| **Accueil, filtre « Pour toi »** (par défaut) | Sponsorisées → **compatibilité** (2.3) → plus récentes. Si aucune offre n'est compatible (ou profil non rempli) : toutes les offres, **les plus récentes d'abord**. |
+| **Accueil, sans filtre principal** (« Pour toi » désactivé) | Toutes les offres : sponsorisées → compatibilité → plus récentes (sans profil : sponsorisées → plus récentes). |
+| **Accueil, « Mes favoris »** | Échéance la plus proche d'abord (date limite, puis fin de l'offre), les offres sans date à la fin. |
+| **Accueil, puces de catégorie** | Ne changent pas l'ordre : elles gardent seulement les offres des catégories choisies (plusieurs possibles). |
 | **Accueil, recherche par mots** | Résultats exacts, puis « résultats proches ». Dans chaque groupe : sponsorisées → **pertinence** (2.5) → compatibilité. Le tri choisi dans les filtres (« Les plus proches », « Les moins chers ») remplace cet ordre. |
 | **Recherche (page carte)** | Sponsorisées → **score « Hot »** (2.4) → plus récentes. |
 

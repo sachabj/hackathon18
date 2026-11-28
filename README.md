@@ -9,7 +9,7 @@ Comme Waze, mais au lieu de signaler les radars, **les étudiants signalent les 
 Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en haut, carte à côté de la liste, offres en colonnes.
 
 ### Trouver un bon plan
-- **Accueil** : onglets « Pour toi », Restauration (restaurants et grandes surfaces), Aides & bourses, Voyages et Culture & sport.
+- **Accueil** : filtres « Pour toi », « Mes favoris » et une puce par catégorie (plusieurs catégories combinables).
 - **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».
 - **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer.
 - **Fiche** : détails, photo, lien vers l'offre et bouton « Y aller » (Apple Plans ou Google Maps).

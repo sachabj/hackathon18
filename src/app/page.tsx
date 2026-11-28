@@ -1,13 +1,14 @@
 "use client";
 
-// Accueil : les offres rangées en onglets (« Pour toi » et les rubriques).
-// La barre de recherche est sur la page Recherche (carte + toutes les offres).
+// Accueil : les offres et une rangée de filtres (tâche 67) : « Pour toi » ou « Mes favoris », et une ou plusieurs
+// catégories. La barre de recherche est sur la page Recherche (carte + toutes les offres).
 import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
 import { useState } from "react";
+import CategoryIcon from "@/components/CategoryIcon";
 import DealCard from "@/components/feed/DealCard";
-import Tabs from "@/components/Tabs";
-import { APP_NAME } from "@/lib/constants";
+import { HeartIcon, TargetIcon } from "@/components/icons";
+import { APP_NAME, CATEGORIES } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import type { DealCategory, DealWithVotes } from "@/lib/types";
@@ -15,15 +16,17 @@ import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
 
-/** Rubriques déduites de la catégorie, dans l'ordre des onglets : chaque catégorie appartient à une seule rubrique. */
-const SECTIONS = [
-  { id: "food", label: "Restauration", categories: ["restaurant", "supermarket"] },
-  { id: "aids", label: "Aides & bourses", categories: ["scholarship"] },
-  { id: "travel", label: "Voyages", categories: ["transport"] },
-  { id: "culture", label: "Culture & sport", categories: ["sport", "activity"] },
-] as const satisfies readonly { id: string; label: string; categories: readonly DealCategory[] }[];
+/** Filtre principal : « Pour toi », « Mes favoris », ou aucun (toutes les offres). */
+type Scope = "forYou" | "favorites" | null;
 
-type TabId = "forYou" | (typeof SECTIONS)[number]["id"];
+/** Toutes les catégories, dans l'ordre de `CATEGORIES`. */
+const CATEGORY_IDS = Object.keys(CATEGORIES) as DealCategory[];
+
+/** Échéance la plus proche d'abord (date limite, puis fin de l'offre) ; sans date à la fin. */
+const deadlineOf = (deal: DealWithVotes) => {
+  const d = deal.deadline_at ?? deal.expires_at;
+  return d ? new Date(d).getTime() : Number.MAX_SAFE_INTEGER;
+};
 
 type Item = { deal: DealWithVotes; match?: Match };
 
@@ -35,7 +38,8 @@ export default function Page() {
   const { deals, loading, error } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const [tab, setTab] = useState<TabId>("forYou");
+  const [scope, setScope] = useState<Scope>("forYou");
+  const [categories, setCategories] = useState<DealCategory[]>([]);
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   // Avec un profil : les plus compatibles d'abord. Sans : les plus récentes.
@@ -48,16 +52,22 @@ export default function Page() {
       ? boostedFirst(forYou)
       : deals.map((deal) => ({ deal, match: matchById.get(deal.id) }));
 
-  const tabs: { id: TabId; label: string; items: Item[] }[] = [
-    { id: "forYou", label: "Pour toi", items: forYouItems },
-    ...SECTIONS.map((s) => ({
-      id: s.id,
-      label: s.label,
-      items: boostedFirst(ranked.filter((r) => (s.categories as readonly DealCategory[]).includes(r.deal.category))),
-    })),
-  ];
-
-  const current = tabs.find((t) => t.id === tab)!;
+  // Base selon le filtre principal, puis restriction aux catégories choisies (aucune = toutes).
+  const base: Item[] =
+    scope === "forYou"
+      ? forYouItems
+      : scope === "favorites"
+        ? ranked.filter((r) => isFavorite(r.deal.id)).sort((a, b) => deadlineOf(a.deal) - deadlineOf(b.deal))
+        : boostedFirst(ranked);
+  const items = categories.length > 0 ? base.filter((r) => categories.includes(r.deal.category)) : base;
+  const toggleCategory = (c: DealCategory) =>
+    setCategories((list) => (list.includes(c) ? list.filter((x) => x !== c) : [...list, c]));
+  const emptyMessage =
+    scope === "favorites"
+      ? categories.length > 0
+        ? "Aucun favori dans ces catégories."
+        : "Touche le cœur d'une offre pour la retrouver ici."
+      : "Aucun bon plan dans ces catégories pour le moment.";
   const busy = loading || loadingProfile;
 
   return (
@@ -88,28 +98,44 @@ export default function Page() {
         {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
 
         <div>
-          <div className="lg:mx-auto lg:max-w-2xl">
-            <Tabs label="Rubriques" idPrefix="tab" tabs={tabs} selected={tab} onSelect={setTab} />
+          {/* Filtres : un filtre principal (Pour toi / Mes favoris, retouché = désactivé) et des catégories cumulables. */}
+          <div
+            role="group"
+            aria-label="Filtres"
+            className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:justify-center lg:px-0"
+          >
+            <FilterChip selected={scope === "forYou"} onClick={() => setScope(scope === "forYou" ? null : "forYou")}>
+              <TargetIcon className="h-4 w-4" /> Pour toi
+            </FilterChip>
+            <FilterChip selected={scope === "favorites"} onClick={() => setScope(scope === "favorites" ? null : "favorites")}>
+              <HeartIcon className="h-4 w-4" filled={scope === "favorites"} /> Mes favoris
+            </FilterChip>
+            <span aria-hidden className="w-px shrink-0 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
+            {CATEGORY_IDS.map((c) => (
+              <FilterChip key={c} selected={categories.includes(c)} onClick={() => toggleCategory(c)}>
+                <span aria-hidden><CategoryIcon category={c} size={20} /></span> {CATEGORIES[c].label}
+              </FilterChip>
+            ))}
           </div>
 
-          <div id="tab-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} className="space-y-3 pt-3">
+          <div role="region" aria-label="Bons plans" className="space-y-3 pt-3">
             {busy ? (
               <p className="text-sm text-[var(--color-muted)]">Chargement des bons plans…</p>
             ) : (
               !error && (
                 <>
-                  {tab === "forYou" && forYou.length === 0 && deals.length > 0 && (
+                  {scope === "forYou" && forYou.length === 0 && deals.length > 0 && (
                     <p className="text-sm text-[var(--color-muted)]">
                       {me
                         ? "Rien ne correspond encore à ton profil : voici les derniers bons plans."
                         : "Voici les derniers bons plans."}
                     </p>
                   )}
-                  {current.items.length === 0 ? (
-                    <p className="text-sm text-[var(--color-muted)]">Aucun bon plan dans cette rubrique pour le moment.</p>
+                  {items.length === 0 ? (
+                    <p className="text-sm text-[var(--color-muted)]">{emptyMessage}</p>
                   ) : (
                     <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 [&>li>article]:h-full">
-                      {current.items.map(({ deal, match }) => (
+                      {items.map(({ deal, match }) => (
                         <li key={deal.id}>
                           <DealCard deal={deal} match={match} favorite={isFavorite(deal.id)} onToggleFavorite={toggleFavorite} />
                         </li>
@@ -123,5 +149,24 @@ export default function Page() {
         </div>
       </div>
     </div>
+  );
+}
+
+/** Puce de filtre : remplie quand elle est active. */
+function FilterChip({ selected, onClick, children }: { selected: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={selected}
+      onClick={onClick}
+      className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition active:scale-95"
+      style={
+        selected
+          ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }
+          : { borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)", color: "var(--color-ink)" }
+      }
+    >
+      {children}
+    </button>
   );
 }

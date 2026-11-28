@@ -468,3 +468,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (libellé « J'en ai profité » non visible)
 - Vérifié : le libellé est bien dans le code de `main` (`ReactionBar.tsx`, commit `e1e59b8`). Le site en ligne date du déploiement de `a75ecf1` (00h39), antérieur : il faut redéployer (poste de Justin). En local : `git pull`, `npm install`, relancer `npm run dev`. Aucun code modifié.
+
+### 2026-11-28 — Matteo (tâche 67 : filtres de l'accueil)
+- `src/app/page.tsx` : rangée de puces (Pour toi, Mes favoris, 6 catégories avec leur icône) à la place de `Tabs` ; catégories cumulables ; messages vides adaptés. `README.md`, `docs/ALGORITHMES.md`, mémoire.
+- Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur (session Supabase requise, pas de banc d'essai dans le repo).

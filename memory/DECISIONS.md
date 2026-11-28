@@ -420,3 +420,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : retirer « Mon impact », le résumé grade et Flèches et les raccourcis ; garder le nouvel en-tête (pseudo modifiable).
 - **Pourquoi** : demande de Sacha ; Flèches et bons plans sont déjà dans « Ciblés ».
 - **Qui** : Sacha (travail initial de Justin, à prévenir)
+
+## 2026-11-28 — Accueil : filtres à la place des onglets (tâche 67)
+- **Décision** : les 5 onglets (Pour toi, Restauration, Aides & bourses, Voyages, Culture & sport) laissent place à une rangée de puces : « Pour toi » ou « Mes favoris » (l'un ou l'autre, retoucher = toutes les offres), puis chaque catégorie, **plusieurs à la fois**. « Mes favoris » trié par échéance, comme dans « Ciblés ».
+- **Pourquoi** : demande de Matteo (questions posées avant de coder) : filtrer par n'importe quelle catégorie et retrouver ses favoris dès l'accueil.
+- **Remplace** : la décision « Onglets de l'accueil (tâche 56) » de Sacha.
+- **Qui** : Matteo

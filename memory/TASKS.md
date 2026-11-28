@@ -72,7 +72,7 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 | 48 | E | Affichage sur ordinateur : barre de navigation en haut, Recherche en liste + carte, offres en 2-3 colonnes, autres pages en colonne centrée plus large (étudiant et commerçant). Téléphone inchangé. Touche les pages et composants de tous | À TESTER (Justin) : vu avec un faux Supabase à 1440 et 1100 px, téléphone inchangé à 390 px ; sans migration |
 
 ### Lots A, B, C : codés (Justin), à tester sur la vraie base et sur téléphone
-- Depuis la tâche 31 (Sacha) : `/` = onglets « Pour toi » / Restauration / Aides & bourses / Voyages / Culture & sport · `/recherche` = catégories, carte et liste de toutes les offres.
+- Depuis la tâche 67 (Matteo) : `/` = filtres « Pour toi » / « Mes favoris » + puces de catégorie cumulables (les onglets de la tâche 56 sont retirés) · `/recherche` = catégories, carte et liste de toutes les offres.
 - **Matteo** : le bouton « Voir sur la carte » de `PublishForm` pointe maintenant vers `/recherche` (modifié par Justin).
 - **Sacha** : `matching.ts`, `preferences.ts`, `PreferencesWizard.tsx`, `confidentialite` modifiés ; `StudentProfile` perd `wantsTravel` et gagne `isScholar`, `hasCarteSortir` ; le récapitulatif et le profil partagent `preferenceRows()`.
 - **Anne-Lise** : `DealCard` affiche la fiabilité ; `/favoris` lit `votes(*)` ; barre du bas à 5 onglets.
@@ -117,7 +117,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin / Sacha) : en-tête conservé (pseudo modifiable) ; impact, grade et Flèches, raccourcis retirés (Sacha, 28/11) |
 | 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 | 66 | **« J'y suis allé » devient « J'en ai profité »** (boutons, fiche, Ciblés, stats commerçant, confidentialité, info-bulle, README, doc, commentaires) | P | Matteo | FAIT (Matteo) : libellé seulement (vote +1 et passage inchangés) ; historique (JOURNAL, DECISIONS) et anciennes migrations non réécrits |
-| 67 | **Accueil : filtres à la place des onglets** : puces Pour toi · Mes favoris · chaque catégorie (plusieurs catégories combinables) ; remplace les 5 onglets de la tâche 56 (**Sacha**) | P | Matteo | EN COURS (Matteo) |
+| 67 | **Accueil : filtres à la place des onglets** : puces Pour toi · Mes favoris · chaque catégorie (plusieurs catégories combinables) ; remplace les 5 onglets de la tâche 56 (**Sacha**) | P | Matteo | À TESTER (Matteo) : `app/page.tsx` seulement ; pas vu dans le navigateur ; « Mes favoris » ne montre que les offres encore visibles (les expirées restent dans « Ciblés ») |
 | 68 | **Refonte du Profil** : étudiants aidés, parrainage, menu de réglages groupé, boutons « Y aller » / « Partager » dans la fiche (migration **022**) | G | Sacha | EN COURS (Sacha) : touche le profil et `ProfileHeader` (Justin), `DealSheet`, inscription, `proxy.ts` |
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
