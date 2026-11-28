@@ -69,6 +69,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C9 | **Remettre la démo dans son état de départ juste avant de présenter** : sur le site, demo.sarah est à 495 Flèches et « Expos gratuites » est déjà confirmée (scénario joué en répétition), et la base a encore toutes les offres inventées. `node scripts/build_demo_sql.mjs` puis lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés) ; sinon, au minimum `seed_arrows.sql` | Justin |
 | C11 | Retirer les 300 Flèches de test données à un compte par Matteo (ligne `welcome` dans `arrow_events`), sinon elles faussent le classement des écoles | Matteo |
 | C4 | **Répéter le pitch** ; diapo 3 : cliquer sur le téléphone ou le lien ouvre la vidéo sur YouTube (sinon ouvrir `pitch/sharewood-promo.mp4` à la main) ; préparer le commentaire (vidéo sans son) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
+| C15 | EN COURS (Justin) : version PowerPoint du pitch avec la vidéo intégrée (`pitch/sharewood.pptx`) | Justin |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟢 Bonus
