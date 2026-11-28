@@ -62,7 +62,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 
 ## 3. 📋 Reste à faire
 
-### 🔴 Critique (avant la démo de 13h)
+### 🔴 Critique (deadline : samedi 28/11 à 13h ; gel du code à 11h)
 | # | Action | Qui |
 |---|---|---|
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
@@ -85,26 +85,4 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 
 Contrôles, variables d'environnement, état de la vraie base, limites et dette technique : `ARCHITECTURE.md`, « Vérifications, base et limites ».
 
----
-
-## Règles à connaître avant de modifier le code
-- **README.md** : à mettre à jour dans le même commit à chaque changement visible.
-- **Algorithmes** (tri, compatibilité, Hot, recherche, fiabilité) : `docs/ALGORITHMES.md`, à mettre à jour avec chaque formule ou constante.
-- Toute nouvelle donnée ou tout nouveau service externe → `src/app/confidentialite/page.tsx`.
-- **Textes visibles** (tâche 50) : écrire en français dans `t("…")` (`useT()` dans un composant, `tr()` hors composant) et ajouter la traduction dans `src/lib/en.ts` (clé = texte exact). Un texte sans traduction reste en français. Dates : `dateLocale()`.
-- **Villes** (tâche 52) : `lib/zones.ts` (`zoneById`, `nearestZone`, `zoneAround`, `useZones`), jamais `ZONES.find` (seulement les 3 villes de la démo).
-- **Localisation** : toujours passer par `lib/location.ts` (`ensureLocationConsent` / `currentPosition`), jamais `navigator.geolocation` sans accord.
-- **Réactions** : passer par `setReaction` / `vote()` (`engagement.ts`, RPC `react_to_deal`) ; elles sont exclusives et décochables. Après une réaction, `announceReactions` ; toute liste d'offres l'écoute (`onReactions` + `applyReactions`).
-- **Fiabilité** : passer par `reliability()` / `dealTrustLevel()` (`rules.ts`) avec `deal.trust` (`withTrust()`). Offre terminée : `dealEndReason()` / `isDealHidden()`.
-- **Carte d'un bon plan** : ne rien y rajouter sans en discuter. Pas de champ « montant » : le titre dit l'avantage (`price_level` gardé pour les filtres).
-- **Carte Sortir** est une condition (`deals.requirements`), pas une catégorie. Liens : `lib/links.ts` (`normalizeLink` à l'écriture, `safeLink` à l'affichage).
-- `deals.author_id` peut être `null` ; les profils des autres ne sont pas lisibles ; toute nouvelle colonne de `deals` ou `profiles` va dans les GRANT.
-- Un compte commerçant ne voit pas les pages étudiantes (`RoleGate`) : tester avec un compte étudiant.
-- Pas d'emoji dans l'app (`components/icons.tsx`, `CategoryIcon`, classes `.sw-*`, `DESIGN_SHAREWOOD.md`).
-- `/profil` : prévenir Sacha ; garder `LogoutButton`.
-- Next conserve les pages quittées : les effets sont relancés au retour (cartes Leaflet à démonter). L'avertissement « instant navigation » est coupé dans `next.config.ts`.
-- Ordinateur : regarder aussi en large (`lg:`) ; un en-tête de page avec logo porte `lg:hidden`.
-
-## Planning (deadline sam. 28/11 13h00)
-- **Sam. matin** : C1 à C3, finitions
-- **Sam. 11h–13h** : gel du code, vidéo, pitch, répétition
+Règles à connaître avant de modifier le code : `ARCHITECTURE.md`, « Règles avant de modifier le code ».

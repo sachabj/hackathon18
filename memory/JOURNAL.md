@@ -574,3 +574,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h15 — Justin (TASKS.md recentré)
 - Partie « Bugs, points bloquants et vérifications » déplacée dans `ARCHITECTURE.md` (« Vérifications, base et limites ») : contrôles, variables d'environnement, état de la vraie base et requête de contrôle, limites, dette. `TASKS.md` garde seulement les défauts ouverts (aucun). Liens mis à jour (README, CLAUDE.md).
+
+### 2026-11-28 05h25 — Justin (TASKS.md : règles et planning sortis)
+- « Règles à connaître avant de modifier le code » déplacées dans `ARCHITECTURE.md` ; planning périmé retiré (deadline et gel de 11h indiqués sur la partie Critique).
