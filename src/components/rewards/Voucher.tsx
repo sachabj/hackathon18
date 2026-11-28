@@ -1,10 +1,10 @@
 "use client";
 
-// Bon à présenter : QR code et code, puis « utilisé en caisse ».
+// Bon à présenter : QR code et code ; le commerçant le valide depuis son espace (tâche 42).
 import { toString as qrToSvg } from "qrcode";
 import { useEffect, useState } from "react";
 import { CheckCircleIcon } from "@/components/icons";
-import { markRewardUsed, type Reward, type UserReward } from "@/lib/rewards";
+import type { Reward, UserReward } from "@/lib/rewards";
 import { dateLocale, tr, useT } from "@/lib/i18n";
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
@@ -26,34 +26,9 @@ function QrCode({ value }: { value: string }) {
   return <img src={url} alt={tr("QR code du bon {code}", { code: value })} width={176} height={176} className="rounded-xl bg-white p-1" />;
 }
 
-export default function Voucher({
-  reward,
-  owned,
-  onUsed,
-}: {
-  reward: Reward;
-  owned: UserReward;
-  /** Prévient la boutique que le bon vient d'être utilisé. */
-  onUsed: (updated: UserReward) => void;
-}) {
+export default function Voucher({ reward, owned }: { reward: Reward; owned: UserReward }) {
   const t = useT();
-  const [confirming, setConfirming] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [used, setUsed] = useState(owned.used_at);
-
-  async function use() {
-    setBusy(true);
-    setError(null);
-    try {
-      const updated = await markRewardUsed(owned.id);
-      setUsed(updated.used_at);
-      onUsed(updated);
-    } catch (e) {
-      setError((e as Error).message);
-    }
-    setBusy(false);
-  }
+  const used = owned.used_at;
 
   return (
     <div className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed p-4 text-center" style={{ borderColor: used ? "var(--color-border)" : "var(--color-forest)" }}>
@@ -72,31 +47,12 @@ export default function Voucher({
       ) : (
         !used && (
           <>
-            <p className="text-sm">{t(reward.description)} {t("Présente ce bon en caisse.")}</p>
-            {confirming ? (
-              <div className="flex w-full flex-col gap-2">
-                <p className="text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-                  {t("À faire devant le commerçant : le bon ne pourra plus servir.")}
-                </p>
-                <button type="button" onClick={use} disabled={busy} className="sw-btn-primary w-full">
-                  {t("Confirmer : bon utilisé")}
-                </button>
-                <button type="button" onClick={() => setConfirming(false)} className="text-sm underline">
-                  {t("Pas encore")}
-                </button>
-              </div>
-            ) : (
-              <button type="button" onClick={() => setConfirming(true)} className="sw-btn-secondary w-full">
-                {t("Marquer comme utilisé en caisse")}
-              </button>
-            )}
+            <p className="text-sm">{t(reward.description)}</p>
+            <p className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+              {t("Présente ce code en caisse : le commerçant le valide depuis son espace, une seule fois.")}
+            </p>
           </>
         )
-      )}
-      {error && (
-        <p role="alert" className="text-sm text-red-600">
-          {error}
-        </p>
       )}
     </div>
   );

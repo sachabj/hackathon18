@@ -5,6 +5,7 @@ import { useState } from "react";
 import MerchantPage from "@/components/merchant/MerchantPage";
 import OfferCard from "@/components/merchant/OfferCard";
 import OfferForm from "@/components/merchant/OfferForm";
+import VoucherCheck from "@/components/merchant/VoucherCheck";
 import { buttonClass } from "@/components/merchant/styles";
 import { PlusIcon, ProhibitedIcon, UndoIcon } from "@/components/icons";
 import { boostOffer, publishOffer, setNearbyDealEnded, setOfferEnded, updateOffer } from "@/lib/merchant";
@@ -20,6 +21,7 @@ export default function Page() {
     <MerchantPage title="Mes offres" business={data ? data.business : undefined} error={error}>
       {data && business && (
         <>
+          <VoucherCheck />
           <div className="mt-4 lg:max-w-2xl">
             {editing === "new" ? (
               <OfferForm

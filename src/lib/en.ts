@@ -676,4 +676,5 @@ export const EN: Record<string, string> = {
   "Ex. : le lien mène vers un autre site, le prix annoncé est faux…": "E.g. the link leads to another site, the price shown is wrong…",
   "Explique en quelques mots ce qui ne va pas.": "Explain in a few words what's wrong.",
   "Connecte-toi pour signaler un bon plan.": "Log in to report a deal.",
+  "Présente ce code en caisse : le commerçant le valide depuis son espace, une seule fois.": "Show this code at the till: the merchant validates it from their space, once only.",
 };

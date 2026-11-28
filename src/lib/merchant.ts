@@ -119,3 +119,33 @@ export async function setNearbyDealEnded(dealId: string, ended: boolean) {
 export async function boostOffer(dealId: string) {
   check(await getSupabase().rpc("boost_offer", { p_deal_id: dealId }));
 }
+
+// ---------- Bons de la boutique présentés en caisse (tâche 42, migration 030) ----------
+export interface Voucher {
+  code: string;
+  title: string;
+  partner: string;
+  created_at: string;
+  /** null : pas encore utilisé */
+  used_at: string | null;
+}
+
+function voucherError(error: { code?: string; message: string }) {
+  return new Error(
+    error.code === "PGRST202" ? "La base de données n'est pas à jour : lancer supabase/migrations/030_voucher_check.sql." : error.message,
+  );
+}
+
+/** Le bon correspondant au code, ou null s'il n'existe pas. */
+export async function checkVoucher(code: string): Promise<Voucher | null> {
+  const { data, error } = await getSupabase().rpc("check_voucher", { p_code: code });
+  if (error) throw voucherError(error);
+  return data as Voucher | null;
+}
+
+/** Valide le bon (une seule fois) et le renvoie à jour. */
+export async function validateVoucher(code: string): Promise<Voucher> {
+  const { data, error } = await getSupabase().rpc("validate_voucher", { p_code: code });
+  if (error) throw voucherError(error);
+  return data as Voucher;
+}

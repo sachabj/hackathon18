@@ -52,7 +52,7 @@ export default function Page() {
           <li><strong>Votes, favoris, vues, « J&apos;en ai profité »</strong> : fiabilité des offres, tes favoris et ton niveau d&apos;activité.</li>
           <li><strong>Poids de tes réactions</strong>, calculé à partir de l&apos;ancienneté de ton compte, de ton activité sur 30 jours et de l&apos;accord de tes réactions avec celles des autres : rendre la fiabilité des offres plus juste. Il n&apos;est ni enregistré ni affiché.</li>
           <li><strong>Tes Flèches</strong> (gains, offre concernée, date) et les jours où tu as partagé ou réagi : ton solde, ton grade et ta série. Toi seul les vois.</li>
-          <li><strong>Tes échanges de récompenses</strong> (récompense, code du bon, dates d&apos;échange et d&apos;utilisation) et tes avantages actifs : te redonner tes bons. Rien n&apos;est transmis aux partenaires, tu leur montres toi-même ton bon.</li>
+          <li><strong>Tes échanges de récompenses</strong> (récompense, code du bon, dates d&apos;échange et d&apos;utilisation) et tes avantages actifs : te redonner tes bons. Rien n&apos;est transmis aux partenaires : tu montres toi-même ton bon, et le commerçant qui saisit son code ne voit que la récompense et si elle a déjà servi, rien sur toi.</li>
           <li><strong>Pour un commerçant</strong> : nom, adresse, activité et emplacement du commerce.</li>
         </ul>
         <p>

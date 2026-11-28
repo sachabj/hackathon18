@@ -20,7 +20,8 @@
 --   2. « Covoiturage Bruz → Rennes » (« Douteux », 5 signalements récents) : Plus dispo → 6e en 48 h,
 --      offre retirée, +5 : elle passe Robin des Étudiants (500).
 --   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 350 disponibles,
---      le rang ne bouge pas ; montrer le bon, puis « Marquer comme utilisé en caisse ».
+--      le rang ne bouge pas ; montrer le bon. Pour le valider (migration 030) : se connecter en demo.commerce1,
+--      « Valider un bon », saisir le code.
 -- Les offres des étapes 1 et 2 sont sans lieu précis : petits montants, et la position ne change rien.
 --
 -- Profil de demo.sarah (INVENTÉ) : ENSAI, code WOOD-SARAH26, 3 amis parrainés (300 Flèches, comprises dans

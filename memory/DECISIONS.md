@@ -506,3 +506,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : table `deal_reports` (029) lue par l'équipe dans Supabase ; secours `localStorage` par compte : si la base ne répond pas, l'offre reste masquée sur l'appareil et l'utilisateur est prévenu que l'envoi a échoué ; l'offre est retirée des listes à la fermeture de la fiche (la fiche vit dans la carte de la liste).
 - **Écartés** : réutiliser `support_messages` (pas lié à une offre) ; masquage sur l'appareil seulement (« signalement envoyé » aurait été faux) ; icône en haut de la fiche.
 - **Qui** : Matteo (réponses aux questions de cadrage)
+
+## 2026-11-28 06h — Validation des bons par le commerçant (tâche 42)
+- **Décisions** : le commerçant saisit le code et valide le bon (une seule fois) ; tout compte commerçant peut valider (partenaires fictifs, non reliés aux commerces) ; l'étudiant ne marque plus lui-même son bon.
+- **Écartés pour l'instant** : tirage de la tombola, offres en Avant-Première (touche les droits de lecture des offres) ; validation réservée au seul partenaire.
+- **Qui** : Justin (réponses aux questions de cadrage)

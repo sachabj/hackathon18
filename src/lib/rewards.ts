@@ -61,8 +61,3 @@ export async function redeemReward(rewardId: string) {
   return data as UserReward;
 }
 
-export async function markRewardUsed(id: string) {
-  const { data, error } = await getSupabase().rpc("use_reward", { p_id: id });
-  if (error) throw new Error(error.message);
-  return data as UserReward;
-}

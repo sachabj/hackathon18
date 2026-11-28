@@ -588,3 +588,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (signaler un bon plan, tâche 71)
 - Migration `029_deal_reports.sql` (+ `schema.sql`) ; `lib/reports.ts`, `components/deal/ReportDialog.tsx`, `FlagIcon` ; `DealSheet` (lien en bas, masquage à la fermeture), `useDeals`, `FavoritesPanel`, export des données (`account.ts`), politique de confidentialité, `en.ts` ; README, TASKS, ARCHITECTURE, DECISIONS.
 - Vérifié : tsc + lint + build ; 029 lancée deux fois sur un Postgres 12 local avec des tables minimales (signalement, doublon refusé, « Autre » sans texte refusé, sa propre offre refusée, lecture limitée à ses lignes, `user_id` non écrivable, limite de 20 par jour). **Pas vu dans le navigateur ; 029 à lancer sur la vraie base.**
+
+### 2026-11-28 06h — Justin (validation des bons, tâche 42)
+- Migration **030** (`030_voucher_check.sql`, reportée dans `schema.sql`) : `check_voucher`, `validate_voucher` (commerçants), `use_reward` retiré aux étudiants. `components/merchant/VoucherCheck.tsx` dans `/commercant`, `lib/merchant.ts` ; bon de l'étudiant sans bouton « utilisé » (`Voucher`, `RewardsPanel`, `RedeemDialog`, `lib/rewards.ts`), confidentialité, `en.ts`, en-tête de `seed_arrows.sql`. **030 pas encore lancée.**
+- Vérifié : tsc, lint, build ; Postgres local (12 contrôles, schéma = migrations, démo, 75 appels) ; navigateur sans écran (4 contrôles). Pas sur téléphone.

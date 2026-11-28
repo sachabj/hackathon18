@@ -146,8 +146,12 @@ export default function RewardsPanel() {
 
       {choice && <RedeemDialog reward={choice} balance={balance} onClose={() => setChoice(null)} onChange={reload} />}
       {shown && (
-        <Modal label={t("Bon {code}", { code: shown.code })} onClose={() => setShown(null)}>
-          <Voucher reward={shown.reward} owned={shown} onUsed={reload} />
+        <Modal label={t("Bon {code}", { code: shown.code })} onClose={() => {
+          // Le bon a pu être validé par le commerçant pendant qu'il était affiché.
+          setShown(null);
+          reload();
+        }}>
+          <Voucher reward={shown.reward} owned={shown} />
         </Modal>
       )}
     </div>

@@ -49,7 +49,7 @@ export default function RedeemDialog({
           <h2 className="text-xl" role="status">{t("Échange réussi !")}</h2>
           {done.code ? (
             <>
-              <Voucher reward={reward} owned={done} onUsed={onChange} />
+              <Voucher reward={reward} owned={done} />
               <p className="text-sm text-[var(--color-muted)]">{t("Tu le retrouveras dans « Mes bons ».")}</p>
             </>
           ) : (
