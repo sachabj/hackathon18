@@ -683,3 +683,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Justin (plus de « (0) » sur les réactions)
 - `ReactionBar` : compteur masqué quand il vaut 0 (cartes, fiche, fenêtre de la carte) ; `docs/ALGORITHMES.md`. Vérifié : tsc, lint, build. Pas vu à l'écran.
+
+### 2026-11-28 07h17 — Justin (déploiement)
+- `389d084` en ligne (compteurs à zéro masqués ; tâche 80 de Sacha). Vérifié : tsc, lint, build ; pages publiques et redirection. Pages connectées non vues.
