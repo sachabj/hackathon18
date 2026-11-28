@@ -30,6 +30,9 @@ export interface UserReward {
   code: string | null;
   created_at: string;
   used_at: string | null;
+  /** Ticket de tombola : date du tirage auquel il a participé (migration 032) */
+  drawn_at?: string | null;
+  won?: boolean;
 }
 
 export type OwnedReward = UserReward & { reward: Reward };

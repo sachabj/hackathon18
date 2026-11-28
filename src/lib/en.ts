@@ -700,4 +700,10 @@ export const EN: Record<string, string> = {
   "Tu as déjà envoyé 20 signalements aujourd'hui : réessaie demain.": "You have already sent 20 reports today: try again tomorrow.",
   "Tu es à plus de 500 m de l'offre : « Plus dispo » se signale sur place.": "You are more than 500 m from the deal: “Gone” is reported on site.",
   "« Plus dispo » se signale sur place : partage ta position (Profil, « Ma localisation ») et autorise-la dans le navigateur.": "“Gone” is reported on site: share your location (Profile, “My location”) and allow it in your browser.",
+  "Avant-Première": "Early Access",
+  "Ticket gagnant ! L'équipe te remettra ton lot.": "Winning ticket! The team will give you your prize.",
+  "Tirage effectué : pas gagné cette fois.": "Draw done: not a winner this time.",
+  "gagnant": "winner",
+  "pas gagné": "not a winner",
+  "Partenaires de démonstration, fictifs.": "Demo partners, fictitious.",
 };

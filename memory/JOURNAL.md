@@ -621,3 +621,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 06h10 — Justin (offres des enseignes, tâche 65)
 - Recherche : offre « 2e burger identique à 2 € » confirmée sur burgerking.fr/page/offre-etudiante ; rien d'officiel pour McDonald's, Carrefour, Super U ; la page « offre étudiante » d'Auchan lue ne décrit aucune offre.
 - Nouveau `supabase/import_burgerking.sql` ; README, mémoire. Testé sur une base en mémoire (refus sans compte source, une seule ligne après deux passages). **Pas lancé sur la vraie base.**
+
+### 2026-11-28 06h20 — Justin (tombola et Avant-Première, tâche 42)
+- Migration **032** (+ `schema.sql`) ; `OfferForm`, `OfferCard`, page commerçant, `DealCard`, `Voucher`, `RewardsPanel`, `merchant.ts`, `rewards.ts`, `rules.ts`, `types.ts`, `en.ts`, confidentialité ; README, mémoire. Offre Burger King : SQL lancé par Justin.
+- Vérifié : tsc, lint, build ; base en mémoire, 12 contrôles (droits, visibilité, tirage). Pas vu à l'écran ; **032 pas lancée sur la vraie base**, non déployé.

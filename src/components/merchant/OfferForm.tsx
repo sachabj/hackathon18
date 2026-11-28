@@ -18,7 +18,7 @@ export default function OfferForm({
 }: {
   offer?: Deal;
   defaultCategory: DealCategory;
-  onSubmit: (input: OfferInput) => Promise<void>;
+  onSubmit: (input: OfferInput, flash: boolean) => Promise<void>;
   onCancel: () => void;
 }) {
   const [title, setTitle] = useState(offer?.title ?? "");
@@ -26,6 +26,7 @@ export default function OfferForm({
   const [category, setCategory] = useState<DealCategory>(offer?.category ?? defaultCategory);
   const [priceLevel, setPriceLevel] = useState(offer?.price_level?.toString() ?? "");
   const [lastDay, setLastDay] = useState(offer?.expires_at ? toDay(offer.expires_at) : "");
+  const [flash, setFlash] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -34,16 +35,19 @@ export default function OfferForm({
     setSaving(true);
     setError(null);
     try {
-      await onSubmit({
-        title: title.trim(),
-        description: description.trim() || null,
-        category,
-        // Plus de champ montant (tâche 37) : le titre dit l'avantage ; une ancienne valeur est conservée.
-        price_info: offer?.price_info ?? null,
-        price_level: priceLevel === "" ? null : Number(priceLevel),
-        // L'offre reste valable jusqu'à la fin du dernier jour.
-        expires_at: lastDay ? new Date(`${lastDay}T23:59:59`).toISOString() : null,
-      });
+      await onSubmit(
+        {
+          title: title.trim(),
+          description: description.trim() || null,
+          category,
+          // Plus de champ montant (tâche 37) : le titre dit l'avantage ; une ancienne valeur est conservée.
+          price_info: offer?.price_info ?? null,
+          price_level: priceLevel === "" ? null : Number(priceLevel),
+          // L'offre reste valable jusqu'à la fin du dernier jour.
+          expires_at: lastDay ? new Date(`${lastDay}T23:59:59`).toISOString() : null,
+        },
+        flash,
+      );
     } catch (err) {
       setError((err as Error).message);
       setSaving(false);
@@ -88,6 +92,17 @@ export default function OfferForm({
         Dernier jour <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
         <input type="date" className={inputClass} value={lastDay} min={toDay(new Date().toISOString())} onChange={(e) => setLastDay(e.target.value)} />
       </label>
+      {!offer && (
+        <label className="flex items-start gap-2 text-sm">
+          <input type="checkbox" className="mt-1" checked={flash} onChange={(e) => setFlash(e.target.checked)} />
+          <span>
+            <span className="font-medium">Offre flash</span>
+            <span className="block text-[var(--color-muted)]">
+              Pendant 1 h, seuls les étudiants qui ont l&apos;Accès Avant-Première la voient.
+            </span>
+          </span>
+        </label>
+      )}
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}

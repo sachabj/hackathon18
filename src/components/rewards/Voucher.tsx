@@ -43,7 +43,13 @@ export default function Voucher({ reward, owned }: { reward: Reward; owned: User
       )}
       <p className={`font-mono text-2xl font-medium tracking-widest ${used ? "text-[var(--color-muted)] line-through" : ""}`}>{owned.code}</p>
       {reward.category === "raffle" ? (
-        <p className="text-sm">{t("Ton ticket est enregistré pour le tirage au sort. Garde ce numéro.")}</p>
+        owned.drawn_at ? (
+          <p className="font-medium" style={{ color: owned.won ? "var(--color-forest)" : "var(--color-muted)" }}>
+            {t(owned.won ? "Ticket gagnant ! L'équipe te remettra ton lot." : "Tirage effectué : pas gagné cette fois.")}
+          </p>
+        ) : (
+          <p className="text-sm">{t("Ton ticket est enregistré pour le tirage au sort. Garde ce numéro.")}</p>
+        )
       ) : (
         !used && (
           <>

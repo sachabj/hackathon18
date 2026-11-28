@@ -36,13 +36,13 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
 - **Notifications (appli ouverte)** : « Bons plans à proximité » propose « Tu es près de… : toujours dispo ? » à moins de 150 m d'une offre (position comparée sur le téléphone) ; à l'ouverture, les « J'en ai profité » reçus par ses offres depuis la dernière visite. Réglables dans le profil. Pour la démo, « Simuler ma position » affiche la notification devant l'offre choisie ; la réaction suit les règles habituelles.
 - **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
-- **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code (validés en caisse par le commerçant).
+- **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code (validés en caisse par le commerçant), tombola (tirage lancé par l'équipe) et **Accès Avant-Première** (voir les offres flash 1 h avant tout le monde).
 - **Compétition entre écoles** : chacun choisit son école dans le profil ; la page « Ciblés » classe les écoles par Flèches gagnées sur 7 jours et par membre actif (à partir de 3 membres, seuls des totaux par école sont affichés).
 - **Profil** : grade et Flèches, **étudiants aidés** (chacun compte une fois : confirmation, favori, « Y aller » ou lien partagé ouvert) et menu des réglages (préférences, récompenses, historique, informations, sécurité, confidentialité, aide).
 - **Parrainage** : code et lien à partager ; +100 Flèches au parrain et +50 au filleul, à la première publication ou réaction du filleul (10 parrainages payés au maximum).
 
 ### Espace commerçant
-- Publier, modifier et retirer ses offres officielles ; statistiques.
+- Publier, modifier et retirer ses offres officielles ; statistiques ; **offre flash** réservée pendant 1 h aux étudiants « Avant-Première ».
 - **Mise en avant** payante (9,90 € pour 7 jours) : c'est le modèle économique. Écran de paiement **simulé** (carte de test, aucun débit), reçu numéroté et historique « Mes paiements » dans le compte.
 - Retirer les offres d'étudiants périmées près de son commerce.
 - **Valider un bon** de la boutique : saisir le code présenté par l'étudiant ; un bon ne sert qu'une fois.
@@ -80,7 +80,7 @@ La clé `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` est facultative (assistant de pu
 Dans Supabase → SQL Editor :
 - **projet neuf** : exécuter [`supabase/schema.sql`](supabase/schema.sql) ;
 - **base existante** : exécuter dans l'ordre les fichiers de [`supabase/migrations/`](supabase/migrations/) pas encore appliqués (état et requête de contrôle dans [`memory/ARCHITECTURE.md`](memory/ARCHITECTURE.md), « Vérifications, base et limites ») ;
-- **limites** : la migration `025` borne les titres et l'assistant IA ; la `026` donne le même gain aux deux réactions ; la `028` ajoute le classement des écoles ; la `030` fait valider les bons par le commerçant ; la `031` enregistre les paiements de mise en avant ;
+- **limites** : la migration `025` borne les titres et l'assistant IA ; la `026` donne le même gain aux deux réactions ; la `028` ajoute le classement des écoles ; la `030` fait valider les bons par le commerçant ; la `031` enregistre les paiements de mise en avant ; la `032` ajoute le tirage de la tombola (`select * from public.draw_raffle();`) et les offres flash ;
 - **données de démo** : [`reset_demo.sql`](supabase/reset_demo.sql) (⚠️ **supprime les comptes** non listés en haut du script ; lire ses consignes), puis [`seed_arrows.sql`](supabase/seed_arrows.sql) le jour de la démo ;
 - **vraies informations** : migration `024`, puis [`import_sources.sql`](supabase/import_sources.sql) (régénéré par `node scripts/import_sources.mjs` ; à relancer après `reset_demo.sql`), puis [`import_burgerking.sql`](supabase/import_burgerking.sql) (offre vérifiée à la main).
 

@@ -27,8 +27,8 @@ export default function Page() {
               <OfferForm
                 defaultCategory={business.category}
                 onCancel={() => setEditing(null)}
-                onSubmit={async (input) => {
-                  await publishOffer(business, input);
+                onSubmit={async (input, flash) => {
+                  await publishOffer(business, input, flash);
                   setEditing(null);
                   await reload();
                 }}

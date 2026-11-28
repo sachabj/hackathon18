@@ -533,3 +533,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : Burger King publié comme **une offre nationale** (page officielle burgerking.fr, sans date de fin), dans un fichier SQL à part.
 - **Écartés** : un repère par restaurant (coût, application locale non vérifiée) ; McDonald's, Carrefour, Super U, Auchan (aucune offre étudiante officielle trouvée) ; relancer le script d'import (effacerait les réactions des offres importées).
 - **Qui** : Justin
+
+## 2026-11-28 06h20 — Tombola et Avant-Première (tâche 42)
+- **Décisions** : les deux sont codées ; tirage lancé par l'équipe dans le SQL Editor (un gagnant au hasard, résultat sur le ticket, aucun bouton public) ; offre flash du commerçant cachée aux autres pendant 1 h par la base.
+- **Choix de Claude, à confirmer** : durée fixe d'1 h ; choix « offre flash » à la publication seulement ; un seul gagnant par tirage ; remise du lot hors application.
+- **Qui** : Justin (domaine de Sacha, avec accord pour avancer)

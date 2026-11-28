@@ -64,6 +64,7 @@ export default function RewardsPanel() {
           <span className="block text-xs text-[var(--color-muted)]">
             {o.reward.partner} · {o.code}
             {o.used_at && " · " + t("utilisé le {date}", { date: formatDate(o.used_at) })}
+            {o.drawn_at && " · " + t(o.won ? "gagnant" : "pas gagné")}
           </span>
         </span>
         <span className="shrink-0 text-sm font-medium" style={{ color: "var(--color-forest)" }}>{o.used_at ? t("Voir") : t("Afficher")}</span>
@@ -140,7 +141,7 @@ export default function RewardsPanel() {
           })}
         </ul>
         <p className="text-xs text-[var(--color-muted)]">
-          Partenaires de démonstration, fictifs. L&apos;Avant-Première est enregistrée sur ton compte ; il n&apos;y a pas encore d&apos;offres flash.
+          {t("Partenaires de démonstration, fictifs.")}
         </p>
       </section>
 

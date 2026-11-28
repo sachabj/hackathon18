@@ -44,6 +44,8 @@ export interface Deal {
   tags?: string[] | null;
   /** Photo de preuve (stockage public `deal-photos`, migration 008) */
   photo_url?: string | null;
+  /** Offre flash : avant cette heure, réservée aux détenteurs de l'Avant-Première (migration 032) */
+  early_until?: string | null;
   /** Mise en avant payée par le commerçant (migration 005) */
   boosted_until?: string | null;
   /** Commerçant qui a retiré le bon plan d'un étudiant */

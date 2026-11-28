@@ -12,6 +12,10 @@ const DAY = 24 * HOUR;
 // confirmation compte davantage. Les poids sont calculés par la base (`deal_trust`) ; sans la migration 014,
 // on retombe sur un poids de 1 pour tout le monde (`voteMasses`). Constantes à garder identiques en SQL.
 
+/** Offre flash encore réservée à l'Avant-Première (la base cache les autres). */
+export const isEarlyAccess = (deal: { early_until?: string | null }, now = Date.now()) =>
+  !!deal.early_until && new Date(deal.early_until).getTime() > now;
+
 /** Demi-vie d'une réaction : une réaction de 48 h compte deux fois moins qu'une réaction toute neuve. */
 export const VOTE_HALF_LIFE_HOURS = 48;
 /** « Le dernier mot compte » : un « Plus dispo » postérieur à la dernière confirmation pèse ×1,5. */

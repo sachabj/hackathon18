@@ -88,7 +88,8 @@ export type OfferInput = Pick<
 >;
 
 /** Une offre officielle est placée à l'adresse du commerce. */
-export async function publishOffer(business: Business, offer: OfferInput) {
+/** `flash` : visible 1 h avant tout le monde par les étudiants « Avant-Première » (durée fixée par la base, 032). */
+export async function publishOffer(business: Business, offer: OfferInput, flash = false) {
   check(
     await getSupabase()
       .from("deals")
@@ -100,6 +101,8 @@ export async function publishOffer(business: Business, offer: OfferInput) {
         lat: business.lat,
         lng: business.lng,
         is_official: true,
+        // Colonne envoyée seulement pour une offre flash : la publication simple marche sans la migration 032.
+        ...(flash ? { early_until: new Date().toISOString() } : {}),
       }),
   );
 }

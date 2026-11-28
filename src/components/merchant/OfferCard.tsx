@@ -4,6 +4,7 @@ import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { EditIcon, HeartIcon, ProhibitedIcon, StarIcon, ThumbsDownIcon, ThumbsUpIcon, UndoIcon } from "@/components/icons";
 import { isBoosted } from "@/lib/merchant";
+import { isEarlyAccess } from "@/lib/rules";
 import type { Deal, OfferStats } from "@/lib/types";
 import PaymentDialog from "./PaymentDialog";
 
@@ -55,6 +56,12 @@ export default function OfferCard({
       <p className="text-sm text-[var(--color-muted)]">
         {offer.expires_at && `Jusqu'au ${formatDate(offer.expires_at)}`}
       </p>
+      {online && isEarlyAccess(offer, now) && (
+        <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
+          Avant-Première jusqu&apos;à{" "}
+          {new Date(offer.early_until!).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+        </p>
+      )}
       {boosted && (
         <p className="mt-1 flex items-center gap-1 text-sm font-medium" style={{ color: "#92700c" }}>
           <StarIcon className="h-4 w-4" filled /> Mise en avant jusqu&apos;au {formatDate(offer.boosted_until!)}

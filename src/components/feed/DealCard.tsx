@@ -12,6 +12,7 @@ import TrustBadge from "@/components/deal/TrustBadge";
 import { CalendarIcon, HeartIcon, PinIcon, SparklesIcon } from "@/components/icons";
 import { CATEGORIES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
+import { isEarlyAccess } from "@/lib/rules";
 import { isBoosted } from "@/lib/merchant";
 import { useChanges } from "@/lib/motion";
 import type { DealWithVotes } from "@/lib/types";
@@ -119,6 +120,11 @@ export default function DealCard({
           // Explique le cadre doré (sinon sans texte, on ne sait pas que c'est une mise en avant payante).
           <span className="sw-badge" style={{ backgroundColor: "#d4a017", color: "#1A1A18" }}>
             <SparklesIcon className="h-3.5 w-3.5" /> {t("Sponsorisé")}
+          </span>
+        )}
+        {!r.ended && isEarlyAccess(deal) && (
+          <span className="sw-badge" style={{ backgroundColor: "var(--color-lilac)", color: "var(--color-aubergine)" }}>
+            <SparklesIcon className="h-3.5 w-3.5" /> {t("Avant-Première")}
           </span>
         )}
         <AuthorBadge deal={deal} />
