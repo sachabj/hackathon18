@@ -224,6 +224,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - **README.md** : à mettre à jour dans le même commit à chaque changement visible.
 - **Algorithmes** (tri, compatibilité, Hot, recherche, fiabilité) : `docs/ALGORITHMES.md`, à mettre à jour avec chaque formule ou constante.
 - Toute nouvelle donnée ou tout nouveau service externe → `src/app/confidentialite/page.tsx`.
+- `lib/links.ts` et `lib/constants.ts` servent aussi au serveur (`/api/assist`) : ne pas y importer `lib/i18n` (hooks React) ; traduire leurs messages à l'affichage.
 - **Textes visibles** (tâche 50) : écrire en français dans `t("…")` (`useT()` dans un composant, `tr()` hors composant) et ajouter la traduction dans `src/lib/en.ts` (clé = texte exact). Un texte sans traduction reste en français. Dates : `dateLocale()`.
 - **Villes** (tâche 52) : `lib/zones.ts` (`zoneById`, `nearestZone`, `zoneAround`, `useZones`), jamais `ZONES.find` (seulement les 3 villes de la démo).
 - **Localisation** : toujours passer par `lib/location.ts` (`ensureLocationConsent` / `currentPosition`), jamais `navigator.geolocation` sans accord.
@@ -252,6 +253,7 @@ Défauts ouverts : `TASKS.md`, partie 5 ; ce qu'exigerait une vraie mise en serv
 | Postgres local : 75 appels de l'app avec les droits d'un utilisateur, 15 contrôles de la 025 | OK |
 | Navigateur sans écran, faux Supabase : 19 contrôles des défauts (390 et 320 px) | OK |
 | Vraie base et téléphone | essai complet par Justin (C3, 28/11) |
+| **Check du 28/11 à 10h** : tsc, lint, build, `npm audit` ; base en mémoire (`schema.sql`, relance des migrations, démo complète 2 fois) ; faux Supabase : 22 écrans étudiants + 6 commerçants, FR/EN, 390 et 1440 px ; vrai site (demo.sarah, demo.commerce1, lecture seule) | OK ; seule la relance de 002 échoue (attendu) |
 
 ### Variables d'environnement (`.env.example`)
 | Variable | Rôle | Obligatoire | Sur Vercel |
@@ -292,4 +294,5 @@ select
 - Code de secours pour les migrations absentes (`lib/legacy.ts`, replis `PGRST202` ou colonne absente) : à retirer une fois la vraie base confirmée.
 - Seuils écrits en TypeScript et en SQL (identiques au 28/11) : `rules.ts` ↔ 014 / 023, `arrows.ts` ↔ 020 / 023, `community.ts` ↔ 022, 75 m ↔ 005 / 009.
 - `schema.sql` empile les migrations (certaines fonctions redéfinies jusqu'à 4 fois) : correct, mais long à lire.
+- Uniformisation remise après la démo : 11 fonctions locales de date (`formatDate`…) à réunir dans `lib/i18n` ; `check()` en double (`engagement.ts`, `merchant.ts`) ; doré codé en dur (`#d4a017`, `#92700c`) sans jeton CSS ; classe `actionClass` en double (`OfferCard`, `MyDealCard`) ; pas de Prettier.
 - La fonction `my_influence()` reste en base sans être appelée. `PublishForm.tsx` fait près de 800 lignes.

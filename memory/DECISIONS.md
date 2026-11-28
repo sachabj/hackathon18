@@ -609,3 +609,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-28 — Pitch sans diapo Erasmus (tâche 15)
 - **Décision** : la diapo « Demain, partout, jusqu'à ton Erasmus » est retirée (6 diapos) ; la carte « Et demain · Jusqu'en Erasmus » de la conclusion est gardée telle quelle (choix de Matteo).
 - **Qui** : Matteo ; Anne-Lise à prévenir
+
+## 2026-11-28 10h — Check global avant le gel du code
+- **Décision** : seulement des corrections sûres avant 11h (derniers textes traduits) ; l'uniformisation du code (dates, couleurs, classes en double) est notée comme dette et remise après la démo.
+- **Pourquoi** : environ 15 fichiers d'autres membres à toucher juste avant la démo, avec risque de conflits et de régression pour un gain invisible.
+- **Qui** : Justin (réponses aux questions de cadrage)
