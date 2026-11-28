@@ -6,6 +6,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
+⚠️ **Tâche 74 EN COURS (Justin), 28/11 vers 02h15** : revue du dépôt (nettoyage sans changement de comportement, ce fichier réécrit, `MyDealCard` et `ActivityCard` déplacés dans `components/cibles/`, `Modal` dans `components/`). Faire un pull avant de toucher à ces fichiers.
+
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
 - **Dernier déploiement : `fe633ae`, 28/11 à 01h54** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo).
 - Redéploiement demandé par Sacha : **fait** (Justin, 01h31) ; migration 022 détectée sur la vraie base juste avant (sonde en lecture).
