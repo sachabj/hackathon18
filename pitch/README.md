@@ -8,6 +8,7 @@
 3. Ouvrir `pitch/sharewood.tex` : le PDF se recompile à chaque enregistrement.
 
 En ligne de commande : `cd pitch && latexmk -pdf sharewood.tex` (`latexmk -c` efface les fichiers temporaires).
+Sans installer LaTeX : [Tectonic](https://tectonic-typesetting.github.io) (un seul exécutable, télécharge les paquets), `cd pitch && tectonic sharewood.tex`.
 
 Sans installation : sur [Overleaf](https://www.overleaf.com), importer le contenu du dossier `pitch/` (`.tex` et `images/`).
 

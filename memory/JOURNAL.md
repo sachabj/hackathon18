@@ -706,3 +706,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (diapo 1 du pitch)
 - Diapo « 1. INTRODUCTION » remplacée : titre « Hyperconnectés, mais mal informés. », deux cartes face à face (« Ce que nous sommes » / « Ce qui se passe ») séparées par ≠, phrase en or « Rater un bon plan, c'est payer plus cher sans même le savoir. » ; bandeau (logo, nom, équipe) inchangé ; note d'orateur = texte de Matteo mot pour mot.
 - Fichier : `pitch/sharewood.tex`. **PDF pas recompilé** (aucun moteur LaTeX sur ce poste).
+
+### 2026-11-28 — Matteo (PDF du pitch recompilé)
+- `pitch/sharewood.pdf` recompilé avec Tectonic (7 diapos) ; diapo 1 vue en image puis resserrée (cartes moins hautes). Diapo 3 vue : boutons des vidéos hors de la page et sous-titre « Une offre en quelques secondes » sur 2 lignes (C3b, Anne-Lise). Tectonic ajouté au `pitch/README.md`.
+- Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`, `pitch/README.md`, mémoire.
