@@ -680,3 +680,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 07h16 — Sacha (liste de Recherche et lien d’offre, tâche 80)
 - `DealCard` (toucher ouvre la fiche, carte centrée), `DealExtras` / `DealSheet` (petit lien « Voir l’offre » sous la description), commentaire de `recherche/page.tsx` ; README, mémoire. **Anne-Lise** : ton comportement de sélection est conservé, la fiche s’ouvre en plus.
 - Vérifié : tsc, lint, build ; 13 contrôles dans Chrome avec un faux Supabase. Pas essayé sur la vraie base ni sur téléphone ; non déployé.
+
+### 2026-11-28 — Justin (plus de « (0) » sur les réactions)
+- `ReactionBar` : compteur masqué quand il vaut 0 (cartes, fiche, fenêtre de la carte) ; `docs/ALGORITHMES.md`. Vérifié : tsc, lint, build. Pas vu à l'écran.

@@ -205,7 +205,7 @@ Avec les poids réels : sur une offre confirmée par deux étudiants « Experts 
 
 ### 3.4 Les compteurs des boutons
 
-Les boutons affichent **« J'en ai profité (12) »** et **« Plus dispo (2) »** : ce sont les **nombres bruts de réactions des 30 derniers jours**, sans pondération, pour rester compréhensibles. La couleur de la pastille, elle, est pondérée (poids + temps) : les deux peuvent donc différer légèrement.
+Les boutons affichent **« J'en ai profité (12) »** et **« Plus dispo (2) »** (rien entre parenthèses quand personne n'a réagi) : ce sont les **nombres bruts de réactions des 30 derniers jours**, sans pondération, pour rester compréhensibles. La couleur de la pastille, elle, est pondérée (poids + temps) : les deux peuvent donc différer légèrement.
 
 ### 3.5 Disparition d'une offre
 

@@ -110,16 +110,19 @@ function ReactionButton({
       >
         {on ? <CheckIcon className="h-4 w-4" /> : <Icon className="h-4 w-4" />}
         {label}
-        <span className="inline-flex overflow-hidden tabular-nums opacity-80">
-          (
-          <span
-            key={counted.count}
-            className={counted.count === 0 ? "" : count > counted.prev ? "sw-roll-up" : "sw-roll-down"}
-          >
-            {count}
+        {/* Personne n'a réagi : pas de « (0) ». */}
+        {count > 0 && (
+          <span className="inline-flex overflow-hidden tabular-nums opacity-80">
+            (
+            <span
+              key={counted.count}
+              className={counted.count === 0 ? "" : count > counted.prev ? "sw-roll-up" : "sw-roll-down"}
+            >
+              {count}
+            </span>
+            )
           </span>
-          )
-        </span>
+        )}
         {showGain && !own && !on && (
           <span className="flex items-center gap-0.5 text-xs tabular-nums" style={{ color: "var(--color-forest)" }}>
             +{gain}
