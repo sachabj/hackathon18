@@ -75,7 +75,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
 | 53 | Nouvelles icônes (« emojis » demandés aussi, mais la règle actuelle est : aucun emoji) | P | TODO (Anne-Lise) |
 | 59 | Récompense de publication différée (délai et nombre d'étudiants à choisir) ; migration ; aujourd'hui +50 sur place, +20 sans lieu | M | TODO (Sacha) |
-| 70 | **Compétition entre écoles** : classement des écoles (Flèches cumulées ou par membre) ; `preferences.school` est un texte libre → liste d'écoles à prévoir ; RPC d'agrégat (migration) | M | TODO (idée retenue par Matteo, non cadrée) |
+| 70 | **Compétition entre écoles** : école choisie dans une liste (+ « Autre »), classement par Flèches de la semaine par membre actif (3 membres minimum), carte dans « Ciblés », écoles des étudiants de démo ; migration **028** réservée | M | EN COURS (Justin, idée de Matteo) |
 | 71 | **Signaler un contenu** (arnaque, inapproprié, mauvaise info), distinct de « Plus dispo » : motifs, table (migration), seuil de masquage, lecture comme `support_messages` | M | TODO (idée retenue par Matteo, non cadrée) |
 | 72 | **Alertes** « préviens-moi quand une offre correspond à… » : prototype web = alertes enregistrées, vérification à l'ouverture et en direct (Supabase Realtime), notification du navigateur appli ouverte ; vrai push hors délai | M à G | TODO (idée retenue par Matteo, non cadrée) |
 | 73 | **Manifest (PWA installable)** : « Ajouter à l'écran d'accueil », plein écran, icône ; aucun manifest aujourd'hui ; nécessaire aux notifications sur iPhone | P | TODO (idée retenue par Matteo, non cadrée) |
