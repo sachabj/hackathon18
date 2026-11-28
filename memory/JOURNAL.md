@@ -720,3 +720,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 08h40 — Sacha (logo d’ouverture plus long)
 - `LaunchSplash` : 1,2 s au minimum ; mémoire. Vérifié : lint, build, Chrome avec un faux Supabase.
+
+### 2026-11-28 08h48 — Sacha (nouvelles icônes, tâche 53)
+- Dépendance `lucide-react` (**`npm install` après le pull**) ; `icons.tsx` (27 icônes remplacées, mêmes noms), `CategoryIcon` (6 catégories, aussi sur la carte), tuiles de catégories plus grandes dans les préférences ; mémoire, README. **Anne-Lise** : cette tâche t’était notée, elle est faite.
+- Vérifié : tsc, lint, build ; captures des écrans de choix, de l’accueil et de la carte avec un faux Supabase. Pas essayé sur téléphone ; non déployé.

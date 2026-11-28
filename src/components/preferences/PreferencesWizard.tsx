@@ -415,7 +415,7 @@ export default function PreferencesWizard() {
               return (
                 <ChoiceTile
                   key={c}
-                  icon={<CategoryIcon category={c} size={32} />}
+                  icon={<CategoryIcon category={c} size={48} />}
                   label={t(CATEGORIES[c].label)}
                   selected={rank >= 0}
                   badge={rank >= 0 && rank < 3 ? rank + 1 : undefined}

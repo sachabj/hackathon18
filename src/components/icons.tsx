@@ -1,6 +1,36 @@
 // Icônes sobres (traits, pas d'emoji ; voir DESIGN_SHAREWOOD.md).
 import type { ReactNode } from "react";
 
+import {
+  Bike,
+  Bus,
+  Calendar,
+  Car,
+  Dices,
+  Drama,
+  Dumbbell,
+  Footprints,
+  GraduationCap,
+  Handshake,
+  IdCard,
+  Luggage,
+  Mountain,
+  Music,
+  PartyPopper,
+  PiggyBank,
+  Plane,
+  Popcorn,
+  Repeat,
+  Scale,
+  Sofa,
+  Sparkles,
+  Store,
+  Ticket,
+  TrainFront,
+  Volleyball,
+  WavesLadder,
+  type LucideIcon,
+} from "lucide-react";
 type IconProps = { className?: string };
 
 const base = "none" as const;
@@ -44,15 +74,6 @@ export function ChartIcon({ className = "h-5 w-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill={base} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M4 20V10M12 20V4M20 20v-7" />
-    </svg>
-  );
-}
-
-export function StoreIcon({ className = "h-5 w-5" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill={base} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M4 10 5 4h14l1 6M4 10v9h16v-9M4 10h16" />
-      <path d="M9 19v-5h6v5" />
     </svg>
   );
 }
@@ -168,9 +189,6 @@ export function MoonIcon({ className }: IconProps) {
 export function BedIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M3 18v-7a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2" /><path d="M12 13h7a2 2 0 0 1 2 2v3" /><path d="M3 18h18" /><path d="M3 13v7" /><path d="M21 15v3" /></Stroke>;
 }
-export function SuitcaseIcon({ className }: IconProps) {
-  return <Stroke className={className}><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" /><path d="M3 12h18" /></Stroke>;
-}
 export function HomeIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M4 11.5 12 4l8 7.5" /><path d="M6 10v9a1 1 0 0 0 1 1h3v-6h4v6h3a1 1 0 0 0 1-1v-9" /></Stroke>;
 }
@@ -188,124 +206,8 @@ export function TargetIcon({ className }: IconProps) {
 export function BuildingsIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M4 20V9l5-3v14" /><path d="M9 20V6l6-3v17" /><path d="M15 20V11l5-2v11" /></Stroke>;
 }
-export function SparklesIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" />
-      <path d="M6 6l2.5 2.5" /><path d="M15.5 15.5 18 18" /><path d="M18 6l-2.5 2.5" /><path d="M8.5 15.5 6 18" />
-    </Stroke>
-  );
-}
-export function CoinIcon({ className }: IconProps) {
-  return <Stroke className={className}><circle cx="12" cy="12" r="9" /><path d="M9.5 9.2a2.8 2.8 0 1 0 0 5.6" /><path d="M8.5 10.5h3" /><path d="M8.5 13.5h3" /></Stroke>;
-}
-export function ScaleIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <path d="M12 3v15" /><path d="M5 7h14" />
-      <path d="M5 7 3 12a2.5 2.5 0 0 0 5 0L6 7Z" /><path d="M19 7l-2 5a2.5 2.5 0 0 0 5 0l-2-5Z" />
-      <path d="M8 21h8" />
-    </Stroke>
-  );
-}
-export function CalendarIcon({ className }: IconProps) {
-  return <Stroke className={className}><rect x="4" y="5" width="16" height="16" rx="2" /><path d="M4 10h16" /><path d="M8 3v4" /><path d="M16 3v4" /></Stroke>;
-}
-export function RepeatIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M4 7h11a4 4 0 0 1 4 4v1" /><path d="M12 4l3 3-3 3" /><path d="M20 17H9a4 4 0 0 1-4-4v-1" /><path d="M12 20l-3-3 3-3" /></Stroke>;
-}
-export function SofaIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M5 12V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4" /><path d="M3 12h18v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4Z" /><path d="M5 17v3" /><path d="M19 17v3" /></Stroke>;
-}
-export function BootIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M9 3v8l-5 4v3a1 1 0 0 0 1 1h14a2 2 0 0 0 0-4h-1l-5-3V3Z" /></Stroke>;
-}
-export function HandshakeIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M2 12l4-3 4 2 3-2 2 1 4-2 3 3" /><path d="M8 11l3 4" /><path d="M12 10l3 4.5" /><path d="M16 9l2.5 3.5" /></Stroke>;
-}
-export function WalkIcon({ className }: IconProps) {
-  return <Stroke className={className}><circle cx="13" cy="4" r="1.6" /><path d="M10 21l1.5-5-2-2 1-5 4 1 2 3 3 1" /><path d="M11 14l-3 2-2 4" /></Stroke>;
-}
-export function BikeIcon({ className }: IconProps) {
-  return <Stroke className={className}><circle cx="6" cy="17" r="3.2" /><circle cx="18" cy="17" r="3.2" /><path d="M6 17l4-8h4l3 5" /><path d="M10 9h3" /><path d="M14 14h4" /></Stroke>;
-}
-export function BusIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <rect x="3" y="6" width="18" height="12" rx="2" /><path d="M3 13h18" />
-      <circle cx="7.5" cy="17.5" r="1" /><circle cx="16.5" cy="17.5" r="1" /><path d="M6 6v3" /><path d="M18 6v3" />
-    </Stroke>
-  );
-}
-export function CarIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M4 16V12l2-5h12l2 5v4" /><path d="M4 16h16" /><circle cx="8" cy="17.5" r="1.5" /><circle cx="16" cy="17.5" r="1.5" /></Stroke>;
-}
-export function TrainIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <rect x="6" y="4" width="12" height="13" rx="3" /><path d="M6 10h12" />
-      <circle cx="9" cy="14" r="1" /><circle cx="15" cy="14" r="1" /><path d="M8 20l-2 2" /><path d="M16 20l2 2" />
-    </Stroke>
-  );
-}
-export function PlaneIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M21 12 4 6l1.5 4.5L13 12l-7.5 1.5L4 18l17-6Z" /></Stroke>;
-}
-export function PopcornIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M7 9l1.5 12h7L17 9" /><path d="M6 9c0-2 2-3.5 3-2 .5-2 3-2 3 0 0-2 2.5-2.5 3-.5 1-1 3 0 3 2.5" /></Stroke>;
-}
-export function MusicNoteIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M9 18V5l10-2v13" /><circle cx="6.5" cy="18" r="2.5" /><circle cx="16.5" cy="16" r="2.5" /></Stroke>;
-}
-export function PartyIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M4 20l5-14 11 11-14 5Z" /><path d="M13 4l1.5 1.5" /><path d="M17 3l1 2" /><path d="M19 7l2 1" /></Stroke>;
-}
-export function DiceIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <rect x="4" y="4" width="16" height="16" rx="3" />
-      <circle cx="8.5" cy="8.5" r="1.1" fill="currentColor" stroke="none" />
-      <circle cx="15.5" cy="8.5" r="1.1" fill="currentColor" stroke="none" />
-      <circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none" />
-      <circle cx="8.5" cy="15.5" r="1.1" fill="currentColor" stroke="none" />
-      <circle cx="15.5" cy="15.5" r="1.1" fill="currentColor" stroke="none" />
-    </Stroke>
-  );
-}
-export function MaskIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M4 10c0-4 3.5-7 8-7s8 3 8 7-3 6-8 6-8-2-8-6Z" /><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none" /><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none" /><path d="M9 14c1 1 5 1 6 0" /></Stroke>;
-}
-export function SwimIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <circle cx="7" cy="5" r="1.6" /><path d="M4 11l3-2 3 2 3-2 2 1.5" />
-      <path d="M2 16c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0" />
-      <path d="M2 20c1.5 1.5 3 1.5 4.5 0s3-1.5 4.5 0 3 1.5 4.5 0 3-1.5 4.5 0" />
-    </Stroke>
-  );
-}
-export function DumbbellIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M4 9v6" /><path d="M2 10v4" /><path d="M8 7v10" /><path d="M16 7v10" /><path d="M20 9v6" /><path d="M22 10v4" /><path d="M8 12h8" /></Stroke>;
-}
-export function BasketballIcon({ className }: IconProps) {
-  return (
-    <Stroke className={className}>
-      <circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3v18" />
-      <path d="M5.5 5.5c3 3 3 10 0 13" /><path d="M18.5 5.5c-3 3-3 10 0 13" />
-    </Stroke>
-  );
-}
-export function GraduationCapIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M2 9l10-4 10 4-10 4-10-4Z" /><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5" /><path d="M22 9v6" /></Stroke>;
-}
 /** Carte étudiante : carte d'identité avec photo. */
-export function IdCardIcon({ className }: IconProps) {
-  return <Stroke className={className}><rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="9" cy="11" r="2" /><path d="M6 16c.6-1.4 1.7-2 3-2s2.4.6 3 2" /><path d="M14 10h4M14 13h3" /></Stroke>;
-}
 /** Carte Sortir : billet perforé. */
-export function TicketIcon({ className }: IconProps) {
-  return <Stroke className={className}><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4Z" /><path d="M15 8v8" strokeDasharray="2 2" /></Stroke>;
-}
 /** Lien vers un site externe. */
 export function ExternalLinkIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M14 4h6v6" /><path d="M20 4l-9 9" /><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></Stroke>;
@@ -335,3 +237,37 @@ export function SlidersIcon({ className }: IconProps) {
 export function HistoryIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5" /><path d="M4 4v4.5h4.5" /><path d="M12 8v4.5l3 1.800" /></Stroke>;
 }
+
+// ---------- Icônes des choix et des conditions (tâche 53) : bibliothèque Lucide (licence ISC), même trait que les autres ----------
+const lucide = (Icon: LucideIcon) =>
+  function ChoiceIcon({ className = "h-5 w-5" }: IconProps) {
+    return <Icon className={className} strokeWidth={1.8} aria-hidden />;
+  };
+
+export const GraduationCapIcon = lucide(GraduationCap);
+export const StoreIcon = lucide(Store);
+export const WalkIcon = lucide(Footprints);
+export const BikeIcon = lucide(Bike);
+export const BusIcon = lucide(Bus);
+export const CarIcon = lucide(Car);
+export const HandshakeIcon = lucide(Handshake);
+export const TrainIcon = lucide(TrainFront);
+export const PlaneIcon = lucide(Plane);
+export const RepeatIcon = lucide(Repeat);
+export const CalendarIcon = lucide(Calendar);
+export const SofaIcon = lucide(Sofa);
+export const CoinIcon = lucide(PiggyBank);
+export const ScaleIcon = lucide(Scale);
+export const SparklesIcon = lucide(Sparkles);
+export const PopcornIcon = lucide(Popcorn);
+export const MusicNoteIcon = lucide(Music);
+export const PartyIcon = lucide(PartyPopper);
+export const DiceIcon = lucide(Dices);
+export const MaskIcon = lucide(Drama);
+export const SwimIcon = lucide(WavesLadder);
+export const DumbbellIcon = lucide(Dumbbell);
+export const BasketballIcon = lucide(Volleyball);
+export const BootIcon = lucide(Mountain);
+export const SuitcaseIcon = lucide(Luggage);
+export const IdCardIcon = lucide(IdCard);
+export const TicketIcon = lucide(Ticket);

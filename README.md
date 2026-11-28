@@ -61,7 +61,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - Parrainage et « étudiants aidés » restent gonflables avec de faux comptes (pas de confirmation d'email en démo).
 
 ## Technique
-Next.js 16 · Tailwind 4 · Supabase (comptes, base Postgres avec droits par ligne, stockage) · Leaflet et OpenFreeMap · Gemini ou Claude pour l'assistant · Vercel.
+Next.js 16 · Tailwind 4 · Supabase (comptes, base Postgres avec droits par ligne, stockage) · Leaflet et OpenFreeMap · icônes Lucide · Gemini ou Claude pour l'assistant · Vercel.
 
 ## Installer et lancer
 Prérequis : **Node.js 20.9 ou plus** (`node -v`). S'il manque : `brew install node` (macOS), `winget install OpenJS.NodeJS.LTS` (Windows), [nvm](https://github.com/nvm-sh/nvm) (Linux), ou https://nodejs.org. Rouvrir ensuite le terminal.

@@ -599,3 +599,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-28 08h45 — Logo d'ouverture plus long (tâche 82)
 - **Décision** : 1,2 s au minimum au lieu de 0,5 s, pour voir l'étiquette se balancer (maximum inchangé : 4 s).
 - **Qui** : Sacha
+
+## 2026-11-28 08h50 — Icônes Lucide (tâche 53)
+- **Décision** : les icônes dessinées à la main des choix (transports, voyages, budget, activités, conditions, type de compte) et des catégories sont remplacées par Lucide, partout dans l'appli ; toujours aucun emoji.
+- **Choix techniques** : dépendance `lucide-react` (ISC) derrière les mêmes noms dans `icons.tsx` ; les 6 dessins de catégorie sont recopiés dans `CategoryIcon` pour le repère de la carte.
+- **Écartés** : emojis en couleur, texte seul.
+- **Qui** : Sacha (tâche notée pour Anne-Lise)

@@ -52,6 +52,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Défauts | D3 à D5, D7 à D9, D11 à D14 (76) | Justin | essayés sur téléphone (C3) |
 | Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone |
 | Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) ; logo animé à l’ouverture, 1,2 s (82) | Matteo | pas vues dans un navigateur ni sur téléphone |
+| Icônes | Bibliothèque Lucide pour les choix (inscription, préférences), les conditions, les activités et les catégories, partout dans l’appli (53) ; `npm install` après le pull | Sacha | téléphone |
 
 Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67), 63 (par 68). Défauts corrigés avant la revue : D1 (vote sur son offre), D2 (copie locale du script de démo), D6 (lecteurs d'écran), D10 (tuile choisie).
 
@@ -75,7 +76,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|---|
 | 14 | Rappels de dates limites | M | TODO |
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
-| 53 | Nouvelles icônes (« emojis » demandés aussi, mais la règle actuelle est : aucun emoji) | P | EN COURS (Sacha, notée Anne-Lise) : icônes des choix et des catégories remplacées par Lucide ; pas d’emoji |
 | 59 | Récompense de publication différée (délai et nombre d'étudiants à choisir) ; migration ; aujourd'hui +50 sur place, +20 sans lieu | M | TODO (Sacha) |
 | 68b | « Précisions sur une offre » (refonte du profil) : idée à préciser par l'équipe (ex. courtes précisions d'étudiants sous une offre ; migration et modération) | M | TODO (non cadrée) |
 | 72 | **Alertes** « préviens-moi quand une offre correspond à… » : prototype web = alertes enregistrées, vérification à l'ouverture et en direct (Supabase Realtime), notification du navigateur appli ouverte ; vrai push hors délai | M à G | TODO (idée retenue par Matteo, non cadrée) |

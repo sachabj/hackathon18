@@ -4,6 +4,7 @@
 - **Next.js 16.4** (App Router, TypeScript, `src/`) + **Tailwind 4**, web app responsive
 - **Supabase** (Postgres + auth + RLS) via `@supabase/supabase-js` + `@supabase/ssr`
 - **Leaflet** + `react-leaflet` 5 ; fond de carte vectoriel **OpenFreeMap** (sans clé) via `maplibre-gl` 6 + `@maplibre/maplibre-gl-leaflet` (secours : tuiles OpenStreetMap)
+- **Icônes** : `lucide-react` (licence ISC) pour les choix, conditions et activités ; dessins maison pour la navigation et la marque
 - **Vercel** pour le déploiement
 - **Assistant de publication** via la route serveur `/api/assist` : **Gemini** (`@google/genai`, `gemini-3.5-flash` par défaut, variable `GEMINI_MODEL` ; secours automatiques `gemini-3.5-flash-lite` puis `gemini-3.8-flash` si surcharge 503 / quota 429 / 404, 20 s max par essai) si `GEMINI_API_KEY` est définie, sinon **Claude** (`@anthropic-ai/sdk`, `claude-opus-5-5`) si `ANTHROPIC_API_KEY` l'est ; réponses JSON imposées par schéma
 - ⚠️ **Next 16 a des changements cassants** (`middleware` → `proxy`, `cacheComponents` activé…) : lire `AGENTS.md` et la doc dans `node_modules/next/dist/docs/` avant d'utiliser une API Next.
@@ -86,9 +87,9 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── useUserPosition.ts        # hook : position GPS suivie avec accord (non enregistrée), réutilisable (tâche 11)
     │   └── usePreferences.ts, useMyArrows.ts, share.ts, photos.ts   # profil, Flèches, partage de lien, photo de preuve
     ├── components/
-    │   ├── icons.tsx                 # icônes maison au trait (sans fond, sans emoji) pour la nav, les boutons, les listes
+    │   ├── icons.tsx                 # icônes au trait (sans emoji) : maison pour la nav et les boutons, Lucide pour les choix, conditions et activités (tâche 53)
     │   ├── AuthorBadge.tsx           # badge « Source officielle » / « Commerçant » (offre officielle) / « Étudiant »
-    │   ├── CategoryIcon.tsx          # rond coloré + icône au trait par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
+    │   ├── CategoryIcon.tsx          # rond coloré + dessin Lucide recopié par catégorie (voir DESIGN_SHAREWOOD.md) ; `categoryIconSvg()` = version HTML brute pour les marqueurs Leaflet
     │   ├── LaunchSplash.tsx          # logo animé à l'ouverture (1,2 s min, 4 s max ; attend tant qu'un `data-app-loading` est affiché)
     │   ├── NavBar.tsx                # Accueil / Recherche / Partager / Ciblés / Profil : en bas sur téléphone, en haut sur ordinateur
     │   ├── Tabs.tsx                  # onglets rectangulaires (page Ciblés)
