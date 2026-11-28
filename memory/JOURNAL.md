@@ -581,3 +581,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 05h50 — Justin (compétition entre écoles, tâche 70)
 - Migration **028** (`028_school_ranking.sql`, reportée dans `schema.sql`) : table `schools` (10 écoles de Rennes et Bruz), `preferences.school_id`, RPC `school_ranking()`. `lib/schools.ts`, `components/cibles/SchoolRanking.tsx` (page Ciblés), choix de l'école dans `PersonalInfo` (liste + « Autre »), confidentialité, `en.ts`, `seed_arrows.sql` (écoles et activité de la semaine des étudiants de démo, ENSAI en tête), ALGORITHMES § 8. **028 pas encore lancée.**
 - Vérifié : tsc, lint, build ; Postgres local (classement, droits, schéma = migrations, démo rejouée 2 fois, 75 appels) ; navigateur sans écran (6 contrôles). Pas sur téléphone.
+
+### 2026-11-28 05h04 — Justin (déploiement)
+- 028 et `seed_arrows.sql` lancés par Justin (028 vérifiée par sonde). `a26b7ec` en ligne (tâches 70, 77, 78). Vérifié : tsc, lint, build ; pages publiques, redirections, confidentialité à jour. Pages connectées non vues.

@@ -268,7 +268,7 @@ select
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
-- **Présentes sur la vraie base : 002 à 027** (027 vérifiée par Justin le 28/11). **À lancer : 028** (classement des écoles), puis relancer `seed_arrows.sql` pour les écoles de démo. 029 réservée par Matteo ; prochaine libre : **030**. Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- **Présentes sur la vraie base : 002 à 028** (028 lancée par Justin le 28/11, avec `seed_arrows.sql` relancé ; vérifiée par sonde). 029 réservée par Matteo ; prochaine libre : **030**. Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Cas limites et limites assumées
