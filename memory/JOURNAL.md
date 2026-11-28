@@ -641,3 +641,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Justin (PDF du pitch, correction de la mémoire)
 - `pitch/sharewood.pdf` recompilé (`latexmk` présent sur ce poste), 7 pages ; diapo 1 relue en image, « ques-tion » coupé en fin de ligne (non modifié).
 - `memory/ARCHITECTURE.md` vidé par erreur dans `10f4ea4` (script de Claude) : restauré depuis `bc65a9c`, mention « 032 lancée » appliquée.
+
+### 2026-11-28 06h29 — Justin (déploiement)
+- `c23bb11` en ligne à la demande (aucun changement de code depuis `bc65a9c`). Vérifié : pages publiques et redirections sans compte. Pages connectées non vues.

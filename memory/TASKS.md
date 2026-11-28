@@ -7,7 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `bc65a9c`, 28/11 à 06h18** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + tombola et Avant-Première (42), inscription et espace commerçant en anglais (50).
+- **Dernier déploiement : `c23bb11`, 28/11 à 06h29** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : même code que `bc65a9c` (tombola et Avant-Première, inscription et espace commerçant en anglais).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)
