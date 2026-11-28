@@ -55,7 +55,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 65 | Vraies offres | 54 offres importées sur la vraie base (événements, aides, Intermarché), badge « Source officielle » | Burger King, McDonald's, Carrefour, Super U, Auchan non publiés (offres non confirmées) | Justin |
+| 65 | Vraies offres | 54 offres importées sur la vraie base (événements, aides, Intermarché), badge « Source officielle » ; offre Burger King vérifiée, prête (`supabase/import_burgerking.sql`) | lancer le fichier (C7). McDonald's, Carrefour, Super U, Auchan : aucune offre étudiante officielle trouvée le 28/11, rien à publier | Justin |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons validés par le commerçant (« Valider un bon », migration 030) | « Avant-Première » sans offre flash ; aucun tirage de tombola | Sacha |
 | 50 | Anglais | parcours étudiant et messages d'erreur de la base | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant (politique de confidentialité : S6) | Sacha |
@@ -68,6 +68,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 | C6 | **Essayer un paiement** de mise en avant sur le site en ligne avec un compte commerçant (puis « Compte », « Mes paiements ») | Justin |
+| C7 | Lancer `supabase/import_burgerking.sql` dans le SQL Editor (après chaque `import_sources.sql`) et vérifier l'offre sur le site | Justin |
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |

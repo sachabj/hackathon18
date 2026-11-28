@@ -617,3 +617,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h57 — Justin (déploiement)
 - `0dceeef` en ligne (paiement de la mise en avant, erreurs en anglais ; 031 déjà lancée). Vérifié : build Vercel « Ready », pages publiques, redirections sans compte, confidentialité à jour. Pages connectées non vues.
+
+### 2026-11-28 06h10 — Justin (offres des enseignes, tâche 65)
+- Recherche : offre « 2e burger identique à 2 € » confirmée sur burgerking.fr/page/offre-etudiante ; rien d'officiel pour McDonald's, Carrefour, Super U ; la page « offre étudiante » d'Auchan lue ne décrit aucune offre.
+- Nouveau `supabase/import_burgerking.sql` ; README, mémoire. Testé sur une base en mémoire (refus sans compte source, une seule ligne après deux passages). **Pas lancé sur la vraie base.**

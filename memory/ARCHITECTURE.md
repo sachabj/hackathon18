@@ -273,7 +273,7 @@ select
   to_regprocedure('public.school_ranking()') is not null as m028;
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
-- `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
+- `import_sources.sql` : à relancer après chaque `reset_demo.sql`, suivi de `import_burgerking.sql` (offre nationale vérifiée à la main, hors script). `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
 - **Présentes sur la vraie base : 002 à 030** (028 lancée par Justin le 28/11, avec `seed_arrows.sql` relancé ; vérifiée par sonde). 029 (signalements) et 030 (validation des bons) lancées par Justin le 28/11 (vérifiées par sonde). 031 (paiements) lancée le 28/11 (vérifiée par sonde). Prochaine libre : **032**. Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages` ; bons plans signalés : `deal_reports`.
 

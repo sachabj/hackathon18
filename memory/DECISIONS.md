@@ -528,3 +528,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : le but n'est pas, pour l'instant, de mettre l'application en service ; les tâches qui ne servent qu'à cela sont regroupées dans `TASKS.md`, « Mise en service » (S1 à S10), et ne sont pas commencées sans décision.
 - **Choix de Claude, à confirmer** : les fonctions utiles à la démo ou au jury (rappels, alertes, PWA, anglais du parcours, tombola) restent hors de cette catégorie.
 - **Qui** : Justin
+
+## 2026-11-28 06h10 — Offres des enseignes (tâche 65)
+- **Décision** : Burger King publié comme **une offre nationale** (page officielle burgerking.fr, sans date de fin), dans un fichier SQL à part.
+- **Écartés** : un repère par restaurant (coût, application locale non vérifiée) ; McDonald's, Carrefour, Super U, Auchan (aucune offre étudiante officielle trouvée) ; relancer le script d'import (effacerait les réactions des offres importées).
+- **Qui** : Justin
