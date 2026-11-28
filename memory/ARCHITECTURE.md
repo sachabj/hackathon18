@@ -93,9 +93,10 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── Tabs.tsx                  # onglets rectangulaires (page Ciblés)
     │   ├── cibles/                   # FavoritesPanel, ActivityPanel (ActivityCard, MyDeals → MyDealCard, ArrowHistory), SchoolRanking (classement des écoles, `lib/schools.ts`)
     │   ├── rewards/                  # RewardsPanel, RedeemDialog, Voucher (QR)
+    │   ├── notifications/Notifier.tsx # (layout, tâche 68) annonce à l'ouverture des « J'en ai profité » reçus ; « Bons plans à proximité » (watchPosition, 150 m, offres chargées) ; réglages dans `lib/notifications.ts` (user_metadata `notifications`, `notifications_seen_at`)
     │   ├── Modal.tsx                 # fenêtre commune (boutique, accord de localisation)
     │   ├── publish/                  # PublishForm, AssistPanel
-    │   ├── location/                 # LocationConsentDialog, LocationSetting, LocationNotice, DealLocationNote, NearbyPrompt (layout : notification « toujours dispo ? », `lib/nearby.ts`)
+    │   ├── location/                 # LocationConsentDialog, LocationSetting, LocationNotice, DealLocationNote, NearbyPrompt (layout : notification « toujours dispo ? », `lib/nearby.ts` ; simulée ou réelle)
     │   ├── SupabaseBanner.tsx        # bandeau si .env.local absent
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection

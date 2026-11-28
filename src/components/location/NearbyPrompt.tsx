@@ -14,14 +14,17 @@ import { useT } from "@/lib/i18n";
 
 export default function NearbyPrompt() {
   const [deal, setDeal] = useState<Deal | null>(null);
+  /** Simulée depuis le profil (démo) ou vraie proximité (« Bons plans à proximité »). */
+  const [simulated, setSimulated] = useState(true);
   const [data, setData] = useState<(Engagement & { at: number }) | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(
     () =>
-      onNearby((d) => {
+      onNearby(({ deal: d, simulated: demo }) => {
         setDeal(d);
+        setSimulated(demo);
         setData(null);
         setError(null);
         fetchEngagement(d.id)
@@ -68,7 +71,7 @@ export default function NearbyPrompt() {
         <div className="flex items-start gap-3">
           <BellIcon className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-forest)]" />
           <div className="min-w-0 flex-1">
-            <p className="sw-eyebrow">{t("Notification (démo)")}</p>
+            <p className="sw-eyebrow">{simulated ? t("Notification (démo)") : t("Notification")}</p>
             <p className="flex items-center gap-1 text-sm text-[var(--color-muted)]">
               <PinIcon className="h-3.5 w-3.5 shrink-0" /> {t("Tu es près de {place}", { place: deal.place_name ?? t("ce bon plan") })}
             </p>

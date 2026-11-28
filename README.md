@@ -34,7 +34,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Récompenses
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
-- **Notification sur place (démo)** : « Simuler ma position » dans le profil affiche « Tu es près de… : toujours dispo ? » devant l'offre choisie ; la réaction suit les règles habituelles.
+- **Notifications (appli ouverte)** : « Bons plans à proximité » propose « Tu es près de… : toujours dispo ? » à moins de 150 m d'une offre (position comparée sur le téléphone) ; à l'ouverture, les « J'en ai profité » reçus par ses offres depuis la dernière visite. Réglables dans le profil. Pour la démo, « Simuler ma position » affiche la notification devant l'offre choisie ; la réaction suit les règles habituelles.
 - **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code (validés en caisse par le commerçant).
 - **Compétition entre écoles** : chacun choisit son école dans le profil ; la page « Ciblés » classe les écoles par Flèches gagnées sur 7 jours et par membre actif (à partir de 3 membres, seuls des totaux par école sont affichés).
@@ -57,7 +57,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - Distances et temps de trajet estimés à vol d'oiseau.
 - La position vient du navigateur : un utilisateur averti peut la falsifier. L'adresse de contact de la politique de confidentialité est fictive.
 - En anglais, restent en français : l'assistant de préférences, l'espace commerçant et la politique de confidentialité.
-- Pas encore là : vraies notifications (seule la notification sur place est simulée), rappels de dates limites, filtre « ouvert maintenant ».
+- Pas encore là : notifications quand l'appli est fermée, rappels de dates limites, filtre « ouvert maintenant ».
 - Parrainage et « étudiants aidés » restent gonflables avec de faux comptes (pas de confirmation d'email en démo).
 
 ## Technique

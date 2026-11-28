@@ -4,6 +4,7 @@ import ArrowToast from "@/components/arrows/ArrowToast";
 import LangSync from "@/components/LangSync";
 import LocationConsentDialog from "@/components/location/LocationConsentDialog";
 import NearbyPrompt from "@/components/location/NearbyPrompt";
+import Notifier from "@/components/notifications/Notifier";
 import NavBar from "@/components/NavBar";
 import RoleGate from "@/components/RoleGate";
 import SupabaseBanner from "@/components/SupabaseBanner";
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <LocationConsentDialog />
         <LangSync />
         <NearbyPrompt />
+        <Notifier />
       </body>
     </html>
   );

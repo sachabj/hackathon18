@@ -136,7 +136,7 @@ export default function Page() {
           </MenuGroup>
 
           <MenuGroup title="Support">
-            <MenuSection id="notifications" {...section} Icon={BellIcon} title="Notifications" hint="Bientôt disponible">
+            <MenuSection id="notifications" {...section} Icon={BellIcon} title="Notifications" hint="Bons plans à proximité, offres confirmées">
               <NotificationsPanel />
             </MenuSection>
             <MenuSection id="aide" {...section} Icon={HelpIcon} title="Aide et signaler un bug" hint="Questions fréquentes, écrire à l'équipe">

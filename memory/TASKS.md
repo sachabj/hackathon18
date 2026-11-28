@@ -37,6 +37,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Favoris | Par catégorie, dans « Ciblés » (8) ; cœur aussi dans la fenêtre d'un repère et la fiche, synchronisé partout (77) | Anne-Lise | vraie base |
 | Ciblés | Flèches, grades, activité, mes bons plans, boutique et bons à QR code ; aucun accès limité (10, 17b, 42, 43, 44, 46, 47) | Sacha | testé en local seulement |
 | Écoles | Compétition entre écoles : école choisie dans une liste, classement dans « Ciblés » (70) | Justin | 028 et écoles de démo lancées ; à voir sur téléphone |
+| Notifications | Dans l'appli ouverte : « Bons plans à proximité » (150 m, réglable), « mes offres confirmées » à l'ouverture ; interrupteurs du profil actifs (68) | Justin | à voir sur téléphone |
 | Profil | Étudiants aidés, parrainage, menu des réglages, localisation retirable, aide et bug (49, 64, 68) | Sacha, Justin | vraie base |
 | Compte | Mot de passe, appareils, export, suppression, politique de confidentialité (17a) | Sacha | vraie base |
 | Commerçant | Offres, retrait, statistiques, mise en avant, offres d'étudiants voisines (13) | Justin | vraie base |
@@ -57,7 +58,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons validés par le commerçant (« Valider un bon », migration 030) | partenaires fictifs ; « Avant-Première » sans offre flash ; aucun tirage de tombola | Sacha |
 | 50 | Anglais | parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, politique de confidentialité, messages d'erreur de la base | Sacha |
-| 68 | Notifications | EN COURS (Justin, à la place de Sacha) : notifications dans l'appli ouverte (« à proximité » automatique, « mes offres confirmées » à l'ouverture), sans migration | « précisions sur une offre » non faites (idée à préciser) | Justin |
 | 13 | Mise en avant | fonctionne (9,90 € / 7 jours) | paiement simulé ; statut de commerçant non vérifié | Justin |
 | 17a | Confidentialité | page à jour | contact **fictif** (`PRIVACY_CONTACT`) à remplacer avant une vraie mise en service | Sacha |
 
@@ -76,6 +76,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
 | 53 | Nouvelles icônes (« emojis » demandés aussi, mais la règle actuelle est : aucun emoji) | P | TODO (Anne-Lise) |
 | 59 | Récompense de publication différée (délai et nombre d'étudiants à choisir) ; migration ; aujourd'hui +50 sur place, +20 sans lieu | M | TODO (Sacha) |
+| 68b | « Précisions sur une offre » (refonte du profil) : idée à préciser par l'équipe (ex. courtes précisions d'étudiants sous une offre ; migration et modération) | M | TODO (non cadrée) |
 | 71 | **Signaler un contenu** : lien « Signaler ce bon plan » en bas de la fiche (pas sur ses offres), 5 motifs + précisions (obligatoires pour « Autre »), confirmation, offre masquée pour l'auteur du signalement (accueil, Recherche, carte, favoris) ; table `deal_reports` + secours sur l'appareil ; aucun seuil de masquage pour les autres | M | À TESTER (Matteo) : ⏳ **lancer `029_deal_reports.sql`** (sans elle : masquée sur l'appareil, message « pas encore envoyé ») ; règles essayées sur un Postgres 12 local ; pas vu dans le navigateur. Touche `DealSheet` (Justin), `FavoritesPanel` (Anne-Lise), `useDeals`, `account.ts` (export) et `confidentialite` (Sacha), `en.ts` |
 | 72 | **Alertes** « préviens-moi quand une offre correspond à… » : prototype web = alertes enregistrées, vérification à l'ouverture et en direct (Supabase Realtime), notification du navigateur appli ouverte ; vrai push hors délai | M à G | TODO (idée retenue par Matteo, non cadrée) |
 | 73 | **Manifest (PWA installable)** : « Ajouter à l'écran d'accueil », plein écran, icône ; aucun manifest aujourd'hui ; nécessaire aux notifications sur iPhone | P | TODO (idée retenue par Matteo, non cadrée) |

@@ -677,4 +677,13 @@ export const EN: Record<string, string> = {
   "Explique en quelques mots ce qui ne va pas.": "Explain in a few words what's wrong.",
   "Connecte-toi pour signaler un bon plan.": "Log in to report a deal.",
   "Présente ce code en caisse : le commerçant le valide depuis son espace, une seule fois.": "Show this code at the till: the merchant validates it from their space, once only.",
+  "Notification": "Notification",
+  "{n} étudiants ont confirmé tes offres": "{n} students confirmed your deals",
+  "Un étudiant a confirmé ton offre": "A student confirmed your deal",
+  "« J'en ai profité » depuis ta dernière visite.": "“I used it” since your last visit.",
+  "Quand tu passes à moins de {n} m d'une offre : « toujours dispo ? ». Demande ta position, qui reste sur ton téléphone.": "When you pass within {n} m of a deal: “still available?”. Needs your location, which stays on your phone.",
+  "À l'ouverture de l'appli : les « J'en ai profité » reçus par tes bons plans depuis ta dernière visite.": "When you open the app: the “I used it” your deals received since your last visit.",
+  "Sans ta position, impossible de te prévenir près d'une offre.": "Without your location, we can't alert you near a deal.",
+  "Les notifications s'affichent quand l'appli est ouverte (pas encore quand elle est fermée).": "Notifications show while the app is open (not yet when it is closed).",
+  "Bons plans à proximité, offres confirmées": "Nearby deals, confirmed deals",
 };

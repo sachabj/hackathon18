@@ -46,6 +46,7 @@ export default function Page() {
           <li><strong>Bons plans que tu signales</strong> (offre, motif, précisions, date) : permettre à l&apos;équipe de retirer les offres trompeuses ou inappropriées, et ne plus te les montrer. L&apos;auteur de l&apos;offre ne sait pas qui l&apos;a signalée.</li>
           <li><strong>Utilisation de l&apos;assistant</strong> (nombre d&apos;analyses par jour) : la limiter à {AI_DAILY_LIMIT} par jour et par compte. Toi seul peux la lire.</li>
           <li><strong>Ta localisation</strong>, avec ton accord seulement : détail dans la partie qui suit.</li>
+          <li><strong>Tes réglages de notifications</strong> et la date de ta dernière visite : savoir quoi t&apos;annoncer à l&apos;ouverture de l&apos;appli.</li>
           <li><strong>Ton choix sur la localisation</strong> (accepté ou refusé, date, version du texte) : le respecter et pouvoir le prouver.</li>
           <li><strong>Villes que tu ajoutes</strong> (ville principale ou suivie) : elles deviennent des zones de l&apos;application, dont le nom et le centre sont visibles par tous ; ton compte est noté comme créateur pour limiter les abus.</li>
           <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager.</li>
@@ -69,6 +70,7 @@ export default function Page() {
         <ul>
           <li><strong>Réaction ou publication sur une offre placée</strong> : ta position, arrondie à environ 10 m, est comparée au lieu de l&apos;offre pour vérifier que tu es à moins de {NEARBY_M} m et verser les Flèches. Nous ne l&apos;enregistrons pas. Le gain enregistré, que toi seul vois, indique donc que tu étais près de cette offre à cette date.</li>
           <li><strong>« Plus dispo » sur une offre placée</strong> : accepté seulement à moins de {NEARBY_M} m, avec le même contrôle. Le signalement enregistré indique donc que tu étais près de l&apos;offre ; comme tout vote, il porte un identifiant technique, sans ton nom.</li>
+          <li><strong>« Bons plans à proximité »</strong> (notification facultative, désactivée par défaut) : tant que l&apos;appli est ouverte, ta position est comparée sur ton appareil aux offres déjà chargées, pour te prévenir à moins de 150 m. Elle n&apos;est ni envoyée ni enregistrée.</li>
           <li><strong>Carte</strong> : ta position est suivie tant que la carte est ouverte et reste sur ton appareil. Le fournisseur du fond de carte reçoit la zone affichée.</li>
           <li><strong>« Me localiser » (préférences)</strong> : une position arrondie à environ 100 m est enregistrée pour calculer les distances. Toi seul peux la lire.</li>
           <li><strong>« Utiliser ma position » pour placer une offre ou un commerce</strong> : ce point précis devient son lieu public.</li>

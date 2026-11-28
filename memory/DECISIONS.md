@@ -511,3 +511,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décisions** : le commerçant saisit le code et valide le bon (une seule fois) ; tout compte commerçant peut valider (partenaires fictifs, non reliés aux commerces) ; l'étudiant ne marque plus lui-même son bon.
 - **Écartés pour l'instant** : tirage de la tombola, offres en Avant-Première (touche les droits de lecture des offres) ; validation réservée au seul partenaire.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 06h40 — Notifications dans l'appli ouverte (tâche 68)
+- **Décisions** : pas de push (appli fermée) ; « Bons plans à proximité » propose « toujours dispo ? » à moins de 150 m, position comparée sur le téléphone ; « Validation de mes offres » annonce à l'ouverture les confirmations reçues depuis la dernière visite ; réglages gardés avec le compte ; « précisions sur une offre » remises à plus tard.
+- **Choix de Claude, à confirmer** : proximité désactivée par défaut, validation activée par défaut ; au plus une alerte de proximité toutes les 10 minutes, jamais deux fois la même offre ni sur une offre déjà notée ; pas de nouvelle demande d'accord de localisation (l'interrupteur vaut accord pour cet usage, décrit dans la confidentialité).
+- **Écartés** : notification du navigateur en arrière-plan.
+- **Qui** : Justin (réponses aux questions de cadrage)

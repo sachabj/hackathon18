@@ -592,3 +592,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 06h — Justin (validation des bons, tâche 42)
 - Migration **030** (`030_voucher_check.sql`, reportée dans `schema.sql`) : `check_voucher`, `validate_voucher` (commerçants), `use_reward` retiré aux étudiants. `components/merchant/VoucherCheck.tsx` dans `/commercant`, `lib/merchant.ts` ; bon de l'étudiant sans bouton « utilisé » (`Voucher`, `RewardsPanel`, `RedeemDialog`, `lib/rewards.ts`), confidentialité, `en.ts`, en-tête de `seed_arrows.sql`. **030 pas encore lancée.**
 - Vérifié : tsc, lint, build ; Postgres local (12 contrôles, schéma = migrations, démo, 75 appels) ; navigateur sans écran (4 contrôles). Pas sur téléphone.
+
+### 2026-11-28 06h40 — Justin (notifications, tâche 68)
+- Notifications dans l'appli ouverte, sans migration : `lib/notifications.ts` (réglages dans user_metadata), `components/notifications/Notifier.tsx` (layout : annonce des « J'en ai profité » reçus depuis la dernière visite ; « Bons plans à proximité » à 150 m), `NotificationsPanel` (interrupteurs actifs), `lib/nearby.ts` (`notifyNearby`), `NearbyPrompt` (« Notification » ou « Notification (démo) »), confidentialité, `en.ts`. « Précisions sur une offre » laissées (68b).
+- Vérifié : tsc, lint, build ; navigateur sans écran avec position simulée (6 contrôles). Pas sur téléphone.
