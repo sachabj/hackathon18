@@ -710,3 +710,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (PDF du pitch recompilé)
 - `pitch/sharewood.pdf` recompilé avec Tectonic (7 diapos) ; diapo 1 vue en image puis resserrée (cartes moins hautes). Diapo 3 vue : boutons des vidéos hors de la page et sous-titre « Une offre en quelques secondes » sur 2 lignes (C3b, Anne-Lise). Tectonic ajouté au `pitch/README.md`.
 - Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`, `pitch/README.md`, mémoire.
+
+### 2026-11-28 — Matteo (diapo 1 allégée)
+- Petites phrases des deux cartes retirées ; carte de droite : « Et pourtant, personne ne nous parle des bons plans. » (au lieu du bouche-à-oreille) ; cartes moins hautes. PDF recompilé et vérifié en image. Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`.
