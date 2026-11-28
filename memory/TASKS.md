@@ -7,8 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `11275a3`, 28/11 à 02h57** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : revue, micro-animations (75) et défauts corrigés (76).
-- ⏳ **Pas encore en ligne** : tâches 11, 55, 57, 60, 62 (`e4bce40`) ; à déployer (C1b), la migration 026 étant lancée.
+- **Dernier déploiement : `05a9f18`, 28/11 à 04h16** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : tâches importantes (11, 55, 57, 60, 62), anglais et villes de France (Sacha, 50, 52, 54), vidéo.
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)
@@ -68,7 +67,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|
 | C1 | **Remplir la vraie base pour la démo** (SQL Editor, 3 scripts dans cet ordre) : 1) `supabase/reset_demo.local.sql` (copie de Justin, déjà remplie : ⚠️ efface tous les comptes sauf les 4 listés en haut, et toutes leurs offres ; crée 20 étudiants, 12 commerces fictifs, ~150 offres) ; 2) `seed_arrows.sql` (historique de Flèches, offres scénarisées) ; 3) `import_sources.sql` (54 vraies offres) | Justin |
 | C0 | **Lancer `027_any_city.sql`** (SQL Editor) : sans elle, une ville hors Bruz / Ker Lann / Rennes ne peut pas être choisie (message « base pas à jour ») | Sacha |
-| C1b | **Déployer** les tâches importantes (`e4bce40` et suivants) : demande de Justin | Justin |
 | C3 | **Essai complet en ligne, sur téléphone** (y compris les corrections D3 à D14 et les animations de la tâche 75) : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |

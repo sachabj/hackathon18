@@ -559,3 +559,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 04h30 — Justin (vidéo de démo)
 - Vidéo de 40 s filmée par Claude dans Chrome sans écran (format téléphone, touchers marqués), données d'exemple locales : `pitch/demo-16x9.mp4`, `pitch/demo-telephone.mp4` ; scripts de retournage dans `pitch/video/` (`tourner.sh`). `ffmpeg` installé sur le poste de Justin (Homebrew). Aucun code de l'app modifié.
+
+### 2026-11-28 04h16 — Justin (déploiement)
+- `05a9f18` en ligne (tâches 11, 55, 57, 60, 62 ; anglais et villes de Sacha). Vérifié : tsc, lint, build ; pages publiques et redirections. Migration 027 pas encore lancée (sonde : `ensure_zone` absente) : villes hors Bruz / Ker Lann / Rennes indisponibles d'ici là. Pages connectées non vues.
