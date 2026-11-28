@@ -57,7 +57,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons validés par le commerçant (« Valider un bon », migration 030) | partenaires fictifs ; « Avant-Première » sans offre flash ; aucun tirage de tombola | Sacha |
 | 50 | Anglais | parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, politique de confidentialité, messages d'erreur de la base | Sacha |
-| 68 | Notifications | section « bientôt », interrupteurs désactivés | aucune alerte envoyée ; « précisions sur une offre » non faites | Sacha |
+| 68 | Notifications | EN COURS (Justin, à la place de Sacha) : notifications dans l'appli ouverte (« à proximité » automatique, « mes offres confirmées » à l'ouverture), sans migration | « précisions sur une offre » non faites (idée à préciser) | Justin |
 | 13 | Mise en avant | fonctionne (9,90 € / 7 jours) | paiement simulé ; statut de commerçant non vérifié | Justin |
 | 17a | Confidentialité | page à jour | contact **fictif** (`PRIVACY_CONTACT`) à remplacer avant une vraie mise en service | Sacha |
 
@@ -66,7 +66,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (deadline : samedi 28/11 à 13h ; gel du code à 11h)
 | # | Action | Qui |
 |---|---|---|
-| C0 | **Lancer `030_voucher_check.sql`** (SQL Editor) : sans elle, « Valider un bon » affiche « base pas à jour » et l'étudiant ne peut plus marquer son bon (le bouton a disparu) | Justin |
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
