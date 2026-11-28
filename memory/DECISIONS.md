@@ -595,3 +595,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-28 08h40 — Logo animé à l'ouverture (tâche 82)
 - **Décision** : au lancement et au rechargement (jamais en changeant d'onglet), logo plein écran au moins 0,5 s : apparition en rebond, puis l'étiquette se balance ; maintenu tant que l'appli charge, 4 s au plus.
 - **Qui** : Sacha
+
+## 2026-11-28 08h45 — Logo d'ouverture plus long (tâche 82)
+- **Décision** : 1,2 s au minimum au lieu de 0,5 s, pour voir l'étiquette se balancer (maximum inchangé : 4 s).
+- **Qui** : Sacha

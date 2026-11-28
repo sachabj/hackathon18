@@ -1,11 +1,11 @@
 "use client";
 
-// Logo animé à l'ouverture de l'appli (tâche 82) : au moins 0,5 s, plus longtemps si elle charge encore.
+// Logo animé à l'ouverture de l'appli (tâche 82) : au moins 1,2 s, plus longtemps si elle charge encore.
 // Rendu dès le HTML (visible avant le JavaScript) ; le layout n'étant monté qu'au lancement ou au rechargement,
 // il ne réapparaît pas en changeant d'onglet. Dessin identique à `public/logo.svg`.
 import { useEffect, useState } from "react";
 
-const MIN_MS = 500;
+const MIN_MS = 1200;
 /** Au-delà, on laisse voir l'application même si elle charge encore (réseau coupé…). */
 const MAX_MS = 4000;
 const FADE_MS = 180;

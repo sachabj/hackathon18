@@ -717,3 +717,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 08h37 — Sacha (logo à l’ouverture, tâche 82)
 - Nouveau `components/LaunchSplash.tsx`, styles `.sw-splash` (`globals.css`), `layout.tsx`, attribut `data-app-loading` dans `RoleGate` ; README, mémoire.
 - Vérifié : tsc, lint, build ; 8 contrôles dans Chrome avec un faux Supabase (durées, rechargement, chargement lent, sans JavaScript). Pas essayé sur téléphone ; non déployé.
+
+### 2026-11-28 08h40 — Sacha (logo d’ouverture plus long)
+- `LaunchSplash` : 1,2 s au minimum ; mémoire. Vérifié : lint, build, Chrome avec un faux Supabase.
