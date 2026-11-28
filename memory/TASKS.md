@@ -7,7 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `fe633ae`, 28/11 à 01h54** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo). Les nettoyages de la tâche 74 n'y sont pas (aucun changement de comportement).
+- **Dernier déploiement : `11275a3`, 28/11 à 02h57** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : revue, micro-animations (75) et défauts corrigés (76). Migration 025 pas encore lancée.
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)

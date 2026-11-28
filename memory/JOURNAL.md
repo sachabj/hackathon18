@@ -534,3 +534,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Au passage : la carte ne revient plus sur l'offre choisie à chaque mise à jour de la liste ; la fiche ne se recharge qu'en changeant d'offre.
 - Fichiers de Matteo (tâche 75) retouchés : `DealSheet`, `DealCard`, `FavoritesPanel`, page Recherche.
 - Vérifié : tsc, lint, build ; Postgres local (schéma, démo, droits, 025) ; navigateur sans écran avec faux Supabase, 19 contrôles. Pas sur la vraie base ni sur téléphone.
+
+### 2026-11-28 02h57 — Justin (déploiement)
+- `11275a3` (tâches 74, 75 et 76) en ligne sur https://sharewood-ensai.vercel.app. Vérifié : pages publiques, redirections sans compte, couleur du navigateur et ligne de confidentialité sur la limite IA. Connexion et pages connectées non vues.
