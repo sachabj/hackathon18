@@ -647,3 +647,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Justin (essais en ligne)
 - Paiement de la mise en avant (C6), offre flash et tirage de la tombola (C8) essayés sur le site par Justin : ils fonctionnent. Retirés de « Reste à faire ». Aucun code modifié.
+
+### 2026-11-28 — Justin (reset de la démo en un fichier)
+- Nouveau `scripts/build_demo_sql.mjs` ; README, mémoire. `supabase/demo_complet.local.sql` généré sur le poste de Justin (ignoré par git).
+- Vérifié sur une base en mémoire : `schema.sql` puis le fichier combiné, deux passages. **Pas lancé sur la vraie base.**

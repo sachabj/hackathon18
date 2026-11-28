@@ -544,3 +544,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décisions** : les deux sont codées ; tirage lancé par l'équipe dans le SQL Editor (un gagnant au hasard, résultat sur le ticket, aucun bouton public) ; offre flash du commerçant cachée aux autres pendant 1 h par la base.
 - **Choix de Claude, à confirmer** : durée fixe d'1 h ; choix « offre flash » à la publication seulement ; un seul gagnant par tirage ; remise du lot hors application.
 - **Qui** : Justin (réponses aux questions de cadrage ; domaine de Sacha, à prévenir)
+
+## 2026-11-28 — Reset de la démo en un fichier
+- **Décision** : un script réunit les quatre fichiers de données ; seuls les comptes gardés et le mot de passe viennent de la copie locale, le reste de la version à jour.
+- **Écartés** : fichier unique pour un projet neuf ; fichier combiné versionné (il contiendrait le mot de passe).
+- **Qui** : Justin

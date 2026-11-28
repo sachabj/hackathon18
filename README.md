@@ -84,6 +84,8 @@ Dans Supabase → SQL Editor :
 - **données de démo** : [`reset_demo.sql`](supabase/reset_demo.sql) (⚠️ **supprime les comptes** non listés en haut du script ; lire ses consignes), puis [`seed_arrows.sql`](supabase/seed_arrows.sql) le jour de la démo ;
 - **vraies informations** : migration `024`, puis [`import_sources.sql`](supabase/import_sources.sql) (régénéré par `node scripts/import_sources.mjs` ; à relancer après `reset_demo.sql`), puis [`import_burgerking.sql`](supabase/import_burgerking.sql) (offre vérifiée à la main).
 
+**Remettre la démo à zéro en une fois** : `node scripts/build_demo_sql.mjs` réunit ces quatre scripts dans `supabase/demo_complet.local.sql` (non versionné), à coller dans le SQL Editor. Il faut une copie `supabase/reset_demo.local.sql` de `reset_demo.sql` avec les comptes à garder et le mot de passe remplis. Aucune migration n'est à relancer.
+
 Pour la démo, désactiver « Confirm email » (Authentication → Sign In / Providers → Email).
 
 ### Mise en ligne
