@@ -40,7 +40,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Notifications | Dans l'appli ouverte : « Bons plans à proximité » (150 m, réglable), « mes offres confirmées » à l'ouverture ; interrupteurs du profil actifs (68) | Justin | à voir sur téléphone |
 | Profil | Étudiants aidés, parrainage, menu des réglages, localisation retirable, aide et bug (49, 64, 68) | Sacha, Justin | vraie base |
 | Compte | Mot de passe, appareils, export, suppression, politique de confidentialité (17a) | Sacha | vraie base |
-| Commerçant | Offres, retrait, statistiques, mise en avant, offres d'étudiants voisines (13) | Justin | vraie base |
+| Commerçant | Offres, retrait, statistiques, offres d'étudiants voisines ; mise en avant payée à l'écran (9,90 €, simulé) avec reçu et « Mes paiements » (13) | Justin | **lancer 031** puis déployer ; vraie base et téléphone |
 | Ordinateur | Navigation en haut, liste et carte côte à côte, colonnes (48) | Justin | vu avec un faux Supabase seulement |
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) | Matteo, Justin | — |
 | Vidéo de démo | `pitch/demo-16x9.mp4` et `demo-telephone.mp4` (40 s, données d'exemple, sans son) ; retournage : `pitch/video/tourner.sh` | Justin | à regarder par l'équipe |
@@ -58,7 +58,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons validés par le commerçant (« Valider un bon », migration 030) | partenaires fictifs ; « Avant-Première » sans offre flash ; aucun tirage de tombola | Sacha |
 | 50 | Anglais | parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, politique de confidentialité, messages d'erreur de la base | Sacha |
-| 13 | Mise en avant | fonctionne (9,90 € / 7 jours) | EN COURS (Justin) : écran de paiement simulé, reçus, migration **031** réservée | Justin |
 | 17a | Confidentialité | page à jour | contact **fictif** (`PRIVACY_CONTACT`) à remplacer avant une vraie mise en service | Sacha |
 
 ## 3. 📋 Reste à faire
@@ -68,6 +67,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
+| C6 | **Mise en avant (13)** : lancer `031_boost_payments.sql` dans le SQL Editor **puis déployer aussitôt** (entre les deux, « Mettre en avant » échoue sur le site en ligne), et essayer un paiement avec un compte commerçant | Justin |
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |

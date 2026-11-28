@@ -8,7 +8,7 @@ import OfferForm from "@/components/merchant/OfferForm";
 import VoucherCheck from "@/components/merchant/VoucherCheck";
 import { buttonClass } from "@/components/merchant/styles";
 import { PlusIcon, ProhibitedIcon, UndoIcon } from "@/components/icons";
-import { boostOffer, publishOffer, setNearbyDealEnded, setOfferEnded, updateOffer } from "@/lib/merchant";
+import { publishOffer, setNearbyDealEnded, setOfferEnded, updateOffer } from "@/lib/merchant";
 import { useDashboard } from "@/lib/useDashboard";
 
 export default function Page() {
@@ -62,7 +62,7 @@ export default function Page() {
                     busy={busy}
                     onEdit={() => setEditing(offer.id)}
                     onToggleEnded={() => act(() => setOfferEnded(offer.id, !offer.ended_by_merchant))}
-                    onBoost={() => act(() => boostOffer(offer.id))}
+                    onPaid={reload}
                   />
                 )}
               </li>

@@ -517,3 +517,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix de Claude, à confirmer** : proximité désactivée par défaut, validation activée par défaut ; au plus une alerte de proximité toutes les 10 minutes, jamais deux fois la même offre ni sur une offre déjà notée ; pas de nouvelle demande d'accord de localisation (l'interrupteur vaut accord pour cet usage, décrit dans la confidentialité).
 - **Écartés** : notification du navigateur en arrière-plan.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 05h50 — Paiement de la mise en avant (tâche 13)
+- **Décisions** : paiement simulé mais réaliste (carte de test pré-remplie et non modifiable, attente, reçu numéroté) ; historique en base (031), une mise en avant ne s'active que par un paiement enregistré ; statut de commerçant toujours non vérifié (limite annoncée).
+- **Écartés** : Stripe en mode test (compte et clés à ajouter) ; vrai paiement ; contrôle du SIRET.
+- **Choix de Claude, à confirmer** : « Mes paiements » dans la page Compte du commerçant ; reçu conservé si l'offre est supprimée, effacé avec le compte.
+- **Qui** : Justin (réponses aux questions de cadrage)

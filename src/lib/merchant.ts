@@ -3,7 +3,7 @@ import { settleDoubtfulDeals } from "./engagement";
 import type { Point } from "./geo";
 import { zoneAround } from "./zones";
 import { getSupabase } from "./supabase/client";
-import type { Business, Deal, DealCategory, OfferStats } from "./types";
+import type { BoostPayment, Business, Deal, DealCategory, OfferStats } from "./types";
 
 /** Catégories possibles pour un commerce (même liste que la contrainte SQL). */
 export const BUSINESS_CATEGORIES: DealCategory[] = ["restaurant", "supermarket", "activity", "sport"];
@@ -116,8 +116,30 @@ export async function setNearbyDealEnded(dealId: string, ended: boolean) {
   check(await getSupabase().rpc("set_nearby_deal_ended", { p_deal_id: dealId, p_ended: ended }));
 }
 
-export async function boostOffer(dealId: string) {
-  check(await getSupabase().rpc("boost_offer", { p_deal_id: dealId }));
+// ---------- Mise en avant payante (paiement simulé, migration 031) ----------
+export const formatPrice = (cents: number) =>
+  (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+
+function paymentError(error: { code?: string; message: string }) {
+  return new Error(
+    ["PGRST202", "PGRST205", "42P01"].includes(error.code ?? "")
+      ? "La base de données n'est pas à jour : lancer supabase/migrations/031_boost_payments.sql."
+      : error.message,
+  );
+}
+
+/** Paie (simulation) la mise en avant d'une offre : la base l'active et renvoie le reçu. */
+export async function payBoost(dealId: string): Promise<BoostPayment> {
+  const { data, error } = await getSupabase().rpc("pay_boost", { p_deal_id: dealId });
+  if (error) throw paymentError(error);
+  return data as BoostPayment;
+}
+
+/** Les reçus du commerçant connecté (la base ne donne que les siens), du plus récent au plus ancien. */
+export async function fetchPayments(): Promise<BoostPayment[]> {
+  const { data, error } = await getSupabase().from("boost_payments").select("*").order("created_at", { ascending: false });
+  if (error) throw paymentError(error);
+  return data as BoostPayment[];
 }
 
 // ---------- Bons de la boutique présentés en caisse (tâche 42, migration 030) ----------

@@ -599,3 +599,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h39 — Justin (déploiement)
 - `032885a` en ligne (tâches 42, 68, 71 ; migrations 029 et 030 lancées, vérifiées par sonde). Vérifié : tsc, lint ; pages publiques, redirections, confidentialité à jour. Pages connectées non vues.
+
+### 2026-11-28 05h50 — Justin (paiement de la mise en avant, tâche 13)
+- Migration **031** (`031_boost_payments.sql`, reportée dans `schema.sql`) : table `boost_payments`, RPC `pay_boost`, `boost_offer` fermée à l'app. Nouveaux `components/merchant/PaymentDialog.tsx`, `Receipt.tsx`, `PaymentHistory.tsx` ; `OfferCard`, pages `commercant` et `commercant/compte`, `lib/merchant.ts`, `types.ts`, export des données (`account.ts`) et confidentialité (fichiers de Sacha) ; README, mémoire. **031 pas encore lancée.**
+- Vérifié : tsc, lint, build ; base en mémoire (PGlite) : `schema.sql` + 031 deux fois, 13 contrôles des droits et des reçus ; navigateur sans écran avec faux Supabase (390 px), 14 contrôles. Pas sur la vraie base ni sur téléphone.

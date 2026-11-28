@@ -4,6 +4,7 @@
 import AccountLink from "@/components/account/AccountLink";
 import LogoutButton from "@/components/LogoutButton";
 import MerchantPage from "@/components/merchant/MerchantPage";
+import PaymentHistory from "@/components/merchant/PaymentHistory";
 import { CATEGORIES } from "@/lib/constants";
 import { useDashboard } from "@/lib/useDashboard";
 import { useZones, zoneById } from "@/lib/zones";
@@ -31,6 +32,7 @@ export default function Page() {
             ))}
           </dl>
         )}
+        {business && <PaymentHistory />}
       </MerchantPage>
       {/* Toujours accessible, même sans commerce ou en cas d'erreur. */}
       <div className="mx-auto w-full max-w-md lg:max-w-2xl space-y-3 px-4 pb-6">

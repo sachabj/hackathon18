@@ -55,6 +55,7 @@ export default function Page() {
           <li><strong>Tes Flèches</strong> (gains, offre concernée, date) et les jours où tu as partagé ou réagi : ton solde, ton grade et ta série. Toi seul les vois.</li>
           <li><strong>Tes échanges de récompenses</strong> (récompense, code du bon, dates d&apos;échange et d&apos;utilisation) et tes avantages actifs : te redonner tes bons. Rien n&apos;est transmis aux partenaires : tu montres toi-même ton bon, et le commerçant qui saisit son code ne voit que la récompense et si elle a déjà servi, rien sur toi.</li>
           <li><strong>Pour un commerçant</strong> : nom, adresse, activité et emplacement du commerce.</li>
+          <li><strong>Mises en avant payées par un commerçant</strong> (offre, montant, date, numéro de reçu) : activer la mise en avant et redonner les reçus. Le paiement est simulé : aucune donnée bancaire n&apos;est demandée, envoyée ni enregistrée.</li>
         </ul>
         <p>
           La base légale est le fonctionnement du service que tu demandes (article 6.1.b du RGPD), et ton accord pour

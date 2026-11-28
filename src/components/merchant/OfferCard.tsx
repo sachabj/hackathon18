@@ -3,8 +3,9 @@
 import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { EditIcon, HeartIcon, ProhibitedIcon, StarIcon, ThumbsDownIcon, ThumbsUpIcon, UndoIcon } from "@/components/icons";
-import { BOOST_DAYS, BOOST_PRICE, isBoosted } from "@/lib/merchant";
+import { isBoosted } from "@/lib/merchant";
 import type { Deal, OfferStats } from "@/lib/types";
+import PaymentDialog from "./PaymentDialog";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
@@ -18,14 +19,15 @@ export default function OfferCard({
   busy,
   onEdit,
   onToggleEnded,
-  onBoost,
+  onPaid,
 }: {
   offer: Deal;
   stats?: OfferStats;
   busy: boolean;
   onEdit: () => void;
   onToggleEnded: () => void;
-  onBoost: () => void;
+  /** La mise en avant vient d'être payée : relire les offres. */
+  onPaid: () => void;
 }) {
   const [paying, setPaying] = useState(false);
   const [now] = useState(() => Date.now());
@@ -76,60 +78,34 @@ export default function OfferCard({
         ))}
       </dl>
 
-      {paying ? (
-        <div className="mt-3 rounded-xl p-3 text-sm" style={{ backgroundColor: "var(--color-lilac)" }}>
-          <p>
-            Mettre en avant pendant <strong>{BOOST_DAYS} jours</strong> pour <strong>{BOOST_PRICE}</strong> : en tête du fil
-            et repère doré sur la carte.
-          </p>
-          <p className="mt-1 text-xs text-[var(--color-muted)]">Démonstration : aucun paiement réel n&apos;est effectué.</p>
-          <div className="mt-2 flex gap-2">
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => {
-                setPaying(false);
-                onBoost();
-              }}
-              className="sw-btn-primary py-1.5 text-sm"
-              style={{ backgroundColor: "#92700c" }}
-            >
-              Payer {BOOST_PRICE} (simulé)
-            </button>
-            <button type="button" onClick={() => setPaying(false)} className="sw-btn-secondary py-1.5 text-sm">
-              Annuler
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {online && (
-            <button type="button" disabled={busy} onClick={() => setPaying(true)} className={actionClass} style={{ borderColor: "#d4a017", color: "#92700c" }}>
-              <StarIcon className="h-4 w-4" /> {boosted ? "Prolonger" : "Mettre en avant"}
-            </button>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {online && (
+          <button type="button" disabled={busy} onClick={() => setPaying(true)} className={actionClass} style={{ borderColor: "#d4a017", color: "#92700c" }}>
+            <StarIcon className="h-4 w-4" /> {boosted ? "Prolonger" : "Mettre en avant"}
+          </button>
+        )}
+        <button type="button" disabled={busy} onClick={onEdit} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
+          <EditIcon className="h-4 w-4" /> Modifier
+        </button>
+        <button
+          type="button"
+          disabled={busy}
+          onClick={onToggleEnded}
+          className={actionClass}
+          style={offer.ended_by_merchant ? { borderColor: "var(--color-forest)", color: "var(--color-forest)" } : { borderColor: "#fca5a5", color: "#dc2626" }}
+        >
+          {offer.ended_by_merchant ? (
+            <>
+              <UndoIcon className="h-4 w-4" /> Remettre en ligne
+            </>
+          ) : (
+            <>
+              <ProhibitedIcon className="h-4 w-4" /> N&apos;existe plus
+            </>
           )}
-          <button type="button" disabled={busy} onClick={onEdit} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
-            <EditIcon className="h-4 w-4" /> Modifier
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={onToggleEnded}
-            className={actionClass}
-            style={offer.ended_by_merchant ? { borderColor: "var(--color-forest)", color: "var(--color-forest)" } : { borderColor: "#fca5a5", color: "#dc2626" }}
-          >
-            {offer.ended_by_merchant ? (
-              <>
-                <UndoIcon className="h-4 w-4" /> Remettre en ligne
-              </>
-            ) : (
-              <>
-                <ProhibitedIcon className="h-4 w-4" /> N&apos;existe plus
-              </>
-            )}
-          </button>
-        </div>
-      )}
+        </button>
+      </div>
+      {paying && <PaymentDialog offer={offer} onClose={() => setPaying(false)} onPaid={onPaid} />}
     </article>
   );
 }

@@ -83,6 +83,7 @@ export async function exportMyData() {
     ["views", "deal_views", "user_id"],
     ["visits", "deal_visits", "user_id"],
     ["business", "businesses", "owner_id"],
+    ["boost_payments", "boost_payments", "merchant_id"],
     ["arrows", "arrow_events", "user_id"],
     ["activity_days", "activity_days", "user_id"],
     ["rewards", "user_rewards", "user_id"],

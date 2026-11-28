@@ -175,3 +175,15 @@ export interface DealAudience {
   confirmations: number;
   reports: number;
 }
+
+/** Reçu d'une mise en avant payée (paiement simulé, migration 031). */
+export interface BoostPayment {
+  id: string;
+  /** null : offre supprimée depuis */
+  deal_id: string | null;
+  offer_title: string;
+  amount_cents: number;
+  receipt_number: string;
+  boosted_until: string;
+  created_at: string;
+}
