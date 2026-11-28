@@ -28,7 +28,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - **021_gone_on_site.sql exécutée** (Justin, 28/11, non vérifiable avec la clé publique) : « Plus dispo » seulement sur place.
 - **022_profile_impact_referral.sql présente sur la vraie base** (sonde du 28/11 à 01h31) (Sacha, après 021) : étudiants aidés, parrainage, école, aide. Relancer 022 si 016 ou 018 sont relancées (elles remplacent la contrainte ou le trigger d'inscription). **Obligatoire avant `seed_arrows.sql`.**
 - Messages « Aide et signaler un bug » : à lire dans Supabase → Table Editor → `support_messages`.
-- Prochaine migration : numéro **023** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- Migration **023** réservée par Sacha (tâche 69), **024** par Justin (tâche 65). Prochaine : **025** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -122,7 +122,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
 | 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | Remplacée par la tâche 68 (« étudiants aidés », personnes uniques) |
 | 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin / Sacha) : en-tête conservé (pseudo modifiable) ; impact, grade et Flèches, raccourcis retirés (Sacha, 28/11) |
-| 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | EN COURS (Justin) : étude des sources, rien de codé. Testées en lecture le 28/11, sans clé : CROUStillant (restos U, dont Ker Lann), événements OpenAgenda via public.opendatasoft.com (26 à venir à Bruz), API Aides Jeunes (81 aides citant les étudiants) |
+| 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | EN COURS (Justin) : import par script (événements OpenAgenda, aides Aides Jeunes, magasins Intermarché), badge « Source officielle », migration **024**. Touche `types.ts`, `AuthorBadge`, `DealSheet`, confidentialité |
 | 66 | **« J'y suis allé » devient « J'en ai profité »** (boutons, fiche, Ciblés, stats commerçant, confidentialité, info-bulle, README, doc, commentaires) | P | Matteo | FAIT (Matteo) : libellé seulement (vote +1 et passage inchangés) ; historique (JOURNAL, DECISIONS) et anciennes migrations non réécrits |
 | 67 | **Accueil : filtres à la place des onglets** : puces Pour toi · Mes favoris · chaque catégorie (plusieurs catégories combinables) ; remplace les 5 onglets de la tâche 56 (**Sacha**) | P | Matteo | À TESTER (Matteo) : `app/page.tsx` seulement ; pas vu dans le navigateur ; « Mes favoris » ne montre que les offres encore visibles (les expirées restent dans « Ciblés ») |
 | 68 | **Refonte du Profil** : étudiants aidés, parrainage, menu de réglages groupé, boutons « Y aller » / « Partager » dans la fiche (migration **022**) | G | Sacha | À TESTER (Sacha) : ⏳ **lancer `022_profile_impact_referral.sql`**, puis `seed_arrows.sql` (données de démo de sarah : 42 aidés, 3 amis, ENSAI) ; notifications « bientôt » ; « précisions sur une offre » non faites |
