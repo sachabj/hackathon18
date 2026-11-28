@@ -62,15 +62,15 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | # | Action | Qui |
 |---|---|---|
 | C0 | Lancer `025_limits.sql` | FAIT (Justin, 28/11) |
-| C0b | **Lancer `026_same_reaction_gain.sql`** (+10 / +3 pour les deux réactions ; sans elle, l'appli affiche +10 alors que la base verse encore +15 / +5) | Justin |
-| C1 | **Préparer la vraie base**, dans cet ordre : `reset_demo.local.sql` (⚠️ efface les comptes non listés), `seed_arrows.sql` (le jour de la démo), `import_sources.sql` | Justin |
+| C0b | Lancer `026_same_reaction_gain.sql` | FAIT (Justin, 28/11) |
+| C1 | **Remplir la vraie base pour la démo** (SQL Editor, 3 scripts dans cet ordre) : 1) `supabase/reset_demo.local.sql` (copie de Justin, déjà remplie : ⚠️ efface tous les comptes sauf les 4 listés en haut, et toutes leurs offres ; crée 20 étudiants, 12 commerces fictifs, ~150 offres) ; 2) `seed_arrows.sql` (historique de Flèches, offres scénarisées) ; 3) `import_sources.sql` (54 vraies offres) | Justin |
 | C2 | Vérifier les migrations 013, 015, 019, 021 et 025 | FAIT (Justin, 28/11) : toutes présentes |
 | C3 | **Essai complet en ligne, sur téléphone** : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Vidéo du pitch** (1 min maximum) et répétition | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟠 Important
-Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Reste à lancer la migration 026 (C0b).
+Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Migration 026 lancée.
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |
@@ -112,7 +112,7 @@ Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Reste à lan
 | `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
 
 ### Vraie base
-- **Présentes** : 002 à 025 (013, 015, 019, 021 et 025 vérifiées par Justin, 28/11). **À lancer : 026** (C0b).
+- **Présentes** : 002 à 026 (013, 015, 019, 021, 025 et 026 vérifiées ou lancées par Justin, 28/11).
 - Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
 ```sql
 select
