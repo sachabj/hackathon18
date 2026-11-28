@@ -730,3 +730,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (pitch : diapo 5)
 - Diapo « Modèle » : titre « ADAPTABILITÉ · ÉGALITÉ · FACILITÉ » (majuscules, police sans empattement Inter en gras, points violets) au lieu de « Un modèle gratuit pour les étudiants » ; carte jaune : « Le temps » / « Rapidité et Facilité » au lieu du tarif de 9,90 €. PDF recompilé et vérifié. Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`, `pitch/README.md`.
+
+### 2026-11-28 09h32 — Matteo (questions du jury, sans code)
+- Lecture du projet complet ; liste des questions qu'un jury poserait après le pitch et la démo (modèle économique, concurrence, démarrage, triche, algorithmes, RGPD, IA, Erasmus), avec pistes de réponse tirées du code et des limites connues. C4 complétée dans `TASKS.md`. Aucun code modifié.
