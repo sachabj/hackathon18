@@ -7,7 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `11275a3`, 28/11 à 02h57** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : revue, micro-animations (75) et défauts corrigés (76). Migration 025 pas encore lancée.
+- **Dernier déploiement : `11275a3`, 28/11 à 02h57** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : revue, micro-animations (75) et défauts corrigés (76).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)
@@ -60,9 +60,9 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (avant la démo de 13h)
 | # | Action | Qui |
 |---|---|---|
-| C0 | **Lancer `025_limits.sql`** dans le SQL Editor : titres limités à 100 caractères et assistant IA à 30 analyses par jour et par compte (sans elle, aucune limite) | Justin |
+| C0 | Lancer `025_limits.sql` | FAIT (Justin, 28/11) |
 | C1 | **Préparer la vraie base**, dans cet ordre : `reset_demo.local.sql` (⚠️ efface les comptes non listés), `seed_arrows.sql` (le jour de la démo), `import_sources.sql` | Justin |
-| C2 | **Vérifier les migrations 013, 015, 019, 021 et 025** avec la requête de la partie 4 | Justin / Sacha / Matteo |
+| C2 | Vérifier les migrations 013, 015, 019, 021 et 025 | FAIT (Justin, 28/11) : toutes présentes |
 | C3 | **Essai complet en ligne, sur téléphone** : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Vidéo du pitch** (1 min maximum) et répétition | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
@@ -70,11 +70,11 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🟠 Important
 | # | Tâche | Taille | Statut |
 |---|---|---|---|
-| 11 | Notification sur place simulée (« toujours dispo ? ») et « Simuler ma position » dans le profil ; annoncée au périmètre initial | M | TODO (Matteo) |
-| 55 | « Licence de sport » → « Sport » : libellé seulement (identifiant `sport` inchangé), README et doc | P | TODO (Sacha) |
-| 57 | Même gain « Plus dispo » et « J'en ai profité » (+10) : migration (reprendre `arrow_on_vote`, dernière version dans 023), `lib/arrows.ts`, doc | P | TODO (Sacha) |
-| 60 | La carte n'affiche que les offres trouvées par la recherche (revient sur « toujours toutes les offres ») | P | TODO (Anne-Lise / Justin) |
-| 62 | Après publication, « Voir sur la carte » ouvre la nouvelle offre (une offre sans lieu n'a pas de repère) | P | TODO (Matteo / Justin) |
+| 11 | Notification sur place simulée (« toujours dispo ? ») et « Simuler ma position » dans le profil ; la réaction part avec la vraie position (pas de Flèches simulées) | M | EN COURS (Justin, à la place de Matteo) |
+| 55 | « Licence de sport » → « Sport » : libellé seulement (identifiant `sport` inchangé), README et doc | P | EN COURS (Justin, à la place de Sacha) |
+| 57 | Même gain « Plus dispo » et « J'en ai profité » : +10 sur place, +3 sans lieu (migration **026**, réservée), `lib/arrows.ts`, doc | P | EN COURS (Justin, à la place de Sacha) |
+| 60 | La carte n'affiche que les offres trouvées par la recherche (revient sur « toujours toutes les offres ») | P | EN COURS (Justin) |
+| 62 | Après publication, « Voir sur la carte » ouvre la nouvelle offre ; sans lieu : « Voir mon offre » ouvre sa fiche | P | EN COURS (Justin) |
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |
@@ -116,8 +116,8 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
 
 ### Vraie base
-- **Présentes** (sondes en lecture ou exécution notée) : 002 à 012, 014, 016 à 018, 020, 022 à 024. **À lancer : 025** (C0).
-- **Non confirmées** : 013, 015, 019 ; **021** déclarée lancée (Justin) mais invisible avec la clé publique. Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
+- **Toutes présentes** : 002 à 025 (013, 015, 019, 021 et 025 vérifiées par Justin avec la requête ci-dessous, 28/11).
+- Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
 ```sql
 select
   exists (select 1 from pg_policies where tablename = 'votes' and policyname = 'retirer son vote') as m013,
