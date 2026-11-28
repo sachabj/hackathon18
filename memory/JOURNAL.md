@@ -472,3 +472,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (tâche 67 : filtres de l'accueil)
 - `src/app/page.tsx` : rangée de puces (Pour toi, Mes favoris, 6 catégories avec leur icône) à la place de `Tabs` ; catégories cumulables ; messages vides adaptés. `README.md`, `docs/ALGORITHMES.md`, mémoire.
 - Vérifié : tsc + lint (1 avertissement connu) + build. Pas vu dans le navigateur (session Supabase requise, pas de banc d'essai dans le repo).
+
+### 2026-11-28 01h30 — Justin (diapos en LaTeX, tâche 15)
+- Nouveau dossier `pitch/` (`sharewood.tex`, `sharewood.pdf`, `images/`, `README.md`) ; `.gitignore`, README, mémoire. Aucun code d'application modifié.
+- Vérifié : compilation avec TeX Live 2026 (avec et sans notes), 7 pages relues en image. Pas testé sur Overleaf ni sur un autre poste.

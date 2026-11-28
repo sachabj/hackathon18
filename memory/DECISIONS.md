@@ -426,3 +426,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande de Matteo (questions posées avant de coder) : filtrer par n'importe quelle catégorie et retrouver ses favoris dès l'accueil.
 - **Remplace** : la décision « Onglets de l'accueil (tâche 56) » de Sacha.
 - **Qui** : Matteo
+
+## 2026-11-28 01h30 — Diapos du pitch en LaTeX dans le dépôt
+- **Décision** : les diapos passent en LaTeX Beamer dans `pitch/` (source, images, PDF), modifiables dans VS Code par toute l'équipe ; captures refaites avec la version actuelle.
+- **Remplace** : la présentation claude.ai comme version de référence.
+- **Limite** : pas d'animations ; le dépôt étant public, le pitch et son texte le sont aussi.
+- **Qui** : Justin

@@ -37,6 +37,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 /
 ├── CLAUDE.md, AGENTS.md, README.md   # protocole Claude, règles Next 16 (générées par next), présentation
 ├── memory/                           # mémoire partagée du projet
+├── pitch/                            # diapos du pitch en LaTeX Beamer (sharewood.tex, images/, PDF) ; voir pitch/README.md
 ├── docs/ALGORITHMES.md               # explication (équipe + jury) du classement des offres et de la fiabilité
 ├── supabase/schema.sql               # schéma complet (tables, triggers, RLS, GRANT) pour un projet neuf
 ├── supabase/migrations/              # modifs à appliquer sur la BDD existante (NNN_nom.sql)

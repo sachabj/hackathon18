@@ -240,3 +240,15 @@ next-env.d.ts
 
 # Scripts SQL contenant des valeurs personnelles (jamais committés : dépôt public)
 supabase/*.local.sql
+
+# Diapos du pitch : fichiers temporaires de LaTeX
+pitch/*.aux
+pitch/*.fls
+pitch/*.fdb_latexmk
+pitch/*.nav
+pitch/*.snm
+pitch/*.toc
+pitch/*.vrb
+pitch/*.out
+pitch/*.synctex.gz
+pitch/build.txt

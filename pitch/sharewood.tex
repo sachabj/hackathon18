@@ -1,0 +1,222 @@
+% ShareWood — diapos du pitch (Beamer, 16:9). Compiler : latexmk -pdf sharewood.tex (voir README.md).
+%
+% POUR MODIFIER : chaque diapo est un bloc « \begin{frame} ... \end{frame} » repéré par un titre en capitales.
+% Les positions sont en « pixels » sur une diapo de 1920 x 1080 : (0,0) en haut à gauche, y vers le bas.
+%   \txt{x}{y}{largeur}{taille}{couleur}{texte}   un texte posé à cet endroit
+%   \card{x}{y}{largeur}{hauteur}{fond}           un rectangle arrondi
+%   \phone{x}{y}{largeur}{image}                  une capture dans un cadre de téléphone
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\frenchsetup{StandardLists=true}
+\usepackage{inter}                   % texte courant
+\usepackage{sourceserifpro}          % titres (chargé après : c'est lui la police « romaine »)
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{tikz}
+\graphicspath{{images/}}
+
+% --- Notes d'orateur : retirer le « % » pour les afficher à droite de chaque diapo ---
+% \setbeameroption{show notes on second screen=right}
+
+% --- Couleurs de l'application ---
+\definecolor{paper}{HTML}{F1EFE9}
+\definecolor{surface}{HTML}{FAF9F5}
+\definecolor{border}{HTML}{DDD9CF}
+\definecolor{ink}{HTML}{1A1A18}
+\definecolor{muted}{HTML}{55544F}
+\definecolor{forest}{HTML}{1E3A2F}
+\definecolor{forestdark}{HTML}{10241C}
+\definecolor{plum}{HTML}{4B2A63}
+\definecolor{night}{HTML}{1D1029}
+\definecolor{sage}{HTML}{CFE3CA}
+\definecolor{gold}{HTML}{F2C14E}
+
+\setbeamertemplate{navigation symbols}{}
+
+% --- Outils de mise en page ---
+\newlength{\pxu}
+\setlength{\pxu}{0.0833333mm}        % 1 « pixel » : 160 mm / 1920
+\newcommand{\size}[1]{\fontsize{\the\dimexpr#1\pxu\relax}{\the\dimexpr#1\pxu*128/100\relax}\selectfont}
+\newcommand{\titre}{\rmfamily\bfseries}
+\newcommand{\txt}[6]{\node[anchor=north west, inner sep=0pt, text width=#3\pxu, align=flush left, text=#5] at (#1,#2) {\size{#4}#6\par};}
+\newcommand{\ctxt}[6]{\node[anchor=north, inner sep=0pt, text width=#3\pxu, align=center, text=#5] at (#1,#2) {\size{#4}#6\par};}
+\newcommand{\card}[5]{\fill[#5, rounded corners=40\pxu] (#1,#2) rectangle +(#3,#4);}
+% Capture de téléphone (proportions 780 x 1688) avec son cadre.
+\newcommand{\phone}[4]{%
+  \pgfmathsetmacro{\ph}{#3*2.16410}%
+  \fill[black!92, rounded corners=48\pxu] (#1,#2) rectangle +({#3+24},{\ph+24});
+  \begin{scope}
+    \clip[rounded corners=36\pxu] ({#1+12},{#2+12}) rectangle +(#3,\ph);
+    \node[anchor=north west, inner sep=0pt] at ({#1+12},{#2+12}) {\includegraphics[width=#3\pxu]{#4}};
+  \end{scope}}
+% Liste à puces compacte, utilisable dans un \txt.
+\newcommand{\puce}[1]{\hangindent=1.1em\hangafter=1 \makebox[1.1em][l]{\textbullet}#1\par\vspace{0.35em}}
+% Une diapo : \diapo{fond}{contenu tikz}
+\newcommand{\diapo}[2]{%
+  \begin{tikzpicture}[remember picture, overlay, shift={(current page.north west)}, x=\pxu, y=-\pxu]
+    #1
+    #2
+  \end{tikzpicture}}
+\newcommand{\fondclair}{\fill[paper] (0,0) rectangle (1920,1080);}
+\newcommand{\fondvert}{\shade[top color=forest, bottom color=forestdark] (0,0) rectangle (1920,1080);}
+\newcommand{\fondviolet}{\shade[top color=plum, bottom color=night] (0,0) rectangle (1920,1080);}
+
+\begin{document}
+
+% =============================== 1. INTRODUCTION ===============================
+\begin{frame}[plain]
+\diapo{\fondvert}{
+  \node[anchor=north west, inner sep=0pt] at (96,66) {\includegraphics[width=100\pxu]{logo}};
+  \draw[sage, line width=3\pxu] (146,116) circle (50);
+  \txt{224}{80}{360}{60}{surface}{\titre ShareWood}
+  \txt{590}{100}{700}{36}{sage}{\rmfamily\itshape Les bons plans se partagent.}
+  \node[anchor=north east, inner sep=0pt, text=sage] at (1824,102) {\size{30}Anne-Lise · Justin · Matteo · Sacha};
+  \txt{96}{210}{1728}{96}{surface}{\titre La FOMO du \textcolor{gold}{pouvoir d'achat}}
+  \txt{96}{350}{1728}{44}{surface}{La génération la plus connectée a toujours peur de rater quelque chose.}
+  % Les trois cartes
+  \card{96}{450}{555}{540}{surface}
+  \txt{140}{500}{470}{26}{muted}{\bfseries CE QUE TU PAIES}
+  \txt{140}{560}{470}{180}{muted}{\titre 12~€}
+  \txt{140}{830}{470}{36}{ink}{Ton repas, faute de connaître mieux.}
+  \card{683}{450}{555}{540}{gold}
+  \txt{727}{500}{470}{26}{ink}{\bfseries À DEUX PAS}
+  \txt{727}{560}{470}{180}{ink}{\titre 5~€}
+  \txt{727}{830}{470}{36}{ink}{\textbf{Un kebab indépendant}, boisson offerte.}
+  \card{1269}{450}{555}{540}{plum}
+  \txt{1313}{500}{470}{26}{sage}{\bfseries POURQUOI ?}
+  \txt{1313}{560}{470}{52}{surface}{\titre Un bon plan, c'est de la chance et du bouche-à-oreille}
+  \txt{1313}{800}{470}{36}{surface}{\puce{Pas vu la vitrine}\puce{Pas entendu parler}}
+}
+\note{Bonjour ! Nous sommes Anne-Lise, Justin, Matteo et Sacha. Nous sommes la génération la plus connectée de l'histoire, et pourtant une angoisse nous suit partout : la FOMO, la peur de rater quelque chose. Quand on est étudiant, la pire est celle du pouvoir d'achat : tu paies ton repas 12~€, alors qu'à deux pas un petit kebab indépendant fait un menu à 5~€, boisson offerte. Pourquoi tu ne le savais pas ? Parce qu'aujourd'hui, un bon plan, c'est de la chance et du bouche-à-oreille.}
+\end{frame}
+
+% =============================== 2. SOLUTION ===============================
+\begin{frame}[plain]
+\diapo{\fondclair}{
+  \txt{96}{80}{1200}{26}{plum}{\bfseries NOTRE SOLUTION}
+  \txt{96}{140}{1240}{92}{forest}{\titre ShareWood, fini le hasard}
+  \txt{96}{290}{1180}{44}{ink}{Les bons plans étudiants au même endroit, partagés et vérifiés par la communauté.}
+  \card{96}{460}{588}{270}{forest}
+  \txt{136}{496}{510}{52}{surface}{\titre Trouver}
+  \txt{136}{590}{510}{36}{surface}{Une carte et un fil «~Pour~toi~».}
+  \card{716}{460}{588}{270}{plum}
+  \txt{756}{496}{510}{52}{surface}{\titre Partager}
+  \txt{756}{590}{510}{36}{surface}{Une photo, le formulaire se remplit.}
+  \card{96}{762}{588}{270}{gold}
+  \txt{136}{798}{510}{52}{ink}{\titre Vérifier}
+  \txt{136}{892}{510}{36}{ink}{«~J'en ai profité~» ou «~Plus dispo~».}
+  \card{716}{762}{588}{270}{surface}
+  \txt{756}{798}{510}{52}{forest}{\titre Nettoyer}
+  \txt{756}{892}{510}{36}{ink}{Trois signalements, et l'offre disparaît.}
+  \phone{1396}{74}{406}{carte}
+}
+\note{Nous avons créé ShareWood pour mettre fin à cette injustice. Les étudiants partagent les offres autour d'eux, et la communauté les vérifie : fini le hasard.}
+\end{frame}
+
+% =============================== 3. DÉMONSTRATION (vidéo d'une minute) ===============================
+\begin{frame}[plain]
+\diapo{\fondclair}{
+  \txt{96}{60}{1728}{80}{forest}{\titre Comment ça marche, concrètement}
+  \card{96}{196}{555}{850}{forest}
+  \ctxt{373}{230}{500}{52}{surface}{\titre 1 · Mon profil}
+  \ctxt{373}{312}{500}{36}{surface}{Des offres pour moi}
+  \phone{238}{390}{246}{accueil}
+  \card{683}{196}{555}{850}{plum}
+  \ctxt{960}{230}{500}{52}{surface}{\titre 2 · La carte}
+  \ctxt{960}{312}{500}{36}{surface}{Tout autour de moi}
+  \phone{825}{390}{246}{carte}
+  \card{1269}{196}{555}{850}{gold}
+  \ctxt{1546}{230}{500}{52}{ink}{\titre 3 · La fiabilité}
+  \ctxt{1546}{312}{500}{36}{ink}{Confirmé par tous}
+  \phone{1411}{390}{246}{fiche}
+}
+\note{Je vous montre comment ça marche concrètement. (Lancer la vidéo, 1 minute maximum, et la commenter.) Mon profil me propose les offres faites pour moi. La carte me montre ce qu'il y a autour. Et chaque offre dit si elle est fiable.}
+\end{frame}
+
+% =============================== 4. TROIS PILIERS ===============================
+\begin{frame}[plain]
+\diapo{\fondclair}{
+  \txt{96}{80}{1200}{26}{plum}{\bfseries NOS TROIS PILIERS}
+  \txt{96}{140}{1728}{80}{forest}{\titre Ancré dans le réel, ouvert à tous, rapide}
+  \card{96}{300}{555}{690}{forest}
+  \txt{140}{350}{470}{52}{surface}{\titre 1 · Du réel}
+  \txt{140}{460}{480}{44}{surface}{\puce{Manger et courses}\puce{Voyager}\puce{Aides et bourses}\puce{Sport et culture}}
+  \card{683}{300}{555}{690}{plum}
+  \txt{727}{350}{480}{52}{surface}{\titre 2 · Égalité d'accès}
+  \txt{727}{460}{480}{44}{surface}{\puce{Gratuit}\puce{Ouvert à tous}\puce{Commerçants locaux visibles}}
+  \card{1269}{300}{555}{690}{gold}
+  \txt{1313}{350}{480}{52}{ink}{\titre 3 · Rapidité}
+  \txt{1313}{460}{480}{44}{ink}{\puce{Une carte}\puce{Des filtres}\puce{Un geste pour valider}}
+}
+\note{ShareWood, c'est trois choses. Un ancrage dans le réel : aucune marque imposée, on s'adapte à vos pratiques et à tous les profils. L'égalité d'accès : le bon plan n'est plus réservé aux initiés, et les petits commerçants deviennent visibles. La rapidité : une carte, des filtres, un geste.}
+\end{frame}
+
+% =============================== 5. ERASMUS (ambition : pas encore développé) ===============================
+\begin{frame}[plain]
+\diapo{\fondviolet}{
+  \txt{96}{90}{1500}{32}{sage}{\bfseries NOTRE AMBITION · BIENTÔT}
+  \txt{96}{160}{1728}{80}{surface}{\titre Demain, partout, jusqu'à ton Erasmus}
+  \card{96}{340}{555}{580}{surface}
+  \txt{140}{390}{470}{26}{plum}{\bfseries 1 · AVANT DE PARTIR}
+  \txt{140}{450}{470}{52}{forest}{\titre Je prépare}
+  \txt{140}{570}{480}{44}{ink}{\puce{Bourses Erasmus+}\puce{Billets moins chers}}
+  \card{683}{340}{555}{580}{gold}
+  \txt{727}{390}{470}{26}{ink}{\bfseries 2 · EN ARRIVANT}
+  \txt{727}{450}{470}{52}{ink}{\titre Je découvre}
+  \txt{727}{570}{480}{44}{ink}{\puce{Où manger}\puce{Transports et sorties}}
+  \card{1269}{340}{555}{580}{forest}
+  \txt{1313}{390}{470}{26}{sage}{\bfseries 3 · SUR PLACE}
+  \txt{1313}{450}{470}{52}{surface}{\titre Je transmets}
+  \txt{1313}{570}{480}{44}{surface}{\puce{Je partage mes adresses}\puce{Les suivants en profitent}}
+}
+\note{Et nous voyons plus loin : partout dans le monde. Avant de partir en Erasmus, tu préparerais tes bourses ; en arrivant, tu connaîtrais déjà les bons plans de ta nouvelle ville ; puis tu les transmettrais aux suivants.}
+\end{frame}
+
+% =============================== 6. MODÈLE ÉCONOMIQUE ===============================
+\begin{frame}[plain]
+\diapo{\fondclair}{
+  \txt{96}{80}{1200}{26}{plum}{\bfseries NOTRE MODÈLE}
+  \txt{96}{140}{1728}{80}{forest}{\titre Un modèle gratuit pour les étudiants}
+  \card{96}{300}{640}{210}{forest}
+  \txt{136}{334}{560}{52}{surface}{\titre L'étudiant}
+  \txt{136}{424}{580}{36}{surface}{Gratuit, avec des récompenses.}
+  \card{96}{530}{640}{210}{surface}
+  \txt{136}{564}{560}{52}{forest}{\titre Le commerçant}
+  \txt{136}{654}{580}{36}{ink}{Ses offres et leurs résultats.}
+  \card{96}{760}{640}{240}{gold}
+  \txt{136}{794}{580}{52}{ink}{\titre 9,90~€ les 7 jours}
+  \txt{136}{884}{560}{36}{ink}{La mise en avant, tarif envisagé.}
+  \begin{scope}
+    \clip[rounded corners=32\pxu] (768,300) rectangle (1824,960);
+    \node[anchor=north west, inner sep=0pt] at (768,300) {\includegraphics[width=1056\pxu]{statistiques}};
+  \end{scope}
+  \draw[forest, line width=3\pxu, rounded corners=32\pxu] (768,300) rectangle (1824,960);
+}
+\note{Pour les étudiants, c'est gratuit. Les commerçants, eux, peuvent payer pour mettre leur offre en avant, et suivre ses résultats.}
+\end{frame}
+
+% =============================== 7. CONCLUSION ===============================
+\begin{frame}[plain]
+\diapo{\fondvert}{
+  \node[anchor=north, inner sep=0pt] at (960,62) {\includegraphics[width=104\pxu]{logo}};
+  \draw[sage, line width=4\pxu] (960,114) circle (52);
+  \ctxt{960}{200}{1728}{80}{surface}{\titre Le bouche-à-oreille devient\\un \textcolor{gold}{réflexe collectif}}
+  \card{96}{460}{555}{200}{surface}
+  \txt{136}{494}{480}{52}{forest}{\titre Fini le hasard}
+  \txt{136}{582}{480}{36}{ink}{Tout au même endroit.}
+  \card{683}{460}{555}{200}{surface}
+  \txt{723}{494}{480}{52}{forest}{\titre La confiance}
+  \txt{723}{582}{480}{36}{ink}{Vérifié par les étudiants.}
+  \card{1269}{460}{555}{200}{surface}
+  \txt{1309}{494}{480}{52}{forest}{\titre Et demain}
+  \txt{1309}{582}{480}{36}{ink}{Jusqu'en Erasmus.}
+  \ctxt{960}{730}{1728}{72}{gold}{\rmfamily\itshape Merci ! Vos questions ?}
+  \fill[surface, rounded corners=40\pxu] (610,880) rectangle (1310,960);
+  \ctxt{960}{900}{700}{34}{forest}{\bfseries \href{https://sharewood-ensai.vercel.app}{sharewood-ensai.vercel.app}}
+}
+\note{ShareWood transforme le bouche-à-oreille en un réflexe collectif, simple et solidaire, pour redonner du pouvoir d'achat aux étudiants. Merci, nous attendons vos questions !}
+\end{frame}
+
+\end{document}
