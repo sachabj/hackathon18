@@ -480,3 +480,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 01h26 — Sacha (refonte du profil, tâche 68)
 - Migration `022_profile_impact_referral.sql` (+ `schema.sql`) ; `lib/community.ts`, `lib/share.ts`, `components/profile/` (impact, parrainage, menu, informations, notifications, aide), `ShareButton`, `/offre`, `DealSheet`, connexion (code parrainage), `proxy.ts`, export des données, politique de confidentialité, `seed_arrows.sql` ; README, algorithmes, mémoire.
 - Vérifié : tsc, lint (1 avertissement connu), build ; 130 contrôles sur Postgres local + scénario de démo ; 42 contrôles dans Chrome avec un faux Supabase. **Pas essayé sur la vraie base ni sur téléphone ; non déployé.**
+
+### 2026-11-28 01h28 — Sacha (demande de déploiement)
+- Vérifié : build d’un clone neuf de `main` (`e5f548a`) réussi ; sonde en lecture : migration 022 absente de la vraie base. Déploiement non lancé (poste de Justin) : demande notée dans `TASKS.md`.

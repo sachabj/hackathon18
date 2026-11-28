@@ -8,6 +8,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
 - **Dernier déploiement : `a75ecf1`, 28/11 à 00h39** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo).
+- ⏳ **Redéploiement demandé par Sacha** (28/11 à 01h28) → **Justin** : `main` à partir de `e5f548a` (refonte du profil ; build d’un clone neuf réussi). Lancer d’abord `022_profile_impact_referral.sql` (**absente de la vraie base**, sonde en lecture) ; sans elle, étudiants aidés et parrainage restent masqués.
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5` (limite Vercel atteinte, puis déploiement au push coupé).
 
 ## Base de données
