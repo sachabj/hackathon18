@@ -66,7 +66,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C1 | **Remplir la vraie base pour la démo** (SQL Editor, 3 scripts dans cet ordre) : 1) `supabase/reset_demo.local.sql` (copie de Justin, déjà remplie : ⚠️ efface tous les comptes sauf les 4 listés en haut, et toutes leurs offres ; crée 20 étudiants, 12 commerces fictifs, ~150 offres) ; 2) `seed_arrows.sql` (historique de Flèches, offres scénarisées) ; 3) `import_sources.sql` (54 vraies offres) | Justin |
 | C1b | **Déployer** les tâches importantes (`e4bce40` et suivants) : demande de Justin | Justin |
 | C3 | **Essai complet en ligne, sur téléphone** (y compris les corrections D3 à D14 et les animations de la tâche 75) : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
-| C4 | **Vidéo du pitch** (1 min maximum) et répétition | équipe |
+| C4 | **Vidéo du pitch** (1 min maximum) et répétition | EN COURS (Justin) : vidéo de démo filmée par Claude (données d'exemple locales, sans son) ; répétition : équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟢 Bonus
