@@ -21,7 +21,11 @@ Sans installation : sur [Overleaf](https://www.overleaf.com), importer le conten
 Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, retirer le `%` devant `\setbeameroption{show notes on second screen=right}`. Ne pas valider le PDF avec les notes affichées.
 
 ## La vidéo (diapo 3)
-Le fichier n'est pas encore fourni. La lecture d'une vidéo dans un PDF dépend du lecteur : le plus sûr est de la lancer à part au moment de la diapo 3.
+- [`demo-16x9.mp4`](demo-16x9.mp4) (plein écran, à projeter) et [`demo-telephone.mp4`](demo-telephone.mp4) (format téléphone) : 40 s, **sans son** (à commenter en direct).
+- Parcours : accueil « Pour toi » → fiche « Très fiable » → « J'en ai profité » (+15 Flèches, série × 1,5) → recherche « piscine » (la carte se recadre) → partager un bon plan avec sa position (+75 Flèches).
+- Filmée par Claude sur l'application, avec des **données d'exemple locales** (compte « Sarah », offres « (démo) ») : rien n'a été écrit dans la vraie base. Les touchers sont marqués par un rond violet.
+- La lancer à part au moment de la diapo 3 (la lecture d'une vidéo dans un PDF dépend du lecteur).
+- Retourner après un changement d'interface : `bash pitch/video/tourner.sh` (macOS, Chrome, `ffmpeg`).
 
 ## À savoir
 - Les captures montrent l'application avec des **offres d'exemple** marquées « (démo) ».

@@ -556,3 +556,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 04h10 — Sacha (anglais, toutes les villes, Carte Sortir : tâches 50, 52, 54)
 - Migration `027_any_city.sql` (+ `schema.sql`) ; `lib/zones.ts`, `lib/i18n.ts`, `lib/en.ts` (644 textes), `LangSwitch`, `LangSync`, `zones/CitySearch` ; ~45 fichiers du parcours étudiant passés par `t()` ; assistant (étape ville, Carte Sortir), publication « Une ville », carte, recherche, profil (« Langue »), connexion (FR / EN) ; confidentialité (Photon, villes, langue) ; en-tête de `seed_arrows.sql` recalé après la 026 ; README, mémoire.
 - Vérifié : tsc, lint, build ; Postgres local (dont 13 contrôles de la 027) et scénario de démo ; Chrome avec un faux Supabase : 25 contrôles en anglais et en français, aucun texte sans traduction sur les écrans visités, aucune erreur d’hydratation ; anciens tests profil et « Douteux » toujours bons. **Pas essayé sur la vraie base ni sur téléphone.**
+
+### 2026-11-28 04h30 — Justin (vidéo de démo)
+- Vidéo de 40 s filmée par Claude dans Chrome sans écran (format téléphone, touchers marqués), données d'exemple locales : `pitch/demo-16x9.mp4`, `pitch/demo-telephone.mp4` ; scripts de retournage dans `pitch/video/` (`tourner.sh`). `ffmpeg` installé sur le poste de Justin (Homebrew). Aucun code de l'app modifié.

@@ -484,3 +484,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : dictionnaire « texte français → anglais » sans bibliothèque (rapide à brancher, un oubli reste en français) ; rechargement au changement de langue ; villes créées en base à la demande (`ensure_zone`) pour garder les clés étrangères.
 - **Écartés** : toute l'application en anglais (trop long avant 11 h) ; liste fixe de villes.
 - **Qui** : Sacha (réponses aux questions de cadrage)
+
+## 2026-11-28 04h30 — Vidéo de démo
+- **Décision** : vidéo filmée automatiquement sur l'application avec des données d'exemple locales, scénario de la diapo 3, sans son (commentée en direct) ; version 16:9 pour la projection.
+- **Écartés** : filmer le vrai site (laisserait de vraies réactions et Flèches) ; version courte à 3 écrans.
+- **Qui** : Justin (réponses aux questions de cadrage)
