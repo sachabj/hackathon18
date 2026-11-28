@@ -690,3 +690,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 07h35 — Sacha (lien lieu d’études, tâche 81)
 - `SchoolRanking` (texte et lien `/profil?section=infos`), `profil/page.tsx` (ouvre et montre la section), marge de défilement dans `SettingsMenu`, `en.ts`. **Justin** : ta phrase du classement est changée.
 - Vérifié : tsc, lint, build ; 18 contrôles dans Chrome avec un faux Supabase (390 et 1440 px, FR et EN). Pas essayé sur la vraie base ni sur téléphone.
+
+### 2026-11-28 07h39 — Sacha (lien toujours affiché, tâche 81)
+- `SchoolRanking` : « Choisis ton lieu d’études » reste visible même avec une école choisie. Vérifié : tsc, lint, build, Chrome avec un faux Supabase.

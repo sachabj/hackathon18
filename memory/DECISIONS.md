@@ -575,3 +575,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-28 07h40 — Lien vers le lieu d'études (tâche 81)
 - **Décision** : dans « Ciblés », « Choisis ton lieu d'études » ouvre directement Profil > Informations personnelles ; affiché seulement tant qu'aucune école n'est choisie.
 - **Qui** : Sacha
+
+## 2026-11-28 07h40 — Lien du lieu d'études toujours affiché (tâche 81)
+- **Décision** : le lien reste dans « Ciblés » même quand une école est déjà choisie, pour pouvoir en changer.
+- **Remplace** : affichage seulement tant qu'aucune école n'est choisie.
+- **Qui** : Sacha

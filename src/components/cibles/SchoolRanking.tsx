@@ -75,17 +75,15 @@ export default function SchoolRanking() {
       ) : (
         <p className="text-sm text-[var(--color-muted)]">{t("Pas encore assez de membres pour un classement.")}</p>
       )}
-      {!data.my_school ? (
-        <Link href="/profil?section=infos" className="block text-sm font-medium underline" style={{ color: "var(--color-forest)" }}>
-          {t("Choisis ton lieu d'études")}
-        </Link>
-      ) : (
-        !mine && (
-          <p className="text-sm text-[var(--color-muted)]">
-            {t("Ton école sera classée à partir de {n} membres (aujourd'hui {m}) : invite tes amis !", { n: SCHOOL_MIN_MEMBERS, m: data.my_members })}
-          </p>
-        )
+      {data.my_school && !mine && (
+        <p className="text-sm text-[var(--color-muted)]">
+          {t("Ton école sera classée à partir de {n} membres (aujourd'hui {m}) : invite tes amis !", { n: SCHOOL_MIN_MEMBERS, m: data.my_members })}
+        </p>
       )}
+      {/* Toujours proposé : pour choisir son école, ou en changer. */}
+      <Link href="/profil?section=infos" className="block text-sm font-medium underline" style={{ color: "var(--color-forest)" }}>
+        {t("Choisis ton lieu d'études")}
+      </Link>
     </section>
   );
 }
