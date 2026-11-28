@@ -659,3 +659,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (tri par distance à l'accueil, tâche 79)
 - Puce « Plus proches » sur l'accueil, cumulable avec « Pour toi », « Mes favoris » et les catégories : position du moment (fenêtre d'accord proposée si jamais répondu), sinon position enregistrée, sinon centre de la ville d'inscription ; offres sans lieu à la fin ; distance affichée sur chaque carte ; ligne d'explication sous les puces.
 - Fichiers : `src/app/page.tsx`, `src/lib/en.ts`, `src/app/confidentialite/page.tsx` (nouvel usage de la position), README, mémoire. Types, lint et build passent ; pas vu dans un navigateur ni sur téléphone.
+
+### 2026-11-28 — Justin (pouce sur « J'en ai profité »)
+- `ReactionBar` : icône pouce levé à la place du marcheur (coche conservée quand le bouton est choisi). Vérifié : tsc, lint, build. Pas vu à l'écran.

@@ -4,7 +4,7 @@
 // Exclusives ; toucher la réaction active la décoche. Sur son propre bon plan : compteurs seuls.
 // Tâche 75 : le bouton choisi rebondit et le compteur défile vers sa nouvelle valeur.
 import type { ComponentType } from "react";
-import { ArrowShotIcon, CheckIcon, ThumbsDownIcon, WalkIcon } from "@/components/icons";
+import { ArrowShotIcon, CheckIcon, ThumbsDownIcon, ThumbsUpIcon } from "@/components/icons";
 import { arrowsFor } from "@/lib/arrows";
 import type { Reaction } from "@/lib/engagement";
 import { useChanges } from "@/lib/motion";
@@ -35,7 +35,7 @@ export default function ReactionBar({
   const t = useT();
   const gains = arrowsFor(placed);
   const buttons = [
-    { id: "visited" as const, label: t("J'en ai profité"), count: counts.visited, gain: gains.confirm, Icon: WalkIcon, color: "var(--color-forest)", bg: "var(--color-sage)" },
+    { id: "visited" as const, label: t("J'en ai profité"), count: counts.visited, gain: gains.confirm, Icon: ThumbsUpIcon, color: "var(--color-forest)", bg: "var(--color-sage)" },
     { id: "gone" as const, label: t("Plus dispo"), count: counts.gone, gain: gains.report, Icon: ThumbsDownIcon, color: "var(--color-aubergine)", bg: "var(--color-lilac)" },
   ];
   const pad = size === "sm" ? "px-1 py-1.5 text-[13px]" : "py-2.5 text-sm";
