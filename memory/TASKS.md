@@ -51,9 +51,9 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 12 | Données de démo | `reset_demo.sql` et `seed_arrows.sql`, rejoués 2 fois en local le 28/11 | les lancer sur la vraie base (voir C1) ; revérifier les prix sourcés | EN COURS (Justin) |
-| 65 | Vraies offres | script `scripts/import_sources.mjs`, `import_sources.sql` (54 offres), badge « Source officielle » | lancer l'import sur la vraie base ; Burger King, McDonald's, Carrefour, Super U, Auchan non publiés (non confirmés) | À TESTER (Justin) |
-| 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 2 corrigée le 28/11 | vidéo d'1 min maximum, répétition | À TESTER (Justin) |
+| 12 | Données de démo | lancées sur la vraie base (Justin, 28/11) : 20 étudiants, 12 commerces fictifs, ~150 offres, Flèches de démo | revérifier les prix des offres sourcées (avec lien) avant la démo | Justin |
+| 65 | Vraies offres | 54 offres importées sur la vraie base (événements, aides, Intermarché), badge « Source officielle » | Burger King, McDonald's, Carrefour, Super U, Auchan non publiés (offres non confirmées) | Justin |
+| 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons | partenaires fictifs ; « Avant-Première » sans offre flash ; aucun tirage ; le commerçant ne peut pas vérifier un code | Sacha |
 | 50 | Anglais | parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, politique de confidentialité, messages d'erreur de la base | Sacha |
 | 68 | Notifications | section « bientôt », interrupteurs désactivés | aucune alerte envoyée ; « précisions sur une offre » non faites | Sacha |
@@ -65,9 +65,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (avant la démo de 13h)
 | # | Action | Qui |
 |---|---|---|
-| C1 | **Remplir la vraie base pour la démo** (SQL Editor, 3 scripts dans cet ordre) : 1) `supabase/reset_demo.local.sql` (copie de Justin, déjà remplie : ⚠️ efface tous les comptes sauf les 4 listés en haut, et toutes leurs offres ; crée 20 étudiants, 12 commerces fictifs, ~150 offres) ; 2) `seed_arrows.sql` (historique de Flèches, offres scénarisées) ; 3) `import_sources.sql` (54 vraies offres) | Justin |
-| C0 | **Lancer `027_any_city.sql`** (SQL Editor) : sans elle, une ville hors Bruz / Ker Lann / Rennes ne peut pas être choisie (message « base pas à jour ») | Sacha |
-| C3 | **Essai complet en ligne, sur téléphone** (y compris les corrections D3 à D14 et les animations de la tâche 75) : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
@@ -107,7 +104,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
 
 ### Vraie base
-- **Présentes** : 002 à 026 (013, 015, 019, 021, 025 et 026 vérifiées ou lancées par Justin, 28/11).
 - Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
 ```sql
 select
@@ -116,11 +112,12 @@ select
   exists (select 1 from public.rewards where id = 'golden' and description like '%Ciblés%') as m019,
   exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021,
   to_regprocedure('public.use_ai_quota()') is not null as m025,
-  pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026;
+  pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026,
+  to_regprocedure('public.ensure_zone(text,text,float8,float8,int)') is not null as m027;
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
-- **027** (`027_any_city.sql`) à lancer : villes. Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- **Présentes sur la vraie base : 002 à 027** (027 vérifiée par Justin le 28/11 : `ensure_zone` existe). Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Défauts

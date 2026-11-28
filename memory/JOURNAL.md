@@ -562,3 +562,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 04h16 — Justin (déploiement)
 - `05a9f18` en ligne (tâches 11, 55, 57, 60, 62 ; anglais et villes de Sacha). Vérifié : tsc, lint, build ; pages publiques et redirections. Migration 027 pas encore lancée (sonde : `ensure_zone` absente) : villes hors Bruz / Ker Lann / Rennes indisponibles d'ici là. Pages connectées non vues.
+
+### 2026-11-28 04h30 — Justin (base de démo et essai)
+- Faits par Justin : migration 027 (vérifiée par sonde : `ensure_zone` existe ; la sonde de 04h16 qui la disait absente appelait la fonction sans paramètres), C1 (reset_demo, seed_arrows, import_sources sur la vraie base), C3 (essai complet sur téléphone). Retirés de « Reste à faire ».
