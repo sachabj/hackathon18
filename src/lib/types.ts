@@ -58,6 +58,10 @@ export interface Deal {
   requirements?: DealRequirement[] | null;
   /** Lien vers l'offre, http(s) uniquement (migration 012) */
   link_url?: string | null;
+  /** Offre importée d'une source publique (migration 024) ; non écrivable par l'app */
+  source_name?: string | null;
+  /** Jour de la vérification de la source (AAAA-MM-JJ) */
+  source_checked_at?: string | null;
 }
 
 export interface Vote {

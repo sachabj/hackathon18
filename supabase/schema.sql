@@ -1651,6 +1651,7 @@ grant execute on function public.record_share_open(uuid, text), public.my_impact
   public.ensure_referral_code(), public.my_referrals() to authenticated;
 grant execute on function public.check_referral_code(text) to anon, authenticated;
 
+<<<<<<< Updated upstream
 -- ShareWood — retrait des offres signalées (à exécuter après 022 ; relançable sans risque).
 -- Remplace l'archivage immédiat au 3e « Plus dispo ». Seuils repris dans src/lib/rules.ts.
 --   3 « Plus dispo » ............... l'offre devient « Douteux » (toujours visible) pour 2 semaines
@@ -1822,3 +1823,15 @@ end $$;
 revoke execute on function public.arrow_refresh_deal(uuid), public.arrow_on_vote() from public, anon, authenticated;
 revoke execute on function public.settle_doubtful_deals() from public, anon;
 grant execute on function public.settle_doubtful_deals() to authenticated;
+=======
+-- ---------- 024 : offres issues d'une source officielle ----------
+alter table public.deals add column if not exists source_name text;
+alter table public.deals add column if not exists source_checked_at date;
+
+-- Une source affichée doit toujours être consultable.
+alter table public.deals drop constraint if exists deals_source_needs_link;
+alter table public.deals add constraint deals_source_needs_link check (
+  source_name is null
+  or (char_length(source_name) between 1 and 80 and link_url is not null and source_checked_at is not null)
+);
+>>>>>>> Stashed changes

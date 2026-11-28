@@ -38,6 +38,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ├── CLAUDE.md, AGENTS.md, README.md   # protocole Claude, règles Next 16 (générées par next), présentation
 ├── memory/                           # mémoire partagée du projet
 ├── pitch/                            # diapos du pitch en LaTeX Beamer (sharewood.tex, images/, PDF) ; voir pitch/README.md
+├── scripts/import_sources.mjs        # vraies informations (OpenAgenda, Aides Jeunes, magasins) → supabase/import_sources.sql ; `--intermarche` après vérification de la page officielle
 ├── docs/ALGORITHMES.md               # explication (équipe + jury) du classement des offres et de la fiabilité
 ├── supabase/schema.sql               # schéma complet (tables, triggers, RLS, GRANT) pour un projet neuf
 ├── supabase/migrations/              # modifs à appliquer sur la BDD existante (NNN_nom.sql)
@@ -163,6 +164,8 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - Vue `user_contributions` : contributions (bons plans + votes) par utilisateur et catégorie, `count_7d` / `count_30d`
 - Fonctions RPC : `is_merchant()` (`has_full_access()` et `active_users_in_zone` supprimées par 018)
 - Lecture des offres : ouverte à tous les comptes connectés (018) ; un re-vote rafraîchit `votes.created_at` (trigger).
+
+- **Sources officielles (024)** : `deals.source_name` / `source_checked_at` (non écrivables par l'app ; lien obligatoire) → badge « Source officielle ». Offres importées par le compte technique `sources@example.com` (créé par le script, effacé par `reset_demo.sql`), `is_official` faux.
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
 - **Fiabilité façon Waze (tâche 33)** : masse d'une réaction = poids de l'étudiant × 0,5^(âge / 48 h), un « Plus dispo » postérieur à la dernière confirmation × 1,5. Score = (masse des « J'en ai profité » + 0,5) / (masse totale + 1) : sans réaction récente il redescend vers 0,5 (« À vérifier »). Affiché en couleur (`TRUST_LEVELS`, `TrustBadge`) : vert foncé ≥ 0,85 · vert clair ≥ 0,65 · jaune ≥ 0,4 · rouge · « Nouveau » sans réaction. La fiabilité ne masque plus rien : une offre est **masquée** si 3 étudiants la signalent « Plus dispo » (archivée, `ARCHIVE_REPORTS`), si elle est retirée ou expirée.

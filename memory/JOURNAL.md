@@ -496,3 +496,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 01h48 — Sacha (retrait des offres, tâche 69)
 - Migration `023_doubtful_deals.sql` (+ `schema.sql`) ; `rules.ts`, `useDeals`, `useDealReactions`, `engagement.ts`, `arrows.ts`, `DealSheet`, `MyDealCard`, `OfferCard`, aide, `seed_arrows.sql` (covoiturage « Douteux » à 5 signalements, le 6e la retire) ; README, algorithmes, mémoire.
 - Vérifié : tsc, lint (1 avertissement connu), build ; 156 contrôles sur Postgres local + scénario de démo ; 11 contrôles dans Chrome avec un faux Supabase. **Pas essayé sur la vraie base ni sur téléphone ; non déployé.**
+
+### 2026-11-28 02h — Justin (vraies informations, tâche 65)
+- Nouveaux `scripts/import_sources.mjs`, `scripts/intermarche_stores.json`, `supabase/import_sources.sql`, `024_deal_source.sql` (+ `schema.sql`) ; `types.ts`, `AuthorBadge`, `DealSheet`.
+- Vérifié : tsc + lint (1 avertissement connu) + build ; import sur Postgres local (2 passages, badge non attribuable par l'app ; variante Intermarché à 54 offres). **Migration et import pas lancés sur la vraie base** ; badge pas vu à l'écran ; offres non relues une à une.

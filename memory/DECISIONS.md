@@ -445,3 +445,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : pas de tâche planifiée, les échéances sont traitées au chargement de l'application ; retrait définitif ; aucun gain sur une offre retirée.
 - **Écartés** : sauvetage par une seule confirmation ou par un favori ; effacement définitif.
 - **Qui** : Sacha (réponses aux questions de cadrage)
+
+## 2026-11-28 02h — Vraies informations (tâche 65)
+- **Décision** : import par script vers un fichier SQL relu puis lancé à la main ; sources : événements OpenAgenda (gratuits ou étudiants, 15 km de Bruz, 60 jours) et 15 aides choisies d'Aides Jeunes ; badge « Source officielle » (migration 024). Enseignes : seulement les offres vérifiées, sur les magasins proches.
+- **Écartés** : affichage en direct ; recopie de catalogues ; offres tirées de sites de bons plans ; généraliser une offre locale de McDonald's ; restos U (non retenus).
+- **Qui** : Justin (réponses aux questions de cadrage)

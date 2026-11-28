@@ -192,6 +192,13 @@ export default function DealSheet({
             <OfferLink href={deal.link_url} large />
           </div>
         )}
+        {deal.source_name && (
+          <p className="mt-2 text-xs text-[var(--color-muted)]">
+            Source : {deal.source_name}
+            {deal.source_checked_at && `, vérifiée le ${formatDate(deal.source_checked_at)}`}. Conditions à confirmer sur la page de
+            la source.
+          </p>
+        )}
 
         {trust && data && (
           <div className="mt-4 rounded-2xl p-3" style={{ backgroundColor: "var(--color-paper)" }}>

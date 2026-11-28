@@ -31,6 +31,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **023_doubtful_deals.sql à exécuter** (Sacha, après 022) : « Douteux » puis retrait des offres signalées. Relancer 023 si 016, 018 ou 020 sont relancées. **Obligatoire avant `seed_arrows.sql`.**
 - Migration **024** réservée par Justin (tâche 65). Prochaine : **025** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
+- ⏳ **024_deal_source.sql à exécuter** (Justin) : badge « Source officielle » ; puis `import_sources.sql`, et de nouveau après chaque `reset_demo.sql`.
+
 ## Équipe (domaines actuels)
 | Membre | Domaine |
 |---|---|
@@ -127,7 +129,7 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
 | 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | Remplacée par la tâche 68 (« étudiants aidés », personnes uniques) |
 | 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin / Sacha) : en-tête conservé (pseudo modifiable) ; impact, grade et Flèches, raccourcis retirés (Sacha, 28/11) |
-| 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | EN COURS (Justin) : import par script (événements OpenAgenda, aides Aides Jeunes, magasins Intermarché), badge « Source officielle », migration **024**. Touche `types.ts`, `AuthorBadge`, `DealSheet`, confidentialité |
+| 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | À TESTER (Justin) : ⏳ **lancer `024_deal_source.sql` puis `import_sources.sql`** (30 événements, 15 aides). **Intermarché en attente** : la page officielle refuse la lecture automatique ; la vérifier au navigateur puis `node scripts/import_sources.mjs --intermarche`. Burger King, Auchan, McDonald's, Carrefour, Super U non publiés (non confirmés) |
 | 66 | **« J'y suis allé » devient « J'en ai profité »** (boutons, fiche, Ciblés, stats commerçant, confidentialité, info-bulle, README, doc, commentaires) | P | Matteo | FAIT (Matteo) : libellé seulement (vote +1 et passage inchangés) ; historique (JOURNAL, DECISIONS) et anciennes migrations non réécrits |
 | 67 | **Accueil : filtres à la place des onglets** : puces Pour toi · Mes favoris · chaque catégorie (plusieurs catégories combinables) ; remplace les 5 onglets de la tâche 56 (**Sacha**) | P | Matteo | À TESTER (Matteo) : `app/page.tsx` seulement ; pas vu dans le navigateur ; « Mes favoris » ne montre que les offres encore visibles (les expirées restent dans « Ciblés ») |
 | 68 | **Refonte du Profil** : étudiants aidés, parrainage, menu de réglages groupé, boutons « Y aller » / « Partager » dans la fiche (migration **022**) | G | Sacha | À TESTER (Sacha) : ⏳ **lancer `022_profile_impact_referral.sql`**, puis `seed_arrows.sql` (données de démo de sarah : 42 aidés, 3 amis, ENSAI) ; notifications « bientôt » ; « précisions sur une offre » non faites |
