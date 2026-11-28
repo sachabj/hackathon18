@@ -43,6 +43,7 @@ export default function Page() {
           <li><strong>« Y aller » touché et liens partagés ouverts</strong> (offre, date, comptes concernés) : compter les étudiants que chacun a aidés.</li>
           <li><strong>Parrainage</strong> : ton code, qui t&apos;a invité ou qui tu as invité, et la date de la première action : verser les Flèches.</li>
           <li><strong>Messages à l&apos;équipe</strong> (aide, bug) : les traiter.</li>
+          <li><strong>Bons plans que tu signales</strong> (offre, motif, précisions, date) : permettre à l&apos;équipe de retirer les offres trompeuses ou inappropriées, et ne plus te les montrer. L&apos;auteur de l&apos;offre ne sait pas qui l&apos;a signalée.</li>
           <li><strong>Utilisation de l&apos;assistant</strong> (nombre d&apos;analyses par jour) : la limiter à {AI_DAILY_LIMIT} par jour et par compte. Toi seul peux la lire.</li>
           <li><strong>Ta localisation</strong>, avec ton accord seulement : détail dans la partie qui suit.</li>
           <li><strong>Ton choix sur la localisation</strong> (accepté ou refusé, date, version du texte) : le respecter et pouvoir le prouver.</li>

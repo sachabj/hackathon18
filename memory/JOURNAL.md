@@ -584,3 +584,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h04 — Justin (déploiement)
 - 028 et `seed_arrows.sql` lancés par Justin (028 vérifiée par sonde). `a26b7ec` en ligne (tâches 70, 77, 78). Vérifié : tsc, lint, build ; pages publiques, redirections, confidentialité à jour. Pages connectées non vues.
+
+### 2026-11-28 — Matteo (signaler un bon plan, tâche 71)
+- Migration `029_deal_reports.sql` (+ `schema.sql`) ; `lib/reports.ts`, `components/deal/ReportDialog.tsx`, `FlagIcon` ; `DealSheet` (lien en bas, masquage à la fermeture), `useDeals`, `FavoritesPanel`, export des données (`account.ts`), politique de confidentialité, `en.ts` ; README, TASKS, ARCHITECTURE, DECISIONS.
+- Vérifié : tsc + lint + build ; 029 lancée deux fois sur un Postgres 12 local avec des tables minimales (signalement, doublon refusé, « Autre » sans texte refusé, sa propre offre refusée, lecture limitée à ses lignes, `user_id` non écrivable, limite de 20 par jour). **Pas vu dans le navigateur ; 029 à lancer sur la vraie base.**

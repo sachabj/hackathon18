@@ -500,3 +500,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix de Claude, à confirmer** : « cette semaine » = 7 derniers jours glissants (pas de remise à zéro le lundi) ; 10 écoles de Rennes et Bruz.
 - **Écartés** : texte libre regroupé ; total brut par école (les grandes universités gagneraient toujours) ; affichage dans le profil.
 - **Qui** : Justin (réponses aux questions de cadrage) ; idée de Matteo
+
+## 2026-11-28 — Signaler un bon plan (tâche 71)
+- **Décision** : lien discret « Signaler ce bon plan » en bas de la fiche, jamais sur ses offres ; motifs Arnaque · Inapproprié · Informations fausses · Doublon · Autre, précisions facultatives (obligatoires pour « Autre », 500 caractères) ; confirmation, puis l'offre disparaît partout pour cet utilisateur. Pas de seuil de masquage pour les autres, pas de Flèches, pas d'annulation pour l'instant.
+- **Choix techniques** : table `deal_reports` (029) lue par l'équipe dans Supabase ; secours `localStorage` par compte : si la base ne répond pas, l'offre reste masquée sur l'appareil et l'utilisateur est prévenu que l'envoi a échoué ; l'offre est retirée des listes à la fermeture de la fiche (la fiche vit dans la carte de la liste).
+- **Écartés** : réutiliser `support_messages` (pas lié à une offre) ; masquage sur l'appareil seulement (« signalement envoyé » aurait été faux) ; icône en haut de la fiche.
+- **Qui** : Matteo (réponses aux questions de cadrage)

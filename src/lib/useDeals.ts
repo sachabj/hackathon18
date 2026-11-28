@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { applyReactions, onReactions, settleDoubtfulDeals } from "./engagement";
 import { hotScore } from "./hot";
 import { normalizeDeal } from "./legacy";
+import { fetchReportedIds, onReported } from "./reports";
 import { isDealHidden } from "./rules";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import { withTrust } from "./trust";
@@ -20,6 +21,8 @@ export function useDeals() {
 
   // Réaction faite sur cette page (fil, carte ou fiche) : la liste la reprend aussitôt.
   useEffect(() => onReactions((change) => setDeals((list) => applyReactions(list, change))), []);
+  // Offre signalée (tâche 71) : elle disparaît aussitôt pour cet utilisateur.
+  useEffect(() => onReported((id) => setDeals((list) => list.filter((d) => d.id !== id))), []);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -29,8 +32,9 @@ export function useDeals() {
       const supabase = getSupabase();
       // Sans attendre : `isDealHidden` masque déjà les offres douteuses arrivées à échéance.
       settleDoubtfulDeals();
-      const [dealsResult] = await Promise.all([
+      const [dealsResult, reported] = await Promise.all([
         supabase.from("deals").select("*, votes(*)").order("created_at", { ascending: false }),
+        fetchReportedIds(), // offres que l'utilisateur a signalées : masquées pour lui (tâche 71)
         loadZones(), // noms des villes et distances
       ]);
       if (cancelled) return;
@@ -42,7 +46,7 @@ export function useDeals() {
         const rows = await withTrust(dealsResult.data as (DealWithVotes & { votes: Vote[] })[]);
         if (cancelled) return;
         const now = Date.now();
-        const visible = rows.filter((d) => !isDealHidden(d, d.votes, now)).map(normalizeDeal);
+        const visible = rows.filter((d) => !reported.has(d.id) && !isDealHidden(d, d.votes, now)).map(normalizeDeal);
         setDeals(visible);
         setHot(new Map(visible.map((d) => [d.id, hotScore(d, d.votes, now)])));
       }

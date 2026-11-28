@@ -10,6 +10,7 @@ import { CATEGORIES } from "@/lib/constants";
 import { applyReactions, onReactions } from "@/lib/engagement";
 import { normalizeDeal } from "@/lib/legacy";
 import { useCascade } from "@/lib/motion";
+import { fetchReportedIds, onReported } from "@/lib/reports";
 import { isDealHidden } from "@/lib/rules";
 import { withTrust } from "@/lib/trust";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
@@ -72,11 +73,15 @@ export default function FavoritesPanel() {
         return;
       }
       const supabase = getSupabase();
-      const { data, error } = await supabase.from("deals").select("*, votes(*)").in("id", [...favoriteIds]);
+      const [{ data, error }, reported] = await Promise.all([
+        supabase.from("deals").select("*, votes(*)").in("id", [...favoriteIds]),
+        fetchReportedIds(),
+      ]);
       if (cancelled) return;
       if (error) setError(error.message);
       else {
-        const rows = await withTrust((data ?? []) as DealWithVotes[]);
+        // Offres signalées par l'utilisateur (tâche 71) : masquées, même en favori.
+        const rows = await withTrust(((data ?? []) as DealWithVotes[]).filter((d) => !reported.has(d.id)));
         if (cancelled) return;
         setDeals(rows.map(normalizeDeal));
         setLoadedAt(Date.now());
@@ -89,6 +94,8 @@ export default function FavoritesPanel() {
       cancelled = true;
     };
   }, [favoriteIds, loadingFavorites]);
+
+  useEffect(() => onReported((id) => setDeals((list) => list.filter((d) => d.id !== id))), []);
 
   const ended = (d: DealWithVotes) => Number(isDealHidden(d, d.votes ?? [], loadedAt));
 

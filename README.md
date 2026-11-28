@@ -24,6 +24,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve (30 analyses par jour et par compte).
 - **Doublons** repérés avant la publication : « C'est la même offre » pour la confirmer, « Voir l'offre » pour y aller, ou « Voir mon bon plan » si c'est le sien.
 - **Réactions** « J'en ai profité » et « Plus dispo », annulables, impossibles sur ses propres offres.
+- **Signaler** une offre depuis sa fiche (arnaque, contenu inapproprié, informations fausses, doublon, autre, avec précisions) : elle disparaît aussitôt pour soi ; l'équipe lit les signalements dans la base (aucun retrait automatique pour les autres).
 
 ### Faire confiance
 - **Fiabilité façon Waze**, de « Douteux » à « Très fiable » : les avis récents et ceux des étudiants les plus justes et actifs pèsent davantage.

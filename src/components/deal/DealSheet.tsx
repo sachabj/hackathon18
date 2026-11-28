@@ -9,14 +9,16 @@ import CategoryIcon from "@/components/CategoryIcon";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import FavoriteButton from "@/components/deal/FavoriteButton";
 import ReactionBar from "@/components/deal/ReactionBar";
+import ReportDialog from "@/components/deal/ReportDialog";
 import ShareButton from "@/components/deal/ShareButton";
 import DealLocationNote from "@/components/location/DealLocationNote";
-import { CalendarIcon, CameraIcon, CloseIcon, NavigationIcon, PinIcon } from "@/components/icons";
+import { CalendarIcon, CameraIcon, CloseIcon, FlagIcon, NavigationIcon, PinIcon } from "@/components/icons";
 import { recordDirections } from "@/lib/community";
 import { CATEGORIES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { announceReactions, fetchEngagement, recordView, setReaction, type Engagement, type Reaction } from "@/lib/engagement";
 import { isOwnPhotoUrl } from "@/lib/photos";
+import { announceReported } from "@/lib/reports";
 import {
   activeReports,
   dealEndReason,
@@ -56,6 +58,9 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [zoom, setZoom] = useState(false);
+  /** Tâche 71 : fenêtre de signalement ouverte, puis signalement envoyé. */
+  const [reporting, setReporting] = useState(false);
+  const reported = useRef(false);
   const t = useT();
   useZones(); // noms des villes chargées après coup
   // Instant fixé à l'ouverture (pas de Date.now() pendant le rendu).
@@ -123,10 +128,20 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
   };
 
   useEffect(() => {
+    // Échap ferme d'abord la fenêtre de signalement (elle a son propre écouteur), pas la fiche.
+    if (reporting) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [close]);
+  }, [close, reporting]);
+
+  // Offre signalée : retirée des listes ouvertes une fois la fiche fermée (sinon la carte qui porte la fiche disparaîtrait avec elle).
+  useEffect(
+    () => () => {
+      if (reported.current) announceReported(dealId);
+    },
+    [dealId],
+  );
 
   async function act(action: () => Promise<void>) {
     setBusy(true);
@@ -351,6 +366,29 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
             </p>
             {!own && <DealLocationNote placed={placed} />}
           </div>
+        )}
+        {/* Tâche 71 : signaler (jamais sur son propre bon plan), discret sous les actions. */}
+        {data && !own && (
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setReporting(true)}
+              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-[var(--color-muted)] underline-offset-2 hover:underline"
+            >
+              <FlagIcon className="h-3.5 w-3.5" /> {t("Signaler ce bon plan")}
+            </button>
+          </div>
+        )}
+        {reporting && (
+          <ReportDialog
+            dealId={deal.id}
+            onCancel={() => setReporting(false)}
+            onDone={() => {
+              reported.current = true;
+              setReporting(false);
+              close();
+            }}
+          />
         )}
         {!data && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>}
         {error && (

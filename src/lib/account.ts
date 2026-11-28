@@ -92,6 +92,7 @@ export async function exportMyData() {
     ["friends_referred", "referrals", "referrer_id"],
     ["referred_by", "referrals", "referee_id"],
     ["support_messages", "support_messages", "user_id"],
+    ["deal_reports", "deal_reports", "user_id"],
     ["ai_usage", "ai_usage", "user_id"],
   ] as const;
   const results = await Promise.all(

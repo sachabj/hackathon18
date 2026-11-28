@@ -111,6 +111,10 @@ export function LogoutIcon({ className }: IconProps) {
 export function WarningIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M12 3 2 20h20L12 3Z" /><path d="M12 10v4" /><path d="M12 17h.01" /></Stroke>;
 }
+/** Drapeau : signaler un bon plan (tâche 71). */
+export function FlagIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M5 21V4" /><path d="M5 4h11l-2 4 2 4H5" /></Stroke>;
+}
 export function PinIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z" /><circle cx="12" cy="9.5" r="2.5" /></Stroke>;
 }
