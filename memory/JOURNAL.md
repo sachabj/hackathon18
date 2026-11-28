@@ -483,3 +483,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 01h28 — Sacha (demande de déploiement)
 - Vérifié : build d’un clone neuf de `main` (`e5f548a`) réussi ; sonde en lecture : migration 022 absente de la vraie base. Déploiement non lancé (poste de Justin) : demande notée dans `TASKS.md`.
+
+### 2026-11-28 01h31 — Justin (déploiement)
+- `cc37d6c` (refonte du profil, filtres d'accueil, zoom) mis en ligne sur https://sharewood-ensai.vercel.app ; objets de la 022 détectés (sonde en lecture). Vérifié : pages publiques et redirections ; connexion non essayée.

@@ -7,8 +7,8 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `a75ecf1`, 28/11 à 00h39** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo).
-- ⏳ **Redéploiement demandé par Sacha** (28/11 à 01h28) → **Justin** : `main` à partir de `e5f548a` (refonte du profil ; build d’un clone neuf réussi). Lancer d’abord `022_profile_impact_referral.sql` (**absente de la vraie base**, sonde en lecture) ; sans elle, étudiants aidés et parrainage restent masqués.
+- **Dernier déploiement : `cc37d6c`, 28/11 à 01h31** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo).
+- Redéploiement demandé par Sacha : **fait** (Justin, 01h31) ; migration 022 détectée sur la vraie base juste avant (sonde en lecture).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5` (limite Vercel atteinte, puis déploiement au push coupé).
 
 ## Base de données
@@ -26,7 +26,7 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **019_golden_badge_text.sql à exécuter** (Sacha) : texte du Badge Doré dans la boutique.
 - **020_location_rules.sql présente sur la vraie base** (sonde en lecture de Justin, 28/11) : Flèches seulement sur place ; obligatoire avant `seed_arrows.sql`. Relancer 020 si 016 ou 018 sont relancées.
 - **021_gone_on_site.sql exécutée** (Justin, 28/11, non vérifiable avec la clé publique) : « Plus dispo » seulement sur place.
-- ⏳ **022_profile_impact_referral.sql à exécuter** (Sacha, après 021) : étudiants aidés, parrainage, école, aide. Relancer 022 si 016 ou 018 sont relancées (elles remplacent la contrainte ou le trigger d'inscription). **Obligatoire avant `seed_arrows.sql`.**
+- **022_profile_impact_referral.sql présente sur la vraie base** (sonde du 28/11 à 01h31) (Sacha, après 021) : étudiants aidés, parrainage, école, aide. Relancer 022 si 016 ou 018 sont relancées (elles remplacent la contrainte ou le trigger d'inscription). **Obligatoire avant `seed_arrows.sql`.**
 - Messages « Aide et signaler un bug » : à lire dans Supabase → Table Editor → `support_messages`.
 - Prochaine migration : numéro **023** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
