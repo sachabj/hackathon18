@@ -509,3 +509,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 01h54 — Justin (déploiement)
 - `fe633ae` (badge Source officielle, retrait des offres) en ligne sur https://sharewood-ensai.vercel.app. Vérifié : pages publiques et redirections ; connexion et badge non vus.
+
+### 2026-11-28 — Matteo (idées retenues, sans code)
+- Brainstorming des fonctions manquantes ; retenues par Matteo : compétition entre écoles, signalement de contenu, alertes, manifest → tâches 70 à 73 (TODO, non cadrées) dans `TASKS.md`. Gain en euros écarté pour l'instant (prix réels inconnus). Aucun code modifié.
