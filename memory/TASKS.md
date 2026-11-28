@@ -58,6 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
+| 81 | Ciblés : « Choisis ton lieu d’études » ouvre Profil > Informations personnelles | — | EN COURS : touche `SchoolRanking` (Justin), `profil/page.tsx` | Sacha |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré, texte retravaillé pour ne plus couper « question »), diapo 3 avec 3 boucles vidéo intégrées au PDF (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | **PDF pas recompilé depuis les derniers changements de Claude** (aucun moteur LaTeX sur ce poste) ; vérifier le rendu diapo 1 et que les 3 boucles de la diapo 3 jouent **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
 
 ## 3. 📋 Reste à faire
