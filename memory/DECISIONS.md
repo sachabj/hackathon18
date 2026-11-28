@@ -554,3 +554,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : réduire plutôt que tout supprimer : 38 offres inventées gardées (14 de commerces fictifs, 24 « étudiants ») contre 137 ; mention « Exemple fictif » conservée.
 - **Écartés** : tout supprimer (restaurants et sport presque vides) ; retirer la mention « (démo) » (fausses offres présentées comme vraies).
 - **Qui** : Justin ; choix des offres gardées : Claude, à confirmer
+
+## 2026-11-28 — Tri « Plus proches » à l'accueil (tâche 79)
+- **Décisions** : puce cumulable (change seulement l'ordre) ; position du moment si l'accord est donné, sinon position enregistrée, sinon centre de la ville d'inscription ; offres sans lieu à la fin ; distance pure, sans priorité aux offres mises en avant.
+- **Choix de Claude, à confirmer** : la position n'est demandée qu'au premier appui (rien au chargement) ; au-delà de 500 m d'imprécision, la position enregistrée ou la ville sert de départ ; version de l'accord (`CONSENT_VERSION`) inchangée pour ne pas redemander l'accord à tous la veille de la démo, l'usage étant ajouté à la politique de confidentialité.
+- **Qui** : Matteo (réponses aux questions de cadrage)

@@ -845,4 +845,12 @@ export const EN: Record<string, string> = {
   "Étape précédente": "Previous step",
   "Compte et confidentialité": "Account and privacy",
   "Mot de passe, appareils, mes données, suppression": "Password, devices, my data, deletion",
+  // Accueil : tri « Plus proches » (tâche 79, Matteo)
+  "Plus proches": "Nearest",
+  "Recherche de ta position…": "Finding your location…",
+  "Du plus proche au plus loin de ta position.": "Nearest first, from your location.",
+  "Du plus proche au plus loin de ta position enregistrée.": "Nearest first, from your saved location.",
+  "Du plus proche au plus loin du centre de {place}.": "Nearest first, from the centre of {place}.",
+  "Active ta localisation ou choisis ta ville dans tes préférences pour trier par distance.":
+    "Turn on location or choose your city in your preferences to sort by distance.",
 };

@@ -26,7 +26,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Domaine | Ce qui est codé (tâches) | Qui | À essayer en vrai |
 |---|---|---|---|
 | Socle | Mémoire et git, stack, déploiement, base et droits (1 à 4) | Justin | en ligne |
-| Accueil | Puces « Pour toi », « Mes favoris » et catégories cumulables, sans formule d'accueil (26, 39, 67) | Sacha, Matteo | 67 pas vu dans un navigateur |
+| Accueil | Puces « Pour toi », « Mes favoris » et catégories cumulables, sans formule d'accueil ; puce « Plus proches » (position du moment, sinon enregistrée, sinon ville ; offres sans lieu à la fin, pas de priorité aux offres mises en avant) (26, 39, 67, 79) | Sacha, Matteo | 67 et 79 pas vus dans un navigateur |
 | Recherche | Fautes, pluriels, mots proches, filtres et tri, « pas cher » / « près de moi » ; offre touchée mise en avant sur la carte (34, 36) | Sacha, Anne-Lise | clavier du téléphone |
 | Carte | Position avec accord, repères, offres sponsorisées, recentrage, zoom + et − (5, 19, 23, 24, 61) | Justin | téléphone |
 | Cartes et fiche | Fiabilité en couleur, réactions directes, photo, lien, conditions, « Y aller », « Partager », badges Commerçant / Étudiant (28, 30, 35, 37, 38) | Matteo, Justin, Sacha | 35 et 38 pas vus dans un navigateur |
@@ -58,7 +58,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 79 | Accueil : puce « Plus proches » (GPS si accordé, sinon position enregistrée, sinon ville) | — | tout | EN COURS (Matteo) |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré), PDF recompilé le 28/11, vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) ; sur la diapo 1, « question » est coupé en fin de ligne | équipe |
 
 ## 3. 📋 Reste à faire

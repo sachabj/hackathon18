@@ -115,7 +115,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   └── map/                      # DealsMap.tsx (<DealsMap deals={...} selectedId?/>, centre et met en avant — `.wz-pin-selected` — l'offre choisie dans une liste de Recherche), BaseMap.tsx (fond + palette), DealsMapLoader.tsx (à importer) ; styles `.wz-*` dans globals.css
     └── app/
         ├── layout.tsx                # layout global (fr, NavBar)
-        ├── page.tsx                  # / accueil : puces « Pour toi », « Mes favoris » et catégories (Sacha, Matteo)
+        ├── page.tsx                  # / accueil : puces « Pour toi », « Mes favoris », « Plus proches » (tâche 79 : `currentPosition`, sinon position enregistrée, sinon centre de `home_zone_id`) et catégories (Sacha, Matteo)
         ├── recherche/page.tsx        # carte (Justin) + barre de recherche et filtres (Sacha, déplacés depuis l'accueil) + tri Hot (Matteo) ; pas de filtre par catégorie (retiré, tâche demandée par Anne-Lise)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)

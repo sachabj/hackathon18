@@ -1,22 +1,27 @@
 "use client";
 
 // Accueil : les offres et une rangée de filtres (tâche 67) : « Pour toi » ou « Mes favoris », et une ou plusieurs
-// catégories. La barre de recherche est sur la page Recherche (carte + toutes les offres).
+// catégories, et la puce « Plus proches » (tâche 79) qui trie du plus proche au plus loin. La barre de recherche est
+// sur la page Recherche (carte + toutes les offres).
 import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
 import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import DealCard from "@/components/feed/DealCard";
-import { HeartIcon, TargetIcon } from "@/components/icons";
+import { HeartIcon, NavigationIcon, TargetIcon } from "@/components/icons";
 import { APP_NAME, CATEGORIES } from "@/lib/constants";
+import { formatDistance, type Point } from "@/lib/geo";
+import { currentPosition } from "@/lib/location";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import type { DealCategory, DealWithVotes } from "@/lib/types";
 import { useCascade } from "@/lib/motion";
+import { dealDistance } from "@/lib/searchFilters";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
 import { useT } from "@/lib/i18n";
+import { zoneById } from "@/lib/zones";
 
 /** Filtre principal : « Pour toi », « Mes favoris », ou aucun (toutes les offres). */
 type Scope = "forYou" | "favorites" | null;
@@ -43,6 +48,11 @@ export default function Page() {
   const t = useT();
   const [scope, setScope] = useState<Scope>("forYou");
   const [categories, setCategories] = useState<DealCategory[]>([]);
+  // Tâche 79 : tri par distance, cumulable avec les autres filtres. Position du moment (avec l'accord seulement),
+  // demandée quand la puce est activée ; elle reste sur l'appareil.
+  const [nearest, setNearest] = useState(false);
+  const [gps, setGps] = useState<Point | null>(null);
+  const [locating, setLocating] = useState(false);
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   // Avec un profil : les plus compatibles d'abord. Sans : les plus récentes.
@@ -62,7 +72,39 @@ export default function Page() {
       : scope === "favorites"
         ? ranked.filter((r) => isFavorite(r.deal.id)).sort((a, b) => deadlineOf(a.deal) - deadlineOf(b.deal))
         : boostedFirst(ranked);
-  const items = categories.length > 0 ? base.filter((r) => categories.includes(r.deal.category)) : base;
+  const filtered = categories.length > 0 ? base.filter((r) => categories.includes(r.deal.category)) : base;
+
+  // Point de départ : position du moment, sinon position enregistrée, sinon centre de la ville d'inscription.
+  const saved = preferences?.lat != null && preferences.lng != null ? { lat: preferences.lat, lng: preferences.lng } : null;
+  const homeZone = zoneById(preferences?.home_zone_id);
+  const origin: Point | null = gps ?? saved ?? homeZone ?? null;
+  const items: Item[] =
+    nearest && origin
+      ? filtered
+          .map((item) => ({ item, km: dealDistance(item.deal, origin) }))
+          // Offres sans lieu (nationales, en ligne) à la fin ; offres mises en avant sans priorité ici.
+          .sort((a, b) => (a.km ?? Number.MAX_SAFE_INTEGER) - (b.km ?? Number.MAX_SAFE_INTEGER))
+          .map(({ item, km }) => {
+            if (km === null) return item;
+            const d = formatDistance(km);
+            const distance = gps || saved ? t("À {d} de toi", { d }) : t("À {d} de {place}", { d, place: homeZone?.name });
+            const match = item.match ?? { score: null, forYou: false, reasons: [], warnings: [], distance: null };
+            return { ...item, match: { ...match, distance } };
+          })
+      : filtered;
+
+  async function toggleNearest() {
+    if (nearest) {
+      setNearest(false);
+      return;
+    }
+    setNearest(true);
+    if (gps) return;
+    setLocating(true);
+    // Propose la fenêtre d'accord si l'utilisateur n'a jamais répondu ; refus ou position imprécise : la ville.
+    setGps(await currentPosition());
+    setLocating(false);
+  }
   const toggleCategory = (c: DealCategory) =>
     setCategories((list) => (list.includes(c) ? list.filter((x) => x !== c) : [...list, c]));
   const emptyMessage =
@@ -73,7 +115,7 @@ export default function Page() {
       : t("Aucun bon plan dans ces catégories pour le moment.");
   const busy = loading || loadingProfile;
   // Tâche 75 : cartes en cascade au chargement et à chaque changement de filtre.
-  const cascade = useCascade<HTMLDivElement>(`${busy}|${scope}|${categories.join(",")}`);
+  const cascade = useCascade<HTMLDivElement>(`${busy}|${scope}|${categories.join(",")}|${nearest && !!origin}|${!!gps}`);
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col md:max-w-3xl lg:max-w-6xl lg:pb-8">
@@ -115,6 +157,9 @@ export default function Page() {
             <FilterChip selected={scope === "favorites"} onClick={() => setScope(scope === "favorites" ? null : "favorites")}>
               <HeartIcon className="h-4 w-4" filled={scope === "favorites"} /> {t("Mes favoris")}
             </FilterChip>
+            <FilterChip selected={nearest} onClick={toggleNearest}>
+              <NavigationIcon className="h-4 w-4" /> {t("Plus proches")}
+            </FilterChip>
             <span aria-hidden className="w-px shrink-0 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
             {CATEGORY_IDS.map((c) => (
               <FilterChip key={c} selected={categories.includes(c)} onClick={() => toggleCategory(c)}>
@@ -122,6 +167,20 @@ export default function Page() {
               </FilterChip>
             ))}
           </div>
+
+          {nearest && !busy && (
+            <p role="status" className="pt-2 text-xs text-[var(--color-muted)]">
+              {locating
+                ? t("Recherche de ta position…")
+                : gps
+                  ? t("Du plus proche au plus loin de ta position.")
+                  : saved
+                    ? t("Du plus proche au plus loin de ta position enregistrée.")
+                    : homeZone
+                      ? t("Du plus proche au plus loin du centre de {place}.", { place: homeZone.name })
+                      : t("Active ta localisation ou choisis ta ville dans tes préférences pour trier par distance.")}
+            </p>
+          )}
 
           <div ref={cascade} role="region" aria-label={t("Bons plans")} className="space-y-3 pt-3">
             {busy ? (

@@ -655,3 +655,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Justin (moins d'offres inventées)
 - Nouveau `supabase/reduce_demo.sql`, inclus par `scripts/build_demo_sql.mjs` après le reset ; README, mémoire. `demo_complet.local.sql` régénéré.
 - Base de test : 107 offres dont 38 inventées (avant : 206 dont 137) ; Flèches des six comptes de démo, covoiturage « Douteux », 12 commerçants et 2 offres sponsorisées inchangés ; une ligne d'historique de plus sans offre liée. **Pas lancé sur la vraie base.**
+
+### 2026-11-28 — Matteo (tri par distance à l'accueil, tâche 79)
+- Puce « Plus proches » sur l'accueil, cumulable avec « Pour toi », « Mes favoris » et les catégories : position du moment (fenêtre d'accord proposée si jamais répondu), sinon position enregistrée, sinon centre de la ville d'inscription ; offres sans lieu à la fin ; distance affichée sur chaque carte ; ligne d'explication sous les puces.
+- Fichiers : `src/app/page.tsx`, `src/lib/en.ts`, `src/app/confidentialite/page.tsx` (nouvel usage de la position), README, mémoire. Types, lint et build passent ; pas vu dans un navigateur ni sur téléphone.
