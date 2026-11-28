@@ -30,6 +30,13 @@ let votes = [
 ];
 let balance = 335, earned = 485, n = 0;
 const favorites = new Set(["cine"]);
+const rewards = [
+  { id: "cafe", category: "local", title: "Café offert pour un sandwich acheté", partner: "Café des Halles (démo)", description: "Un café offert à l'achat d'un sandwich.", cost: 40, effect: null, active: true, sort: 1 },
+  { id: "menu", category: "local", title: "Menu étudiant à 6,50 €", partner: "Snack du Campus (démo)", description: "Burger, frites et boisson.", cost: 90, effect: null, active: true, sort: 2 },
+  { id: "raffle", category: "raffle", title: "Ticket de tombola", partner: "ShareWood", description: "Un ticket pour le tirage de la semaine.", cost: 60, effect: null, active: true, sort: 3 },
+  { id: "early", category: "app", title: "Accès Avant-Première", partner: "ShareWood", description: "Vois les offres flash 1 h avant les autres.", cost: 150, effect: "early_access", active: true, sort: 4 },
+];
+const ownedRewards = [{ id: "ur1", reward_id: "cafe", cost: 40, code: "SW-DEMO01", created_at: h(30), used_at: null, drawn_at: null, won: null }];
 const profile = { id: uid, username: "Sarah", role: "student", followed_categories: ["restaurant", "activity", "supermarket"], followed_zone_ids: ["bruz"], onboarded: true, created_at: "2026-09-01T10:00:00Z", privacy_accepted_at: "2026-09-01T10:00:00Z" };
 const prefs = { user_id: uid, home_zone_id: "bruz", transport_modes: ["bike", "walk"], budget_profile: "tight", activities: ["cinema", "swimming"], travel_modes: [], home_visits: null, lat: null, lng: null, is_scholarship: null, has_carte_sortir: true, school: "ENSAI" };
 const withVotes = (x) => ({ ...x, votes: votes.filter((v) => v.deal_id === x.id) });
@@ -72,6 +79,8 @@ http.createServer((req, res) => {
       if (req.method === "DELETE") { favorites.delete(eq("deal_id")); return send(204); }
       return send(200, [...favorites].map((deal_id) => ({ deal_id })));
     }
+    if (p === "/rest/v1/rewards") return send(200, rewards);
+    if (p === "/rest/v1/user_rewards") return send(200, ownedRewards);
     if (p === "/rest/v1/profiles") return one(profile);
     if (p === "/rest/v1/preferences") return one(prefs);
     if (p === "/rest/v1/user_contributions") return send(200, [{ user_id: uid, category: "restaurant", count_7d: 4, count_30d: 9 }]);

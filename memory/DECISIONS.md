@@ -550,6 +550,13 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : fichier unique pour un projet neuf ; fichier combiné versionné (il contiendrait le mot de passe).
 - **Qui** : Justin
 
+## 2026-11-28 07h15 — Diapo 3 du pitch : 3 vidéos en boucle intégrées au PDF (tâche 15)
+- **Décision** : les 3 téléphones de la diapo « 3. DÉMONSTRATION » perdent leurs captures fixes (accueil / carte / fiche) au profit de 3 **boucles vidéo intégrées directement au PDF** (paquet LaTeX `animate`, macro `\phonevideo`) : recherche (carte **et** barre de recherche, à la suite, avec « J'en ai profité » et le cœur favori), partage d'un bon plan, page récompenses. Téléphones agrandis (246 px → 300 px).
+- **Pourquoi** : demande d'Anne-Lise (questions posées avant de coder) — préférence explicite pour des boucles intégrées plutôt que 3 fichiers `.mp4` à lancer à la main pendant l'oral.
+- **Limite connue et acceptée** : `\animategraphics` ne joue en boucle automatiquement **que dans Adobe Acrobat / Adobe Reader** ; dans Preview.app, Chrome, Firefox ou tout autre lecteur, seule la première image de chaque téléphone s'affiche (fixe). Limite expliquée à Anne-Lise, qui a choisi cette solution quand même, à condition qu'Acrobat Reader soit installé et le rendu testé avant la répétition (C4) — ajouté à `TASKS.md`.
+- **Repli gardé** : l'ancienne vidéo `pitch/demo-16x9.mp4` / `demo-telephone.mp4` (40 s, parcours différent) reste dans le dépôt comme solution de secours si Acrobat n'est pas disponible le jour J.
+- **Qui** : Anne-Lise
+
 ## 2026-11-28 — Moins d'offres inventées dans la démo
 - **Décision** : réduire plutôt que tout supprimer : 38 offres inventées gardées (14 de commerces fictifs, 24 « étudiants ») contre 137 ; mention « Exemple fictif » conservée.
 - **Écartés** : tout supprimer (restaurants et sport presque vides) ; retirer la mention « (démo) » (fausses offres présentées comme vraies).

@@ -665,3 +665,14 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 07h14 — Justin (déploiement)
 - `12a12a9` en ligne (icône pouce, tri « Plus proches » de Matteo). Vérifié : build Vercel, pages publiques et redirection. Pages connectées non vues.
+
+### 2026-11-28 07h15 — Anne-Lise (diapo 3 du pitch : 3 vidéos en boucle, tâche 15)
+- Question posée (CLAUDE.md) : qui tourne les vidéos, quel parcours pour le téléphone « recherche » (carte seule ou + barre de recherche), et comment les intégrer au PDF — réponses retenues : Claude tourne les 3 vidéos maintenant ; carte **et** barre de recherche à la suite ; boucles animées intégrées au PDF (paquet `animate`), malgré la limite qu'elles **n'autoplay que dans Adobe Acrobat/Reader** (acceptée en connaissance de cause, à vérifier avant C4).
+- `pitch/video/tournage3.mjs` (nouveau) : parcours scripté en 3 scènes (recherche carte+barre → « J'en ai profité » → cœur favori ; partager un bon plan ; page récompenses), sur la même base que `tournage.mjs` (faux Supabase `donnees-demo.mjs`, Chrome headless via CDP). Plusieurs allers-retours pour fiabiliser le script (repère tactile sur les marqueurs de carte avec réessai, sélecteur du cœur par `title` plutôt que par texte, bouton « Voir sur la carte » qui est en fait un lien `<a>` et non un `<button>`).
+- `pitch/video/donnees-demo.mjs` : ajout du catalogue de récompenses (`rewards`, `user_rewards`) nécessaire à la page « Ciblés » → onglet récompenses, absent jusqu'ici.
+- `pitch/video/rechantillonner.mjs` (nouveau) : ré-échantillonne les images brutes du screencast (rythme irrégulier) vers 8 images/s, plafonné à 110 images par scène, nommées pour le paquet `animate` (`pitch/images/anim{recherche,partager,recompenses}<n>.jpg`, ~17 Mo au total).
+- `pitch/video/tourner3.sh` (nouveau) : enchaîne l'enregistrement et le ré-échantillonnage, sur le modèle de `tourner.sh`.
+- `pitch/sharewood.tex` : `\usepackage{animate}`, nouvelle macro `\phonevideo` (comme `\phone` mais `\animategraphics`) ; diapo 3 réécrite avec des téléphones plus grands (246 px → 300 px) et les 3 boucles à la place des captures fixes (« 1 · Recherche », « 2 · Partager », « 3 · Récompenses ») ; note d'orateur mise à jour.
+- Après l'enregistrement, build reconfiguré avec les vraies variables d'environnement (`npm run build`) pour ne pas laisser le dépôt pointé vers le faux Supabase ; processus de tournage arrêtés.
+- `pitch/README.md` : section diapo 3 réécrite (boucles vidéo, avertissement Acrobat, repli avec l'ancienne vidéo `demo-16x9.mp4`/`demo-telephone.mp4` conservée, nouvelle commande `tourner3.sh`).
+- **PDF pas recompilé** (aucun moteur LaTeX sur ce poste) : à recompiler et à **ouvrir dans Adobe Acrobat Reader pour vérifier que les 3 boucles jouent** avant la répétition (C4).

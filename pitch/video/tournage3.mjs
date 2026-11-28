@@ -49,6 +49,14 @@ async function scroll(dy, x = 195, y = 500) {
 const byText = (sel, text) => `[...document.querySelectorAll(${JSON.stringify(sel)})].find(e => e.getClientRects().length && e.textContent.includes(${JSON.stringify(text)}))`;
 const card = (title) => `${byText("article", title)}?.querySelector("button")`;
 const marker = (title) => `document.querySelector(${JSON.stringify(`.leaflet-marker-icon[title="${title}"]`)})`;
+/** Toucher un repère, en réessayant si sa fenêtre ne s'ouvre pas du premier coup (carte encore en mouvement). */
+async function tapMarker(title, after = 900) {
+  for (let i = 0; i < 3; i++) {
+    await tap(marker(title), 300);
+    if (await waitFor(`!!document.querySelector(".leaflet-popup")`, 2500)) { await sleep(after); return; }
+  }
+  logs.push("fenêtre jamais ouverte : " + title);
+}
 
 /** Démarre l'enregistrement d'une scène dans son propre dossier. */
 function startScene(name) {
@@ -78,16 +86,17 @@ await send("Page.addScriptToEvaluateOnNewDocument", { source: `
     setTimeout(() => s.remove(), 600);
   };` });
 
-// Connexion, hors caméra.
+// Connexion, hors caméra (session déjà ouverte dans ce profil Chrome : on passe directement).
 await send("Page.navigate", { url: "http://localhost:3123/login" });
-await waitFor(`!!document.querySelector('input[type="email"]')`);
-await sleep(2000);
-for (let i = 0; i < 5 && (await run(`document.querySelector('input[type="email"]').value`)) !== "sarah@example.com"; i++) {
-  await run(`document.querySelector('input[type="email"]').focus()`); await send("Input.insertText", { text: "sarah@example.com" });
-  await run(`document.querySelector('input[type="password"]').focus()`); await send("Input.insertText", { text: "motdepasse" });
-  await sleep(500);
+await sleep(1500);
+if (await run(`!!document.querySelector('input[type="email"]')`)) {
+  for (let i = 0; i < 5 && (await run(`document.querySelector('input[type="email"]').value`)) !== "sarah@example.com"; i++) {
+    await run(`document.querySelector('input[type="email"]').focus()`); await send("Input.insertText", { text: "sarah@example.com" });
+    await run(`document.querySelector('input[type="password"]').focus()`); await send("Input.insertText", { text: "motdepasse" });
+    await sleep(500);
+  }
+  await run(`document.querySelector("form button:not([type])").click()`);
 }
-await run(`document.querySelector("form button:not([type])").click()`);
 await waitFor(`location.pathname === "/" && document.querySelectorAll("article").length >= 5`, 20000);
 await sleep(1500);
 await send("Page.startScreencast", { format: "jpeg", quality: 88, maxWidth: 780, maxHeight: 1688, everyNthFrame: 1 });
@@ -98,9 +107,10 @@ await send("Page.navigate", { url: "http://localhost:3123/recherche" });
 await waitFor(`document.querySelectorAll(".leaflet-marker-icon[title]").length >= 5`, 15000);
 await sleep(1200);
 startScene("recherche");
+await sleep(1200); // laisser la carte finir de se centrer avant le premier toucher
 // Par la carte : toucher un repère, puis le cœur dans sa fenêtre.
-await tap(marker("Menu étudiant à 6,50 €"), 1200);
-await tap(byText("button", "Ajouter aux favoris"), 1400);
+await tapMarker("Menu étudiant à 6,50 €", 1200);
+await tap(`document.querySelector('.leaflet-popup button[title="Ajouter aux favoris"], .leaflet-popup button[title="Retirer des favoris"]')`, 1400);
 await run(`document.querySelector(".leaflet-popup-close-button")?.click()`);
 await sleep(800);
 // Par la barre de recherche : chercher, toucher le résultat, le retrouver sur la carte, puis réagir.
@@ -109,8 +119,8 @@ await typeText("piscine");
 await run(`document.activeElement.blur()`);
 await sleep(1400);
 await tap(card("Piscine à 2,50 €"), 1600);
-await tap(marker("Piscine à 2,50 € avec la Carte Sortir"), 1200);
-await tap(byText("button", "J'en ai profité"), 300);
+await tapMarker("Piscine à 2,50 € avec la Carte Sortir", 1200);
+await tap(byText(".leaflet-popup button", "J'en ai profité"), 300);
 await waitFor(`document.body.innerText.includes("Flèches")`, 8000);
 await sleep(2400);
 endScene("recherche");
@@ -129,7 +139,7 @@ await tap(byText("form button", "Restaurants"), 900);
 await tap(byText("form button", "Publier le bon plan"), 300);
 await waitFor(`document.body.innerText.includes("Merci, bon plan publié")`, 10000);
 await sleep(1600);
-await tap(byText("button", "Voir sur la carte"), 2600);
+await tap(byText("a", "Voir sur la carte"), 2600);
 endScene("partager");
 
 // ============================== C. Récompenses (page « Ciblés ») ==============================
@@ -144,5 +154,5 @@ await scroll(-900); await sleep(1200);
 endScene("recompenses");
 
 await send("Page.stopScreencast");
-console.log("erreurs :", JSON.stringify(logs));
+console.log("erreurs :\n" + logs.join("\n"));
 ws.close();
