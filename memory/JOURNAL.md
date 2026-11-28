@@ -500,3 +500,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 02h — Justin (vraies informations, tâche 65)
 - Nouveaux `scripts/import_sources.mjs`, `scripts/intermarche_stores.json`, `supabase/import_sources.sql`, `024_deal_source.sql` (+ `schema.sql`) ; `types.ts`, `AuthorBadge`, `DealSheet`.
 - Vérifié : tsc + lint (1 avertissement connu) + build ; import sur Postgres local (2 passages, badge non attribuable par l'app ; variante Intermarché à 54 offres). **Migration et import pas lancés sur la vraie base** ; badge pas vu à l'écran ; offres non relues une à une.
+
+### 2026-11-28 02h — Justin (correctif schema.sql)
+- Le commit `b039747` contenait des marques de conflit dans `supabase/schema.sql` (fusion avec la 023 de Sacha) : retirées, les deux blocs gardés ; schéma rejoué sur Postgres local, 0 échec.
