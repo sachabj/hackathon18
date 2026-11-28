@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
+import FavoriteButton from "@/components/deal/FavoriteButton";
 import ReactionBar from "@/components/deal/ReactionBar";
 import ShareButton from "@/components/deal/ShareButton";
 import DealLocationNote from "@/components/location/DealLocationNote";
@@ -194,15 +195,18 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
           <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-muted)]">
             <CategoryIcon category={deal.category} size={22} /> {t(category.label)}
           </p>
-          <button
-            type="button"
-            onClick={close}
-            aria-label={t("Fermer")}
-            className="-mt-1 flex h-9 w-9 items-center justify-center rounded-full"
-            style={{ backgroundColor: "var(--color-paper)" }}
-          >
-            <CloseIcon className="h-4 w-4" />
-          </button>
+          <div className="-mt-1 flex gap-2">
+            <FavoriteButton dealId={deal.id} />
+            <button
+              type="button"
+              onClick={close}
+              aria-label={t("Fermer")}
+              className="flex h-9 w-9 items-center justify-center rounded-full"
+              style={{ backgroundColor: "var(--color-paper)" }}
+            >
+              <CloseIcon className="h-4 w-4" />
+            </button>
+          </div>
         </div>
         <AuthorBadge deal={deal} className="mb-2" />
         <h2 className="text-xl leading-snug">{deal.title}</h2>

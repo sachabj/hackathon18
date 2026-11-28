@@ -16,7 +16,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Partout en France** : à l'inscription, n'importe quelle ville (recherche ou « Me localiser »), plus jusqu'à 4 villes suivies ; la Carte Sortir n'est proposée qu'autour de Rennes.
 - **En français ou en anglais** : choix sur la connexion et dans le profil (par défaut, la langue du navigateur) ; les offres restent dans leur langue.
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
-- **Favoris** pour garder une offre sous la main ; une offre terminée y reste, marquée « Terminée ».
+- **Favoris** pour garder une offre sous la main (cœur sur les cartes, dans la fenêtre d'un repère et dans la fiche) ; une offre terminée y reste, marquée « Terminée ».
 - **Sources officielles** : événements gratuits ou étudiants (OpenAgenda) et aides aux étudiants (Aides Jeunes), signalés par un badge, avec leur lien et la date de vérification.
 
 ### Partager et vérifier

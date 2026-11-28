@@ -565,3 +565,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 04h30 — Justin (base de démo et essai)
 - Faits par Justin : migration 027 (vérifiée par sonde : `ensure_zone` existe ; la sonde de 04h16 qui la disait absente appelait la fonction sans paramètres), C1 (reset_demo, seed_arrows, import_sources sur la vraie base), C3 (essai complet sur téléphone). Retirés de « Reste à faire ».
+
+### 2026-11-28 04h50 — Justin (cœur sur la carte, tâche 77)
+- Cœur des favoris ajouté dans la fenêtre d'un repère (`DealsMap`) et dans la fiche (`DealSheet`) : nouveau `components/deal/FavoriteButton.tsx` ; `useFavorites` prévient toutes ses instances (cœurs, listes, « Ciblés ») à chaque ajout ou retrait. Vérifié : tsc, lint, build, navigateur sans écran (5 contrôles). Pas sur téléphone.

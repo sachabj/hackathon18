@@ -7,6 +7,7 @@ import { Circle, MapContainer, Marker, Popup } from "react-leaflet";
 import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon, { categoryIconSvg } from "@/components/CategoryIcon";
 import { PinIcon, SparklesIcon } from "@/components/icons";
+import FavoriteButton from "@/components/deal/FavoriteButton";
 import QuickReactions from "@/components/deal/QuickReactions";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { recordView } from "@/lib/engagement";
@@ -243,7 +244,10 @@ export default function DealsMap({
                         <SparklesIcon className="h-3.5 w-3.5" /> {t("Sponsorisé")}
                       </span>
                     )}
-                    <strong className="text-base leading-tight">{d.title}</strong>
+                    <div className="flex items-start justify-between gap-2">
+                      <strong className="text-base leading-tight">{d.title}</strong>
+                      <FavoriteButton dealId={d.id} className="-mt-1" />
+                    </div>
                     {d.place_name && (
                       <span className="flex items-center gap-1 text-[var(--color-muted)]">
                         <PinIcon className="h-3 w-3" /> {d.place_name}

@@ -6,6 +6,11 @@ import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 
 const RETRY = "Vérifie ta connexion puis réessaie.";
 
+// Un cœur touché quelque part (fil, carte, fiche) : toutes les listes et tous les cœurs affichés suivent.
+const EVENT = "sharewood:favorite";
+type FavoriteChange = { dealId: string; favorite: boolean };
+const announceFavorite = (change: FavoriteChange) => window.dispatchEvent(new CustomEvent(EVENT, { detail: change }));
+
 /** Favoris de l'utilisateur connecté (table `favorites`), avec ajout/retrait optimiste. */
 export function useFavorites() {
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
@@ -29,19 +34,26 @@ export function useFavorites() {
     }
 
     load();
+    const onChange = (e: Event) => {
+      const { dealId, favorite } = (e as CustomEvent<FavoriteChange>).detail;
+      setFavoriteIds((prev) => {
+        if (prev.has(dealId) === favorite) return prev;
+        const next = new Set(prev);
+        if (favorite) next.add(dealId);
+        else next.delete(dealId);
+        return next;
+      });
+    };
+    window.addEventListener(EVENT, onChange);
     return () => {
       cancelled = true;
+      window.removeEventListener(EVENT, onChange);
     };
   }, []);
 
   async function toggleFavorite(dealId: string) {
     const wasFavorite = favoriteIds.has(dealId);
-    setFavoriteIds((prev) => {
-      const next = new Set(prev);
-      if (wasFavorite) next.delete(dealId);
-      else next.add(dealId);
-      return next;
-    });
+    announceFavorite({ dealId, favorite: !wasFavorite });
 
     const supabase = getSupabase();
     const { data } = await supabase.auth.getUser();
@@ -51,13 +63,8 @@ export function useFavorites() {
       : await supabase.from("favorites").insert({ deal_id: dealId, user_id: userId });
 
     if (error) {
-      // Retour en arrière si l'écriture échoue.
-      setFavoriteIds((prev) => {
-        const next = new Set(prev);
-        if (wasFavorite) next.add(dealId);
-        else next.delete(dealId);
-        return next;
-      });
+      // Retour en arrière si l'écriture échoue (partout).
+      announceFavorite({ dealId, favorite: wasFavorite });
       announce({ title: "Favori non enregistré", detail: RETRY, error: true });
     }
   }
