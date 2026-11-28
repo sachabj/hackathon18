@@ -4,20 +4,22 @@ import { useState } from "react";
 import { changePassword, signOutEverywhere } from "@/lib/account";
 import { PASSWORD_MIN } from "@/lib/constants";
 import { Feedback, inputClass, primaryClass, secondaryClass, Section, useAction } from "./ui";
+import { useT } from "@/lib/i18n";
 
 export default function SecuritySection({ email }: { email: string }) {
   const [current, setCurrent] = useState("");
   const [next, setNext] = useState("");
   const [repeat, setRepeat] = useState("");
+  const t = useT();
   const password = useAction();
   const sessions = useAction();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const done = await password.run(async () => {
-      if (next !== repeat) throw new Error("Les deux nouveaux mots de passe sont différents.");
+      if (next !== repeat) throw new Error(t("Les deux nouveaux mots de passe sont différents."));
       await changePassword(current, next);
-      return "Mot de passe changé. Tes autres appareils sont déconnectés.";
+      return t("Mot de passe changé. Tes autres appareils sont déconnectés.");
     });
     if (done) {
       setCurrent("");
@@ -32,27 +34,26 @@ export default function SecuritySection({ email }: { email: string }) {
         {/* Aide le gestionnaire de mots de passe à reconnaître le compte. */}
         <input type="email" autoComplete="username" value={email} readOnly hidden />
         <label className="block text-sm font-medium">
-          Mot de passe actuel
+          {t("Mot de passe actuel")}
           <input type="password" autoComplete="current-password" className={inputClass} value={current} onChange={(e) => setCurrent(e.target.value)} required />
         </label>
         <label className="block text-sm font-medium">
-          Nouveau mot de passe ({PASSWORD_MIN} caractères min.)
+          {t("Nouveau mot de passe ({n} caractères min.)", { n: PASSWORD_MIN })}
           <input type="password" autoComplete="new-password" minLength={PASSWORD_MIN} className={inputClass} value={next} onChange={(e) => setNext(e.target.value)} required />
         </label>
         <label className="block text-sm font-medium">
-          Répète le nouveau mot de passe
+          {t("Répète le nouveau mot de passe")}
           <input type="password" autoComplete="new-password" minLength={PASSWORD_MIN} className={inputClass} value={repeat} onChange={(e) => setRepeat(e.target.value)} required />
         </label>
         <Feedback message={password.message} />
         <button disabled={password.busy} className={primaryClass}>
-          {password.busy ? "Vérification…" : "Changer le mot de passe"}
+          {password.busy ? t("Vérification…") : t("Changer le mot de passe")}
         </button>
       </form>
 
       <div className="space-y-2 pt-3" style={{ borderTop: "1px solid var(--color-border)" }}>
         <p className="text-sm text-[var(--color-muted)]">
-          Téléphone perdu ou ordinateur partagé ? Déconnecte tous les appareils, celui-ci compris. Les autres
-          peuvent rester connectés jusqu&apos;à une heure.
+          {t("Téléphone perdu ou ordinateur partagé ? Déconnecte tous les appareils, celui-ci compris. Les autres peuvent rester connectés jusqu'à une heure.")}
         </p>
         <Feedback message={sessions.message} />
         <button
@@ -68,7 +69,7 @@ export default function SecuritySection({ email }: { email: string }) {
             })
           }
         >
-          Déconnecter tous les appareils
+          {t("Déconnecter tous les appareils")}
         </button>
       </div>
     </Section>

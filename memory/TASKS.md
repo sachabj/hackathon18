@@ -33,7 +33,8 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Cartes et fiche | Fiabilité en couleur, réactions directes, photo, lien, conditions, « Y aller », « Partager », badges Commerçant / Étudiant (28, 30, 35, 37, 38) | Matteo, Justin, Sacha | 35 et 38 pas vus dans un navigateur |
 | Publication | Lieu via Photon, saisie rapide, photo ou texte → formulaire (Gemini ou Claude), photo de preuve, doublons sans IA (6, 27, 45) | Matteo, Justin | publication et Gemini essayés (Matteo) ; photo affichée, appareil photo, nouvel écran avec la vraie IA |
 | Réactions et fiabilité | « J'en ai profité » / « Plus dispo », poids des étudiants, tri Hot, sur place à 500 m, « Douteux » puis retrait, jamais sur ses offres (7, 29, 32, 33, 51, 58, 66, 69) | Matteo, Sacha, Justin | 29, 33, 51, 69 |
-| Inscription | Me localiser ou pays → ville, transports, voyages, budget, bourse, Carte Sortir, priorités, « Pour toi » (9, 20, 21, 22) | Sacha, Justin | vraie base et téléphone |
+| Inscription | Me localiser ou recherche de **n'importe quelle ville de France** (+ 4 villes suivies), transports, voyages, budget, bourse, Carte Sortir (région rennaise seulement), priorités, « Pour toi » (9, 20, 21, 22, 52, 54) | Sacha, Justin | vraie base et téléphone ; **lancer 027** |
+| Langue | Français / anglais : parcours étudiant traduit (connexion, navigation, accueil, recherche, carte, fiche, publication, Ciblés, profil, localisation) ; choix au profil et sur la connexion, retenu sur l'appareil (50) | Sacha | téléphone |
 | Favoris | Par catégorie, dans « Ciblés » (8) | Anne-Lise | vraie base |
 | Ciblés | Flèches, grades, activité, mes bons plans, boutique et bons à QR code ; aucun accès limité (10, 17b, 42, 43, 44, 46, 47) | Sacha | testé en local seulement |
 | Profil | Étudiants aidés, parrainage, menu des réglages, localisation retirable, aide et bug (49, 64, 68) | Sacha, Justin | vraie base |
@@ -54,6 +55,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 65 | Vraies offres | script `scripts/import_sources.mjs`, `import_sources.sql` (54 offres), badge « Source officielle » | lancer l'import sur la vraie base ; Burger King, McDonald's, Carrefour, Super U, Auchan non publiés (non confirmés) | À TESTER (Justin) |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 2 corrigée le 28/11 | vidéo d'1 min maximum, répétition | À TESTER (Justin) |
 | 42 | Récompenses | boutique, échanges, bons | partenaires fictifs ; « Avant-Première » sans offre flash ; aucun tirage ; le commerçant ne peut pas vérifier un code | Sacha |
+| 50 | Anglais | parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, politique de confidentialité, messages d'erreur de la base | Sacha |
 | 68 | Notifications | section « bientôt », interrupteurs désactivés | aucune alerte envoyée ; « précisions sur une offre » non faites | Sacha |
 | 13 | Mise en avant | fonctionne (9,90 € / 7 jours) | paiement simulé ; statut de commerçant non vérifié | Justin |
 | 17a | Confidentialité | page à jour | contact **fictif** (`PRIVACY_CONTACT`) à remplacer avant une vraie mise en service | Sacha |
@@ -64,6 +66,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | # | Action | Qui |
 |---|---|---|
 | C1 | **Remplir la vraie base pour la démo** (SQL Editor, 3 scripts dans cet ordre) : 1) `supabase/reset_demo.local.sql` (copie de Justin, déjà remplie : ⚠️ efface tous les comptes sauf les 4 listés en haut, et toutes leurs offres ; crée 20 étudiants, 12 commerces fictifs, ~150 offres) ; 2) `seed_arrows.sql` (historique de Flèches, offres scénarisées) ; 3) `import_sources.sql` (54 vraies offres) | Justin |
+| C0 | **Lancer `027_any_city.sql`** (SQL Editor) : sans elle, une ville hors Bruz / Ker Lann / Rennes ne peut pas être choisie (message « base pas à jour ») | Sacha |
 | C1b | **Déployer** les tâches importantes (`e4bce40` et suivants) : demande de Justin | Justin |
 | C3 | **Essai complet en ligne, sur téléphone** (y compris les corrections D3 à D14 et les animations de la tâche 75) : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Vidéo du pitch** (1 min maximum) et répétition | EN COURS (Justin) : vidéo de démo filmée par Claude (données d'exemple locales, sans son) ; répétition : équipe |
@@ -74,10 +77,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|---|
 | 14 | Rappels de dates limites | M | TODO |
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
-| 50 | Application en anglais : textes écrits en français dans le code ; à décider : toute l'appli ou les pages principales | G | EN COURS (Sacha) : parcours étudiant en anglais, choix FR / EN (profil, connexion) |
-| 52 | N'importe quelle ville de France à la 1re connexion : zones en base, carte, « Pour toi », publication « Une ville » ; Photon possible ; migration | G | EN COURS (Sacha) : recherche de ville (Photon) + grandes villes, principale + 4 autres ; migration **027** réservée |
 | 53 | Nouvelles icônes (« emojis » demandés aussi, mais la règle actuelle est : aucun emoji) | P | TODO (Anne-Lise) |
-| 54 | « Tes aides » valables partout en France (la Carte Sortir est propre à Rennes) ; lié à 52 | M | EN COURS (Sacha) : Carte Sortir seulement pour la région rennaise |
 | 59 | Récompense de publication différée (délai et nombre d'étudiants à choisir) ; migration ; aujourd'hui +50 sur place, +20 sans lieu | M | TODO (Sacha) |
 | 70 | **Compétition entre écoles** : classement des écoles (Flèches cumulées ou par membre) ; `preferences.school` est un texte libre → liste d'écoles à prévoir ; RPC d'agrégat (migration) | M | TODO (idée retenue par Matteo, non cadrée) |
 | 71 | **Signaler un contenu** (arnaque, inapproprié, mauvaise info), distinct de « Plus dispo » : motifs, table (migration), seuil de masquage, lecture comme `support_messages` | M | TODO (idée retenue par Matteo, non cadrée) |
@@ -120,8 +120,8 @@ select
   pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026;
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
-- `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql`.
-- Migration **027** réservée par Sacha (tâche 52). Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
+- **027** (`027_any_city.sql`) à lancer : villes. Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Défauts
@@ -132,6 +132,7 @@ select
 - Les signalements ne périment pas : 3 anciens suffisent à rendre une offre « Douteux ».
 - **Démo** : loin de Bruz, pas de « Plus dispo » sur les offres de la carte ; pour montrer un gain sur place, être à moins de 500 m.
 - Distances et durées à vol d'oiseau.
+- Villes : le rayon vient de l'emprise de la commune (1,5 à 15 km) ; les offres « Une ville » d'une commune voisine ne sont pas vues. Les noms de villes ajoutées sont visibles par tous (20 nouvelles par compte et par jour).
 
 ### Dette technique (signalée, à ne pas toucher avant la démo)
 - Code de secours pour les migrations absentes (`lib/legacy.ts`, replis `PGRST202` ou colonne absente) : à retirer une fois la vraie base confirmée.
@@ -145,6 +146,8 @@ select
 - **README.md** : à mettre à jour dans le même commit à chaque changement visible.
 - **Algorithmes** (tri, compatibilité, Hot, recherche, fiabilité) : `docs/ALGORITHMES.md`, à mettre à jour avec chaque formule ou constante.
 - Toute nouvelle donnée ou tout nouveau service externe → `src/app/confidentialite/page.tsx`.
+- **Textes visibles** (tâche 50) : écrire en français dans `t("…")` (`useT()` dans un composant, `tr()` hors composant) et ajouter la traduction dans `src/lib/en.ts` (clé = texte exact). Un texte sans traduction reste en français. Dates : `dateLocale()`.
+- **Villes** (tâche 52) : `lib/zones.ts` (`zoneById`, `nearestZone`, `zoneAround`, `useZones`), jamais `ZONES.find` (seulement les 3 villes de la démo).
 - **Localisation** : toujours passer par `lib/location.ts` (`ensureLocationConsent` / `currentPosition`), jamais `navigator.geolocation` sans accord.
 - **Réactions** : passer par `setReaction` / `vote()` (`engagement.ts`, RPC `react_to_deal`) ; elles sont exclusives et décochables. Après une réaction, `announceReactions` ; toute liste d'offres l'écoute (`onReactions` + `applyReactions`).
 - **Fiabilité** : passer par `reliability()` / `dealTrustLevel()` (`rules.ts`) avec `deal.trust` (`withTrust()`). Offre terminée : `dealEndReason()` / `isDealHidden()`.

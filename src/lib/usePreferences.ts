@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchMyPreferences } from "./preferences";
 import { isSupabaseConfigured } from "./supabase/client";
+import { loadZones } from "./zones";
 
 type Data = Awaited<ReturnType<typeof fetchMyPreferences>>;
 
@@ -15,7 +16,9 @@ export function usePreferences() {
   useEffect(() => {
     if (!isSupabaseConfigured) return;
     let cancelled = false;
-    fetchMyPreferences()
+    // Villes chargées d'abord : noms et distances disponibles dès l'affichage.
+    Promise.all([fetchMyPreferences(), loadZones()])
+      .then(([result]) => result)
       .then((result) => {
         if (cancelled) return;
         setData(result);

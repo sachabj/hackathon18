@@ -10,6 +10,7 @@ import { announceReactions, fetchEngagement, setReaction, type Engagement, type 
 import { onNearby } from "@/lib/nearby";
 import { recentCounts } from "@/lib/rules";
 import type { Deal } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 
 export default function NearbyPrompt() {
   const [deal, setDeal] = useState<Deal | null>(null);
@@ -30,6 +31,7 @@ export default function NearbyPrompt() {
     [],
   );
 
+  const t = useT();
   if (!deal) return null;
   const close = () => setDeal(null);
   const myVote = data?.votes.find((v) => v.user_id === data.userId)?.value;
@@ -60,22 +62,22 @@ export default function NearbyPrompt() {
     <div className="pointer-events-none fixed inset-x-0 top-3 z-[2150] flex justify-center px-3 lg:top-20">
       <section
         role="alertdialog"
-        aria-label="Notification sur place"
+        aria-label={t("Notification sur place")}
         className="sw-card sw-toast pointer-events-auto w-full max-w-sm space-y-3 p-4 shadow-lg"
       >
         <div className="flex items-start gap-3">
           <BellIcon className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-forest)]" />
           <div className="min-w-0 flex-1">
-            <p className="sw-eyebrow">Notification (démo)</p>
+            <p className="sw-eyebrow">{t("Notification (démo)")}</p>
             <p className="flex items-center gap-1 text-sm text-[var(--color-muted)]">
-              <PinIcon className="h-3.5 w-3.5 shrink-0" /> Tu es près de {deal.place_name ?? "ce bon plan"}
+              <PinIcon className="h-3.5 w-3.5 shrink-0" /> {t("Tu es près de {place}", { place: deal.place_name ?? t("ce bon plan") })}
             </p>
-            <p className="mt-1 font-medium leading-snug">« {deal.title} » est toujours dispo{"\u00a0"}?</p>
+            <p className="mt-1 font-medium leading-snug">{t("« {title} » est toujours dispo ?", { title: deal.title })}</p>
           </div>
           <button
             type="button"
             onClick={close}
-            aria-label="Fermer la notification"
+            aria-label={t("Fermer la notification")}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
             style={{ backgroundColor: "var(--color-paper)" }}
           >
@@ -93,7 +95,7 @@ export default function NearbyPrompt() {
             placed={deal.lat !== null && deal.lng !== null}
           />
         ) : (
-          !error && <p className="text-sm text-[var(--color-muted)]">Chargement…</p>
+          !error && <p className="text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>
         )}
         {error && (
           <p role="alert" className="text-sm text-red-600">
@@ -101,9 +103,9 @@ export default function NearbyPrompt() {
           </p>
         )}
         <p className="text-xs text-[var(--color-muted)]">
-          Flèches et « Plus dispo » seulement si ta vraie position est à moins de 500 m.{" "}
+          {t("Flèches et « Plus dispo » seulement si ta vraie position est à moins de 500 m.")}{" "}
           <Link href="/publier" onClick={close} className="font-medium underline" style={{ color: "var(--color-forest)" }}>
-            Un autre bon plan ici ?
+            {t("Un autre bon plan ici ?")}
           </Link>
         </p>
       </section>

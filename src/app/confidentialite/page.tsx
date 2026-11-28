@@ -46,6 +46,7 @@ export default function Page() {
           <li><strong>Utilisation de l&apos;assistant</strong> (nombre d&apos;analyses par jour) : la limiter à {AI_DAILY_LIMIT} par jour et par compte. Toi seul peux la lire.</li>
           <li><strong>Ta localisation</strong>, avec ton accord seulement : détail dans la partie qui suit.</li>
           <li><strong>Ton choix sur la localisation</strong> (accepté ou refusé, date, version du texte) : le respecter et pouvoir le prouver.</li>
+          <li><strong>Villes que tu ajoutes</strong> (ville principale ou suivie) : elles deviennent des zones de l&apos;application, dont le nom et le centre sont visibles par tous ; ton compte est noté comme créateur pour limiter les abus.</li>
           <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager.</li>
           <li><strong>Votes, favoris, vues, « J&apos;en ai profité »</strong> : fiabilité des offres, tes favoris et ton niveau d&apos;activité.</li>
           <li><strong>Poids de tes réactions</strong>, calculé à partir de l&apos;ancienneté de ton compte, de ton activité sur 30 jours et de l&apos;accord de tes réactions avec celles des autres : rendre la fiabilité des offres plus juste. Il n&apos;est ni enregistré ni affiché.</li>
@@ -101,7 +102,7 @@ export default function Page() {
           <li><strong>Supabase</strong> : comptes, base de données et photos.</li>
           <li><strong>Vercel</strong> : hébergement du site. Comme Supabase, il peut garder des journaux techniques (dont l&apos;adresse IP).</li>
           <li><strong>Google (Gemini) ou Anthropic (Claude)</strong> : seulement dans « Partager », quand tu prends l&apos;offre en photo (envoyée dès que tu la choisis) ou fais analyser un texte : la photo et le texte fournis, pour remplir le formulaire. Rien n&apos;est envoyé à l&apos;IA quand tu publies.</li>
-          <li><strong>Photon (komoot)</strong> : le nom du magasin et la ville que tu recherches.</li>
+          <li><strong>Photon (komoot)</strong> : le nom du magasin et la ville que tu recherches ; avec « Me localiser », si ta commune n&apos;est pas déjà connue, ta position arrondie à environ 1 km pour la trouver.</li>
           <li><strong>Apple Plans ou Google Maps</strong> : seulement si tu touches « Y aller » sur une offre ; son emplacement leur est transmis et leur propre politique s&apos;applique.</li>
           <li><strong>OpenFreeMap et OpenStreetMap</strong> : fournissent le fond de carte et reçoivent à cette occasion ton adresse IP.</li>
         </ul>
@@ -119,7 +120,7 @@ export default function Page() {
 
       <Block title="Cookies et stockage sur ton appareil">
         <p>
-          Un cookie garde ta connexion, et ton navigateur mémorise quelques réglages d&apos;affichage (catégories
+          Un cookie garde ta connexion, et ton navigateur mémorise quelques réglages d&apos;affichage (langue, catégories
           repliées dans les favoris). Aucun cookie publicitaire ni outil de mesure d&apos;audience externe.
         </p>
       </Block>

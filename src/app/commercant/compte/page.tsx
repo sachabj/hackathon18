@@ -4,11 +4,13 @@
 import AccountLink from "@/components/account/AccountLink";
 import LogoutButton from "@/components/LogoutButton";
 import MerchantPage from "@/components/merchant/MerchantPage";
-import { CATEGORIES, ZONES } from "@/lib/constants";
+import { CATEGORIES } from "@/lib/constants";
 import { useDashboard } from "@/lib/useDashboard";
+import { useZones, zoneById } from "@/lib/zones";
 
 export default function Page() {
   const { data, error } = useDashboard();
+  useZones();
   const business = data?.business;
 
   return (
@@ -20,7 +22,7 @@ export default function Page() {
               ["Commerce", business.name],
               ["Activité", CATEGORIES[business.category].label],
               ["Adresse", business.address ?? "Non renseignée"],
-              ["Zone", ZONES.find((z) => z.id === business.zone_id)?.name ?? "—"],
+              ["Zone", zoneById(business.zone_id)?.name ?? "—"],
             ].map(([label, value]) => (
               <div key={label} className="flex gap-3 p-3 text-sm">
                 <dt className="w-24 shrink-0 text-[var(--color-muted)]">{label}</dt>

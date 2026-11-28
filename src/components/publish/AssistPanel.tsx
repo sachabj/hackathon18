@@ -7,6 +7,7 @@ import { useState } from "react";
 import { CameraIcon, EditIcon } from "@/components/icons";
 import { AssistUnavailable, extractFromInput, photoToJpeg } from "@/lib/ai/client";
 import type { AssistDraft } from "@/lib/ai/types";
+import { useT } from "@/lib/i18n";
 
 type Photo = Awaited<ReturnType<typeof photoToJpeg>>;
 
@@ -16,6 +17,7 @@ export default function AssistPanel({
 }: {
   onDraft: (draft: AssistDraft, photo: { data: string; preview: string } | null) => void;
 }) {
+  const t = useT();
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [showText, setShowText] = useState(false);
   const [text, setText] = useState("");
@@ -34,14 +36,14 @@ export default function AssistPanel({
       next = await photoToJpeg(file);
     } catch {
       setBusy(false);
-      return setMessage({ tone: "error", text: "Impossible de lire cette photo." });
+      return setMessage({ tone: "error", text: t("Impossible de lire cette photo.") });
     }
     setPhoto(next);
     await analyse(next);
   }
 
   async function analyse(photo: Photo | null) {
-    if (!photo && !text.trim()) return setMessage({ tone: "error", text: "Ajoute une photo ou un texte." });
+    if (!photo && !text.trim()) return setMessage({ tone: "error", text: t("Ajoute une photo ou un texte.") });
     setBusy(true);
     setMessage(null);
     setFailed(false);
@@ -51,13 +53,13 @@ export default function AssistPanel({
         image: photo ? { media_type: photo.media_type, data: photo.data } : undefined,
       });
       onDraft(draft, photo ? { data: photo.data, preview: photo.preview } : null);
-      const check = draft.confidence === "basse" ? "Lecture difficile : vérifie bien chaque champ." : "Vérifie les champs pré-remplis avant de publier.";
+      const check = draft.confidence === "basse" ? t("Lecture difficile : vérifie bien chaque champ.") : t("Vérifie les champs pré-remplis avant de publier.");
       setMessage({ tone: draft.confidence === "basse" ? "warn" : "ok", text: [check, draft.notes].filter(Boolean).join(" ") });
     } catch (e) {
       setFailed(true);
       setMessage({
         tone: "error",
-        text: e instanceof AssistUnavailable ? `${e.message} Remplis le formulaire à la main.` : (e as Error).message,
+        text: e instanceof AssistUnavailable ? `${t(e.message)} ${t("Remplis le formulaire à la main.")}` : (e as Error).message,
       });
     } finally {
       setBusy(false);
@@ -74,7 +76,7 @@ export default function AssistPanel({
           style={{ backgroundColor: "var(--color-aubergine)" }}
         >
           <CameraIcon className="h-5 w-5" />
-          {busy ? "Analyse en cours…" : photo ? "Reprendre la photo" : "Prendre l'offre en photo"}
+          {busy ? t("Analyse en cours…") : photo ? t("Reprendre la photo") : t("Prendre l'offre en photo")}
           <input
             type="file"
             accept="image/*"
@@ -94,17 +96,17 @@ export default function AssistPanel({
           className="flex shrink-0 items-center gap-1.5 rounded-2xl border px-3 text-sm font-medium active:scale-95"
           style={{ borderColor: "var(--color-aubergine)", backgroundColor: "var(--color-surface)", color: "var(--color-aubergine)" }}
         >
-          <EditIcon className="h-4 w-4" /> Texte
+          <EditIcon className="h-4 w-4" /> {t("Texte")}
         </button>
       </div>
       <p className="text-xs text-[var(--color-muted)]">
-        L&apos;IA remplit le formulaire : la photo ou le texte est envoyé à un service externe.{" "}
-        <Link href="/confidentialite" target="_blank" className="underline">Confidentialité</Link>
+        {t("L'IA remplit le formulaire : la photo ou le texte est envoyé à un service externe.")}{" "}
+        <Link href="/confidentialite" target="_blank" className="underline">{t("Confidentialité")}</Link>
       </p>
       {photo && (
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element -- aperçu local (data URL) */}
-          <img src={photo.preview} alt="Photo de l'offre" className="h-16 w-16 rounded-lg object-cover" />
+          <img src={photo.preview} alt={t("Photo de l'offre")} className="h-16 w-16 rounded-lg object-cover" />
           <button
             type="button"
             disabled={busy}
@@ -114,15 +116,15 @@ export default function AssistPanel({
             }}
             className="text-sm text-[var(--color-muted)] underline"
           >
-            Retirer
+            {t("Retirer")}
           </button>
         </div>
       )}
       {showText && (
         <textarea
           className="sw-field min-h-24 text-sm"
-          placeholder="Ex : « Chez Pizza Bruz, -30 % pour les étudiants le mardi soir jusqu'au 20 décembre »"
-          aria-label="Texte de l'offre"
+          placeholder={t("Ex : « Chez Pizza Bruz, -30 % pour les étudiants le mardi soir jusqu'au 20 décembre »")}
+          aria-label={t("Texte de l'offre")}
           maxLength={4000}
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -136,7 +138,7 @@ export default function AssistPanel({
           className="sw-btn-primary w-full py-2 text-sm"
           style={{ backgroundColor: "var(--color-aubergine)" }}
         >
-          {busy ? "Analyse en cours…" : failed ? "Réessayer" : "Analyser et pré-remplir"}
+          {busy ? t("Analyse en cours…") : failed ? t("Réessayer") : t("Analyser et pré-remplir")}
         </button>
       )}
       {message && <p className={`text-sm ${tone[message.tone]}`} role="status">{message.text}</p>}

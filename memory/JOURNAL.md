@@ -552,3 +552,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 04h10 — Justin (TASKS.md épuré)
 - Retirés de « Reste à faire » : C0, C0b, C2, l'encart « Important » (tout fait), la tâche 75 (codée, déplacée dans « Déjà fait ») ; liste des défauts corrigés retirée. Règle de `CLAUDE.md` précisée : « Reste à faire » ne contient que ce qui reste à faire.
+
+### 2026-11-28 04h10 — Sacha (anglais, toutes les villes, Carte Sortir : tâches 50, 52, 54)
+- Migration `027_any_city.sql` (+ `schema.sql`) ; `lib/zones.ts`, `lib/i18n.ts`, `lib/en.ts` (644 textes), `LangSwitch`, `LangSync`, `zones/CitySearch` ; ~45 fichiers du parcours étudiant passés par `t()` ; assistant (étape ville, Carte Sortir), publication « Une ville », carte, recherche, profil (« Langue »), connexion (FR / EN) ; confidentialité (Photon, villes, langue) ; en-tête de `seed_arrows.sql` recalé après la 026 ; README, mémoire.
+- Vérifié : tsc, lint, build ; Postgres local (dont 13 contrôles de la 027) et scénario de démo ; Chrome avec un faux Supabase : 25 contrôles en anglais et en français, aucun texte sans traduction sur les écrans visités, aucune erreur d’hydratation ; anciens tests profil et « Douteux » toujours bons. **Pas essayé sur la vraie base ni sur téléphone.**

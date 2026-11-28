@@ -11,7 +11,7 @@ import DealCard from "@/components/feed/DealCard";
 import SearchFilters from "@/components/feed/SearchFilters";
 import DealsMap from "@/components/map/DealsMapLoader";
 import { CloseIcon, SearchIcon } from "@/components/icons";
-import { APP_NAME, ZONES } from "@/lib/constants";
+import { APP_NAME } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { queryWords, searchDeals } from "@/lib/search";
@@ -28,6 +28,8 @@ import { useCascade } from "@/lib/motion";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
+import { zoneById } from "@/lib/zones";
+import { useT } from "@/lib/i18n";
 
 type Item = { deal: DealWithVotes; match?: Match };
 
@@ -35,6 +37,7 @@ export default function Page() {
   const { deals, loading, error, hot } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const t = useT();
   const [query, setQuery] = useState("");
   const searchInput = useRef<HTMLInputElement>(null);
   /** Filtres choisis à la main : ils l'emportent sur ceux déduits de la saisie. */
@@ -73,7 +76,7 @@ export default function Page() {
   const defaults = defaultFilters(me?.transportModes ?? []);
   const filters: Filters = { ...defaults, ...intents.filters, ...chosen };
   // Point de départ des trajets : la position enregistrée, sinon le centre de la zone principale.
-  const homeZone = ZONES.find((z) => z.id === me?.homeZoneId);
+  const homeZone = zoneById(me?.homeZoneId);
   const origin = me?.position ?? homeZone ?? null;
   const filtering =
     filters.price !== "any" ||
@@ -175,7 +178,7 @@ export default function Page() {
       </header>
 
       {/* Pas de formule d'accueil (« Bonjour … ») ; titre pour les lecteurs d'écran. */}
-      <h1 className="sr-only">Carte et recherche des bons plans</h1>
+      <h1 className="sr-only">{t("Carte et recherche des bons plans")}</h1>
 
       <div className="px-4 py-3 lg:col-start-1 lg:row-start-1">
         {profile && !profile.onboarded && (
@@ -184,9 +187,9 @@ export default function Page() {
             className="mb-3 block rounded-lg px-4 py-3"
             style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}
           >
-            <span className="block font-medium">Personnalise tes bons plans</span>
+            <span className="block font-medium">{t("Personnalise tes bons plans")}</span>
             <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
-              1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
+              {t("1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.")}
             </span>
           </Link>
         )}
@@ -201,8 +204,8 @@ export default function Page() {
               enterKeyHint="search"
               value={query}
               onChange={(e) => changeQuery(e.target.value)}
-              placeholder="Un bon plan, un lieu…"
-              aria-label="Rechercher un bon plan"
+              placeholder={t("Un bon plan, un lieu…")}
+              aria-label={t("Rechercher un bon plan")}
               // La croix native (absente de certains navigateurs) est remplacée par la nôtre.
               className="sw-field h-full [&::-webkit-search-cancel-button]:appearance-none"
               style={{ paddingLeft: "2.75rem", paddingRight: query ? "2.5rem" : undefined }}
@@ -211,8 +214,8 @@ export default function Page() {
               <button
                 type="button"
                 onClick={cancelSearch}
-                aria-label="Annuler la recherche"
-                title="Annuler la recherche"
+                aria-label={t("Annuler la recherche")}
+                title={t("Annuler la recherche")}
                 className="absolute right-0 top-0 flex h-full w-10 items-center justify-center text-[var(--color-muted)]"
               >
                 <CloseIcon className="h-4 w-4" />
@@ -221,7 +224,7 @@ export default function Page() {
           </div>
           {/* Coins identiques à ceux du champ (`.sw-btn-primary` l'emporte sur les classes Tailwind). */}
           <button type="submit" className="sw-btn-primary shrink-0 text-sm" style={{ borderRadius: 14, padding: "0 0.9rem" }}>
-            Rechercher
+            {t("Rechercher")}
           </button>
         </form>
 
@@ -234,7 +237,7 @@ export default function Page() {
       {sheet && <DealSheet deal={sheet} onClose={() => setSheet(null)} />}
 
       <section ref={cascade} className="px-4 py-4 lg:relative lg:col-start-1 lg:row-start-2 lg:overflow-y-auto lg:pt-1">
-        {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
+        {error && <p className="text-sm text-red-600">{t("Impossible de charger les bons plans :")} {error}</p>}
         {!error &&
           (results ? (
             !busy && (
@@ -242,28 +245,28 @@ export default function Page() {
                 <SearchFilters
                   filters={filters}
                   hasOrigin={origin !== null}
-                  originLabel={me?.position ? "ta position enregistrée" : `le centre de ${homeZone?.name}`}
+                  originLabel={me?.position ? t("ta position enregistrée") : t("le centre de {place}", { place: homeZone?.name })}
                   profileHref={me ? "/onboarding?etape=zone" : "/onboarding"}
                   onChange={(patch) => setChosen((c) => ({ ...c, ...patch }))}
                   // Tout remettre à zéro, y compris les filtres venus de la saisie.
                   onReset={filtering ? () => setChosen(defaults) : undefined}
                 />
                 <p role="status" className="text-sm text-[var(--color-muted)]">
-                  {found > 0 && `Sur la carte : ${mapDeals.length > 0 ? `${mapDeals.length} offre${mapDeals.length > 1 ? "s" : ""} trouvée${mapDeals.length > 1 ? "s" : ""}` : "aucune (offres sans lieu précis)"}. `}
+                  {found > 0 && t("Sur la carte : {what}. ", { what: mapDeals.length > 0 ? t(mapDeals.length > 1 ? "{n} offres trouvées" : "{n} offre trouvée", { n: mapDeals.length }) : t("aucune (offres sans lieu précis)") })}
                   {found === 0 && hiddenCount > 0
-                    ? `Aucun résultat avec ces filtres (${hiddenCount} sans eux).`
+                    ? t("Aucun résultat avec ces filtres ({n} sans eux).", { n: hiddenCount })
                     : results.exact.length > 0
-                      ? `${results.exact.length} résultat${results.exact.length > 1 ? "s" : ""} pour « ${query.trim()} »`
+                      ? t(results.exact.length > 1 ? "{n} résultats pour « {q} »" : "{n} résultat pour « {q} »", { n: results.exact.length, q: query.trim() })
                       : found > 0
                         ? matched!.exact.length > 0
-                          ? "Avec ces filtres, il ne reste que des résultats proches."
-                          : `Rien ne contient exactement « ${query.trim()} ».`
-                        : `Aucun bon plan ne correspond à « ${query.trim()} ».`}
+                          ? t("Avec ces filtres, il ne reste que des résultats proches.")
+                          : t("Rien ne contient exactement « {q} ».", { q: query.trim() })
+                        : t("Aucun bon plan ne correspond à « {q} ».", { q: query.trim() })}
                 </p>
                 {results.exact.length > 0 && list(results.exact)}
                 {results.close.length > 0 && (
                   <>
-                    <h2 className="pt-1 text-lg">Résultats proches</h2>
+                    <h2 className="pt-1 text-lg">{t("Résultats proches")}</h2>
                     {list(results.close)}
                   </>
                 )}
@@ -271,13 +274,13 @@ export default function Page() {
             )
           ) : (
             <>
-              <h2 className="text-lg">Fil des bons plans</h2>
+              <h2 className="text-lg">{t("Fil des bons plans")}</h2>
               <p role="status" className="mt-1 text-sm text-[var(--color-muted)]">
                 {busy
-                  ? "Chargement des bons plans…"
+                  ? t("Chargement des bons plans…")
                   : shown.length > 0
-                    ? `${shown.length} bon${shown.length > 1 ? "s" : ""} plan${shown.length > 1 ? "s" : ""}, dont ${mapDeals.length} sur la carte`
-                    : "Aucun bon plan pour le moment."}
+                    ? t(shown.length > 1 ? "{n} bons plans, dont {m} sur la carte" : "{n} bon plan, dont {m} sur la carte", { n: shown.length, m: mapDeals.length })
+                    : t("Aucun bon plan pour le moment.")}
               </p>
               {!busy && (
                 <div className="mt-3">

@@ -1,5 +1,6 @@
 import { CATEGORIES } from "@/lib/constants";
 import type { DealCategory } from "@/lib/types";
+import { tr } from "@/lib/i18n";
 
 const PATHS: Record<DealCategory, string> = {
   supermarket:
@@ -55,7 +56,7 @@ export default function CategoryIcon({
   return (
     <span
       role="img"
-      aria-label={label ?? CATEGORIES[category]?.label ?? category}
+      aria-label={label ?? tr(CATEGORIES[category]?.label ?? category)}
       className={`inline-flex shrink-0 items-center justify-center rounded-full ${className}`}
       style={{ width: size, height: size, backgroundColor: BG[category] }}
     >

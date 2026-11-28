@@ -10,6 +10,7 @@ import FavoritesPanel from "@/components/cibles/FavoritesPanel";
 import RewardsPanel from "@/components/rewards/RewardsPanel";
 import Tabs from "@/components/Tabs";
 import { APP_NAME } from "@/lib/constants";
+import { useT } from "@/lib/i18n";
 
 const TABS = [
   { id: "favoris", label: "Favoris" },
@@ -21,6 +22,7 @@ type TabId = (typeof TABS)[number]["id"];
 
 export default function Page() {
   const [tab, setTab] = useState<TabId>("favoris");
+  const t = useT();
 
   // Relu à chaque arrivée sur la page ; sans paramètre, l'onglet précédent reste ouvert.
   useEffect(() => {
@@ -42,11 +44,11 @@ export default function Page() {
         <ArrowBadge className="ml-auto" />
       </header>
 
-      <h1 className="sr-only">Ciblés</h1>
+      <h1 className="sr-only">{t("Ciblés")}</h1>
       <div className="space-y-4 pt-4 lg:grid lg:grid-cols-[22rem_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0 lg:pt-6">
         <ArrowsCard />
         <div>
-          <Tabs label="Ciblés" idPrefix="cibles" tabs={TABS} selected={tab} onSelect={setTab} />
+          <Tabs label={t("Ciblés")} idPrefix="cibles" tabs={TABS.map((x) => ({ ...x, label: t(x.label) }))} selected={tab} onSelect={setTab} />
           <div id="cibles-panel" role="tabpanel" aria-labelledby={`cibles-${tab}`} className="pt-3">
             {tab === "favoris" && <FavoritesPanel />}
             {tab === "activite" && <ActivityPanel />}

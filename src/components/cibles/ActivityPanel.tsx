@@ -11,13 +11,14 @@ import { fetchMyDeals } from "@/lib/engagement";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { UserContribution } from "@/lib/types";
 import { useMyArrows } from "@/lib/useMyArrows";
+import { tr } from "@/lib/i18n";
 
 async function fetchContributions() {
   const supabase = getSupabase();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) throw new Error("Session expirée : reconnecte-toi.");
+  if (!user) throw new Error(tr("Session expirée : reconnecte-toi."));
   const { data, error } = await supabase.from("user_contributions").select("*").eq("user_id", user.id);
   if (error) throw new Error(error.message);
   return data as UserContribution[];
@@ -80,7 +81,7 @@ export default function ActivityPanel() {
   return (
     <div className="space-y-4">
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
-      {(!contributions || !mine) && !error && <p className="text-sm text-[var(--color-muted)]">Chargement…</p>}
+      {(!contributions || !mine) && !error && <p className="text-sm text-[var(--color-muted)]">{tr("Chargement…")}</p>}
       {contributions && <ActivityCard contributions={contributions} />}
       {mine && <MyDeals mine={mine} gains={gains} busy={busy} act={act} />}
       {mine && log && <ArrowHistory lines={log.filter((l) => !onDeal(l))} todayVotes={arrows?.today_votes ?? null} />}

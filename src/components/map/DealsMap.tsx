@@ -15,6 +15,8 @@ import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
 import { useUserPosition } from "@/lib/useUserPosition";
 import DealSheet from "@/components/deal/DealSheet";
 import BaseMap from "./BaseMap";
+import { useZones, zoneById } from "@/lib/zones";
+import { dateLocale, useT } from "@/lib/i18n";
 
 /** Niveau de zoom « autour de moi » (quelques rues). */
 const USER_ZOOM = 16;
@@ -56,7 +58,7 @@ const USER_ICON = L.divIcon({
 });
 
 const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
 
 export default function DealsMap({
   deals,
@@ -75,9 +77,11 @@ export default function DealsMap({
   /** Recherche en cours : la carte se recadre sur les offres affichées (tâche 60). */
   fitResults?: boolean;
 }) {
+  const t = useT();
   const [map, setMap] = useState<L.Map | null>(null);
   const { position, error, retry, consent } = useUserPosition();
-  const home = ZONES.find((z) => z.id === homeZoneId);
+  useZones();
+  const home = zoneById(homeZoneId);
   const savedLat = savedPosition?.lat;
   const savedLng = savedPosition?.lng;
   const [visible, setVisible] = useState(false);
@@ -205,8 +209,8 @@ export default function DealsMap({
                 interactive={false}
                 pathOptions={{ stroke: false, color: "#1e3a2f", fillOpacity: 0.12 }}
               />
-              <Marker position={[position.lat, position.lng]} icon={USER_ICON} title="Tu es ici" zIndexOffset={1000}>
-                <Popup>Tu es ici</Popup>
+              <Marker position={[position.lat, position.lng]} icon={USER_ICON} title={t("Tu es ici")} zIndexOffset={1000}>
+                <Popup>{t("Tu es ici")}</Popup>
               </Marker>
             </>
           )}
@@ -230,13 +234,13 @@ export default function DealsMap({
                       className="sw-badge self-start"
                       style={{ backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }}
                     >
-                      <CategoryIcon category={d.category} size={16} /> {CATEGORIES[d.category].label}
+                      <CategoryIcon category={d.category} size={16} /> {t(CATEGORIES[d.category].label)}
                     </span>
                     <AuthorBadge deal={d} className="self-start" />
                     {isBoosted(d) && (
                       // Explique le repère au contour doré (sinon sans texte, on ne sait pas que c'est une mise en avant payante).
                       <span className="sw-badge self-start" style={{ backgroundColor: "#d4a017", color: "#1A1A18" }}>
-                        <SparklesIcon className="h-3.5 w-3.5" /> Sponsorisé
+                        <SparklesIcon className="h-3.5 w-3.5" /> {t("Sponsorisé")}
                       </span>
                     )}
                     <strong className="text-base leading-tight">{d.title}</strong>
@@ -246,7 +250,7 @@ export default function DealsMap({
                       </span>
                     )}
                     {d.expires_at && (
-                      <span className="text-xs text-[var(--color-muted)]">Jusqu&apos;au {formatDate(d.expires_at)}</span>
+                      <span className="text-xs text-[var(--color-muted)]">{t("Jusqu'au {date}", { date: formatDate(d.expires_at) })}</span>
                     )}
                     <div className="mt-1">
                       <QuickReactions deal={d} />
@@ -257,7 +261,7 @@ export default function DealsMap({
                       className="text-left text-sm font-medium"
                       style={{ color: "var(--color-forest)" }}
                     >
-                      Détails ›
+                      {t("Détails ›")}
                     </button>
                   </div>
                 </Popup>
@@ -277,14 +281,14 @@ export default function DealsMap({
         )}
         {consent !== null && consent !== "granted" && (
           <button type="button" onClick={retry} className="wz-glass rounded-full px-4 py-2 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
-            Position non partagée · Activer
+            {t("Position non partagée · Activer")}
           </button>
         )}
-        <div className="wz-glass flex flex-col overflow-hidden rounded-full" role="group" aria-label="Zoom de la carte">
+        <div className="wz-glass flex flex-col overflow-hidden rounded-full" role="group" aria-label={t("Zoom de la carte")}>
           {(
             [
-              { label: "Zoomer", sign: "+", run: () => map?.zoomIn(), off: zoom !== null && zoom >= (map?.getMaxZoom() ?? Infinity) },
-              { label: "Dézoomer", sign: "−", run: () => map?.zoomOut(), off: zoom !== null && zoom <= (map?.getMinZoom() ?? 0) },
+              { label: t("Zoomer"), sign: "+", run: () => map?.zoomIn(), off: zoom !== null && zoom >= (map?.getMaxZoom() ?? Infinity) },
+              { label: t("Dézoomer"), sign: "−", run: () => map?.zoomOut(), off: zoom !== null && zoom <= (map?.getMinZoom() ?? 0) },
             ] as const
           ).map((b, i) => (
             <button
@@ -304,8 +308,8 @@ export default function DealsMap({
         <button
           type="button"
           onClick={recenter}
-          aria-label="Revenir à ma localisation"
-          title="Revenir à ma localisation"
+          aria-label={t("Revenir à ma localisation")}
+          title={t("Revenir à ma localisation")}
           aria-pressed={centered}
           className={`wz-glass flex h-13 w-13 items-center justify-center rounded-full transition active:scale-95 ${consent === "granted" && !position && !error ? "animate-pulse" : ""}`}
           style={{ color: "var(--color-forest)" }}

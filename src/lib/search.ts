@@ -1,8 +1,9 @@
 // Recherche (page /recherche) : parmi les bons plans déjà chargés (la saisie n'est envoyée à aucun serveur).
 // Comprend les accents, les pluriels, les abréviations (SAME), les fautes de frappe et des mots proches (RELATED).
-import { ACTIVITIES, CATEGORIES, REQUIREMENTS, SUBCATEGORIES, ZONES } from "./constants";
+import { ACTIVITIES, CATEGORIES, REQUIREMENTS, SUBCATEGORIES } from "./constants";
 import { isBoosted } from "./merchant";
 import type { Deal } from "./types";
+import { zoneById } from "./zones";
 
 /** Façons d'écrire la même chose : trouver l'une compte comme un résultat exact. */
 const SAME = [
@@ -88,7 +89,7 @@ function typos(a: string, b: string) {
 
 /** Textes d'un bon plan et leur importance : le titre d'abord, puis le lieu, les étiquettes, la description. */
 function fields(deal: Deal) {
-  const zone = deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name;
+  const zone = deal.scope === "national" ? "Partout en France" : zoneById(deal.zone_id)?.name;
   const labels = [
     CATEGORIES[deal.category].label,
     deal.subcategory && SUBCATEGORIES[deal.subcategory].label,

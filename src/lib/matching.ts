@@ -1,5 +1,5 @@
 // Compatibilité entre un bon plan et le profil d'un étudiant (voir memory/ARCHITECTURE.md § Personnalisation).
-import { ACTIVITIES, CATEGORIES, ELIGIBILITY_CATEGORIES, TRANSPORT_MODES, ZONES } from "./constants";
+import { ACTIVITIES, CATEGORIES, ELIGIBILITY_CATEGORIES, TRANSPORT_MODES } from "./constants";
 import { distanceKm, formatDistance } from "./geo";
 import { knownCategories } from "./legacy";
 import type {
@@ -12,6 +12,8 @@ import type {
   Preferences,
   TransportMode,
 } from "./types";
+import { carteSortirArea, zoneById } from "./zones";
+import { tr } from "./i18n";
 
 /** Ce que le score utilise : catégories et zones (profiles) + préférences privées. */
 export interface StudentProfile {
@@ -83,7 +85,7 @@ function travelTime(km: number, modes: TransportMode[]) {
     (m) => modes.includes(m) && km <= TRANSPORT_MODES[m].reachKm,
   );
   if (!mode) return null;
-  return `≈ ${travelMinutes(km, mode)} min ${TRANSPORT_MODES[mode].by}`;
+  return tr("≈ {n} min {by}", { n: travelMinutes(km, mode), by: tr(TRANSPORT_MODES[mode].by) });
 }
 
 export interface Match {
@@ -110,9 +112,12 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
   // Conditions « Carte Sortir » / « Boursiers » : répondu non → jamais « Pour toi » ; oui → offre mise en avant.
   const requirements = deal.requirements ?? [];
   const rights = [
-    ...(requirements.includes("carte_sortir") ? [{ ok: me.hasCarteSortir, reason: "Avec ta Carte Sortir" }] : []),
+    // Carte Sortir : réservée aux environs de Rennes (tâche 54).
+    ...(requirements.includes("carte_sortir")
+      ? [{ ok: carteSortirArea(me) ? me.hasCarteSortir : false, reason: tr("Avec ta Carte Sortir") }]
+      : []),
     ...(requirements.includes("scholarship") && deal.category !== "scholarship"
-      ? [{ ok: me.isScholar, reason: "Tu es boursier" }]
+      ? [{ ok: me.isScholar, reason: tr("Tu es boursier") }]
       : []),
   ];
   const excluded = rights.some((r) => r.ok === false);
@@ -131,19 +136,19 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     const rankPoints = rank >= 0 ? WEIGHTS.category - 4 * Math.min(rank, 3) : 0;
     const travelPoints = travel && me.homeVisits ? TRAVEL_POINTS[me.homeVisits] : 0;
     earned += Math.max(rankPoints, travelPoints, eligible || entitled ? AID_POINTS : 0);
-    if (eligible) reasons.push("Tu es boursier");
+    if (eligible) reasons.push(tr("Tu es boursier"));
     if (entitled) reasons.push(...rights.map((r) => r.reason).filter((r) => !reasons.includes(r)));
-    if (travel) reasons.push("Pour tes voyages");
+    if (travel) reasons.push(tr("Pour tes voyages"));
     if (rank >= 0) {
       const { label } = CATEGORIES[deal.category];
-      reasons.push(rank < 3 ? `Ta priorité n°${rank + 1}` : `Tu suis ${label}`);
+      reasons.push(rank < 3 ? tr("Ta priorité n°{n}", { n: rank + 1 }) : tr("Tu suis {label}", { label: tr(label) }));
     }
   }
 
   // 2. Localisation et transports
   let reachable = true;
-  const home = ZONES.find((z) => z.id === me.homeZoneId);
-  const zone = ZONES.find((z) => z.id === deal.zone_id);
+  const home = zoneById(me.homeZoneId);
+  const zone = zoneById(deal.zone_id);
   const origin = me.position ?? home;
   if (deal.scope === "local" && deal.lat !== null && deal.lng !== null && origin) {
     max += WEIGHTS.location;
@@ -153,22 +158,22 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
       : DEFAULT_REACH_KM;
     if (km <= reach) {
       earned += WEIGHTS.location - 10 * (km / reach);
-      distance = travelTime(km, me.transportModes) ?? `À ${formatDistance(km)} ${me.position ? "de toi" : `de ${home?.name}`}`;
+      distance = travelTime(km, me.transportModes) ?? (me.position ? tr("À {d} de toi", { d: formatDistance(km) }) : tr("À {d} de {place}", { d: formatDistance(km), place: home?.name }));
       reasons.push(distance);
     } else if (deal.zone_id && me.zoneIds.includes(deal.zone_id)) {
       earned += 10;
-      distance = `À ${formatDistance(km)}`;
-      reasons.push(`Dans une zone que tu suis`);
+      distance = tr("À {d}", { d: formatDistance(km) });
+      reasons.push(tr("Dans une zone que tu suis"));
     } else {
       reachable = false;
-      distance = `À ${formatDistance(km)}`;
-      warnings.push(`À ${formatDistance(km)} : loin pour tes transports`);
+      distance = tr("À {d}", { d: formatDistance(km) });
+      warnings.push(tr("À {d} : loin pour tes transports", { d: formatDistance(km) }));
     }
   } else if (deal.scope === "zone" && deal.zone_id && me.zoneIds.length > 0) {
     max += WEIGHTS.location;
     if (me.zoneIds.includes(deal.zone_id)) {
       earned += deal.zone_id === me.homeZoneId ? WEIGHTS.location : 20;
-      if (zone) reasons.push(`Valable à ${zone.name}`);
+      if (zone) reasons.push(tr("Valable à {place}", { place: zone.name }));
     } else {
       reachable = false;
     }
@@ -184,9 +189,9 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     budgetMax = WEIGHTS.budget;
     const points = BUDGET_POINTS[me.budget][deal.price_level] ?? 0;
     budgetEarned = points;
-    if (deal.price_level === 0) reasons.push("Gratuit");
-    else if (points >= 16) reasons.push(`Dans ton budget`);
-    else warnings.push("Au-dessus de ton budget habituel");
+    if (deal.price_level === 0) reasons.push(tr("Gratuit"));
+    else if (points >= 16) reasons.push(tr("Dans ton budget"));
+    else warnings.push(tr("Au-dessus de ton budget habituel"));
   }
 
   // 4. Activités et transports empruntés
@@ -198,7 +203,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     if (liked) {
       interest = true;
       earned += WEIGHTS.interest;
-      reasons.unshift(`Tu aimes : ${ACTIVITIES[liked].label}`);
+      reasons.unshift(tr("Tu aimes : {label}", { label: tr(ACTIVITIES[liked].label) }));
     }
   } else if (deal.subcategory && (me.transportModes.length > 0 || (travel && me.travelModes.length > 0))) {
     max += WEIGHTS.interest;
@@ -209,7 +214,7 @@ export function matchDeal(deal: Deal, me: StudentProfile): Match {
     } else if (me.transportModes.includes(deal.subcategory)) {
       interest = true;
       earned += WEIGHTS.interest;
-      reasons.unshift(`Tu te déplaces ${mode.by}`);
+      reasons.unshift(tr("Tu te déplaces {by}", { by: tr(mode.by) }));
     }
   }
 

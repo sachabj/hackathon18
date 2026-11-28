@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { LogoutIcon } from "@/components/icons";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { useT } from "@/lib/i18n";
 
 /** Déconnecte ce navigateur (pas les autres appareils) et revient à l'écran de connexion. */
 export default function LogoutButton() {
+  const t = useT();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,9 +33,9 @@ export default function LogoutButton() {
         disabled={loading || !isSupabaseConfigured}
         className="flex w-full items-center justify-center gap-1.5 rounded-2xl border-2 border-red-200 py-3 font-medium text-red-600 disabled:opacity-50"
       >
-        {loading ? "Déconnexion…" : (
+        {loading ? t("Déconnexion…") : (
           <>
-            <LogoutIcon className="h-4 w-4" /> Se déconnecter
+            <LogoutIcon className="h-4 w-4" /> {t("Se déconnecter")}
           </>
         )}
       </button>

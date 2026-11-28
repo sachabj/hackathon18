@@ -3,6 +3,7 @@
 import { NEARBY_M } from "./constants";
 import { currentPosition } from "./location";
 import { getSupabase } from "./supabase/client";
+import { tr } from "./i18n";
 
 /** Offre placée sur la carte : il faut être sur place (position partagée à 500 m au plus). */
 export const ARROWS = { create: 50, bonus: 30, confirm: 10, report: 10 } as const;
@@ -155,33 +156,34 @@ export interface ArrowNotice {
   error?: boolean;
 }
 
-const NEEDS_POSITION = "Sans ta position (Profil, « Ma localisation »), pas de Flèches sur une offre placée.";
-const TOO_FAR = `Tu es à plus de ${NEARBY_M} m de l'offre.`;
+// Fonctions : le texte suit la langue choisie (tâche 50).
+const NEEDS_POSITION = () => tr("Sans ta position (Profil, « Ma localisation »), pas de Flèches sur une offre placée.");
+const TOO_FAR = () => tr("Tu es à plus de {m} m de l'offre.", { m: NEARBY_M });
 
 export function outcomeNotice(o: ArrowOutcome): ArrowNotice | null {
-  const detail = (first: string) => [first, o.multiplier > 1 && "série : gains × 1,5"].filter(Boolean).join(" · ");
+  const detail = (first: string) => [first, o.multiplier > 1 && tr("série : gains × 1,5")].filter(Boolean).join(" · ");
   switch (o.status) {
     case "paid":
       return {
-        title: `+${o.amount} Flèches`,
-        detail: detail(o.kind === "confirm" ? "Offre confirmée" : "Signalement corroboré, offre retirée"),
+        title: tr("+{n} Flèches", { n: o.amount }),
+        detail: detail(o.kind === "confirm" ? tr("Offre confirmée") : tr("Signalement corroboré, offre retirée")),
         gain: o.amount,
       };
     case "pending":
       return {
-        title: "Signalement enregistré",
-        detail: detail(`+${o.amount} Flèches si l'offre est retirée`),
+        title: tr("Signalement enregistré"),
+        detail: detail(tr("+{n} Flèches si l'offre est retirée", { n: o.amount })),
       };
     case "closed":
-      return { title: "Réaction enregistrée, sans Flèches", detail: "Cette offre est déjà retirée." };
+      return { title: tr("Réaction enregistrée, sans Flèches"), detail: tr("Cette offre est déjà retirée.") };
     case "noloc":
-      return { title: "Réaction enregistrée, sans Flèches", detail: NEEDS_POSITION };
+      return { title: tr("Réaction enregistrée, sans Flèches"), detail: NEEDS_POSITION() };
     case "far":
-      return { title: "Réaction enregistrée, sans Flèches", detail: TOO_FAR };
+      return { title: tr("Réaction enregistrée, sans Flèches"), detail: TOO_FAR() };
     case "limit":
       return {
-        title: "Réaction enregistrée, sans Flèches",
-        detail: `Tes ${DAILY_PAID_VOTES} votes récompensés du jour sont atteints.`,
+        title: tr("Réaction enregistrée, sans Flèches"),
+        detail: tr("Tes {n} votes récompensés du jour sont atteints.", { n: DAILY_PAID_VOTES }),
       };
     default:
       return null;
@@ -202,19 +204,19 @@ export function onArrows(listener: (notice: ArrowNotice | null) => void) {
   return () => window.removeEventListener(EVENT, handle);
 }
 
-const LIMIT_REACHED = `Tes ${DAILY_PAID_CREATIONS} publications récompensées du jour sont atteintes.`;
+const LIMIT_REACHED = () => tr("Tes {n} publications récompensées du jour sont atteintes.", { n: DAILY_PAID_CREATIONS });
 
 function creationNotice(amount: number, multiplier: number, refusal: string): ArrowNotice {
   return amount === 0
-    ? { title: "Bon plan publié, sans Flèches", detail: refusal }
-    : { title: `+${amount} Flèches`, detail: `Bon plan partagé${multiplier > 1 ? " · série : gains × 1,5" : ""}`, gain: amount };
+    ? { title: tr("Bon plan publié, sans Flèches"), detail: refusal }
+    : { title: tr("+{n} Flèches", { n: amount }), detail: tr("Bon plan partagé") + (multiplier > 1 ? " · " + tr("série : gains × 1,5") : ""), gain: amount };
 }
 
 /** Annonce les Flèches de la dernière publication, déjà décidées par la base. */
 async function announceCreation() {
   const created = (await fetchMyArrows())?.history.find((e) => e.kind === "create");
   const recent = created && Date.now() - new Date(created.created_at).getTime() < 120_000;
-  announce(recent ? creationNotice(created.amount, created.multiplier, LIMIT_REACHED) : null);
+  announce(recent ? creationNotice(created.amount, created.multiplier, LIMIT_REACHED()) : null);
 }
 
 /**
@@ -237,6 +239,6 @@ export async function rewardCreation(dealId: string, placed: boolean) {
   // null : rien à gagner (compte commerçant, par exemple).
   if (!data) return announce();
   const claim = data as { status: "paid" | "noloc" | "far" | "limit"; amount: number; multiplier: number };
-  const refusal = { paid: "", noloc: NEEDS_POSITION, far: TOO_FAR, limit: LIMIT_REACHED }[claim.status];
+  const refusal = { paid: "", noloc: NEEDS_POSITION(), far: TOO_FAR(), limit: LIMIT_REACHED() }[claim.status];
   announce({ ...creationNotice(claim.amount, claim.multiplier, refusal), secure: !!position });
 }

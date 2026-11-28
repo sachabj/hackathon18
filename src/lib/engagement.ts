@@ -8,6 +8,7 @@ import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import { fetchDealTrust } from "./trust";
 import type { Deal, DealAudience, DealTrust, DealWithVotes, Vote } from "./types";
 import { normalizeDeal } from "./legacy";
+import { tr } from "./i18n";
 
 type DbError = { code?: string; message: string };
 
@@ -58,7 +59,7 @@ async function fetchDealState(dealId: string) {
 export async function fetchEngagement(dealId: string): Promise<Engagement> {
   const supabase = getSupabase();
   const userId = await currentUserId();
-  if (!userId) throw new Error("Session expirée : reconnecte-toi.");
+  if (!userId) throw new Error(tr("Session expirée : reconnecte-toi."));
   const [votes, mine, count, trust, state] = await Promise.all([
     supabase.from("votes").select("*").eq("deal_id", dealId),
     supabase.from("deal_visits").select("deal_id").eq("deal_id", dealId).eq("user_id", userId),
@@ -144,7 +145,7 @@ export async function vote(dealId: string, value: 1 | -1, position: Point | null
   if (!error) {
     const notice = data ? outcomeNotice(data as ArrowOutcome) : null;
     // Position partagée : le message le rappelle, même sans gain.
-    return announce(position ? { ...(notice ?? { title: "Réaction enregistrée" }), secure: true } : notice);
+    return announce(position ? { ...(notice ?? { title: tr("Réaction enregistrée") }), secure: true } : notice);
   }
   // Sans la migration 016 (fonction absente) : vote simple, sans Flèches.
   if (error.code !== "PGRST202") throw new Error(error.message);
@@ -202,7 +203,7 @@ export async function setVisited(dealId: string, userId: string, visited: boolea
 export async function fetchMyDeals() {
   const supabase = getSupabase();
   const userId = await currentUserId();
-  if (!userId) throw new Error("Session expirée : reconnecte-toi.");
+  if (!userId) throw new Error(tr("Session expirée : reconnecte-toi."));
   const [deals, audience] = await Promise.all([
     supabase.from("deals").select("*").eq("author_id", userId).order("created_at", { ascending: false }),
     supabase.rpc("my_deal_audience"),

@@ -80,6 +80,8 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── engagement.ts             # vues, passages, votes ; ses propres bons plans ; `announceReactions` / `onReactions` (listes à jour), `settleDoubtfulDeals`
     │   ├── useFavorites.ts           # hook : favoris de l'utilisateur (table `favorites`), ajout/retrait optimiste
     │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué), tenus à jour après une réaction ; scores Hot figés au chargement
+    │   ├── zones.ts                  # villes : 3 de la démo + celles de la table `zones` (027) ; recherche Photon, « Me localiser », Carte Sortir (région rennaise)
+    │   ├── i18n.ts                   # langue FR / EN (localStorage `sw-lang`, sinon langue du navigateur) ; `t()`, `tr()`, `dateLocale()` ; en.ts = dictionnaire
     │   ├── location.ts               # accord de localisation (RGPD) et position ponctuelle ; composants dans components/location/
     │   ├── useUserPosition.ts        # hook : position GPS suivie avec accord (non enregistrée), réutilisable (tâche 11)
     │   └── usePreferences.ts, useMyArrows.ts, share.ts, photos.ts   # profil, Flèches, partage de lien, photo de preuve
@@ -125,6 +127,8 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ```
 
 ## Conventions de code
+- **Langue (tâche 50)** : textes écrits en français dans `t("…")` / `tr("…")`, traduits par `src/lib/en.ts` ; variables `{n}`. Changer de langue recharge la page. Restent en français : assistant de préférences, espace commerçant, politique de confidentialité.
+- **Villes (tâche 52)** : toute ville choisie devient une ligne de `zones` via la RPC `ensure_zone(nom, département, lat, lng, rayon)` (027 : id « lyon-69 », existante si même nom à moins de 10 km, 20 nouvelles par compte et par jour). `ZONES` (constants) ne sert plus qu'aux 3 villes de la démo et aux raccourcis.
 - **Écrans** : téléphone par défaut ; ordinateur à partir de `lg:` (1024 px). `NavBar` passe en haut (hauteur 4 rem, marges de `main` dans `globals.css`, classes `.sw-nav` / `.sw-main`) et les en-têtes de page (logo + Flèches) sont masqués (`lg:hidden`). Recherche : liste à gauche (défile), carte à droite sur `100dvh - 4rem`. Accueil et Favoris en grille ; Partager, Profil, Compte, préférences en colonne `lg:max-w-2xl` ; fiches centrées.
 - `.gitignore` : court, propre au projet ; `/build/` et `/dist/` sont ancrés à la racine. Après ajout d'un dossier, vérifier avec `git status` qu'il est bien suivi.
 - **Pages interactives = composants client** (`"use client"`) qui lisent et écrivent dans Supabase via `getSupabase()`. La sécurité est assurée par les **policies RLS**, pas par le front.

@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { REQUIREMENTS, TRANSPORT_MODES } from "@/lib/constants";
 import { DURATIONS, FILTER_MODES, PRICE_FILTERS, SORTS, type SearchFilters as Filters } from "@/lib/searchFilters";
+import { tr, useT } from "@/lib/i18n";
 
 /** Liste déroulante native (pratique au doigt) ; mise en évidence quand elle filtre quelque chose. */
 function Select<V extends string>({
@@ -19,9 +20,10 @@ function Select<V extends string>({
   disabled?: boolean;
   onChange: (value: V) => void;
 }) {
+  const t = useT();
   return (
     <select
-      aria-label={label}
+      aria-label={t(label)}
       value={value}
       disabled={disabled}
       onChange={(e) => onChange(e.target.value as V)}
@@ -34,7 +36,7 @@ function Select<V extends string>({
     >
       {options.map((o) => (
         <option key={o.value} value={o.value} disabled={o.disabled}>
-          {o.label}
+          {t(o.label)}
         </option>
       ))}
     </select>
@@ -58,10 +60,11 @@ export default function SearchFilters({
   /** Absent : aucun filtre actif. */
   onReset?: () => void;
 }) {
+  const t = useT();
   const travelActive = hasOrigin && filters.maxMinutes !== null;
   const usesDistance = travelActive || (hasOrigin && filters.sort === "distance");
   return (
-    <div role="group" aria-label="Filtres de recherche" className="space-y-2">
+    <div role="group" aria-label={t("Filtres de recherche")} className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <Select
           label="Prix"
@@ -88,7 +91,7 @@ export default function SearchFilters({
           disabled={!hasOrigin}
           options={[
             { value: "any", label: "Trajet : tous" },
-            ...DURATIONS.map((d) => ({ value: String(d), label: `${d} min maximum` })),
+            ...DURATIONS.map((d) => ({ value: String(d), label: tr("{n} min maximum", { n: d }) })),
           ]}
           onChange={(v) => onChange({ maxMinutes: DURATIONS.find((d) => String(d) === v) ?? null })}
         />
@@ -100,7 +103,8 @@ export default function SearchFilters({
           // « À pied », « À vélo », « En bus »… : compréhensible même sans durée choisie.
           options={FILTER_MODES.map((m) => {
             const { by } = TRANSPORT_MODES[m];
-            return { value: m, label: by.charAt(0).toUpperCase() + by.slice(1) };
+            const text = tr(by);
+            return { value: m, label: text.charAt(0).toUpperCase() + text.slice(1) };
           })}
           onChange={(mode) => onChange({ mode })}
         />
@@ -122,20 +126,20 @@ export default function SearchFilters({
       {!hasOrigin && (
         <p className="text-xs text-[var(--color-muted)]">
           <Link href={profileHref} className="font-medium underline" style={{ color: "var(--color-forest)" }}>
-            Indique ta zone
+            {t("Indique ta zone")}
           </Link>{" "}
-          pour filtrer par temps de trajet ou trier par distance.
+          {t("pour filtrer par temps de trajet ou trier par distance.")}
         </p>
       )}
       {usesDistance && (
         <p className="text-xs text-[var(--color-muted)]">
-          Trajets estimés depuis {originLabel}, à vol d&apos;oiseau.
-          {travelActive && " Les offres sans lieu précis sont masquées."}
+          {t("Trajets estimés depuis {from}, à vol d'oiseau.", { from: originLabel })}
+          {travelActive && " " + t("Les offres sans lieu précis sont masquées.")}
         </p>
       )}
       {onReset && (
         <button type="button" onClick={onReset} className="text-sm font-medium underline" style={{ color: "var(--color-forest)" }}>
-          Retirer les filtres
+          {t("Retirer les filtres")}
         </button>
       )}
     </div>

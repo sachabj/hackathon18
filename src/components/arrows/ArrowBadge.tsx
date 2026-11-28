@@ -4,9 +4,11 @@
 import Link from "next/link";
 import { ArrowShotIcon } from "@/components/icons";
 import { useMyArrows } from "@/lib/useMyArrows";
+import { useT } from "@/lib/i18n";
 
 export default function ArrowBadge({ className = "" }: { className?: string }) {
   const arrows = useMyArrows();
+  const t = useT();
   if (!arrows) return null;
   const balance = Math.max(0, arrows.current_arrows_balance);
   return (
@@ -14,7 +16,7 @@ export default function ArrowBadge({ className = "" }: { className?: string }) {
       href="/favoris"
       // Point d'arrivée de la pastille « +N » au gain de Flèches (ArrowFlight, tâche 75).
       data-arrow-target
-      aria-label={`${balance} Flèches disponibles : ouvrir Ciblés`}
+      aria-label={t("{n} Flèches disponibles : ouvrir Ciblés", { n: balance })}
       className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium tabular-nums ${className}`}
       style={{ backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }}
     >

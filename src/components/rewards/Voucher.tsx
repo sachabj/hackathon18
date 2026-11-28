@@ -5,8 +5,9 @@ import { toString as qrToSvg } from "qrcode";
 import { useEffect, useState } from "react";
 import { CheckCircleIcon } from "@/components/icons";
 import { markRewardUsed, type Reward, type UserReward } from "@/lib/rewards";
+import { dateLocale, tr, useT } from "@/lib/i18n";
 
-const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
 
 /** QR code du code, dessiné dans le navigateur (aucun service extérieur). */
 function QrCode({ value }: { value: string }) {
@@ -22,7 +23,7 @@ function QrCode({ value }: { value: string }) {
   }, [value]);
   if (!url) return <div className="h-44 w-44" />;
   // eslint-disable-next-line @next/next/no-img-element -- image générée localement
-  return <img src={url} alt={`QR code du bon ${value}`} width={176} height={176} className="rounded-xl bg-white p-1" />;
+  return <img src={url} alt={tr("QR code du bon {code}", { code: value })} width={176} height={176} className="rounded-xl bg-white p-1" />;
 }
 
 export default function Voucher({
@@ -35,6 +36,7 @@ export default function Voucher({
   /** Prévient la boutique que le bon vient d'être utilisé. */
   onUsed: (updated: UserReward) => void;
 }) {
+  const t = useT();
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,37 +57,37 @@ export default function Voucher({
 
   return (
     <div className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed p-4 text-center" style={{ borderColor: used ? "var(--color-border)" : "var(--color-forest)" }}>
-      <p className="font-medium">{reward.title}</p>
+      <p className="font-medium">{t(reward.title)}</p>
       <p className="text-sm text-[var(--color-muted)]">{reward.partner}</p>
       {used ? (
         <p className="flex items-center gap-1.5 font-medium text-[var(--color-muted)]">
-          <CheckCircleIcon className="h-5 w-5" /> Utilisé le {formatDate(used)}
+          <CheckCircleIcon className="h-5 w-5" /> {t("Utilisé le {date}", { date: formatDate(used) })}
         </p>
       ) : (
         owned.code && <QrCode value={owned.code} />
       )}
       <p className={`font-mono text-2xl font-medium tracking-widest ${used ? "text-[var(--color-muted)] line-through" : ""}`}>{owned.code}</p>
       {reward.category === "raffle" ? (
-        <p className="text-sm">Ton ticket est enregistré pour le tirage au sort. Garde ce numéro.</p>
+        <p className="text-sm">{t("Ton ticket est enregistré pour le tirage au sort. Garde ce numéro.")}</p>
       ) : (
         !used && (
           <>
-            <p className="text-sm">{reward.description} Présente ce bon en caisse.</p>
+            <p className="text-sm">{t(reward.description)} {t("Présente ce bon en caisse.")}</p>
             {confirming ? (
               <div className="flex w-full flex-col gap-2">
                 <p className="text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-                  À faire devant le commerçant : le bon ne pourra plus servir.
+                  {t("À faire devant le commerçant : le bon ne pourra plus servir.")}
                 </p>
                 <button type="button" onClick={use} disabled={busy} className="sw-btn-primary w-full">
-                  Confirmer : bon utilisé
+                  {t("Confirmer : bon utilisé")}
                 </button>
                 <button type="button" onClick={() => setConfirming(false)} className="text-sm underline">
-                  Pas encore
+                  {t("Pas encore")}
                 </button>
               </div>
             ) : (
               <button type="button" onClick={() => setConfirming(true)} className="sw-btn-secondary w-full">
-                Marquer comme utilisé en caisse
+                {t("Marquer comme utilisé en caisse")}
               </button>
             )}
           </>

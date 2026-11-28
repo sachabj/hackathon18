@@ -6,6 +6,7 @@ import ArrowBadge from "@/components/arrows/ArrowBadge";
 import { ChartIcon, HeartArrowIcon, HomeIcon, PlusIcon, SearchIcon, StoreIcon, TagIcon, UserIcon } from "@/components/icons";
 import { APP_NAME } from "@/lib/constants";
 import { useRole } from "@/lib/useRole";
+import { useT } from "@/lib/i18n";
 
 const LINKS = [
   { href: "/", label: "Accueil", Icon: HomeIcon },
@@ -24,6 +25,7 @@ const MERCHANT_LINKS = [
 export default function NavBar() {
   const pathname = usePathname();
   const role = useRole(pathname);
+  const t = useT();
   const hidden = ["/login", "/onboarding", "/confidentialite"].some((p) => pathname.startsWith(p));
   if (!role || hidden) return null;
   const links = role === "merchant" ? MERCHANT_LINKS : LINKS;
@@ -58,7 +60,7 @@ export default function NavBar() {
                 style={active ? { color: "var(--color-forest)", fontWeight: 500 } : { color: "var(--color-muted)" }}
               >
                 <l.Icon className="h-5 w-5" />
-                {l.label}
+                {t(l.label)}
               </Link>
             </li>
           );

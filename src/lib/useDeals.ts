@@ -8,6 +8,7 @@ import { isDealHidden } from "./rules";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import { withTrust } from "./trust";
 import type { DealWithVotes, Vote } from "./types";
+import { loadZones } from "./zones";
 
 /** Bons plans visibles (RLS + règles de masquage), du plus récent au plus ancien. */
 export function useDeals() {
@@ -28,7 +29,10 @@ export function useDeals() {
       const supabase = getSupabase();
       // Sans attendre : `isDealHidden` masque déjà les offres douteuses arrivées à échéance.
       settleDoubtfulDeals();
-      const dealsResult = await supabase.from("deals").select("*, votes(*)").order("created_at", { ascending: false });
+      const [dealsResult] = await Promise.all([
+        supabase.from("deals").select("*, votes(*)").order("created_at", { ascending: false }),
+        loadZones(), // noms des villes et distances
+      ]);
       if (cancelled) return;
 
       if (dealsResult.error) {

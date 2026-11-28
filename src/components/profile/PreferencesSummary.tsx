@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ACTIVITIES,
@@ -6,9 +8,10 @@ import {
   HOME_VISITS,
   SUBCATEGORIES,
   TRANSPORT_MODES,
-  ZONES,
 } from "@/lib/constants";
 import { isTraveler, type StudentProfile } from "@/lib/matching";
+import { carteSortirArea, useZones, zoneById } from "@/lib/zones";
+import { useT } from "@/lib/i18n";
 
 const yesNo = (value: boolean | null, label: string) =>
   value === null ? "" : `${label} : ${value ? "oui" : "non"}`;
@@ -19,8 +22,10 @@ export function preferenceRows(me: StudentProfile) {
     {
       step: "zone",
       label: "Zones",
-      value: ZONES.filter((z) => me.zoneIds.includes(z.id))
-        .map((z) => (z.id === me.homeZoneId ? `${z.name} (principale)` : z.name))
+      value: [...me.zoneIds]
+        .sort((a, b) => Number(b === me.homeZoneId) - Number(a === me.homeZoneId))
+        .map((id) => zoneById(id)?.name ?? id)
+        .map((name, i) => (i === 0 && me.homeZoneId ? `${name} (principale)` : name))
         .join(" · "),
     },
     {
@@ -46,7 +51,7 @@ export function preferenceRows(me: StudentProfile) {
     {
       step: "aids",
       label: "Aides",
-      value: [yesNo(me.isScholar, "Boursier"), yesNo(me.hasCarteSortir, "Carte Sortir")].filter(Boolean).join(" · "),
+      value: [yesNo(me.isScholar, "Boursier"), carteSortirArea(me) && yesNo(me.hasCarteSortir, "Carte Sortir")].filter(Boolean).join(" · "),
     },
     {
       step: "categories",
@@ -63,13 +68,16 @@ export function preferenceRows(me: StudentProfile) {
 
 /** Résumé des préférences : chaque ligne ouvre directement son étape du parcours. */
 export default function PreferencesSummary({ me }: { me: StudentProfile }) {
+  const t = useT();
+  useZones();
   return (
     <ul className="sw-card divide-y divide-[var(--color-border)]">
       {preferenceRows(me).map((row) => (
         <li key={row.step}>
           <Link href={`/onboarding?etape=${row.step}`} className="flex items-start gap-3 p-3 text-sm">
-            <span className="w-20 shrink-0 text-[var(--color-muted)]">{row.label}</span>
-            <span className="flex-1 font-medium">{row.value || "Non renseigné"}</span>
+            <span className="w-20 shrink-0 text-[var(--color-muted)]">{t(row.label)}</span>
+            {/* Valeurs faites de libellés : chacun est traduit. */}
+            <span className="flex-1 font-medium">{row.value ? row.value.split(" · ").map((v) => t(v)).join(" · ") : t("Non renseigné")}</span>
             <span aria-hidden className="text-[var(--color-muted)]">›</span>
           </Link>
         </li>

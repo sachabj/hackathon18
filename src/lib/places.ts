@@ -30,14 +30,19 @@ interface PhotonFeature {
   };
 }
 
-/** Commerces correspondant au nom et à la ville (résultats proches de Bruz / Ker Lann en premier). */
-export async function searchPlaces(store: string, city: string, signal?: AbortSignal): Promise<Place[]> {
+/** Commerces correspondant au nom et à la ville (résultats proches de `near`, Bruz par défaut, en premier). */
+export async function searchPlaces(
+  store: string,
+  city: string,
+  signal?: AbortSignal,
+  near: { lat: number; lng: number } = { lat: MAP_CENTER[0], lng: MAP_CENTER[1] },
+): Promise<Place[]> {
   const params = new URLSearchParams({
     q: `${store} ${city}`.trim(),
     lang: "fr",
     limit: "8",
-    lat: String(MAP_CENTER[0]),
-    lon: String(MAP_CENTER[1]),
+    lat: String(near.lat),
+    lon: String(near.lng),
   });
   const res = await fetch(`https://photon.komoot.io/api/?${params}`, { signal });
   if (!res.ok) throw new Error("Recherche du lieu indisponible pour le moment.");

@@ -4,25 +4,28 @@
 import Link from "next/link";
 import type { ComponentType, ReactNode } from "react";
 import { ChevronDownIcon } from "@/components/icons";
+import { useT } from "@/lib/i18n";
 
 type Icon = ComponentType<{ className?: string }>;
 
 export function MenuGroup({ title, children }: { title: string; children: ReactNode }) {
+  const t = useT();
   return (
-    <section aria-label={title}>
-      <h2 className="sw-eyebrow mb-1.5 px-1">{title}</h2>
+    <section aria-label={t(title)}>
+      <h2 className="sw-eyebrow mb-1.5 px-1">{t(title)}</h2>
       <ul className="sw-card divide-y divide-[var(--color-border)] overflow-hidden">{children}</ul>
     </section>
   );
 }
 
 function Row({ Icon, title, hint, end }: { Icon: Icon; title: string; hint: string; end: ReactNode }) {
+  const t = useT();
   return (
     <>
       <Icon className="h-5 w-5 shrink-0 text-[var(--color-forest)]" />
       <span className="min-w-0 flex-1">
-        <span className="block text-sm font-medium">{title}</span>
-        <span className="block text-xs text-[var(--color-muted)]">{hint}</span>
+        <span className="block text-sm font-medium">{t(title)}</span>
+        <span className="block text-xs text-[var(--color-muted)]">{t(hint)}</span>
       </span>
       {end}
     </>

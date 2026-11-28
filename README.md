@@ -13,6 +13,8 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».
 - **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer ; pendant une recherche, seulement les offres trouvées.
 - **Fiche** : détails, photo, lien vers l'offre, boutons « Y aller » (Apple Plans ou Google Maps) et « Partager » (le lien ouvre l'offre après connexion).
+- **Partout en France** : à l'inscription, n'importe quelle ville (recherche ou « Me localiser »), plus jusqu'à 4 villes suivies ; la Carte Sortir n'est proposée qu'autour de Rennes.
+- **En français ou en anglais** : choix sur la connexion et dans le profil (par défaut, la langue du navigateur) ; les offres restent dans leur langue.
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
 - **Favoris** pour garder une offre sous la main ; une offre terminée y reste, marquée « Terminée ».
 - **Sources officielles** : événements gratuits ou étudiants (OpenAgenda) et aides aux étudiants (Aides Jeunes), signalés par un badge, avec leur lien et la date de vérification.
@@ -51,6 +53,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - Le paiement de la mise en avant est **simulé** ; le statut de commerçant n'est pas vérifié.
 - Distances et temps de trajet estimés à vol d'oiseau.
 - La position vient du navigateur : un utilisateur averti peut la falsifier. L'adresse de contact de la politique de confidentialité est fictive.
+- En anglais, restent en français : l'assistant de préférences, l'espace commerçant et la politique de confidentialité.
 - Pas encore là : vraies notifications (seule la notification sur place est simulée), rappels de dates limites, filtre « ouvert maintenant ».
 - Parrainage et « étudiants aidés » restent gonflables avec de faux comptes (pas de confirmation d'email en démo).
 

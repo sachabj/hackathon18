@@ -1,15 +1,19 @@
+"use client";
+
 import { GraduationCapIcon, ShieldIcon, StoreIcon } from "@/components/icons";
 import type { Deal } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 
 /**
  * Qui a publié : une source publique (offre importée, migration 024), un commerçant (offre officielle,
  * publiable seulement depuis un compte commerçant) ou un étudiant.
  */
 export default function AuthorBadge({ deal, className = "" }: { deal: Pick<Deal, "is_official" | "source_name">; className?: string }) {
+  const t = useT();
   if (deal.source_name) {
     return (
       <span className={`sw-badge ${className}`} style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
-        <ShieldIcon className="h-3.5 w-3.5" /> Source officielle
+        <ShieldIcon className="h-3.5 w-3.5" /> {t("Source officielle")}
       </span>
     );
   }
@@ -23,7 +27,7 @@ export default function AuthorBadge({ deal, className = "" }: { deal: Pick<Deal,
           : { border: "1px solid var(--color-border)", color: "var(--color-muted)" }
       }
     >
-      <Icon className="h-3.5 w-3.5" /> {deal.is_official ? "Commerçant" : "Étudiant"}
+      <Icon className="h-3.5 w-3.5" /> {deal.is_official ? t("Commerçant") : t("Étudiant")}
     </span>
   );
 }

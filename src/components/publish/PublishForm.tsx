@@ -12,7 +12,9 @@ import { BuildingsIcon, ChevronDownIcon, GlobeIcon, LinkIcon, PinIcon, ThumbsUpI
 import type { AssistDraft } from "@/lib/ai/types";
 import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES, NEARBY_M, TITLE_MAX } from "@/lib/constants";
 import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplicates";
-import { distanceKm, nearestZone } from "@/lib/geo";
+import { distanceKm } from "@/lib/geo";
+import CitySearch from "@/components/zones/CitySearch";
+import { allZones, useZones, zoneAround, zoneById } from "@/lib/zones";
 import { normalizeLink } from "@/lib/links";
 import { kindLabel, searchPlaces, suggestActivity, suggestCategory, type Place } from "@/lib/places";
 import { ARROWS, ARROWS_NO_PLACE, rewardCreation } from "@/lib/arrows";
@@ -24,6 +26,7 @@ import { uploadDealPhoto } from "@/lib/photos";
 import { usePreferences } from "@/lib/usePreferences";
 import LocationNotice from "@/components/location/LocationNotice";
 import AssistPanel from "./AssistPanel";
+import { useT } from "@/lib/i18n";
 
 const SCOPES: { id: DealScope; Icon: typeof PinIcon; label: string }[] = [
   { id: "local", Icon: PinIcon, label: "Dans un lieu" },
@@ -47,11 +50,12 @@ const endOfDay = (date: string) => (date ? new Date(`${date}T23:59:59`).toISOStr
 const inputClass = "sw-field";
 
 function Section({ title, hint, children }: { title: string; hint?: string; children: React.ReactNode }) {
+  const t = useT();
   return (
     <section className="space-y-2">
       <div>
-        <h2 className="font-medium" style={{ color: "var(--color-ink)" }}>{title}</h2>
-        {hint && <p className="text-xs text-[var(--color-muted)]">{hint}</p>}
+        <h2 className="font-medium" style={{ color: "var(--color-ink)" }}>{t(title)}</h2>
+        {hint && <p className="text-xs text-[var(--color-muted)]">{t(hint)}</p>}
       </div>
       {children}
     </section>
@@ -77,15 +81,19 @@ function Chip({ selected, onClick, children }: { selected: boolean; onClick: () 
 }
 
 export default function PublishForm() {
-  const { preferences } = usePreferences();
+  const { preferences, profile } = usePreferences();
   const homeZoneId = preferences?.home_zone_id ?? null;
+  useZones();
+  /** Repère pour « loin de … » et pour la recherche de lieux : la ville principale, sinon Bruz. */
+  const homeZone = zoneById(homeZoneId) ?? ZONES[0];
 
+  const t = useT();
   const [scope, setScope] = useState<DealScope>("local");
   // Lieu
   const [store, setStore] = useState("");
   // null = pas encore modifié : on propose la ville / la zone de l'étudiant.
   const [cityInput, setCity] = useState<string | null>(null);
-  const city = cityInput ?? (homeZoneId ? CITY_OF_ZONE[homeZoneId] ?? "" : "");
+  const city = cityInput ?? (homeZoneId ? (CITY_OF_ZONE[homeZoneId] ?? zoneById(homeZoneId)?.name ?? "") : "");
   const [results, setResults] = useState<Place[] | null>(null);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
@@ -123,7 +131,7 @@ export default function PublishForm() {
   const searchAbort = useRef<AbortController | null>(null);
 
   async function runSearch(storeName = store, cityName = city) {
-    if (!storeName.trim()) return setSearchError("Indique le nom du magasin.");
+    if (!storeName.trim()) return setSearchError(t("Indique le nom du magasin."));
     searchAbort.current?.abort();
     const controller = new AbortController();
     searchAbort.current = controller;
@@ -131,9 +139,9 @@ export default function PublishForm() {
     setSearchError(null);
     setPlace(null);
     try {
-      const found = await searchPlaces(storeName, cityName, controller.signal);
+      const found = await searchPlaces(storeName, cityName, controller.signal, homeZone);
       setResults(found);
-      if (found.length === 0) setSearchError("Aucun lieu trouvé : vérifie l'orthographe ou utilise ta position.");
+      if (found.length === 0) setSearchError(t("Aucun lieu trouvé : vérifie l'orthographe ou utilise ta position."));
     } catch (e) {
       if ((e as Error).name !== "AbortError") setSearchError((e as Error).message);
     } finally {
@@ -160,17 +168,17 @@ export default function PublishForm() {
   }
 
   async function useMyPosition() {
-    if (!navigator.geolocation) return setSearchError("Localisation indisponible sur cet appareil.");
+    if (!navigator.geolocation) return setSearchError(t("Localisation indisponible sur cet appareil."));
     if (!(await ensureLocationConsent(true))) {
-      return setSearchError("Position non partagée : cherche le lieu par son nom, ou active-la dans ton profil.");
+      return setSearchError(t("Position non partagée : cherche le lieu par son nom, ou active-la dans ton profil."));
     }
     setSearchError(null);
     navigator.geolocation.getCurrentPosition(
       ({ coords }) =>
         choosePlace({
           id: "gps",
-          name: store.trim() || "Lieu signalé",
-          address: "Ma position actuelle",
+          name: store.trim() || t("Lieu signalé"),
+          address: t("Ma position actuelle"),
           city: null,
           lat: coords.latitude,
           lng: coords.longitude,
@@ -179,8 +187,8 @@ export default function PublishForm() {
       (e) =>
         setSearchError(
           e.code === e.PERMISSION_DENIED
-            ? "Localisation refusée : autorise-la dans les réglages du navigateur."
-            : "Position introuvable pour le moment.",
+            ? t("Localisation refusée : autorise-la dans les réglages du navigateur.")
+            : t("Position introuvable pour le moment."),
         ),
       { enableHighAccuracy: true, timeout: 15_000 },
     );
@@ -204,7 +212,7 @@ export default function PublishForm() {
     if (d.expires_on) setExpiresAt(d.expires_on);
     if (d.deadline_on) setDeadlineAt(d.deadline_on);
     if (d.scope) setScope(d.scope);
-    const zone = ZONES.find((z) => d.city && z.name.toLowerCase() === d.city.trim().toLowerCase());
+    const zone = allZones().find((z) => d.city && z.name.toLowerCase() === d.city.trim().toLowerCase());
     if (d.scope === "zone" && zone) setZoneId(zone.id);
     // Commerce lu sur la photo ou dans le texte : on lance la recherche du lieu exact.
     if (d.store_name && d.scope !== "zone" && d.scope !== "national") {
@@ -243,8 +251,8 @@ export default function PublishForm() {
   function dealZoneId() {
     if (scope === "zone") return zoneId;
     if (scope === "local" && place) {
-      const { zone, km } = nearestZone(place);
-      if (km <= zone.radiusM / 1000 + 5) return zone.id;
+      const zone = zoneAround(place);
+      if (zone) return zone.id;
     }
     return null;
   }
@@ -258,9 +266,9 @@ export default function PublishForm() {
    */
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!isSupabaseConfigured) return setError("Supabase n'est pas encore configuré.");
-    if (!title.trim()) return setError("Donne un titre au bon plan.");
-    if (!category) return setError("Choisis une catégorie.");
+    if (!isSupabaseConfigured) return setError(t("Supabase n'est pas encore configuré."));
+    if (!title.trim()) return setError(t("Donne un titre au bon plan."));
+    if (!category) return setError(t("Choisis une catégorie."));
     if (scope === "local" && !place) return setError("Choisis le lieu exact dans la liste (ou utilise ta position).");
     try {
       normalizeLink(link);
@@ -292,7 +300,7 @@ export default function PublishForm() {
       // « Un lieu précis » : la position permet de gagner les Flèches de la confirmation.
       await vote(dealId, 1, scope === "local" ? await currentPosition() : null);
     } catch (err) {
-      return setError(`Confirmation impossible : ${(err as Error).message}`);
+      return setError(t("Confirmation impossible : {e}", { e: (err as Error).message }));
     } finally {
       setSubmitting(false);
     }
@@ -346,7 +354,7 @@ export default function PublishForm() {
       ({ data, error } = await insert(row));
     }
     setSubmitting(false);
-    if (error) return setError(`Publication impossible : ${error.message}`);
+    if (error) return setError(t("Publication impossible : {e}", { e: error.message }));
     setSimilar(null);
     setDoneDeal(data ? { id: data.id as string, placed: row.lat != null } : null);
     setDone("published");
@@ -368,18 +376,18 @@ export default function PublishForm() {
     return (
       <div className="mx-auto flex w-full max-w-md lg:max-w-2xl flex-col items-center px-4 py-12 text-center">
         <ThumbsUpIcon className="h-12 w-12 text-[var(--color-forest)]" />
-        <h1 className="mt-4 text-2xl">{done === "confirmed" ? "Bon plan validé" : "Merci, bon plan publié !"}</h1>
+        <h1 className="mt-4 text-2xl">{done === "confirmed" ? t("Bon plan validé") : t("Merci, bon plan publié !")}</h1>
         {done === "confirmed" && (
           <p className="mt-2 text-sm" style={{ color: "var(--color-ink)" }}>
-            Ta confirmation rend l&apos;offre plus fiable pour les autres étudiants.
+            {t("Ta confirmation rend l'offre plus fiable pour les autres étudiants.")}
           </p>
         )}
         <div className="mt-8 flex w-full flex-col gap-3">
           <Link href={doneDeal ? `/recherche?offre=${doneDeal.id}` : "/recherche"} className="sw-btn-primary">
-            {!doneDeal || doneDeal.placed ? "Voir sur la carte" : done === "confirmed" ? "Voir l'offre" : "Voir mon offre"}
+            {!doneDeal || doneDeal.placed ? t("Voir sur la carte") : done === "confirmed" ? t("Voir l'offre") : t("Voir mon offre")}
           </Link>
           <button type="button" onClick={reset} className="sw-btn-secondary">
-            Partager un autre bon plan
+            {t("Partager un autre bon plan")}
           </button>
         </div>
       </div>
@@ -388,11 +396,11 @@ export default function PublishForm() {
 
   return (
     <form onSubmit={submit} className="mx-auto flex w-full max-w-md lg:max-w-2xl flex-col gap-4 px-4 pb-8 pt-4">
-      <h1 className="text-2xl">Partager un bon plan</h1>
+      <h1 className="text-2xl">{t("Partager un bon plan")}</h1>
 
       <AssistPanel onDraft={applyDraft} />
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Où l'offre est-elle valable ?">
+      <div className="flex flex-wrap gap-2" role="group" aria-label={t("Où l'offre est-elle valable ?")}>
         {SCOPES.map((s) => (
           <Chip
             key={s.id}
@@ -403,7 +411,7 @@ export default function PublishForm() {
             }}
           >
             <span className="flex items-center gap-1">
-              <s.Icon className="h-4 w-4" /> {s.label}
+              <s.Icon className="h-4 w-4" /> {t(s.label)}
             </span>
           </Chip>
         ))}
@@ -424,7 +432,7 @@ export default function PublishForm() {
                   className="text-xs underline"
                   style={{ color: "var(--color-forest)" }}
                 >
-                  Vérifier sur la carte
+                  {t("Vérifier sur la carte")}
                 </a>
               </div>
               <button
@@ -436,14 +444,14 @@ export default function PublishForm() {
                 className="text-sm font-medium"
                 style={{ color: "var(--color-forest)" }}
               >
-                Changer
+                {t("Changer")}
               </button>
             </div>
           ) : (
             <>
               <input
                 className={inputClass}
-                placeholder="Magasin (ex : Intermarché, McDonald's…)"
+                placeholder={t("Magasin (ex : Intermarché, McDonald's…)")}
                 value={store}
                 onChange={(e) => setStore(e.target.value)}
                 onKeyDown={(e) => {
@@ -456,7 +464,7 @@ export default function PublishForm() {
               <div className="flex gap-2">
                 <input
                   className={inputClass}
-                  placeholder="Ville (ex : Bruz)"
+                  placeholder={t("Ville (ex : Bruz)")}
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   onKeyDown={(e) => {
@@ -472,13 +480,13 @@ export default function PublishForm() {
                   disabled={searching}
                   className="sw-btn-primary shrink-0 px-4 disabled:opacity-50"
                 >
-                  {searching ? "…" : "Rechercher"}
+                  {searching ? "…" : t("Rechercher")}
                 </button>
               </div>
               {results && results.length > 0 && (
                 <ul className="divide-y divide-[var(--color-border)] overflow-hidden rounded-2xl border" style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)" }}>
                   {results.map((p) => {
-                    const km = distanceKm(p, { lat: ZONES[0].lat, lng: ZONES[0].lng });
+                    const km = distanceKm(p, homeZone);
                     return (
                       <li key={p.id}>
                         <button
@@ -489,10 +497,10 @@ export default function PublishForm() {
                           <span className="min-w-0 flex-1">
                             <span className="block truncate font-medium">{p.name}</span>
                             <span className="block truncate text-xs text-[var(--color-muted)]">
-                              {[kindLabel(p.kind), p.address || "Adresse inconnue"].filter(Boolean).join(" · ")}
+                              {[t(kindLabel(p.kind)), p.address || t("Adresse inconnue")].filter(Boolean).join(" · ")}
                             </span>
                           </span>
-                          {km > 30 && <span className="shrink-0 text-xs" style={{ color: "var(--color-aubergine)" }}>loin de Bruz</span>}
+                          {km > 30 && <span className="shrink-0 text-xs" style={{ color: "var(--color-aubergine)" }}>{t("loin de {place}", { place: homeZone.name })}</span>}
                         </button>
                       </li>
                     );
@@ -501,17 +509,17 @@ export default function PublishForm() {
               )}
               {searchError && <p className="text-sm text-red-600">{searchError}</p>}
               <button type="button" onClick={useMyPosition} className="flex items-center gap-1.5 self-start text-sm font-medium" style={{ color: "var(--color-forest)" }}>
-                <PinIcon className="h-4 w-4" /> Pas dans la liste ? Utiliser ma position actuelle
+                <PinIcon className="h-4 w-4" /> {t("Pas dans la liste ? Utiliser ma position actuelle")}
               </button>
               <LocationNotice>
-                Envoyée chiffrée. Si tu la choisis comme lieu, ce point sera publié et visible de tous.
+                {t("Envoyée chiffrée. Si tu la choisis comme lieu, ce point sera publié et visible de tous.")}
               </LocationNotice>
             </>
           )}
           {place && atPlace && atPlace.length > 0 && (
             <ExistingDeals
-              title={`Déjà partagé ici (${atPlace.length})`}
-              hint="Ton offre est dans la liste ? Confirme-la plutôt que d'en créer une seconde. Sinon, continue ci-dessous."
+              title={t("Déjà partagé ici ({n})", { n: atPlace.length })}
+              hint={t("Ton offre est dans la liste ? Confirme-la plutôt que d'en créer une seconde. Sinon, continue ci-dessous.")}
               deals={atPlace}
               busy={submitting}
               onConfirm={confirmExisting}
@@ -523,20 +531,22 @@ export default function PublishForm() {
       {scope === "zone" && (
         <Section title="La zone">
           <div className="flex flex-wrap gap-2">
-            {ZONES.map((z) => (
-              <Chip key={z.id} selected={zoneId === z.id} onClick={() => setZoneId(z.id)}>
-                {z.name}
+            {/* Mes villes, puis celle choisie par la recherche. */}
+            {[...new Set([...(profile?.followed_zone_ids?.length ? profile.followed_zone_ids : ZONES.map((z) => z.id)), zoneId])].map((id) => (
+              <Chip key={id} selected={zoneId === id} onClick={() => setZoneId(id)}>
+                {zoneById(id)?.name ?? id}
               </Chip>
             ))}
           </div>
+          <CitySearch label="Une autre ville" suggestions={false} onChoose={(z) => setZoneId(z.id)} />
         </Section>
       )}
 
       <Section title="Titre">
         <input
           className={inputClass}
-          placeholder="L'avantage, ex : -20 % sur le menu"
-          aria-label="Titre : l'avantage et son montant"
+          placeholder={t("L'avantage, ex : -20 % sur le menu")}
+          aria-label={t("Titre : l'avantage et son montant")}
           maxLength={TITLE_MAX}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -549,7 +559,7 @@ export default function PublishForm() {
           {keys(CATEGORIES).map((c) => (
             <Chip key={c} selected={category === c} onClick={() => setCategory(c)}>
               <span className="flex items-center gap-1.5">
-                <CategoryIcon category={c} size={20} /> {CATEGORIES[c].label}
+                <CategoryIcon category={c} size={20} /> {t(CATEGORIES[c].label)}
               </span>
             </Chip>
           ))}
@@ -561,7 +571,7 @@ export default function PublishForm() {
               return (
                 <Chip key={s} selected={subcategory === s} onClick={() => setSubcategory(subcategory === s ? null : s)}>
                   <span className="flex items-center gap-1">
-                    <Icon className="h-3.5 w-3.5" /> {label}
+                    <Icon className="h-3.5 w-3.5" /> {t(label)}
                   </span>
                 </Chip>
               );
@@ -579,8 +589,8 @@ export default function PublishForm() {
           style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)", color: "var(--color-forest)" }}
         >
           <span>
-            Plus de détails
-            {filledDetails > 0 && <span className="font-normal text-[var(--color-muted)]"> · {filledDetails} rempli{filledDetails > 1 ? "s" : ""}</span>}
+            {t("Plus de détails")}
+            {filledDetails > 0 && <span className="font-normal text-[var(--color-muted)]"> · {t(filledDetails > 1 ? "{n} remplis" : "{n} rempli", { n: filledDetails })}</span>}
           </span>
           <ChevronDownIcon className={`h-4 w-4 transition-transform ${showDetails ? "rotate-180" : ""}`} />
         </button>
@@ -594,7 +604,7 @@ export default function PublishForm() {
                   selected={priceLevel === p.value}
                   onClick={() => setPriceLevel(priceLevel === p.value ? null : p.value)}
                 >
-                  {p.label}
+                  {t(p.label)}
                 </Chip>
               ))}
             </div>
@@ -603,7 +613,7 @@ export default function PublishForm() {
           <Section title="Détails" hint="Jours, horaires, comment en profiter…">
             <textarea
               className={`${inputClass} min-h-24`}
-              placeholder="Ex : du lundi au jeudi, hors supplément 3D"
+              placeholder={t("Ex : du lundi au jeudi, hors supplément 3D")}
               maxLength={500}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -617,7 +627,7 @@ export default function PublishForm() {
                 return (
                   <Chip key={r} selected={requirements.includes(r)} onClick={() => setRequirements(toggle(requirements, r))}>
                     <span className="flex items-center gap-1">
-                      <Icon className="h-3.5 w-3.5" /> {label}
+                      <Icon className="h-3.5 w-3.5" /> {t(label)}
                     </span>
                   </Chip>
                 );
@@ -650,7 +660,7 @@ export default function PublishForm() {
                 return (
                   <Chip key={a} selected={tags.includes(a)} onClick={() => setTags(toggle(tags, a))}>
                     <span className="flex items-center gap-1">
-                      <Icon className="h-3.5 w-3.5" /> {label}
+                      <Icon className="h-3.5 w-3.5" /> {t(label)}
                     </span>
                   </Chip>
                 );
@@ -660,12 +670,12 @@ export default function PublishForm() {
 
           <Section title="Dates" hint="Facultatif.">
             <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
-              Fin de l&apos;offre
+              {t("Fin de l'offre")}
               <input type="date" className={`${inputClass} mt-1`} value={expiresAt} onChange={(e) => setExpiresAt(e.target.value)} />
             </label>
             {category && DEADLINE_CATEGORIES.includes(category) && (
               <label className="block text-sm" style={{ color: "var(--color-ink)" }}>
-                Date limite pour en profiter (dossier, inscription…)
+                {t("Date limite pour en profiter (dossier, inscription…)")}
                 <input type="date" className={`${inputClass} mt-1`} value={deadlineAt} onChange={(e) => setDeadlineAt(e.target.value)} />
               </label>
             )}
@@ -677,7 +687,7 @@ export default function PublishForm() {
       {proofPhoto && (
         <div className="flex items-center gap-3 rounded-2xl border p-2" style={{ borderColor: "var(--color-border)", backgroundColor: "var(--color-surface)" }}>
           {/* eslint-disable-next-line @next/next/no-img-element -- aperçu local (data URL) */}
-          <img src={proofPhoto.preview} alt="Photo de preuve" className="h-14 w-14 rounded-lg object-cover" />
+          <img src={proofPhoto.preview} alt={t("Photo de preuve")} className="h-14 w-14 rounded-lg object-cover" />
           <label className="flex flex-1 items-start gap-2 text-sm" style={{ color: "var(--color-ink)" }}>
             <input
               type="checkbox"
@@ -685,43 +695,42 @@ export default function PublishForm() {
               checked={sharePhoto}
               onChange={(e) => setSharePhoto(e.target.checked)}
             />
-            Publier cette photo comme preuve (visible par tous)
+            {t("Publier cette photo comme preuve (visible par tous)")}
           </label>
           <button type="button" onClick={() => setProofPhoto(null)} className="text-sm font-medium text-[var(--color-muted)]">
-            Retirer
+            {t("Retirer")}
           </button>
         </div>
       )}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {scope === "local" ? (
         <LocationNotice>
-          +{ARROWS.create} Flèches si tu publies à moins de {NEARBY_M} m du lieu : ta position est envoyée chiffrée pour
-          ce contrôle, sans être enregistrée. Sans elle, ton bon plan est publié sans Flèches.
+          {t("+{n} Flèches si tu publies à moins de {m} m du lieu : ta position est envoyée chiffrée pour ce contrôle, sans être enregistrée. Sans elle, ton bon plan est publié sans Flèches.", { n: ARROWS.create, m: NEARBY_M })}
         </LocationNotice>
       ) : (
-        <p className="text-xs text-[var(--color-muted)]">Offre sans lieu précis : +{ARROWS_NO_PLACE.create} Flèches.</p>
+        <p className="text-xs text-[var(--color-muted)]">{t("Offre sans lieu précis : +{n} Flèches.", { n: ARROWS_NO_PLACE.create })}</p>
       )}
       {similar ? (
         <div className="space-y-3">
           <ExistingDeals
-            title="Une offre semblable existe peut-être déjà"
-            hint="Même catégorie, même zone. Si c'est la même, confirme-la ; sinon publie la tienne."
+            title={t("Une offre semblable existe peut-être déjà")}
+            hint={t("Même catégorie, même zone. Si c'est la même, confirme-la ; sinon publie la tienne.")}
             deals={similar}
             busy={submitting}
             onConfirm={confirmExisting}
           />
           <div className="flex gap-2">
             <button type="button" onClick={() => setSimilar(null)} className="sw-btn-secondary flex-1">
-              Modifier
+              {t("Modifier")}
             </button>
             <button type="button" disabled={submitting} onClick={publish} className="sw-btn-primary flex-1 disabled:opacity-50">
-              {submitting ? "Publication…" : "Non, publier la mienne"}
+              {submitting ? t("Publication…") : t("Non, publier la mienne")}
             </button>
           </div>
         </div>
       ) : (
         <button disabled={submitting} className="sw-btn-primary text-lg">
-          {submitting ? "Vérification…" : "Publier le bon plan"}
+          {submitting ? t("Vérification…") : t("Publier le bon plan")}
         </button>
       )}
     </form>
@@ -742,6 +751,7 @@ function ExistingDeals({
   busy: boolean;
   onConfirm: (dealId: string) => void;
 }) {
+  const t = useT();
   return (
     <section
       className="sw-card space-y-3 p-3"
@@ -761,7 +771,7 @@ function ExistingDeals({
             {d.description && <p className="text-xs text-[var(--color-muted)]">{d.description}</p>}
             {d.mine ? (
               <p className="text-xs font-medium" style={{ color: "var(--color-forest)" }}>
-                C&apos;est ton bon plan : tu peux le modifier depuis « Ciblés », onglet Activité.
+                {t("C'est ton bon plan : tu peux le modifier depuis « Ciblés », onglet Activité.")}
               </p>
             ) : (
               <button
@@ -770,7 +780,7 @@ function ExistingDeals({
                 onClick={() => onConfirm(d.id)}
                 className="sw-btn-primary py-2 text-sm disabled:opacity-50"
               >
-                <ThumbsUpIcon className="h-4 w-4" /> C&apos;est la même offre
+                <ThumbsUpIcon className="h-4 w-4" /> {t("C'est la même offre")}
               </button>
             )}
           </li>

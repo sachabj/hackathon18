@@ -19,15 +19,13 @@ import {
   BUDGET_PROFILES,
   CARTE_SORTIR_URL,
   CATEGORIES,
-  COUNTRIES,
   ELIGIBILITY_CATEGORIES,
   HOME_VISITS,
   SUBCATEGORIES,
   TRANSPORT_MODES,
   TRAVEL_MODES,
-  ZONES,
 } from "@/lib/constants";
-import { formatDistance, nearestZone } from "@/lib/geo";
+import { distanceKm, formatDistance } from "@/lib/geo";
 import { ensureLocationConsent } from "@/lib/location";
 import { isTraveler, rankDeals, toStudentProfile, type StudentProfile } from "@/lib/matching";
 import { fetchMyPreferences, saveMyPreferences } from "@/lib/preferences";
@@ -35,10 +33,12 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { ActivityId, BudgetProfile, DealCategory, HomeVisits, TransportMode } from "@/lib/types";
 import { useDeals } from "@/lib/useDeals";
 import { preferenceRows } from "@/components/profile/PreferencesSummary";
+import CitySearch from "@/components/zones/CitySearch";
+import { carteSortirArea, cityAt, ensureZone, useZones, zoneAround, zoneById } from "@/lib/zones";
 import ChoiceTile from "./ChoiceTile";
 
-/** Au-delà, la position GPS n'est pas gardée : elle rendrait tous les bons plans « trop loin ». */
-const MAX_GPS_KM = 20;
+/** Villes suivies en plus de la ville principale. */
+const MAX_OTHER_ZONES = 4;
 
 const EMPTY: StudentProfile = {
   categories: [],
@@ -55,7 +55,7 @@ const EMPTY: StudentProfile = {
 };
 
 const STEPS = [
-  { id: "zone", title: "Où es-tu ?", subtitle: "Localise-toi, ou choisis ton pays puis ta ville ou ton campus." },
+  { id: "zone", title: "Où es-tu ?", subtitle: "Localise-toi, ou cherche ta ville : partout en France." },
   { id: "transport", title: "Au quotidien, tu te déplaces comment ?", subtitle: "Pour ne te proposer que ce qui est à ta portée. Plusieurs choix possibles." },
   { id: "travel", title: "Tu voyages à quelle fréquence ?", subtitle: "Longs trajets : pour repérer les billets et les covoiturages qui te serviront." },
   { id: "budget", title: "Ton budget ?", subtitle: "Visible uniquement par toi." },
@@ -82,7 +82,8 @@ export default function PreferencesWizard() {
   const [saving, setSaving] = useState(false);
   const [locating, setLocating] = useState(false);
   const [gpsMessage, setGpsMessage] = useState<string | null>(null);
-  const [countryId, setCountryId] = useState<string>(COUNTRIES[0].id);
+  // Réaffiche les noms quand les villes enregistrées sont chargées.
+  useZones();
 
   // Relancé à chaque retour sur la page (Next conserve l'état) : on repart du profil enregistré.
   useEffect(() => {
@@ -121,29 +122,38 @@ export default function PreferencesWizard() {
 
   async function locate() {
     if (!navigator.geolocation) return setGpsMessage("Ton navigateur ne permet pas la localisation.");
-    if (!(await ensureLocationConsent(true))) return setGpsMessage("Position non partagée : choisis ta zone ci-dessous.");
+    if (!(await ensureLocationConsent(true))) return setGpsMessage("Position non partagée : cherche ta ville ci-dessous.");
     setLocating(true);
     setGpsMessage(null);
     navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
+      async ({ coords }) => {
         // Arrondi à 3 décimales (~100 m) : assez pour les distances, sans stocker l'adresse exacte.
         const position = {
           lat: Math.round(coords.latitude * 1000) / 1000,
           lng: Math.round(coords.longitude * 1000) / 1000,
         };
-        const { zone, km } = nearestZone(position);
-        setLocating(false);
-        if (km > MAX_GPS_KM) {
-          return setGpsMessage(
-            `Tu es à ${formatDistance(km)} de nos zones : choisis la tienne ci-dessous.`,
-          );
+        try {
+          // Une ville déjà connue autour de soi, sinon la commune où l'on est (position arrondie à ~1 km).
+          let zone = zoneAround(position);
+          if (!zone) {
+            const city = await cityAt(position);
+            if (!city) {
+              setGpsMessage("Aucune ville de France trouvée ici : cherche la tienne ci-dessous.");
+              return;
+            }
+            zone = await ensureZone(city);
+          }
+          chooseHome(zone.id, position);
+          setGpsMessage(`Trouvé : ${zone.name}, à ${formatDistance(distanceKm(position, zone))} du centre.`);
+        } catch (e) {
+          setGpsMessage((e as Error).message);
+        } finally {
+          setLocating(false);
         }
-        chooseHome(zone.id, position);
-        setGpsMessage(`Trouvé : tu es à ${formatDistance(km)} du centre de ${zone.name}.`);
       },
       () => {
         setLocating(false);
-        setGpsMessage("Localisation impossible : choisis ta zone ci-dessous.");
+        setGpsMessage("Localisation impossible : cherche ta ville ci-dessous.");
       },
       { timeout: 10000 },
     );
@@ -154,7 +164,8 @@ export default function PreferencesWizard() {
     setSaving(true);
     setError(null);
     try {
-      await saveMyPreferences(user.id, me);
+      // Carte Sortir : seulement autour de Rennes (tâche 54).
+      await saveMyPreferences(user.id, carteSortirArea(me) ? me : { ...me, hasCarteSortir: null });
       router.push(single ? "/profil" : "/");
     } catch (e) {
       setError((e as Error).message);
@@ -163,6 +174,9 @@ export default function PreferencesWizard() {
   }
 
   const current = STEPS[step];
+  /** La question Carte Sortir n'est posée qu'autour de Rennes. */
+  const sortir = carteSortirArea(me);
+  const others = me.zoneIds.filter((z) => z !== me.homeZoneId);
   const last = step === STEPS.length - 1;
   // Seules la zone et au moins un pôle de dépenses sont indispensables.
   const missing =
@@ -170,10 +184,9 @@ export default function PreferencesWizard() {
   const skippable =
     (current.id === "transport" && me.transportModes.length === 0) ||
     (current.id === "travel" && !me.homeVisits) ||
-    (current.id === "aids" && me.isScholar === null && me.hasCarteSortir === null) ||
+    (current.id === "aids" && me.isScholar === null && (me.hasCarteSortir === null || !sortir)) ||
     (current.id === "budget" && !me.budget) ||
     (current.id === "activities" && me.activities.length === 0);
-  const country = COUNTRIES.find((c) => c.id === countryId) ?? COUNTRIES[0];
   const matches = rankDeals(deals, me).filter((r) => r.match.forYou).length;
 
   return (
@@ -231,60 +244,55 @@ export default function PreferencesWizard() {
             </button>
             <LocationNotice>
               Facultatif : envoyée chiffrée, arrondie à environ 100 m, enregistrée avec ton profil et lisible par toi
-              seul. Choisir dans le menu l&apos;efface.
+              seul. Pour trouver ta commune, elle est envoyée à Photon arrondie à environ 1 km. Choisir une ville
+              dans la recherche l&apos;efface.
             </LocationNotice>
             {gpsMessage && (
               <p role="status" className="text-sm text-[var(--color-muted)]">
                 {gpsMessage}
               </p>
             )}
-            <label className="block text-sm font-medium">
-              Pays
-              <select className="sw-field mt-1" value={country.id} onChange={(e) => setCountryId(e.target.value)}>
-                {COUNTRIES.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="block text-sm font-medium">
-              Ville ou campus
-              <select
-                className="sw-field mt-1"
-                value={me.homeZoneId ?? ""}
-                onChange={(e) => e.target.value && chooseHome(e.target.value)}
-              >
-                <option value="" disabled>
-                  Choisis ta ville ou ton campus
-                </option>
-                {ZONES.filter((z) => (country.zoneIds as readonly string[]).includes(z.id)).map((z) => (
-                  <option key={z.id} value={z.id}>
-                    {z.name}
-                  </option>
-                ))}
-              </select>
-            </label>
             {me.homeZoneId && (
-              <div>
+              <p className="flex items-center gap-2 rounded-2xl border-2 p-3 font-medium" style={{ borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }}>
+                <PinIcon className="h-5 w-5 shrink-0" />
+                <span className="flex-1">{zoneById(me.homeZoneId)?.name ?? me.homeZoneId}</span>
+                <span className="text-xs font-normal">Ville principale</span>
+              </p>
+            )}
+            <CitySearch
+              label={me.homeZoneId ? "Changer de ville" : "Ta ville ou ton campus"}
+              exclude={me.homeZoneId ? [me.homeZoneId] : []}
+              // Une seule liste de raccourcis à l'écran : celle des villes à ajouter, une fois la ville choisie.
+              suggestions={!me.homeZoneId}
+              onChoose={(zone) => chooseHome(zone.id)}
+            />
+            {me.homeZoneId && (
+              <div className="space-y-2 border-t pt-4" style={{ borderColor: "var(--color-border)" }}>
                 <p className="text-sm font-medium">Aussi des bons plans de :</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {ZONES.filter((z) => z.id !== me.homeZoneId).map((z) => {
-                    const on = me.zoneIds.includes(z.id);
-                    return (
+                {others.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {others.map((id) => (
                       <button
-                        key={z.id}
+                        key={id}
                         type="button"
-                        aria-pressed={on}
-                        onClick={() => update({ zoneIds: toggle(me.zoneIds, z.id) })}
-                        className={`rounded-full border-2 px-4 py-1.5 text-sm font-medium ${on ? "border-[var(--color-forest)] bg-[var(--color-sage)] text-[var(--color-forest)]" : ""}`}
-                        style={on ? undefined : { borderColor: "var(--color-border)" }}
+                        onClick={() => update({ zoneIds: me.zoneIds.filter((z) => z !== id) })}
+                        aria-label={`Retirer ${zoneById(id)?.name ?? id}`}
+                        className="flex items-center gap-1 rounded-full border-2 border-[var(--color-forest)] bg-[var(--color-sage)] px-3 py-1.5 text-sm font-medium text-[var(--color-forest)]"
                       >
-                        {z.name}
+                        {zoneById(id)?.name ?? id} <CloseIcon className="h-3.5 w-3.5" />
                       </button>
-                    );
-                  })}
-                </div>
+                    ))}
+                  </div>
+                )}
+                {others.length < MAX_OTHER_ZONES ? (
+                  <CitySearch
+                    label={`Ajouter une ville (${others.length} sur ${MAX_OTHER_ZONES})`}
+                    exclude={me.zoneIds}
+                    onChoose={(zone) => !me.zoneIds.includes(zone.id) && update({ zoneIds: [...me.zoneIds, zone.id] })}
+                  />
+                ) : (
+                  <p className="text-xs text-[var(--color-muted)]">{MAX_OTHER_ZONES} villes au maximum : retires-en une pour en ajouter.</p>
+                )}
               </div>
             )}
           </div>
@@ -374,7 +382,7 @@ export default function PreferencesWizard() {
                 { key: "isScholar", question: "Tu es boursier ?" },
                 { key: "hasCarteSortir", question: "Tu as la Carte Sortir, ou tu y as droit ?" },
               ] as const
-            ).map(({ key, question }) => (
+            ).filter((q) => q.key !== "hasCarteSortir" || sortir).map(({ key, question }) => (
               <fieldset key={key}>
                 <legend className="mb-2 text-sm font-medium">{question}</legend>
                 <div className="grid grid-cols-2 gap-2">
@@ -391,12 +399,12 @@ export default function PreferencesWizard() {
                 </div>
               </fieldset>
             ))}
-            <p className="text-xs text-[var(--color-muted)]">
+            {sortir && <p className="text-xs text-[var(--color-muted)]">
               La Carte Sortir est un dispositif de Rennes Métropole, sous conditions de ressources.{" "}
               <a href={CARTE_SORTIR_URL} target="_blank" rel="noreferrer" className="underline">
                 Se renseigner
               </a>
-            </p>
+            </p>}
           </div>
         )}
 

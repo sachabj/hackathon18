@@ -3,6 +3,7 @@
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@/components/icons";
+import { tr } from "@/lib/i18n";
 
 /** Fenêtre par-dessus la page, depuis le bas de l'écran. */
 export default function Modal({ label, onClose, children }: { label: string; onClose: () => void; children: ReactNode }) {
@@ -25,7 +26,7 @@ export default function Modal({ label, onClose, children }: { label: string; onC
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fermer"
+            aria-label={tr("Fermer")}
             className="flex h-9 w-9 items-center justify-center rounded-full"
             style={{ backgroundColor: "var(--color-paper)" }}
           >

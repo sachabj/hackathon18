@@ -12,7 +12,7 @@ import ShareButton from "@/components/deal/ShareButton";
 import DealLocationNote from "@/components/location/DealLocationNote";
 import { CalendarIcon, CameraIcon, CloseIcon, NavigationIcon, PinIcon } from "@/components/icons";
 import { recordDirections } from "@/lib/community";
-import { CATEGORIES, ZONES } from "@/lib/constants";
+import { CATEGORIES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { announceReactions, fetchEngagement, recordView, setReaction, type Engagement, type Reaction } from "@/lib/engagement";
 import { isOwnPhotoUrl } from "@/lib/photos";
@@ -30,22 +30,24 @@ import {
 import TrustBadge from "@/components/deal/TrustBadge";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal } from "@/lib/types";
+import { useZones, zoneById } from "@/lib/zones";
+import { dateLocale, tr, useT } from "@/lib/i18n";
 
 const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
 
 function ago(ms: number) {
   const minutes = Math.max(1, Math.round(ms / 60_000));
-  if (minutes < 60) return `il y a ${minutes} min`;
+  if (minutes < 60) return tr("il y a {n} min", { n: minutes });
   const hours = Math.round(minutes / 60);
-  return hours < 24 ? `il y a ${hours} h` : `il y a ${Math.round(hours / 24)} j`;
+  return hours < 24 ? tr("il y a {n} h", { n: hours }) : tr("il y a {n} j", { n: Math.round(hours / 24) });
 }
 
 /** Bandeau d'une offre terminée (lien partagé, favori, réaction qui la retire). */
 function endMessage(reason: EndReason, expiresAt: string | null) {
-  if (reason === "reports") return "Offre terminée : retirée après des signalements « Plus dispo ».";
-  if (reason === "removed") return "Offre terminée : retirée par son auteur ou par un commerçant.";
-  return `Offre terminée : elle était valable jusqu'au ${formatDate(expiresAt!)}.`;
+  if (reason === "reports") return tr("Offre terminée : retirée après des signalements « Plus dispo ».");
+  if (reason === "removed") return tr("Offre terminée : retirée par son auteur ou par un commerçant.");
+  return tr("Offre terminée : elle était valable jusqu'au {date}.", { date: formatDate(expiresAt!) });
 }
 
 export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () => void }) {
@@ -53,13 +55,15 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [zoom, setZoom] = useState(false);
+  const t = useT();
+  useZones(); // noms des villes chargées après coup
   // Instant fixé à l'ouverture (pas de Date.now() pendant le rendu).
   const [openedAt] = useState(Date.now);
   const photo = isOwnPhotoUrl(deal.photo_url) ? deal.photo_url : null;
   const category = CATEGORIES[deal.category];
   const where =
     deal.place_name ??
-    (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
+    (deal.scope === "national" ? t("Partout en France") : zoneById(deal.zone_id)?.name);
 
   // Seulement quand on change d'offre : la liste peut remplacer l'objet `deal` après une réaction.
   const { id: dealId, author_id: authorId } = deal;
@@ -188,12 +192,12 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
         </div>
         <div className="flex items-start justify-between gap-2">
           <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-muted)]">
-            <CategoryIcon category={deal.category} size={22} /> {category.label}
+            <CategoryIcon category={deal.category} size={22} /> {t(category.label)}
           </p>
           <button
             type="button"
             onClick={close}
-            aria-label="Fermer"
+            aria-label={t("Fermer")}
             className="-mt-1 flex h-9 w-9 items-center justify-center rounded-full"
             style={{ backgroundColor: "var(--color-paper)" }}
           >
@@ -220,9 +224,9 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
         {photo && (
           <button type="button" onClick={() => setZoom(true)} className="mt-2 flex items-center gap-2 text-left">
             {/* eslint-disable-next-line @next/next/no-img-element -- image du stockage Supabase */}
-            <img src={photo} alt="Photo de l'offre" loading="lazy" className="h-16 w-16 rounded-lg border object-cover" style={{ borderColor: "var(--color-border)" }} />
+            <img src={photo} alt={t("Photo de l'offre")} loading="lazy" className="h-16 w-16 rounded-lg border object-cover" style={{ borderColor: "var(--color-border)" }} />
             <span className="flex items-center gap-1 text-xs text-[var(--color-muted)]">
-              <CameraIcon className="h-3.5 w-3.5" /> Photo prise sur place
+              <CameraIcon className="h-3.5 w-3.5" /> {t("Photo prise sur place")}
             </span>
           </button>
         )}
@@ -230,20 +234,20 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Photo de l'offre"
+            aria-label={t("Photo de l'offre")}
             onClick={() => setZoom(false)}
             className="fixed inset-0 z-[2100] flex items-center justify-center bg-black/80 p-4"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- image du stockage Supabase */}
-            <img src={photo} alt="Photo de l'offre" className="max-h-full max-w-full rounded-xl" />
+            <img src={photo} alt={t("Photo de l'offre")} className="max-h-full max-w-full rounded-xl" />
             <button type="button" className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-sm font-medium">
-              <CloseIcon className="h-3.5 w-3.5" /> Fermer
+              <CloseIcon className="h-3.5 w-3.5" /> {t("Fermer")}
             </button>
           </div>
         )}
         {(deal.requirements?.length ?? 0) > 0 && (
           <div className="mt-2">
-            <p className="sr-only">Conditions :</p>
+            <p className="sr-only">{t("Conditions :")}</p>
             <RequirementBadges requirements={deal.requirements} />
           </div>
         )}
@@ -255,10 +259,10 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
           )}
           {deal.deadline_at && (
             <span className="flex items-center gap-1">
-              <CalendarIcon className="h-3.5 w-3.5" /> Date limite : {formatDate(deal.deadline_at)}
+              <CalendarIcon className="h-3.5 w-3.5" /> {t("Date limite : {date}", { date: formatDate(deal.deadline_at) })}
             </span>
           )}
-          {deal.expires_at && <span>Jusqu&apos;au {formatDate(deal.expires_at)}</span>}
+          {deal.expires_at && <span>{t("Jusqu'au {date}", { date: formatDate(deal.expires_at) })}</span>}
         </p>
         {deal.link_url && (
           <div className="mt-3">
@@ -267,9 +271,9 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
         )}
         {deal.source_name && (
           <p className="mt-2 text-xs text-[var(--color-muted)]">
-            Source : {deal.source_name}
-            {deal.source_checked_at && `, vérifiée le ${formatDate(deal.source_checked_at)}`}. Conditions à confirmer sur la page de
-            la source.
+            {t("Source : {name}", { name: deal.source_name })}
+            {deal.source_checked_at && t(", vérifiée le {date}", { date: formatDate(deal.source_checked_at) })}
+            {t(". Conditions à confirmer sur la page de la source.")}
           </p>
         )}
 
@@ -279,27 +283,29 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
               <TrustBadge level={doubt ? "doubtful" : trustLevel(trust.score)} />
               <span>
                 {trust.confirmations > 0
-                  ? `Confirmé actif par ${trust.confirmations} étudiant${trust.confirmations > 1 ? "s" : ""}`
-                  : "Pas encore confirmé"}
+                  ? t(trust.confirmations > 1 ? "Confirmé actif par {n} étudiants" : "Confirmé actif par {n} étudiant", { n: trust.confirmations })
+                  : t("Pas encore confirmé")}
               </span>
             </div>
             {trust.lastConfirmedAt !== null && (
               <p className="mt-1 text-sm text-[var(--color-muted)]">
-                Dernière vérification : {ago(data.at - trust.lastConfirmedAt)} (
+                {t("Dernière vérification : {ago}", { ago: ago(data.at - trust.lastConfirmedAt) })} (
                 {formatDate(new Date(trust.lastConfirmedAt).toISOString())})
               </p>
             )}
             {doubt ? (
               <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-                {reports} étudiants la disent « Plus dispo ». Sans {RESCUE_CONFIRMATIONS} « J&apos;en ai profité » d&apos;ici le{" "}
-                {formatDate(new Date(doubt.deadline).toISOString())}, elle sera retirée ({Math.min(doubt.saved, RESCUE_CONFIRMATIONS)} sur{" "}
-                {RESCUE_CONFIRMATIONS}).
+                {t("{n} étudiants la disent « Plus dispo ». Sans {k} « J'en ai profité » d'ici le {date}, elle sera retirée ({saved} sur {k}).", {
+                  n: reports,
+                  k: RESCUE_CONFIRMATIONS,
+                  date: formatDate(new Date(doubt.deadline).toISOString()),
+                  saved: Math.min(doubt.saved, RESCUE_CONFIRMATIONS),
+                })}
               </p>
             ) : (
               reports > 0 && (
                 <p className="mt-1 text-sm" style={{ color: "var(--color-aubergine)" }}>
-                  Signalée « Plus dispo » par {reports} étudiant{reports > 1 ? "s" : ""} sur {DOUBT_REPORTS} avant de passer en
-                  « Douteux ».
+                  {t(reports > 1 ? "Signalée « Plus dispo » par {n} étudiants sur {k} avant de passer en « Douteux »." : "Signalée « Plus dispo » par {n} étudiant sur {k} avant de passer en « Douteux ».", { n: reports, k: DOUBT_REPORTS })}
                 </p>
               )
             )}
@@ -316,7 +322,7 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
               onClick={() => recordDirections(deal.id)}
               className="sw-btn-primary w-full"
             >
-              <NavigationIcon className="h-4 w-4" /> Y aller
+              <NavigationIcon className="h-4 w-4" /> {t("Y aller")}
             </a>
           )}
           <ShareButton deal={deal} />
@@ -334,15 +340,15 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
             />
             <p className="mt-1.5 text-center text-xs text-[var(--color-muted)]">
               {own
-                ? "C'est ton bon plan : tu suis ses réactions dans « Ciblés », onglet Activité."
+                ? t("C'est ton bon plan : tu suis ses réactions dans « Ciblés », onglet Activité.")
                 : reaction
-                  ? "Touché par erreur ? Touche à nouveau pour décocher."
-                  : "Réactions des 30 derniers jours."}
+                  ? t("Touché par erreur ? Touche à nouveau pour décocher.")
+                  : t("Réactions des 30 derniers jours.")}
             </p>
             {!own && <DealLocationNote placed={placed} />}
           </div>
         )}
-        {!data && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">Chargement…</p>}
+        {!data && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>}
         {error && (
           <p role="alert" className="mt-3 text-sm text-red-600">
             {error}

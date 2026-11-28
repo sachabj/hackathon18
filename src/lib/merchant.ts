@@ -1,6 +1,7 @@
 // Espace commerçant (Justin) : lecture et écriture. Les droits sont garantis par la base (005_merchant.sql).
 import { settleDoubtfulDeals } from "./engagement";
-import { nearestZone, type Point } from "./geo";
+import type { Point } from "./geo";
+import { zoneAround } from "./zones";
 import { getSupabase } from "./supabase/client";
 import type { Business, Deal, DealCategory, OfferStats } from "./types";
 
@@ -73,7 +74,7 @@ export async function registerBusiness(input: {
       p_name: input.name,
       p_address: input.address,
       p_category: input.category,
-      p_zone_id: nearestZone(input.position).zone.id,
+      p_zone_id: zoneAround(input.position)?.id ?? null,
       p_lat: input.position.lat,
       p_lng: input.position.lng,
     }),

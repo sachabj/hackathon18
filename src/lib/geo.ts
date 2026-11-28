@@ -1,4 +1,4 @@
-import { ZONES } from "./constants";
+import { getLang } from "./i18n";
 
 export interface Point {
   lat: number;
@@ -14,9 +14,7 @@ export function distanceKm(a: Point, b: Point) {
   return 12742 * Math.asin(Math.sqrt(h));
 }
 
-export function nearestZone(point: Point) {
-  return ZONES.map((zone) => ({ zone, km: distanceKm(point, zone) })).sort((a, b) => a.km - b.km)[0];
-}
+/** Voir aussi `nearestZone` et `zoneAround` dans `zones.ts` (toutes les villes connues). */
 
 export const formatDistance = (km: number) =>
-  km < 1 ? `${Math.max(50, Math.round(km * 20) * 50)} m` : `${km.toFixed(1).replace(".", ",")} km`;
+  km < 1 ? `${Math.max(50, Math.round(km * 20) * 50)} m` : `${getLang() === "en" ? km.toFixed(1) : km.toFixed(1).replace(".", ",")} km`;

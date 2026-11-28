@@ -8,23 +8,23 @@
 --
 -- Comptes préparés (mot de passe : celui choisi dans reset_demo.sql) ; Flèches gagnées, qui fixent le rang :
 --   demo.lea     Robin des Étudiants      680, série 5 jours ; 430 disponibles, un bon actif et un utilisé
---   demo.hugo    Robin des Étudiants      520
---   demo.sarah   Chasseur de bons plans   495, série 2 jours  → compte conseillé pour la démo en direct
---   demo.ines    Chasseur de bons plans   310, série 3 jours
+--   demo.hugo    Robin des Étudiants      510
+--   demo.sarah   Chasseur de bons plans   490, série 2 jours  → compte conseillé pour la démo en direct
+--   demo.ines    Chasseur de bons plans   300, série 3 jours
 --   demo.malo    Chasseur de bons plans   150
 --   demo.tom     Éclaireur                 60
 --
 -- En direct, connecté en demo.sarah (la série passe à 3 jours : gains × 1,5) :
---   1. « Carte Avantage Jeune » : J'en ai profité → +5, elle passe Robin des Étudiants (500) ;
+--   1. « Carte Avantage Jeune » : J'en ai profité → +5 (495) ;
 --      3e confirmation, son auteur (demo.hugo) gagne le bonus (+10).
 --   2. « Covoiturage Bruz → Rennes » (« Douteux », 5 signalements récents) : Plus dispo → 6e en 48 h,
---      offre retirée, +8 (508).
---   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 358 disponibles,
+--      offre retirée, +5 : elle passe Robin des Étudiants (500).
+--   3. Ciblés → Récompenses : échanger « 1 boisson ou dessert offert » (150) → 350 disponibles,
 --      le rang ne bouge pas ; montrer le bon, puis « Marquer comme utilisé en caisse ».
 -- Les offres des étapes 1 et 2 sont sans lieu précis : petits montants, et la position ne change rien.
 --
 -- Profil de demo.sarah (INVENTÉ) : ENSAI, code WOOD-SARAH26, 3 amis parrainés (300 Flèches, comprises dans
--- ses 495) et 42 étudiants aidés (30 par ses offres, 12 par ses liens partagés). Pour cela, 42 comptes
+-- ses 490) et 42 étudiants aidés (30 par ses offres, 12 par ses liens partagés). Pour cela, 42 comptes
 -- « demo.publicNN » sans mot de passe sont créés (personne ne peut s'y connecter).
 -- =====================================================================
 do $seed$

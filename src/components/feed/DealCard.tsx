@@ -10,14 +10,16 @@ import DealSheet from "@/components/deal/DealSheet";
 import ReactionBar from "@/components/deal/ReactionBar";
 import TrustBadge from "@/components/deal/TrustBadge";
 import { CalendarIcon, HeartIcon, PinIcon, SparklesIcon } from "@/components/icons";
-import { CATEGORIES, ZONES } from "@/lib/constants";
+import { CATEGORIES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { useChanges } from "@/lib/motion";
 import type { DealWithVotes } from "@/lib/types";
 import { useDealReactions } from "@/lib/useDealReactions";
+import { useZones, zoneById } from "@/lib/zones";
+import { dateLocale, useT } from "@/lib/i18n";
 
-const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+const formatDate = (iso: string) => new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
 
 /** `match` absent tant que l'étudiant n'a pas rempli son profil : seule la distance en est affichée. */
 export default function DealCard({
@@ -38,11 +40,13 @@ export default function DealCard({
   /** Cette offre est celle choisie sur la carte (Recherche) : même contour aubergine que son repère. */
   selected?: boolean;
 }) {
+  const t = useT();
   const where =
     deal.place_name ??
-    (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name) ??
-    CATEGORIES[deal.category].label;
+    (deal.scope === "national" ? t("Partout en France") : zoneById(deal.zone_id)?.name) ??
+    t(CATEGORIES[deal.category].label);
   const r = useDealReactions(deal);
+  useZones(); // noms des villes chargées après coup
   const [open, setOpen] = useState(false);
   const liked = useChanges(favorite);
   // Offre terminée (favori gardé, ou retirée à l'instant) : grisée, sans mise en avant ni réactions.
@@ -52,9 +56,9 @@ export default function DealCard({
   // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
   useLayoutEffect(() => () => setOpen(false), []);
   const deadline = deal.deadline_at
-    ? `Avant le ${formatDate(deal.deadline_at)}`
+    ? t("Avant le {date}", { date: formatDate(deal.deadline_at) })
     : deal.expires_at
-      ? `Jusqu'au ${formatDate(deal.expires_at)}`
+      ? t("Jusqu'au {date}", { date: formatDate(deal.expires_at) })
       : null;
 
   return (
@@ -77,7 +81,7 @@ export default function DealCard({
         </button>
         {r.ended ? (
           <span className="sw-badge shrink-0" style={{ backgroundColor: "var(--color-border)", color: "var(--color-ink)" }}>
-            Terminée
+            {t("Terminée")}
           </span>
         ) : (
           r.trust !== undefined && <TrustBadge level={r.trust} />
@@ -89,13 +93,13 @@ export default function DealCard({
             onClick={() => onToggleFavorite(deal.id)}
             className="shrink-0 pt-0.5 transition active:scale-90"
             style={{ color: favorite ? "var(--color-aubergine)" : "var(--color-border)" }}
-            title={favorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+            title={favorite ? t("Retirer des favoris") : t("Ajouter aux favoris")}
           >
             {/* Tâche 75 : le cœur grossit et lâche un anneau quand il devient favori. */}
             <span key={liked.count} className={`block ${liked.count > 0 && favorite ? "sw-heart-pop rounded-full" : ""}`}>
               <HeartIcon className="h-5 w-5" filled={favorite} />
             </span>
-            <span className="sr-only">{favorite ? "Retirer des favoris" : "Ajouter aux favoris"}</span>
+            <span className="sr-only">{favorite ? t("Retirer des favoris") : t("Ajouter aux favoris")}</span>
           </button>
         )}
       </div>
@@ -114,7 +118,7 @@ export default function DealCard({
         {boosted && (
           // Explique le cadre doré (sinon sans texte, on ne sait pas que c'est une mise en avant payante).
           <span className="sw-badge" style={{ backgroundColor: "#d4a017", color: "#1A1A18" }}>
-            <SparklesIcon className="h-3.5 w-3.5" /> Sponsorisé
+            <SparklesIcon className="h-3.5 w-3.5" /> {t("Sponsorisé")}
           </span>
         )}
         <AuthorBadge deal={deal} />

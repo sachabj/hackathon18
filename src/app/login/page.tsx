@@ -6,8 +6,11 @@ import { GraduationCapIcon, StoreIcon } from "@/components/icons";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import { checkReferralCode, REFERRAL } from "@/lib/community";
 import { APP_NAME, PASSWORD_MIN } from "@/lib/constants";
+import { useT } from "@/lib/i18n";
+import LangSwitch from "@/components/LangSwitch";
 
 export default function LoginPage() {
+  const t = useT();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +42,7 @@ export default function LoginPage() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!isSupabaseConfigured) return setError("Supabase n'est pas encore configuré.");
+    if (!isSupabaseConfigured) return setError(t("Supabase n'est pas encore configuré."));
     setLoading(true);
     setError(null);
     setInfo(null);
@@ -55,7 +58,7 @@ export default function LoginPage() {
       }
       if (known === false) {
         setLoading(false);
-        return setError("Code parrainage inconnu : vérifie-le ou laisse le champ vide.");
+        return setError(t("Code parrainage inconnu : vérifie-le ou laisse le champ vide."));
       }
     }
     const { data, error } =
@@ -79,40 +82,43 @@ export default function LoginPage() {
     if (!data.session) {
       setMode("login");
       setPassword("");
-      return setInfo("Compte créé : ouvre l'email de confirmation que tu viens de recevoir, puis connecte-toi.");
+      return setInfo(t("Compte créé : ouvre l'email de confirmation que tu viens de recevoir, puis connecte-toi."));
     }
     // Après inscription → préférences (étudiant) ou commerce ; après connexion → carte.
     window.location.href = mode === "login" ? next : merchant ? "/commercant" : "/onboarding";
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-6 py-12">
+    <div className="relative flex flex-1 flex-col items-center justify-center px-6 py-12">
+      <div className="absolute right-4 top-4">
+        <LangSwitch />
+      </div>
       {/* eslint-disable-next-line @next/next/no-img-element -- petit logo statique, SVG */}
       <img src="/logo.svg" alt="" width={56} height={56} aria-hidden />
       <h1 className="mt-3 text-3xl" style={{ color: "var(--color-ink)" }}>{APP_NAME}</h1>
-      <p className="sw-quote mt-2 text-center text-[var(--color-muted)]">Les bons plans se partagent.</p>
+      <p className="sw-quote mt-2 text-center text-[var(--color-muted)]">{t("Les bons plans se partagent.")}</p>
 
       <form onSubmit={submit} className="mt-8 w-full max-w-sm space-y-3">
         {mode === "signup" && (
           <fieldset className="grid grid-cols-2 gap-2">
-            <legend className="sr-only">Type de compte</legend>
+            <legend className="sr-only">{t("Type de compte")}</legend>
             {[
               { value: false, label: "Étudiant", Icon: GraduationCapIcon },
               { value: true, label: "Commerçant", Icon: StoreIcon },
-            ].map((t) => (
+            ].map((opt) => (
               <button
-                key={t.label}
+                key={opt.label}
                 type="button"
-                aria-pressed={merchant === t.value}
-                onClick={() => setMerchant(t.value)}
+                aria-pressed={merchant === opt.value}
+                onClick={() => setMerchant(opt.value)}
                 className="flex items-center justify-center gap-1.5 rounded-lg border-2 py-2 text-sm font-medium"
                 style={
-                  merchant === t.value
+                  merchant === opt.value
                     ? { borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }
                     : { borderColor: "var(--color-border)", color: "var(--color-muted)" }
                 }
               >
-                <t.Icon className="h-4 w-4" /> {t.label}
+                <opt.Icon className="h-4 w-4" /> {t(opt.label)}
               </button>
             ))}
           </fieldset>
@@ -120,7 +126,7 @@ export default function LoginPage() {
         {mode === "signup" && (
           <input
             className="sw-field"
-            placeholder="Pseudo"
+            placeholder={t("Pseudo")}
             maxLength={40}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -138,7 +144,7 @@ export default function LoginPage() {
         <input
           className="sw-field"
           type="password"
-          placeholder={mode === "signup" ? "Mot de passe (8 caractères min.)" : "Mot de passe"}
+          placeholder={mode === "signup" ? t("Mot de passe (8 caractères min.)") : t("Mot de passe")}
           minLength={mode === "signup" ? PASSWORD_MIN : undefined}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -146,7 +152,7 @@ export default function LoginPage() {
         />
         {mode === "signup" && !merchant && (
           <label className="block text-sm text-[var(--color-muted)]">
-            Code parrainage (facultatif) : +{REFERRAL.referee} Flèches à ta première action
+            {t("Code parrainage (facultatif) : +{n} Flèches à ta première action", { n: REFERRAL.referee })}
             <input
               className="sw-field mt-1 uppercase"
               placeholder="WOOD-ALEX26"
@@ -168,9 +174,9 @@ export default function LoginPage() {
               required
             />
             <span>
-              J&apos;ai au moins 15 ans et j&apos;accepte la{" "}
+              {t("J'ai au moins 15 ans et j'accepte la")}{" "}
               <Link href="/confidentialite" target="_blank" className="underline" style={{ color: "var(--color-forest)" }}>
-                politique de confidentialité
+                {t("politique de confidentialité")}
               </Link>
               .
             </span>
@@ -183,7 +189,7 @@ export default function LoginPage() {
           </p>
         )}
         <button disabled={loading} className="sw-btn-primary disabled:opacity-50">
-          {loading ? "…" : mode === "login" ? "Se connecter" : "Créer mon compte"}
+          {loading ? "…" : mode === "login" ? t("Se connecter") : t("Créer mon compte")}
         </button>
       </form>
 
@@ -195,7 +201,7 @@ export default function LoginPage() {
           setMode(mode === "login" ? "signup" : "login");
         }}
       >
-        {mode === "login" ? "Pas de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
+        {mode === "login" ? t("Pas de compte ? S'inscrire") : t("Déjà un compte ? Se connecter")}
       </button>
     </div>
   );

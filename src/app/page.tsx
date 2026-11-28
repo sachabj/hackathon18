@@ -16,6 +16,7 @@ import { useCascade } from "@/lib/motion";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
+import { useT } from "@/lib/i18n";
 
 /** Filtre principal : « Pour toi », « Mes favoris », ou aucun (toutes les offres). */
 type Scope = "forYou" | "favorites" | null;
@@ -39,6 +40,7 @@ export default function Page() {
   const { deals, loading, error } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const t = useT();
   const [scope, setScope] = useState<Scope>("forYou");
   const [categories, setCategories] = useState<DealCategory[]>([]);
 
@@ -66,9 +68,9 @@ export default function Page() {
   const emptyMessage =
     scope === "favorites"
       ? categories.length > 0
-        ? "Aucun favori dans ces catégories."
-        : "Touche le cœur d'une offre pour la retrouver ici."
-      : "Aucun bon plan dans ces catégories pour le moment.";
+        ? t("Aucun favori dans ces catégories.")
+        : t("Touche le cœur d'une offre pour la retrouver ici.")
+      : t("Aucun bon plan dans ces catégories pour le moment.");
   const busy = loading || loadingProfile;
   // Tâche 75 : cartes en cascade au chargement et à chaque changement de filtre.
   const cascade = useCascade<HTMLDivElement>(`${busy}|${scope}|${categories.join(",")}`);
@@ -87,51 +89,51 @@ export default function Page() {
 
       <div className="space-y-4 px-4 py-4 lg:py-6">
         {/* Pas de formule d'accueil (« Bonjour … ») : la page commence par les onglets. Titre pour les lecteurs d'écran. */}
-        <h1 className="sr-only">Les bons plans étudiants</h1>
+        <h1 className="sr-only">{t("Les bons plans étudiants")}</h1>
         {profile && !profile.onboarded && (
           <Link href="/onboarding" className="block rounded-lg px-4 py-3" style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}>
-            <span className="block font-medium">Personnalise tes bons plans</span>
+            <span className="block font-medium">{t("Personnalise tes bons plans")}</span>
             <span className="block text-sm" style={{ color: "var(--color-sage)" }}>
-              1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.
+              {t("1 minute pour voir ce qui correspond à ta zone, ton budget et tes envies.")}
             </span>
           </Link>
         )}
 
         {profileError && <p className="text-sm text-red-600">{profileError}</p>}
-        {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
+        {error && <p className="text-sm text-red-600">{t("Impossible de charger les bons plans :")} {error}</p>}
 
         <div>
           {/* Filtres : un filtre principal (Pour toi / Mes favoris, retouché = désactivé) et des catégories cumulables. */}
           <div
             role="group"
-            aria-label="Filtres"
+            aria-label={t("Filtres")}
             className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:justify-center lg:px-0"
           >
             <FilterChip selected={scope === "forYou"} onClick={() => setScope(scope === "forYou" ? null : "forYou")}>
-              <TargetIcon className="h-4 w-4" /> Pour toi
+              <TargetIcon className="h-4 w-4" /> {t("Pour toi")}
             </FilterChip>
             <FilterChip selected={scope === "favorites"} onClick={() => setScope(scope === "favorites" ? null : "favorites")}>
-              <HeartIcon className="h-4 w-4" filled={scope === "favorites"} /> Mes favoris
+              <HeartIcon className="h-4 w-4" filled={scope === "favorites"} /> {t("Mes favoris")}
             </FilterChip>
             <span aria-hidden className="w-px shrink-0 self-stretch" style={{ backgroundColor: "var(--color-border)" }} />
             {CATEGORY_IDS.map((c) => (
               <FilterChip key={c} selected={categories.includes(c)} onClick={() => toggleCategory(c)}>
-                <span aria-hidden><CategoryIcon category={c} size={20} /></span> {CATEGORIES[c].label}
+                <span aria-hidden><CategoryIcon category={c} size={20} /></span> {t(CATEGORIES[c].label)}
               </FilterChip>
             ))}
           </div>
 
-          <div ref={cascade} role="region" aria-label="Bons plans" className="space-y-3 pt-3">
+          <div ref={cascade} role="region" aria-label={t("Bons plans")} className="space-y-3 pt-3">
             {busy ? (
-              <p className="text-sm text-[var(--color-muted)]">Chargement des bons plans…</p>
+              <p className="text-sm text-[var(--color-muted)]">{t("Chargement des bons plans…")}</p>
             ) : (
               !error && (
                 <>
                   {scope === "forYou" && forYou.length === 0 && deals.length > 0 && (
                     <p className="text-sm text-[var(--color-muted)]">
                       {me
-                        ? "Rien ne correspond encore à ton profil : voici les derniers bons plans."
-                        : "Voici les derniers bons plans."}
+                        ? t("Rien ne correspond encore à ton profil : voici les derniers bons plans.")
+                        : t("Voici les derniers bons plans.")}
                     </p>
                   )}
                   {items.length === 0 ? (

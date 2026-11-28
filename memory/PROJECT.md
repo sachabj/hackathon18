@@ -61,6 +61,7 @@ Pas codé :
 
 ## Compte ✅
 - **Un compte est obligatoire pour tout**, y compris pour consulter.
+- **Partout en France et en anglais** ✅ (codé) : n'importe quelle ville à l'inscription (recherche ou localisation) ; Carte Sortir proposée seulement autour de Rennes ; interface étudiante en français ou en anglais.
 - **Localisation** ✅ (codé) : facultative, avec accord retirable au profil ; sans elle les offres placées sur la carte ne rapportent pas de Flèches (500 m au plus) et ne peuvent pas être signalées « Plus dispo ». Offres sans lieu : petits montants.
 - **Profil** ✅ (codé) : étudiants aidés (personnes uniques), parrainage (+100 / +50 à la première action, 10 payés au maximum), menu des réglages. Notifications annoncées « bientôt ».
 - **Publications anonymes** ; page « Compte et confidentialité » (sécurité, mes données, suppression) et politique de confidentialité.

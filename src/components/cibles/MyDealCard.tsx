@@ -9,9 +9,10 @@ import type { MyDealInput } from "@/lib/engagement";
 import { normalizeLink } from "@/lib/links";
 import { DOUBT_DAYS, RESCUE_CONFIRMATIONS } from "@/lib/rules";
 import type { Deal, DealAudience, DealRequirement } from "@/lib/types";
+import { dateLocale, tr, useT } from "@/lib/i18n";
 
 const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
 /** Date ISO → valeur d'un champ date (jour local). */
 const toDay = (iso: string) => new Date(iso).toLocaleDateString("sv-SE");
 
@@ -23,7 +24,7 @@ const inputClass = "sw-field mt-1 text-base";
 /** Flèches rapportées par un de ses bons plans ; `create` à 0 : publié loin du lieu ou au-delà du plafond du jour. */
 export type DealGains = { create?: number; bonus?: number };
 
-const plural = (n: number, word: string) => `${n} ${word}${n > 1 ? "s" : ""}`;
+const plural = (n: number, one: string, many: string) => tr(n > 1 ? many : one, { n });
 
 /**
  * Un de mes bons plans, en une ligne (titre, état, Flèches) ; toucher la ligne montre l'audience,
@@ -51,6 +52,7 @@ export default function MyDealCard({
   onToggleEnded: () => void;
   onDelete: () => void;
 }) {
+  const t = useT();
   const [mode, setMode] = useState<"view" | "edit" | "delete">("view");
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(deal.title);
@@ -111,19 +113,19 @@ export default function MyDealCard({
     return (
       <form onSubmit={submit} className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-forest)", borderWidth: 2 }}>
         <label className="block text-sm font-medium">
-          Titre
+          {t("Titre")}
           <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={TITLE_MAX} required />
         </label>
         <label className="block text-sm font-medium">
-          Détails
+          {t("Détails")}
           <textarea className={inputClass} rows={2} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} />
         </label>
         <label className="block text-sm font-medium">
-          Dernier jour
+          {t("Dernier jour")}
           <input type="date" className={inputClass} value={lastDay} onChange={(e) => setLastDay(e.target.value)} />
         </label>
         <fieldset>
-          <legend className="text-sm font-medium">Conditions</legend>
+          <legend className="text-sm font-medium">{t("Conditions")}</legend>
           <div className="mt-1 flex flex-wrap gap-1.5">
             {(Object.keys(REQUIREMENTS) as DealRequirement[]).map((r) => {
               const { Icon, label } = REQUIREMENTS[r];
@@ -141,14 +143,14 @@ export default function MyDealCard({
                       : { borderColor: "var(--color-border)" }
                   }
                 >
-                  <Icon className="h-3.5 w-3.5" /> {label}
+                  <Icon className="h-3.5 w-3.5" /> {t(label)}
                 </button>
               );
             })}
           </div>
         </fieldset>
         <label className="block text-sm font-medium">
-          Lien vers l&apos;offre
+          {t("Lien vers l'offre")}
           <input
             className={inputClass}
             type="text"
@@ -161,8 +163,8 @@ export default function MyDealCard({
         </label>
         {linkError && <p className="text-sm text-red-600">{linkError}</p>}
         <div className="flex gap-2">
-          <button disabled={busy} className="sw-btn-primary">Enregistrer</button>
-          <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">Annuler</button>
+          <button disabled={busy} className="sw-btn-primary">{t("Enregistrer")}</button>
+          <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">{t("Annuler")}</button>
         </div>
       </form>
     );
@@ -200,13 +202,13 @@ export default function MyDealCard({
             }
           >
             {/* Le motif complet est donné une fois la ligne ouverte. */}
-            {deal.archived_at || byMerchant ? "Retiré" : doubtful ? "Douteux" : status}
+            {t(deal.archived_at || byMerchant ? "Retiré" : doubtful ? "Douteux" : status)}
           </span>
           {earned > 0 && (
             <span className="flex shrink-0 items-center gap-0.5 tabular-nums" style={{ color: "var(--color-forest)" }}>
               +{earned}
               <ArrowShotIcon className="h-3.5 w-3.5" />
-              <span className="sr-only">Flèches</span>
+              <span className="sr-only">{t("Flèches")}</span>
             </span>
           )}
           <ChevronDownIcon className={`h-4 w-4 shrink-0 text-[var(--color-muted)] transition-transform ${open ? "rotate-180" : ""}`} />
@@ -216,25 +218,25 @@ export default function MyDealCard({
         <div id={panelId} className="space-y-2 border-t p-3 text-sm" style={{ borderColor: "var(--color-border)" }}>
           <p className="text-[var(--color-muted)]">
             {[
-              `Publié le ${formatDate(deal.created_at)}`,
-              deal.expires_at && `jusqu'au ${formatDate(deal.expires_at)}`,
-              (deal.archived_at || byMerchant) && status.toLowerCase(),
+              t("Publié le {date}", { date: formatDate(deal.created_at) }),
+              deal.expires_at && t("jusqu'au {date}", { date: formatDate(deal.expires_at) }),
+              (deal.archived_at || byMerchant) && t(status).toLowerCase(),
             ]
               .filter(Boolean)
               .join(" · ")}
           </p>
           {deadline && (
             <p style={{ color: "var(--color-aubergine)" }}>
-              Douteux : sans {RESCUE_CONFIRMATIONS} « J&apos;en ai profité » d&apos;ici le {formatDate(deadline)}, il sera retiré.
+              {t("Douteux : sans {k} « J'en ai profité » d'ici le {date}, il sera retiré.", { k: RESCUE_CONFIRMATIONS, date: formatDate(deadline) })}
             </p>
           )}
           {audience && (
             <p>
               {[
-                plural(audience.views, "vue"),
-                `${audience.confirmations} « J'en ai profité »`,
-                plural(audience.favorites, "favori"),
-                audience.reports > 0 && `${audience.reports} « Plus dispo »`,
+                plural(audience.views, "{n} vue", "{n} vues"),
+                t("{n} « J'en ai profité »", { n: audience.confirmations }),
+                plural(audience.favorites, "{n} favori", "{n} favoris"),
+                audience.reports > 0 && t("{n} « Plus dispo »", { n: audience.reports }),
               ]
                 .filter(Boolean)
                 .join(" · ")}
@@ -243,45 +245,45 @@ export default function MyDealCard({
           {gains?.create === 0 ? (
             <p className="text-[var(--color-muted)]">
               {deal.lat !== null && deal.lng !== null
-                ? `Sans Flèches : publié sans position vérifiée à moins de ${NEARBY_M} m du lieu, ou au-delà de ${DAILY_PAID_CREATIONS} publications récompensées le même jour.`
-                : `Publié au-delà de ${DAILY_PAID_CREATIONS} bons plans le même jour : sans Flèches.`}
+                ? t("Sans Flèches : publié sans position vérifiée à moins de {m} m du lieu, ou au-delà de {n} publications récompensées le même jour.", { m: NEARBY_M, n: DAILY_PAID_CREATIONS })
+                : t("Publié au-delà de {n} bons plans le même jour : sans Flèches.", { n: DAILY_PAID_CREATIONS })}
             </p>
           ) : (
             !!gains?.bonus && (
               <p className="text-[var(--color-muted)]">
-                Flèches : {gains.create ?? 0} à la publication, {gains.bonus} grâce aux 3 confirmations.
+                {t("Flèches : {a} à la publication, {b} grâce aux 3 confirmations.", { a: gains.create ?? 0, b: gains.bonus })}
               </p>
             )
           )}
 
       {mode === "delete" ? (
         <div className="rounded-xl p-3 text-sm" style={{ backgroundColor: "var(--color-lilac)" }}>
-          <p>Supprimer définitivement ce bon plan, avec ses votes et ses favoris ?</p>
+          <p>{t("Supprimer définitivement ce bon plan, avec ses votes et ses favoris ?")}</p>
           <div className="mt-2 flex gap-2">
-            <button type="button" disabled={busy} onClick={onDelete} className="sw-btn-primary" style={{ backgroundColor: "#b91c1c" }}>Supprimer</button>
-            <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">Annuler</button>
+            <button type="button" disabled={busy} onClick={onDelete} className="sw-btn-primary" style={{ backgroundColor: "#b91c1c" }}>{t("Supprimer")}</button>
+            <button type="button" onClick={() => setMode("view")} className="sw-btn-secondary">{t("Annuler")}</button>
           </div>
         </div>
       ) : (
         <div className="flex flex-wrap gap-2">
           <button type="button" disabled={busy} onClick={startEdit} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
-            <EditIcon className="h-4 w-4" /> Modifier
+            <EditIcon className="h-4 w-4" /> {t("Modifier")}
           </button>
           {!byMerchant && (
             <button type="button" disabled={busy} onClick={onToggleEnded} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
               {deal.ended_by_merchant ? (
                 <>
-                  <UndoIcon className="h-4 w-4" /> Remettre en ligne
+                  <UndoIcon className="h-4 w-4" /> {t("Remettre en ligne")}
                 </>
               ) : (
                 <>
-                  <ProhibitedIcon className="h-4 w-4" /> Plus dispo
+                  <ProhibitedIcon className="h-4 w-4" /> {t("Plus dispo")}
                 </>
               )}
             </button>
           )}
           <button type="button" disabled={busy} onClick={() => setMode("delete")} className={actionClass} style={{ borderColor: "#fca5a5", color: "#dc2626" }}>
-            <TrashIcon className="h-4 w-4" /> Supprimer
+            <TrashIcon className="h-4 w-4" /> {t("Supprimer")}
           </button>
         </div>
       )}

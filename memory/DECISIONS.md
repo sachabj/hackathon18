@@ -478,3 +478,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : à la fin de chaque requête, `memory/TASKS.md` reflète l'état réel : fait, en cours, reste à faire (y compris les étapes à lancer par l'utilisateur), lignes périmées corrigées (`CLAUDE.md`, section 2).
 - **Pourquoi** : suivre en équipe ce qui reste à faire avant la démo sans relire le journal.
 - **Qui** : Justin
+
+## 2026-11-28 nuit — Anglais et toutes les villes de France (tâches 50, 52, 54)
+- **Décisions** : parcours étudiant traduit en anglais (pas l'espace commerçant, ni la politique de confidentialité, ni l'assistant de préférences) ; langue choisie au profil et sur la connexion, retenue sur l'appareil, par défaut celle du navigateur ; ville : recherche Photon + grandes villes étudiantes en raccourci, « Me localiser » trouve la commune ; une ville principale + 4 autres ; Carte Sortir posée seulement à 20 km de Rennes.
+- **Choix techniques** : dictionnaire « texte français → anglais » sans bibliothèque (rapide à brancher, un oubli reste en français) ; rechargement au changement de langue ; villes créées en base à la demande (`ensure_zone`) pour garder les clés étrangères.
+- **Écartés** : toute l'application en anglais (trop long avant 11 h) ; liste fixe de villes.
+- **Qui** : Sacha (réponses aux questions de cadrage)

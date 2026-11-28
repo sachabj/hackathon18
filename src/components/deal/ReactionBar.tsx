@@ -8,6 +8,7 @@ import { ArrowShotIcon, CheckIcon, ThumbsDownIcon, WalkIcon } from "@/components
 import { arrowsFor } from "@/lib/arrows";
 import type { Reaction } from "@/lib/engagement";
 import { useChanges } from "@/lib/motion";
+import { useT } from "@/lib/i18n";
 
 export default function ReactionBar({
   counts,
@@ -31,10 +32,11 @@ export default function ReactionBar({
   /** Offre placée sur la carte : le gain, plus élevé, suppose d'être sur place. */
   placed: boolean;
 }) {
+  const t = useT();
   const gains = arrowsFor(placed);
   const buttons = [
-    { id: "visited" as const, label: "J'en ai profité", count: counts.visited, gain: gains.confirm, Icon: WalkIcon, color: "var(--color-forest)", bg: "var(--color-sage)" },
-    { id: "gone" as const, label: "Plus dispo", count: counts.gone, gain: gains.report, Icon: ThumbsDownIcon, color: "var(--color-aubergine)", bg: "var(--color-lilac)" },
+    { id: "visited" as const, label: t("J'en ai profité"), count: counts.visited, gain: gains.confirm, Icon: WalkIcon, color: "var(--color-forest)", bg: "var(--color-sage)" },
+    { id: "gone" as const, label: t("Plus dispo"), count: counts.gone, gain: gains.report, Icon: ThumbsDownIcon, color: "var(--color-aubergine)", bg: "var(--color-lilac)" },
   ];
   const pad = size === "sm" ? "px-1 py-1.5 text-[13px]" : "py-2.5 text-sm";
   return (
@@ -82,6 +84,7 @@ function ReactionButton({
   showGain: boolean;
   onClick: () => void;
 }) {
+  const t = useT();
   // Rebond seulement quand le bouton devient actif, pas au premier affichage.
   const toggled = useChanges(on);
   const counted = useChanges(count);
@@ -121,7 +124,7 @@ function ReactionButton({
           <span className="flex items-center gap-0.5 text-xs tabular-nums" style={{ color: "var(--color-forest)" }}>
             +{gain}
             <ArrowShotIcon className="h-3 w-3" />
-            <span className="sr-only">Flèches</span>
+            <span className="sr-only">{t("Flèches")}</span>
           </span>
         )}
       </span>

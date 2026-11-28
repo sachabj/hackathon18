@@ -4,6 +4,7 @@ import { distanceKm, type Point } from "./geo";
 import { travelMinutes } from "./matching";
 import { tokenize } from "./search";
 import type { Deal, DealRequirement, TransportMode } from "./types";
+import { tr } from "./i18n";
 
 /** `level` : niveau de prix maximal (colonne `deals.price_level`). */
 export const PRICE_FILTERS = {
@@ -87,7 +88,7 @@ export const dealDistance = (deal: Deal, origin: Point | null) =>
 
 /** « ≈ 12 min à pied », affiché sur la carte à la place de la distance habituelle. */
 export const travelLabel = (km: number, mode: TransportMode) =>
-  `≈ ${travelMinutes(km, mode)} min ${TRANSPORT_MODES[mode].by}`;
+  tr("≈ {n} min {by}", { n: travelMinutes(km, mode), by: tr(TRANSPORT_MODES[mode].by) });
 
 /**
  * Garde les offres qui passent les filtres puis les trie ; la pertinence garde l'ordre reçu.

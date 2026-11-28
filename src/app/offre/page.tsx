@@ -8,9 +8,11 @@ import DealSheet from "@/components/deal/DealSheet";
 import { recordShareOpen } from "@/lib/community";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 
 export default function Page() {
   const router = useRouter();
+  const t = useT();
   const [deal, setDeal] = useState<Deal | null>(null);
   const [missing, setMissing] = useState(false);
 
@@ -38,12 +40,12 @@ export default function Page() {
 
   return (
     <div className="mx-auto w-full max-w-md space-y-4 px-4 py-10 text-center">
-      <h1 className="text-2xl">{missing ? "Bon plan introuvable" : "Bon plan partagé"}</h1>
+      <h1 className="text-2xl">{missing ? t("Bon plan introuvable") : t("Bon plan partagé")}</h1>
       <p className="text-sm text-[var(--color-muted)]">
-        {missing ? "Il a peut-être été supprimé depuis le partage." : deal ? deal.title : "Chargement…"}
+        {missing ? t("Il a peut-être été supprimé depuis le partage.") : deal ? deal.title : t("Chargement…")}
       </p>
       <Link href="/" className="sw-btn-primary">
-        Voir tous les bons plans
+        {t("Voir tous les bons plans")}
       </Link>
       {deal && <DealSheet deal={deal} onClose={() => router.push("/")} />}
     </div>

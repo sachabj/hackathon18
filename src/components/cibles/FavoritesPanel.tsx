@@ -15,6 +15,7 @@ import { withTrust } from "@/lib/trust";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
 import { useFavorites } from "@/lib/useFavorites";
+import { useT } from "@/lib/i18n";
 
 const COLLAPSED_KEY = "sharewood:favoris:collapsed";
 
@@ -30,6 +31,7 @@ function readCollapsed(): Set<DealCategory> {
 
 export default function FavoritesPanel() {
   const { favoriteIds, loading: loadingFavorites, error: favoritesError, toggleFavorite } = useFavorites();
+  const t = useT();
   const [deals, setDeals] = useState<DealWithVotes[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [loadError, setError] = useState<string | null>(null);
@@ -118,13 +120,13 @@ export default function FavoritesPanel() {
     <div ref={cascade}>
       <p role="status" className="text-sm text-[var(--color-muted)]">
         {error ? (
-          <span className="text-red-600">Impossible de charger les favoris : {error}</span>
+          <span className="text-red-600">{t("Impossible de charger les favoris :")} {error}</span>
         ) : busy ? (
-          "Chargement…"
+          t("Chargement…")
         ) : total === 0 ? (
-          "Aucun favori pour l'instant : touche le cœur sur un bon plan pour l'ajouter ici."
+          t("Aucun favori pour l'instant : touche le cœur sur un bon plan pour l'ajouter ici.")
         ) : (
-          `${total} favori${total > 1 ? "s" : ""}`
+          t(total > 1 ? "{n} favoris" : "{n} favori", { n: total })
         )}
       </p>
 
@@ -143,7 +145,7 @@ export default function FavoritesPanel() {
                   className="flex w-full items-center gap-2 px-3 py-2.5 text-left"
                 >
                   <CategoryIcon category={category} size={22} />
-                  <span className="flex-1 text-sm font-medium" style={{ color: "var(--color-ink)" }}>{CATEGORIES[category].label}</span>
+                  <span className="flex-1 text-sm font-medium" style={{ color: "var(--color-ink)" }}>{t(CATEGORIES[category].label)}</span>
                   <span className="text-xs text-[var(--color-muted)]">{deals.length}</span>
                   <ChevronDownIcon
                     className={`h-4 w-4 text-[var(--color-muted)] transition-transform ${isCollapsed ? "" : "rotate-180"}`}

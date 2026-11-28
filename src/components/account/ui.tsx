@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { tr } from "@/lib/i18n";
 
 export const inputClass = "sw-field mt-1 text-base font-normal";
 export const primaryClass = "sw-btn-primary py-2.5 disabled:opacity-50";
@@ -9,7 +10,7 @@ export const secondaryClass = "sw-btn-secondary py-2.5 disabled:opacity-50";
 export function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="sw-card space-y-3 p-3">
-      <h2 className="text-lg">{title}</h2>
+      <h2 className="text-lg">{tr(title)}</h2>
       {children}
     </section>
   );
@@ -42,7 +43,7 @@ export function Feedback({ message }: { message: { ok: boolean; text: string } |
   if (!message) return null;
   return (
     <p role={message.ok ? "status" : "alert"} className={`text-sm ${message.ok ? "text-emerald-700" : "text-red-600"}`}>
-      {message.text}
+      {tr(message.text)}
     </p>
   );
 }

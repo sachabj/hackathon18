@@ -4,12 +4,14 @@
 import { useEffect, useState } from "react";
 import { ArrowShotIcon, LockClosedIcon, WarningIcon } from "@/components/icons";
 import { onArrows, type ArrowNotice } from "@/lib/arrows";
+import { useT } from "@/lib/i18n";
 
 const DURATION_MS = 4500;
 
 export default function ArrowToast() {
   const [notice, setNotice] = useState<(ArrowNotice & { key: number }) | null>(null);
 
+  const t = useT();
   useEffect(() => onArrows((n) => n && setNotice({ ...n, key: Date.now() })), []);
   useEffect(() => {
     if (!notice) return;
@@ -36,7 +38,7 @@ export default function ArrowToast() {
             {notice.detail && <span className="block text-sm opacity-90">{notice.detail}</span>}
             {notice.secure && (
               <span className="mt-0.5 flex items-center gap-1 text-xs opacity-90">
-                <LockClosedIcon className="h-3 w-3 shrink-0" /> Position envoyée chiffrée, non enregistrée.
+                <LockClosedIcon className="h-3 w-3 shrink-0" /> {t("Position envoyée chiffrée, non enregistrée.")}
               </span>
             )}
           </span>
