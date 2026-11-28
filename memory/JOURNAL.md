@@ -603,3 +603,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 05h50 — Justin (paiement de la mise en avant, tâche 13)
 - Migration **031** (`031_boost_payments.sql`, reportée dans `schema.sql`) : table `boost_payments`, RPC `pay_boost`, `boost_offer` fermée à l'app. Nouveaux `components/merchant/PaymentDialog.tsx`, `Receipt.tsx`, `PaymentHistory.tsx` ; `OfferCard`, pages `commercant` et `commercant/compte`, `lib/merchant.ts`, `types.ts`, export des données (`account.ts`) et confidentialité (fichiers de Sacha) ; README, mémoire. **031 pas encore lancée.**
 - Vérifié : tsc, lint, build ; base en mémoire (PGlite) : `schema.sql` + 031 deux fois, 13 contrôles des droits et des reçus ; navigateur sans écran avec faux Supabase (390 px), 14 contrôles. Pas sur la vraie base ni sur téléphone.
+
+### 2026-11-28 05h50 — Justin (catégorie « Mise en service »)
+- `TASKS.md` : nouvelle partie « Mise en service » (S1 à S10) ; lignes périmées corrigées (026, 027, 029 déjà lancées, 71 déplacée dans « Déjà fait »). Sonde en lecture : 031 présente sur la vraie base ; déploiement encore à faire (C6). Aucun code modifié.

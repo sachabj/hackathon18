@@ -235,7 +235,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - Ordinateur : regarder aussi en large (`lg:`) ; un en-tête de page avec logo porte `lg:hidden`.
 
 ## Vérifications, base et limites (déplacé de `TASKS.md` le 28/11)
-Défauts ouverts : `TASKS.md`, partie 4.
+Défauts ouverts : `TASKS.md`, partie 5 ; ce qu'exigerait une vraie mise en service : partie 4.
 
 ### Contrôles du 28/11 (après la tâche 76)
 | Contrôle | Résultat |
@@ -273,7 +273,7 @@ select
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
-- **Présentes sur la vraie base : 002 à 030** (028 lancée par Justin le 28/11, avec `seed_arrows.sql` relancé ; vérifiée par sonde). 029 (signalements) et 030 (validation des bons) lancées par Justin le 28/11 (vérifiées par sonde). **031 (paiements) : à lancer.** Prochaine libre : **032**. Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- **Présentes sur la vraie base : 002 à 030** (028 lancée par Justin le 28/11, avec `seed_arrows.sql` relancé ; vérifiée par sonde). 029 (signalements) et 030 (validation des bons) lancées par Justin le 28/11 (vérifiées par sonde). 031 (paiements) lancée le 28/11 (vérifiée par sonde). Prochaine libre : **032**. Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages` ; bons plans signalés : `deal_reports`.
 
 ### Cas limites et limites assumées
