@@ -461,3 +461,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : CSS (`globals.css`) et Web Animations API, sans bibliothèque ; la cascade rejoue l'animation sans remonter les cartes (leurs réactions locales sont gardées) ; la pastille part du dernier endroit touché.
 - **Écartés** : remplacer le message de gain ; éclats autour du cœur (moins calme que le guide de design) ; cascade au chargement seulement.
 - **Qui** : Matteo (réponses aux questions de cadrage)
+
+## 2026-11-28 03h — Correction des défauts (tâche 76)
+- **Décisions** : favori terminé gardé et marqué « Terminée », en bas de sa catégorie, sans réactions ; assistant IA limité à 30 analyses par jour et par compte, compté en base (migration 025) ; titres à 100 caractères partout et en base ; après une réaction, listes et carte mises à jour sans réordonner.
+- **Choix techniques** : un événement de navigateur transmet les réactions aux listes affichées ; sans la 025, l'assistant reste sans limite ; une autre erreur du compteur bloque l'analyse.
+- **Écartés** : cacher les favoris terminés ; limite gardée en mémoire du serveur ; titres à 80 ; réordonner le fil sous le doigt.
+- **Qui** : Justin (réponses aux questions de cadrage) ; ordre du fil inchangé : choix de Claude, à confirmer

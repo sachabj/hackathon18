@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Partage et découvre les bons plans étudiants autour de toi.",
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#2563eb" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#faf9f5" };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

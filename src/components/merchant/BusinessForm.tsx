@@ -10,7 +10,7 @@ import { buttonClass, inputClass } from "./styles";
 
 const LocationPicker = dynamic(() => import("./LocationPicker"), {
   ssr: false,
-  loading: () => <div className="h-64 rounded-2xl bg-zinc-100" />,
+  loading: () => <div className="h-64 rounded-2xl bg-[var(--color-paper)]" />,
 });
 
 /** Première visite d'un commerçant : décrire son commerce. */

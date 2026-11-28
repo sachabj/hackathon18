@@ -84,6 +84,8 @@ export default function DealsMap({
   const [centered, setCentered] = useState(true);
   /** Vrai dès que la vue ne doit plus être recentrée automatiquement. */
   const viewTaken = useRef(false);
+  /** Dernière offre sur laquelle la carte s'est centrée : la liste peut changer sans que la carte bouge. */
+  const flownTo = useRef<string | null>(null);
 
   // Next conserve les pages quittées (React <Activity>), mais Leaflet ne sait pas se réattacher :
   // on démonte la carte quand la page est cachée et on la recrée au retour.
@@ -96,6 +98,7 @@ export default function DealsMap({
       setDetail(null);
       setCentered(true);
       viewTaken.current = false;
+      flownTo.current = null;
     };
   }, []);
 
@@ -136,9 +139,10 @@ export default function DealsMap({
 
   // Une offre choisie dans une liste (recherche, fil) : on s'y centre et on quitte le suivi GPS.
   useEffect(() => {
-    if (!map || !selectedId) return;
+    if (!map || !selectedId || flownTo.current === selectedId) return;
     const target = deals.find((d) => d.id === selectedId);
     if (!target || target.lat === null || target.lng === null) return;
+    flownTo.current = selectedId;
     viewTaken.current = true;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- synchro avec le choix externe (liste), pas d'alternative sans effet
     setCentered(false);

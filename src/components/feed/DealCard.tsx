@@ -45,6 +45,8 @@ export default function DealCard({
   const r = useDealReactions(deal);
   const [open, setOpen] = useState(false);
   const liked = useChanges(favorite);
+  // Offre terminée (favori gardé, ou retirée à l'instant) : grisée, sans mise en avant ni réactions.
+  const boosted = isBoosted(deal) && !r.ended;
   // Rien à mettre en avant sur la carte pour une offre sans lieu (zone / nationale) : la fiche s'ouvre comme avant.
   const touch = () => (onSelect && deal.lat !== null && deal.lng !== null ? onSelect(deal.id) : setOpen(true));
   // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
@@ -59,20 +61,27 @@ export default function DealCard({
     <article
       className="sw-card p-3"
       // Choisie sur la carte : contour aubergine (même couleur que son repère), prioritaire sur le cadre doré.
-      style={
-        selected
+      style={{
+        ...(selected
           ? { borderColor: "var(--color-aubergine)", borderWidth: 2 }
-          : isBoosted(deal)
+          : boosted
             ? { borderColor: "#d4a017", borderWidth: 2 }
-            : undefined
-      }
+            : undefined),
+        ...(r.ended && { opacity: 0.65 }),
+      }}
     >
       <div className="flex items-center gap-2">
         <button type="button" onClick={touch} className="flex min-w-0 flex-1 items-center gap-3 text-left">
           <CategoryIcon category={deal.category} size={40} />
           <span className="min-w-0 font-medium leading-snug">{deal.title}</span>
         </button>
-        {r.trust !== undefined && <TrustBadge level={r.trust} />}
+        {r.ended ? (
+          <span className="sw-badge shrink-0" style={{ backgroundColor: "var(--color-border)", color: "var(--color-ink)" }}>
+            Terminée
+          </span>
+        ) : (
+          r.trust !== undefined && <TrustBadge level={r.trust} />
+        )}
         {onToggleFavorite && (
           <button
             type="button"
@@ -102,7 +111,7 @@ export default function DealCard({
       </button>
 
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
-        {isBoosted(deal) && (
+        {boosted && (
           // Explique le cadre doré (sinon sans texte, on ne sait pas que c'est une mise en avant payante).
           <span className="sw-badge" style={{ backgroundColor: "#d4a017", color: "#1A1A18" }}>
             <SparklesIcon className="h-3.5 w-3.5" /> Sponsorisé
@@ -117,15 +126,17 @@ export default function DealCard({
         )}
       </div>
 
-      <div className="mt-2.5">
-        <ReactionBar size="sm" placed={deal.lat !== null && deal.lng !== null} counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />
-        {r.error && (
-          <p role="alert" className="mt-1 text-xs text-red-600">
-            {r.error}
-          </p>
-        )}
-      </div>
-      {open && <DealSheet deal={deal} onClose={() => setOpen(false)} onReactionsChange={r.remember} />}
+      {!r.ended && (
+        <div className="mt-2.5">
+          <ReactionBar size="sm" placed={deal.lat !== null && deal.lng !== null} counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />
+          {r.error && (
+            <p role="alert" className="mt-1 text-xs text-red-600">
+              {r.error}
+            </p>
+          )}
+        </div>
+      )}
+      {open && <DealSheet deal={deal} onClose={() => setOpen(false)} />}
     </article>
   );
 }

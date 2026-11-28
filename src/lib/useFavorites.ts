@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { announce } from "./arrows";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
+
+const RETRY = "Vérifie ta connexion puis réessaie.";
 
 /** Favoris de l'utilisateur connecté (table `favorites`), avec ajout/retrait optimiste. */
 export function useFavorites() {
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(isSupabaseConfigured);
+  /** Erreur de lecture ; une erreur d'enregistrement est annoncée par un message. */
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,8 +21,10 @@ export function useFavorites() {
       const supabase = getSupabase();
       const { data, error } = await supabase.from("favorites").select("deal_id");
       if (cancelled) return;
-      if (error) setError(error.message);
-      else setFavoriteIds(new Set((data ?? []).map((f) => f.deal_id as string)));
+      if (error) {
+        setError(error.message);
+        announce({ title: "Favoris indisponibles", detail: RETRY, error: true });
+      } else setFavoriteIds(new Set((data ?? []).map((f) => f.deal_id as string)));
       setLoading(false);
     }
 
@@ -52,7 +58,7 @@ export function useFavorites() {
         else next.delete(dealId);
         return next;
       });
-      setError(error.message);
+      announce({ title: "Favori non enregistré", detail: RETRY, error: true });
     }
   }
 

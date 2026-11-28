@@ -4,7 +4,7 @@ import { useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { ArrowShotIcon, ChevronDownIcon, EditIcon, ProhibitedIcon, TrashIcon, UndoIcon } from "@/components/icons";
 import { DAILY_PAID_CREATIONS } from "@/lib/arrows";
-import { REQUIREMENTS, NEARBY_M } from "@/lib/constants";
+import { REQUIREMENTS, NEARBY_M, TITLE_MAX } from "@/lib/constants";
 import type { MyDealInput } from "@/lib/engagement";
 import { normalizeLink } from "@/lib/links";
 import { DOUBT_DAYS, RESCUE_CONFIRMATIONS } from "@/lib/rules";
@@ -112,7 +112,7 @@ export default function MyDealCard({
       <form onSubmit={submit} className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-forest)", borderWidth: 2 }}>
         <label className="block text-sm font-medium">
           Titre
-          <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={100} required />
+          <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} maxLength={TITLE_MAX} required />
         </label>
         <label className="block text-sm font-medium">
           Détails

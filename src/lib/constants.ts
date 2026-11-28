@@ -41,6 +41,10 @@ export const APP_NAME = "ShareWood";
 
 /** Distance maximale à une offre placée pour gagner des Flèches (la base applique la même : migration 020). */
 export const NEARBY_M = 500;
+/** Longueur maximale du titre d'une offre (contrainte deals_title_length, migration 025). */
+export const TITLE_MAX = 100;
+/** Analyses de l'assistant IA par jour et par compte (la base applique la même : migration 025). */
+export const AI_DAILY_LIMIT = 30;
 /** Longueur minimale d'un nouveau mot de passe. */
 export const PASSWORD_MIN = 8;
 /**

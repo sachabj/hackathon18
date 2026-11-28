@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { applyReactions, onReactions, settleDoubtfulDeals } from "./engagement";
+import { hotScore } from "./hot";
 import { normalizeDeal } from "./legacy";
 import { isDealHidden } from "./rules";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
@@ -12,8 +14,11 @@ export function useDeals() {
   const [deals, setDeals] = useState<DealWithVotes[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
   const [error, setError] = useState<string | null>(null);
-  /** Instant du chargement : référence du tri Hot (évite Date.now() pendant l'affichage). */
-  const [loadedAt, setLoadedAt] = useState(0);
+  /** Scores Hot figés au chargement : une réaction met à jour les chiffres sans déplacer les cartes. */
+  const [hot, setHot] = useState<Map<string, number>>(new Map());
+
+  // Réaction faite sur cette page (fil, carte ou fiche) : la liste la reprend aussitôt.
+  useEffect(() => onReactions((change) => setDeals((list) => applyReactions(list, change))), []);
 
   useEffect(() => {
     if (!isSupabaseConfigured) return;
@@ -21,10 +26,8 @@ export function useDeals() {
 
     async function load() {
       const supabase = getSupabase();
-      // Retire les offres douteuses arrivées à échéance (migration 023) ; sans attendre : `isDealHidden` les masque déjà.
-      supabase.rpc("settle_doubtful_deals").then(({ error }) => {
-        if (error && error.code !== "PGRST202") console.warn("Offres douteuses non traitées :", error.message);
-      });
+      // Sans attendre : `isDealHidden` masque déjà les offres douteuses arrivées à échéance.
+      settleDoubtfulDeals();
       const dealsResult = await supabase.from("deals").select("*, votes(*)").order("created_at", { ascending: false });
       if (cancelled) return;
 
@@ -35,13 +38,10 @@ export function useDeals() {
         const rows = await withTrust(dealsResult.data as (DealWithVotes & { votes: Vote[] })[]);
         if (cancelled) return;
         const now = Date.now();
-        setDeals(
-          rows
-            .filter((d) => !isDealHidden(d, d.votes, now))
-            .map(normalizeDeal),
-        );
+        const visible = rows.filter((d) => !isDealHidden(d, d.votes, now)).map(normalizeDeal);
+        setDeals(visible);
+        setHot(new Map(visible.map((d) => [d.id, hotScore(d, d.votes, now)])));
       }
-      setLoadedAt(Date.now());
       setLoading(false);
     }
 
@@ -51,5 +51,5 @@ export function useDeals() {
     };
   }, []);
 
-  return { deals, loading, error, loadedAt };
+  return { deals, loading, error, hot };
 }

@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@/components/icons";
-import { APP_NAME, PRIVACY_CONTACT, NEARBY_M } from "@/lib/constants";
+import { AI_DAILY_LIMIT, APP_NAME, PRIVACY_CONTACT, NEARBY_M } from "@/lib/constants";
 
 export const metadata: Metadata = { title: `Confidentialité — ${APP_NAME}` };
 
@@ -43,6 +43,7 @@ export default function Page() {
           <li><strong>« Y aller » touché et liens partagés ouverts</strong> (offre, date, comptes concernés) : compter les étudiants que chacun a aidés.</li>
           <li><strong>Parrainage</strong> : ton code, qui t&apos;a invité ou qui tu as invité, et la date de la première action : verser les Flèches.</li>
           <li><strong>Messages à l&apos;équipe</strong> (aide, bug) : les traiter.</li>
+          <li><strong>Utilisation de l&apos;assistant</strong> (nombre d&apos;analyses par jour) : la limiter à {AI_DAILY_LIMIT} par jour et par compte. Toi seul peux la lire.</li>
           <li><strong>Ta localisation</strong>, avec ton accord seulement : détail dans la partie qui suit.</li>
           <li><strong>Ton choix sur la localisation</strong> (accepté ou refusé, date, version du texte) : le respecter et pouvoir le prouver.</li>
           <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager.</li>

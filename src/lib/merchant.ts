@@ -1,4 +1,5 @@
 // Espace commerçant (Justin) : lecture et écriture. Les droits sont garantis par la base (005_merchant.sql).
+import { settleDoubtfulDeals } from "./engagement";
 import { nearestZone, type Point } from "./geo";
 import { getSupabase } from "./supabase/client";
 import type { Business, Deal, DealCategory, OfferStats } from "./types";
@@ -45,6 +46,8 @@ export async function fetchDashboard(): Promise<Dashboard> {
   ) as Business | null;
   if (!business) return { business, offers: [], stats: {}, nearby: [], fetchedAt: Date.now() };
 
+  // Avant de lire : une offre douteuse arrivée à échéance ne doit plus apparaître « en ligne ».
+  await settleDoubtfulDeals();
   const [offers, stats, nearby] = await Promise.all([
     supabase.from("deals").select("*").eq("author_id", user.id).order("created_at", { ascending: false }),
     supabase.rpc("my_offer_stats"),

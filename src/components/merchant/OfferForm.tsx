@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CATEGORIES, PRICE_LEVELS } from "@/lib/constants";
+import { CATEGORIES, PRICE_LEVELS, TITLE_MAX } from "@/lib/constants";
 import { BUSINESS_CATEGORIES, type OfferInput } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { buttonClass, inputClass } from "./styles";
@@ -55,7 +55,7 @@ export default function OfferForm({
       <h3 className="font-medium">{offer ? "Modifier l'offre" : "Nouvelle offre officielle"}</h3>
       <label className="block text-sm font-medium">
         Titre
-        <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Menu étudiant à 6,50 €" maxLength={100} required />
+        <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Menu étudiant à 6,50 €" maxLength={TITLE_MAX} required />
       </label>
       <label className="block text-sm font-medium">
         Détails <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>

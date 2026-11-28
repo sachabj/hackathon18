@@ -21,7 +21,7 @@ Ce document explique, sans avoir à lire le code, **dans quel ordre les bons pla
 
 ## 1. Avant tout classement : quelles offres sont visibles ?
 
-Une offre n'apparaît nulle part (accueil, carte, recherche) si :
+Une offre n'apparaît ni sur l'accueil, ni sur la carte, ni dans la recherche si (elle reste dans les favoris, marquée « Terminée », et son lien partagé affiche la raison) :
 
 1. **sa date de fin est passée** ;
 2. **elle a été retirée** par son auteur (« Plus dispo » dans « Ciblés », onglet Activité) ou par un commerçant voisin (offre d'étudiant à moins de 75 m, même catégorie) ;
@@ -115,6 +115,8 @@ Hot = (1 + élan + quantité) / (âge en heures + 2) ^ 1,2
 | Publiée il y a 6 h, 2 « Plus dispo » | négatif → tout en bas |
 
 Effet voulu : une offre neuve a sa chance d'être vue, puis seules celles que les étudiants confirment restent en haut. Effet connu : une offre toute neuve sans réaction passe devant une offre de 2 jours très confirmée (baisser l'exposant pour l'éviter).
+
+L'ordre est calculé **au chargement de la page** : une réaction met à jour tout de suite les compteurs et la fiabilité, sans déplacer les cartes ; le nouvel ordre apparaît à la visite suivante.
 
 ### 2.5 Recherche par mots (page Recherche)
 

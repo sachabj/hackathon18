@@ -527,3 +527,10 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Matteo (micro-animations, tâche 75)
 - Nouveaux `src/lib/motion.ts`, `components/arrows/ArrowFlight.tsx` (monté dans `layout.tsx`) ; `ReactionBar` (bouton `ReactionButton` : rebond, compteur qui défile), `TrustBadge` (fondu de couleur, rebond), `DealSheet` (montée du bas, sortie animée, poignée à glisser ; ordinateur : fondu et zoom), `DealCard` (cœur), `app/page.tsx`, `app/recherche/page.tsx`, `cibles/FavoritesPanel.tsx` (cascade), `ArrowBadge` (`data-arrow-target`), `lib/arrows.ts` (champ `gain`), `globals.css` ; TASKS, ARCHITECTURE, DECISIONS.
 - Vérifié : tsc + lint + build. **Pas vu dans le navigateur ni sur téléphone** (aucun navigateur dans cette session) ; sans migration.
+
+### 2026-11-28 03h — Justin (défauts, tâche 76)
+- Corrigés : D3, D4, D5, D7, D8, D9, D11, D12, D13, D14 (détail dans `TASKS.md`, partie 4). D3, D4, D5, D13 d'abord reportés (tâche 75 en cours), repris une fois celle-ci poussée.
+- Migration **025** (`025_limits.sql`, reportée dans `schema.sql`) : titre ≤ 100, assistant IA 30 analyses par jour. **Pas encore lancée sur la vraie base.**
+- Au passage : la carte ne revient plus sur l'offre choisie à chaque mise à jour de la liste ; la fiche ne se recharge qu'en changeant d'offre.
+- Fichiers de Matteo (tâche 75) retouchés : `DealSheet`, `DealCard`, `FavoritesPanel`, page Recherche.
+- Vérifié : tsc, lint, build ; Postgres local (schéma, démo, droits, 025) ; navigateur sans écran avec faux Supabase, 19 contrôles. Pas sur la vraie base ni sur téléphone.

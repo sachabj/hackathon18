@@ -14,16 +14,18 @@ import { CalendarIcon, CameraIcon, CloseIcon, NavigationIcon, PinIcon } from "@/
 import { recordDirections } from "@/lib/community";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
-import { fetchEngagement, recordView, setReaction, type Engagement, type Reaction, type Reactions } from "@/lib/engagement";
+import { announceReactions, fetchEngagement, recordView, setReaction, type Engagement, type Reaction } from "@/lib/engagement";
 import { isOwnPhotoUrl } from "@/lib/photos";
 import {
   activeReports,
+  dealEndReason,
   DOUBT_REPORTS,
   doubtStatus,
   recentCounts,
   reliability,
   RESCUE_CONFIRMATIONS,
   trustLevel,
+  type EndReason,
 } from "@/lib/rules";
 import TrustBadge from "@/components/deal/TrustBadge";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
@@ -39,37 +41,39 @@ function ago(ms: number) {
   return hours < 24 ? `il y a ${hours} h` : `il y a ${Math.round(hours / 24)} j`;
 }
 
-export default function DealSheet({
-  deal,
-  onClose,
-  onReactionsChange,
-}: {
-  deal: Deal;
-  onClose: () => void;
-  /** Prévient la carte du fil après une réaction dans la fiche, pour qu'elle affiche les mêmes chiffres. */
-  onReactionsChange?: (r: Reactions) => void;
-}) {
+/** Bandeau d'une offre terminée (lien partagé, favori, réaction qui la retire). */
+function endMessage(reason: EndReason, expiresAt: string | null) {
+  if (reason === "reports") return "Offre terminée : retirée après des signalements « Plus dispo ».";
+  if (reason === "removed") return "Offre terminée : retirée par son auteur ou par un commerçant.";
+  return `Offre terminée : elle était valable jusqu'au ${formatDate(expiresAt!)}.`;
+}
+
+export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () => void }) {
   const [data, setData] = useState<(Engagement & { at: number }) | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [zoom, setZoom] = useState(false);
+  // Instant fixé à l'ouverture (pas de Date.now() pendant le rendu).
+  const [openedAt] = useState(Date.now);
   const photo = isOwnPhotoUrl(deal.photo_url) ? deal.photo_url : null;
   const category = CATEGORIES[deal.category];
   const where =
     deal.place_name ??
     (deal.scope === "national" ? "Partout en France" : ZONES.find((z) => z.id === deal.zone_id)?.name);
 
+  // Seulement quand on change d'offre : la liste peut remplacer l'objet `deal` après une réaction.
+  const { id: dealId, author_id: authorId } = deal;
   useEffect(() => {
-    recordView(deal);
+    recordView({ id: dealId, author_id: authorId });
     if (!isSupabaseConfigured) return;
     let cancelled = false;
-    fetchEngagement(deal.id)
+    fetchEngagement(dealId)
       .then((e) => !cancelled && setData({ ...e, at: Date.now() }))
       .catch((e: Error) => !cancelled && setError(e.message));
     return () => {
       cancelled = true;
     };
-  }, [deal]);
+  }, [dealId, authorId]);
 
   // Tâche 75 : la fiche redescend (téléphone) ou s'efface (ordinateur) avant d'être fermée.
   const panel = useRef<HTMLDivElement>(null);
@@ -126,7 +130,7 @@ export default function DealSheet({
       await action();
       const fresh = await fetchEngagement(deal.id);
       setData({ ...fresh, at: Date.now() });
-      onReactionsChange?.({ votes: fresh.votes, trust: fresh.trust, state: fresh.state });
+      announceReactions({ dealId: deal.id, votes: fresh.votes, trust: fresh.trust, state: fresh.state });
     } catch (e) {
       setError((e as Error).message);
     }
@@ -137,6 +141,9 @@ export default function DealSheet({
   const trust = data ? reliability(data.votes, data.at, data.trust) : null;
   /** État relu après chaque réaction (douteuse, retirée). */
   const state = data?.state ?? deal;
+  const current = { ...deal, ...data?.state };
+  const endReason = dealEndReason(current, data?.votes ?? [], data?.at ?? openedAt);
+  const placed = deal.lat !== null && deal.lng !== null;
   const doubt = data ? doubtStatus(state, data.votes) : null;
   const reports = data ? activeReports(state, data.votes) : 0;
   const myVote = data?.votes.find((v) => v.user_id === data.userId)?.value;
@@ -195,6 +202,15 @@ export default function DealSheet({
         </div>
         <AuthorBadge deal={deal} className="mb-2" />
         <h2 className="text-xl leading-snug">{deal.title}</h2>
+        {endReason && (
+          <p
+            role="status"
+            className="mt-2 rounded-xl px-3 py-2 text-sm font-medium"
+            style={{ backgroundColor: "var(--color-lilac)", color: "var(--color-aubergine)" }}
+          >
+            {endMessage(endReason, current.expires_at)}
+          </p>
+        )}
         {deal.description && (
           <p className="mt-2 text-sm text-[var(--color-ink)]">
             <LinkedText text={deal.description} />
@@ -257,7 +273,7 @@ export default function DealSheet({
           </p>
         )}
 
-        {trust && data && (
+        {trust && data && !endReason && (
           <div className="mt-4 rounded-2xl p-3" style={{ backgroundColor: "var(--color-paper)" }}>
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium">
               <TrustBadge level={doubt ? "doubtful" : trustLevel(trust.score)} />
@@ -273,11 +289,7 @@ export default function DealSheet({
                 {formatDate(new Date(trust.lastConfirmedAt).toISOString())})
               </p>
             )}
-            {state.archived_at ? (
-              <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-                Offre retirée : signalée « Plus dispo » par des étudiants.
-              </p>
-            ) : doubt ? (
+            {doubt ? (
               <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
                 {reports} étudiants la disent « Plus dispo ». Sans {RESCUE_CONFIRMATIONS} « J&apos;en ai profité » d&apos;ici le{" "}
                 {formatDate(new Date(doubt.deadline).toISOString())}, elle sera retirée ({Math.min(doubt.saved, RESCUE_CONFIRMATIONS)} sur{" "}
@@ -295,8 +307,8 @@ export default function DealSheet({
         )}
 
         {/* « Y aller » seulement pour une offre placée sur la carte (la fiche n'existe que dans le navigateur). */}
-        <div className={`mt-3 grid items-start gap-2 ${deal.lat !== null && deal.lng !== null ? "grid-cols-2" : "grid-cols-1"}`}>
-          {deal.lat !== null && deal.lng !== null && (
+        <div className={`mt-3 grid items-start gap-2 ${placed && !endReason ? "grid-cols-2" : "grid-cols-1"}`}>
+          {deal.lat !== null && deal.lng !== null && !endReason && (
             <a
               href={directionsUrl({ lat: deal.lat, lng: deal.lng }, navigator.userAgent)}
               target="_blank"
@@ -310,7 +322,7 @@ export default function DealSheet({
           <ShareButton deal={deal} />
         </div>
 
-        {data && (
+        {data && !endReason && (
           <div className="mt-3">
             <ReactionBar
               counts={recentCounts(data.votes, data.at)}
@@ -318,7 +330,7 @@ export default function DealSheet({
               busy={busy}
               own={own}
               onReact={react}
-              placed={deal.lat !== null && deal.lng !== null}
+              placed={placed}
             />
             <p className="mt-1.5 text-center text-xs text-[var(--color-muted)]">
               {own
@@ -327,7 +339,7 @@ export default function DealSheet({
                   ? "Touché par erreur ? Touche à nouveau pour décocher."
                   : "Réactions des 30 derniers jours."}
             </p>
-            {!own && <DealLocationNote placed={deal.lat !== null && deal.lng !== null} />}
+            {!own && <DealLocationNote placed={placed} />}
           </div>
         )}
         {!data && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">Chargement…</p>}

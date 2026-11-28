@@ -14,12 +14,12 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer.
 - **Fiche** : détails, photo, lien vers l'offre, boutons « Y aller » (Apple Plans ou Google Maps) et « Partager » (le lien ouvre l'offre après connexion).
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
-- **Favoris** pour garder une offre sous la main.
+- **Favoris** pour garder une offre sous la main ; une offre terminée y reste, marquée « Terminée ».
 - **Sources officielles** : événements gratuits ou étudiants (OpenAgenda) et aides aux étudiants (Aides Jeunes), signalés par un badge, avec leur lien et la date de vérification.
 
 ### Partager et vérifier
 - **Partager en quelques gestes** : le lieu, un titre, une catégorie, et c'est publié (à un endroit précis, dans une ville ou partout) ; le reste est facultatif.
-- **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve.
+- **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve (30 analyses par jour et par compte).
 - **Doublons** repérés avant la publication.
 - **Réactions** « J'en ai profité » et « Plus dispo », annulables, impossibles sur ses propres offres.
 
@@ -73,6 +73,7 @@ La clé `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` est facultative (assistant de pu
 Dans Supabase → SQL Editor :
 - **projet neuf** : exécuter [`supabase/schema.sql`](supabase/schema.sql) ;
 - **base existante** : exécuter dans l'ordre les fichiers de [`supabase/migrations/`](supabase/migrations/) pas encore appliqués (suivi dans [`memory/TASKS.md`](memory/TASKS.md)) ;
+- **limites** : la migration `025` borne les titres et l'assistant IA (sans elle, l'application fonctionne sans ces limites) ;
 - **données de démo** : [`reset_demo.sql`](supabase/reset_demo.sql) (⚠️ **supprime les comptes** non listés en haut du script ; lire ses consignes), puis [`seed_arrows.sql`](supabase/seed_arrows.sql) le jour de la démo ;
 - **vraies informations** : migration `024`, puis [`import_sources.sql`](supabase/import_sources.sql) (régénéré par `node scripts/import_sources.mjs` ; à relancer après `reset_demo.sql`).
 

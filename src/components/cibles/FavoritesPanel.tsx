@@ -7,8 +7,10 @@ import CategoryIcon from "@/components/CategoryIcon";
 import DealCard from "@/components/feed/DealCard";
 import { ChevronDownIcon } from "@/components/icons";
 import { CATEGORIES } from "@/lib/constants";
+import { applyReactions, onReactions } from "@/lib/engagement";
 import { normalizeDeal } from "@/lib/legacy";
 import { useCascade } from "@/lib/motion";
+import { isDealHidden } from "@/lib/rules";
 import { withTrust } from "@/lib/trust";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
@@ -27,10 +29,16 @@ function readCollapsed(): Set<DealCategory> {
 }
 
 export default function FavoritesPanel() {
-  const { favoriteIds, loading: loadingFavorites, toggleFavorite } = useFavorites();
+  const { favoriteIds, loading: loadingFavorites, error: favoritesError, toggleFavorite } = useFavorites();
   const [deals, setDeals] = useState<DealWithVotes[]>([]);
   const [loading, setLoading] = useState(isSupabaseConfigured);
-  const [error, setError] = useState<string | null>(null);
+  const [loadError, setError] = useState<string | null>(null);
+  const error = favoritesError ?? loadError;
+  /** Instant du chargement : référence pour dire quels favoris sont terminés. */
+  const [loadedAt, setLoadedAt] = useState(0);
+
+  // Réaction faite ici ou dans une fiche : la liste la reprend aussitôt.
+  useEffect(() => onReactions((change) => setDeals((list) => applyReactions(list, change))), []);
   const [collapsed, setCollapsed] = useState<Set<DealCategory>>(() => new Set());
 
   // Lu après le montage (localStorage n'existe pas côté serveur) : évite un décalage d'hydratation.
@@ -69,6 +77,7 @@ export default function FavoritesPanel() {
         const rows = await withTrust((data ?? []) as DealWithVotes[]);
         if (cancelled) return;
         setDeals(rows.map(normalizeDeal));
+        setLoadedAt(Date.now());
       }
       setLoading(false);
     }
@@ -78,6 +87,8 @@ export default function FavoritesPanel() {
       cancelled = true;
     };
   }, [favoriteIds, loadingFavorites]);
+
+  const ended = (d: DealWithVotes) => Number(isDealHidden(d, d.votes ?? [], loadedAt));
 
   // Échéance la plus proche d'abord (date limite, puis fin d'offre), le reste à la fin.
   const byDeadline = (a: Deal, b: Deal) => {
@@ -93,7 +104,8 @@ export default function FavoritesPanel() {
   const groups = (Object.keys(CATEGORIES) as DealCategory[])
     .map((category) => ({
       category,
-      deals: deals.filter((d) => d.category === category).sort(byDeadline),
+      // Les offres terminées restent visibles, en bas de leur catégorie.
+      deals: deals.filter((d) => d.category === category).sort((a, b) => ended(a) - ended(b) || byDeadline(a, b)),
     }))
     .filter((g) => g.deals.length > 0);
 

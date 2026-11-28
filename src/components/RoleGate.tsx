@@ -26,7 +26,7 @@ export default function RoleGate({ children }: { children: React.ReactNode }) {
 
   // On n'affiche pas l'interface étudiante avant de savoir qui est connecté.
   if (redirect || (role === null && studentPage)) {
-    return <p className="p-6 text-center text-sm text-zinc-500">Chargement…</p>;
+    return <p className="p-6 text-center text-sm text-[var(--color-muted)]">Chargement…</p>;
   }
   return children;
 }

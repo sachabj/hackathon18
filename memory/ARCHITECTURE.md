@@ -52,7 +52,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── directions.ts             # lien d'itinéraire (Apple Plans / Google Maps) du bouton « Y aller »
     │   ├── links.ts                  # liens d'offre : normalizeLink (saisie), safeLink (affichage http(s) seul), splitLinks (URL du texte)
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
-    │   ├── rules.ts                  # règles métier : fiabilité, retrait des offres, niveaux d'activité
+    │   ├── rules.ts                  # règles métier : fiabilité, fin d'une offre (`dealEndReason`, `isDealHidden`), niveaux d'activité
     │   ├── rewards.ts                # boutique : catalogue, échanges, bons
     │   ├── motion.ts                 # micro-animations (tâche 75) : useCascade (cartes `[data-cascade]`), useChanges (rejouer à chaque changement), prefersReducedMotion
     │   ├── arrows.ts                 # Flèches : barème affiché, grades, messages de gain, vérification des publications (+ useMyArrows.ts)
@@ -77,9 +77,9 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── useRole.ts                # hook : étudiant ou commerçant → choisit l'interface
     │   ├── useDashboard.ts           # hook : données de l'espace commerçant
     │   ├── offerStats.ts             # calculs des statistiques d'offres
-    │   ├── engagement.ts             # vues, passages, votes ; gestion de ses propres bons plans
+    │   ├── engagement.ts             # vues, passages, votes ; ses propres bons plans ; `announceReactions` / `onReactions` (listes à jour), `settleDoubtfulDeals`
     │   ├── useFavorites.ts           # hook : favoris de l'utilisateur (table `favorites`), ajout/retrait optimiste
-    │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué)
+    │   ├── useDeals.ts               # hook : bons plans visibles (avec votes, masquage appliqué), tenus à jour après une réaction ; scores Hot figés au chargement
     │   ├── location.ts               # accord de localisation (RGPD) et position ponctuelle ; composants dans components/location/
     │   ├── useUserPosition.ts        # hook : position GPS suivie avec accord (non enregistrée), réutilisable (tâche 11)
     │   └── usePreferences.ts, useMyArrows.ts, share.ts, photos.ts   # profil, Flèches, partage de lien, photo de preuve
@@ -114,7 +114,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
         ├── recherche/page.tsx        # carte (Justin) + barre de recherche et filtres (Sacha, déplacés depuis l'accueil) + tri Hot (Matteo) ; pas de filtre par catégorie (retiré, tâche demandée par Anne-Lise)
         ├── login/page.tsx            # connexion / inscription (fait)
         ├── onboarding/page.tsx       # préférences : après inscription et modification (Sacha)
-        ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé)
+        ├── api/assist/route.ts       # POST { action: "extract" } : pré-remplissage IA (connexion requise ; 503 « unavailable » sans clé ; 429 au-delà de 30 analyses par jour et par compte, migration 025)
         ├── publier/page.tsx          # signaler un bon plan (Matteo) → components/publish/PublishForm.tsx (lieu, titre, catégorie ; le reste sous « Plus de détails ») + AssistPanel.tsx (photo analysée dès qu'elle est choisie)
         ├── favoris/page.tsx          # « Ciblés » : carte Flèches + grade, onglets Favoris / Activité / Récompenses (`?onglet=`)
         ├── compte/page.tsx           # compte et confidentialité, étudiants et commerçants (Sacha)
@@ -141,7 +141,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- État des migrations sur la vraie base : tenu dans `TASKS.md` uniquement. Vérifié en local le 28/11 : `schema.sql` donne la même base que le schéma d'origine suivi des migrations 002 à 024 (seule différence : l'ancienne valeur `carte_sortir` du type `deal_category`).
+- État des migrations sur la vraie base : tenu dans `TASKS.md` uniquement. Vérifié en local le 28/11 : `schema.sql` donne la même base que le schéma d'origine suivi des migrations 002 à 025 (seule différence : l'ancienne valeur `carte_sortir` du type `deal_category`).
 - `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste inventé sur des lieux OpenStreetMap, ODbL : titre normal, description « Exemple fictif (démo) … »). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - **Récompenses (017)** : `rewards` (catalogue de 6, inséré par la migration ; partenaires fictifs « (démo) ») et `user_rewards` (prix payé, code `SW-XXXXXX`, `used_at`), en lecture seule pour l'app. RPC `redeem_reward(id)` (verrou par étudiant, vérifie le solde, dépense et active l'avantage) et `use_reward(id)` (bon commerçant, une fois). **Double compteur** calculé, non stocké : `total_arrows_earned` (gains → rang) et `current_arrows_balance` (gains − dépenses), renvoyés par `my_arrows()`. `profiles.golden_badge` et `early_access_until` non écrivables.
 - `supabase/seed_arrows.sql` (après 016, 017, 020, 022, 023 et `reset_demo.sql`, relançable ; ajoute aussi le profil de sarah : 3 filleuls et 42 comptes `demo.publicNN` sans mot de passe) : historique inventé donnant des rangs différents à six comptes de démo + trois offres scénarisées (3e confirmation, 3e signalement, déjà archivée) ; démo conseillée en `demo.sarah`.
@@ -170,6 +170,8 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 - Lecture des offres : ouverte à tous les comptes connectés (018) ; un re-vote rafraîchit `votes.created_at` (trigger).
 
 - **Sources officielles (024)** : `deals.source_name` / `source_checked_at` (non écrivables par l'app ; lien obligatoire) → badge « Source officielle ». Offres importées par le compte technique `sources@example.com` (créé par le script, effacé par `reset_demo.sql`), `is_official` faux.
+
+- **Limites (025)** : `deals_title_length` (titre ≤ 100, `not valid`) ; `ai_usage` (compteur par compte et par jour, lecture seule) et RPC `use_ai_quota()` appelée par `/api/assist` ; sans la migration, pas de limite.
 
 ## Règles métier (`src/lib/rules.ts` + RLS)
 - **Fiabilité façon Waze (tâche 33)** : masse d'une réaction = poids de l'étudiant × 0,5^(âge / 48 h), un « Plus dispo » postérieur à la dernière confirmation × 1,5. Score = (masse des « J'en ai profité » + 0,5) / (masse totale + 1) : sans réaction récente il redescend vers 0,5 (« À vérifier »). Affiché en couleur (`TRUST_LEVELS`, `TrustBadge`) : vert foncé ≥ 0,85 · vert clair ≥ 0,65 · jaune ≥ 0,4 · rouge · « Nouveau » sans réaction. La fiabilité ne masque rien : une offre est **masquée** si elle est retirée (signalements ci-dessous, auteur, commerçant) ou expirée.

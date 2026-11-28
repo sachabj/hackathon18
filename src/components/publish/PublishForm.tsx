@@ -10,7 +10,7 @@ import { useRef, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { BuildingsIcon, ChevronDownIcon, GlobeIcon, LinkIcon, PinIcon, ThumbsUpIcon } from "@/components/icons";
 import type { AssistDraft } from "@/lib/ai/types";
-import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES, NEARBY_M } from "@/lib/constants";
+import { ACTIVITIES, CATEGORIES, PRICE_LEVELS, REQUIREMENTS, SUBCATEGORIES, ZONES, NEARBY_M, TITLE_MAX } from "@/lib/constants";
 import { dealsAtPlace, similarAreaDeals, type ExistingDeal } from "@/lib/duplicates";
 import { distanceKm, nearestZone } from "@/lib/geo";
 import { normalizeLink } from "@/lib/links";
@@ -191,7 +191,7 @@ export default function PublishForm() {
       setProofPhoto(photo);
       setSharePhoto(false);
     }
-    if (d.title) setTitle(d.title.slice(0, 80));
+    if (d.title) setTitle(d.title.slice(0, TITLE_MAX));
     if (d.category) setCategory(d.category);
     setSubcategory(d.category === "transport" ? d.subcategory : null);
     if (d.price_level !== null) setPriceLevel(d.price_level);
@@ -532,7 +532,7 @@ export default function PublishForm() {
           className={inputClass}
           placeholder="L'avantage, ex : -20 % sur le menu"
           aria-label="Titre : l'avantage et son montant"
-          maxLength={80}
+          maxLength={TITLE_MAX}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required

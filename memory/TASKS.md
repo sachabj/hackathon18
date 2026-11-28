@@ -6,8 +6,6 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
-⚠️ **Tâche 76 EN COURS (Justin), 28/11 vers 02h45** : tous les défauts ouverts (D3 à D5, D7 à D9, D11 à D14) puis déploiement, la tâche 75 étant poussée. Fichiers touchés : `DealSheet`, `DealCard`, `FavoritesPanel`, `DealsMap`, `useFavorites`, `useDeals`, pages accueil / Recherche / offre / login, `PublishForm`, `lib/ai/assist`, `api/assist`, `confidentialite`, `account.ts`, `layout`, `RoleGate`, `DealsMapLoader`, `BusinessForm`, `NavBar`, `offerStats`, `merchant`, `duplicates`, migration **025** (réservée). **Matteo** : faire un pull avant de retoucher la tâche 75.
-
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
 - **Dernier déploiement : `fe633ae`, 28/11 à 01h54** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo). Les nettoyages de la tâche 74 n'y sont pas (aucun changement de comportement).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
@@ -42,8 +40,9 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Commerçant | Offres, retrait, statistiques, mise en avant, offres d'étudiants voisines (13) | Justin | vraie base |
 | Ordinateur | Navigation en haut, liste et carte côte à côte, colonnes (48) | Justin | vu avec un faux Supabase seulement |
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) | Matteo, Justin | — |
+| Défauts | D3 à D5, D7 à D9, D11 à D14 (76) : voir partie 4 | Justin | vraie base et téléphone ; migration 025 |
 
-Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67), 63 (par 68). Défauts corrigés : D1 (vote sur son offre), D2 (copie locale du script de démo), D6 (lecteurs d'écran), D10 (tuile choisie).
+Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67), 63 (par 68). Défauts corrigés avant la revue : D1 (vote sur son offre), D2 (copie locale du script de démo), D6 (lecteurs d'écran), D10 (tuile choisie).
 
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
@@ -61,8 +60,9 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (avant la démo de 13h)
 | # | Action | Qui |
 |---|---|---|
+| C0 | **Lancer `025_limits.sql`** dans le SQL Editor : titres limités à 100 caractères et assistant IA à 30 analyses par jour et par compte (sans elle, aucune limite) | Justin |
 | C1 | **Préparer la vraie base**, dans cet ordre : `reset_demo.local.sql` (⚠️ efface les comptes non listés), `seed_arrows.sql` (le jour de la démo), `import_sources.sql` | Justin |
-| C2 | **Vérifier les migrations 013, 015, 019 et 021** avec la requête de la partie 4 | Justin / Sacha / Matteo |
+| C2 | **Vérifier les migrations 013, 015, 019, 021 et 025** avec la requête de la partie 4 | Justin / Sacha / Matteo |
 | C3 | **Essai complet en ligne, sur téléphone** : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
 | C4 | **Vidéo du pitch** (1 min maximum) et répétition | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
@@ -70,7 +70,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🟠 Important
 | # | Tâche | Taille | Statut |
 |---|---|---|---|
-| D3, D4, D9, D11 | Défauts visibles ou sensibles (partie 4) | P à M | TODO |
 | 11 | Notification sur place simulée (« toujours dispo ? ») et « Simuler ma position » dans le profil ; annoncée au périmètre initial | M | TODO (Matteo) |
 | 55 | « Licence de sport » → « Sport » : libellé seulement (identifiant `sport` inchangé), README et doc | P | TODO (Sacha) |
 | 57 | Même gain « Plus dispo » et « J'en ai profité » (+10) : migration (reprendre `arrow_on_vote`, dernière version dans 023), `lib/arrows.ts`, doc | P | TODO (Sacha) |
@@ -80,7 +79,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |
 |---|---|---|---|
-| D5, D7, D8, D12 à D14 | Petits défauts (partie 4) | P | TODO |
 | 14 | Rappels de dates limites | M | TODO |
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
 | 50 | Application en anglais : textes écrits en français dans le code ; à décider : toute l'appli ou les pages principales | G | TODO |
@@ -96,18 +94,17 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 
 ## 4. 🐞 Bugs, points bloquants et vérifications
 
-### Contrôles du 28/11 (après la tâche 74)
+### Contrôles du 28/11 (après la tâche 76)
 | Contrôle | Résultat |
 |---|---|
 | `tsc` (y compris variables et imports inutilisés) | OK |
 | `npm run lint` | OK, aucun avertissement |
 | `npm run build` | OK |
-| `npm audit --omit=dev` | aucune vulnérabilité connue |
-| Code mort (`knip`) | rien à supprimer (restent des `export` utiles seulement dans leur fichier) |
-| Postgres local : `schema.sql` contre schéma d'origine + migrations 002 à 024 | identiques, sauf l'ancienne valeur `carte_sortir` (attendu) |
+| Postgres local : `schema.sql` contre schéma d'origine + migrations 002 à 025 | identiques, sauf l'ancienne valeur `carte_sortir` (attendu) |
 | Postgres local : `reset_demo` → `seed_arrows` → `import_sources`, 2 fois | OK |
-| Postgres local : 75 lectures et écritures de l'app avec les droits d'un utilisateur | OK |
-| **Pas vérifié** | navigateur, téléphone et vraie base pour ce commit |
+| Postgres local : 75 appels de l'app avec les droits d'un utilisateur, 15 contrôles de la 025 | OK |
+| Navigateur sans écran, faux Supabase : 19 contrôles des défauts (390 et 320 px) | OK |
+| **Pas vérifié** | vraie base et téléphone |
 
 ### Variables d'environnement (`.env.example`)
 | Variable | Rôle | Obligatoire | Sur Vercel |
@@ -119,33 +116,35 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
 
 ### Vraie base
-- **Présentes** (sondes en lecture ou exécution notée) : 002 à 012, 014, 016 à 018, 020, 022 à 024.
+- **Présentes** (sondes en lecture ou exécution notée) : 002 à 012, 014, 016 à 018, 020, 022 à 024. **À lancer : 025** (C0).
 - **Non confirmées** : 013, 015, 019 ; **021** déclarée lancée (Justin) mais invisible avec la clé publique. Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
 ```sql
 select
   exists (select 1 from pg_policies where tablename = 'votes' and policyname = 'retirer son vote') as m013,
   not exists (select 1 from public.deals where title like '[Exemple]%') as m015,
   exists (select 1 from public.rewards where id = 'golden' and description like '%Ciblés%') as m019,
-  exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021;
+  exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021,
+  to_regprocedure('public.use_ai_quota()') is not null as m025;
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql`.
-- Prochaine migration : **025** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor.
+- Prochaine migration : **026** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
-### Défauts ouverts (constatés à la lecture du code, non reproduits dans l'app sauf mention)
-| # | Priorité | Défaut |
-|---|---|---|
-| D3 | Moyenne | « Ciblés > Favoris » affiche les offres expirées ou retirées sans le dire |
-| D4 | Moyenne | Réaction faite depuis la carte : la liste et son ordre ne changent qu'au retour sur la page (la carte du fil, elle, se met à jour) |
-| D9 | Moyenne | `/api/assist` demande une connexion mais n'a aucune limite par compte (un compte peut épuiser le quota) |
-| D11 | Basse | Écran de 320 px : la barre du bas dépasse, « Profil » coupé (vu dans le navigateur le 27/11, pas revu depuis) |
-| D5 | Basse | Erreur d'ajout ou de retrait de favori affichée nulle part (`useFavorites.error`) |
-| D7 | Basse | Titre limité à 80 caractères à la publication, 100 à la modification et côté commerçant ; aucune limite en base |
-| D8 | Basse | Restes de l'ancien style : `themeColor` bleu (`layout.tsx`), gris `zinc` (`RoleGate`, `DealsMapLoader`, `BusinessForm`) |
-| D12 | Basse | Offre « Douteux » arrivée à échéance : encore « en ligne » pour le commerçant et les doublons tant qu'aucun étudiant n'a chargé l'appli |
-| D13 | Basse | Lien partagé vers une offre expirée ou retirée par son auteur : la fiche ne dit pas qu'elle est terminée |
-| D14 | Basse | Si « Confirm email » est activé, l'inscription revient à la connexion sans message (désactivé pour la démo) |
+### Défauts
+**Aucun défaut ouvert connu.** Corrigés le 28/11 (tâche 76), à essayer sur la vraie base et sur téléphone :
+| # | Correction |
+|---|---|
+| D3 | Favori terminé : mention « Terminée », grisé, en bas de sa catégorie, sans réactions |
+| D4 | Une réaction (carte, fil, fiche) met à jour la liste et le repère aussitôt ; l'ordre ne change qu'à la visite suivante |
+| D5 | Échec d'un favori : message à l'écran |
+| D7 | Titre : 100 caractères partout, et en base avec la 025 |
+| D8 | Couleurs de l'application pour la barre du navigateur et les chargements |
+| D9 | Assistant IA : 30 analyses par jour et par compte (**demande la 025**) |
+| D11 | Barre du bas entière à 320 px |
+| D12 | Offres douteuses échues retirées avant l'affichage commerçant et la recherche de doublons |
+| D13 | Fiche d'une offre terminée : bandeau avec la raison, sans réactions ni « Y aller » |
+| D14 | Inscription avec confirmation par email : message au lieu d'un retour muet |
 
 ### Cas limites et limites assumées
 - La position vient du navigateur : falsifiable. Des comptes complices peuvent confirmer des offres bidon ou en retirer une (6 signalements en 48 h). Parrainage et « étudiants aidés » sont gonflables.
@@ -166,8 +165,8 @@ select
 - **Algorithmes** (tri, compatibilité, Hot, recherche, fiabilité) : `docs/ALGORITHMES.md`, à mettre à jour avec chaque formule ou constante.
 - Toute nouvelle donnée ou tout nouveau service externe → `src/app/confidentialite/page.tsx`.
 - **Localisation** : toujours passer par `lib/location.ts` (`ensureLocationConsent` / `currentPosition`), jamais `navigator.geolocation` sans accord.
-- **Réactions** : passer par `setReaction` / `vote()` (`engagement.ts`, RPC `react_to_deal`) ; elles sont exclusives et décochables.
-- **Fiabilité** : passer par `reliability()` / `dealTrustLevel()` / `isDealHidden()` (`rules.ts`) avec `deal.trust` (`withTrust()`).
+- **Réactions** : passer par `setReaction` / `vote()` (`engagement.ts`, RPC `react_to_deal`) ; elles sont exclusives et décochables. Après une réaction, `announceReactions` ; toute liste d'offres l'écoute (`onReactions` + `applyReactions`).
+- **Fiabilité** : passer par `reliability()` / `dealTrustLevel()` (`rules.ts`) avec `deal.trust` (`withTrust()`). Offre terminée : `dealEndReason()` / `isDealHidden()`.
 - **Carte d'un bon plan** : ne rien y rajouter sans en discuter. Pas de champ « montant » : le titre dit l'avantage (`price_level` gardé pour les filtres).
 - **Carte Sortir** est une condition (`deals.requirements`), pas une catégorie. Liens : `lib/links.ts` (`normalizeLink` à l'écriture, `safeLink` à l'affichage).
 - `deals.author_id` peut être `null` ; les profils des autres ne sont pas lisibles ; toute nouvelle colonne de `deals` ou `profiles` va dans les GRANT.

@@ -4,6 +4,7 @@
 //  - lieu précis : offres déjà partagées au même établissement (même nom de lieu) ;
 //  - zone / partout : offres de même catégorie, même portée et même zone.
 // Lecture avec les droits de l'utilisateur (RLS) : seules les offres qu'il peut voir remontent.
+import { settleDoubtfulDeals } from "./engagement";
 import { getSupabase } from "./supabase/client";
 import type { Deal, DealCategory, DealScope } from "./types";
 
@@ -39,6 +40,7 @@ async function toExisting(rows: Deal[] | null): Promise<ExistingDeal[]> {
 
 /** Offres encore valables enregistrées au même établissement (nom de lieu identique). */
 export async function dealsAtPlace(placeName: string): Promise<ExistingDeal[]> {
+  await settleDoubtfulDeals();
   const { data, error } = await getSupabase()
     .from("deals")
     .select(COLUMNS)
@@ -55,6 +57,7 @@ export async function similarAreaDeals(draft: {
   scope: Exclude<DealScope, "local">;
   zone_id: string | null;
 }): Promise<ExistingDeal[]> {
+  await settleDoubtfulDeals();
   let query = getSupabase().from("deals").select(COLUMNS).eq("category", draft.category).eq("scope", draft.scope);
   if (draft.scope === "zone" && draft.zone_id) query = query.eq("zone_id", draft.zone_id);
   const { data, error } = await query.order("created_at", { ascending: false }).limit(20);

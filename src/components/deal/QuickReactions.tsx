@@ -7,6 +7,13 @@ import { useDealReactions } from "@/lib/useDealReactions";
 
 export default function QuickReactions({ deal }: { deal: DealWithVotes }) {
   const r = useDealReactions(deal);
+  if (r.ended) {
+    return (
+      <p role="status" className="text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
+        Offre terminée.
+      </p>
+    );
+  }
   return (
     <div>
       <ReactionBar size="sm" showGain={false} placed={deal.lat !== null && deal.lng !== null} counts={r.counts} reaction={r.reaction} busy={r.busy} own={r.own} onReact={r.react} />

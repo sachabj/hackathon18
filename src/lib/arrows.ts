@@ -151,6 +151,8 @@ export interface ArrowNotice {
   secure?: boolean;
   /** Flèches gagnées à l'instant : une pastille « +N » s'envole vers le solde (tâche 75). */
   gain?: number;
+  /** Échec d'une action (favori non enregistré…) : message d'alerte, sans la flèche. */
+  error?: boolean;
 }
 
 const NEEDS_POSITION = "Sans ta position (Profil, « Ma localisation »), pas de Flèches sur une offre placée.";

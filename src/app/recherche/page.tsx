@@ -11,7 +11,6 @@ import SearchFilters from "@/components/feed/SearchFilters";
 import DealsMap from "@/components/map/DealsMapLoader";
 import { CloseIcon, SearchIcon } from "@/components/icons";
 import { APP_NAME, ZONES } from "@/lib/constants";
-import { hotScore } from "@/lib/hot";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import { queryWords, searchDeals } from "@/lib/search";
@@ -32,7 +31,7 @@ import { usePreferences } from "@/lib/usePreferences";
 type Item = { deal: DealWithVotes; match?: Match };
 
 export default function Page() {
-  const { deals, loading, error, loadedAt } = useDeals();
+  const { deals, loading, error, hot } = useDeals();
   const { profile, preferences, loading: loadingProfile, error: profileError } = usePreferences();
   const { isFavorite, toggleFavorite } = useFavorites();
   const [query, setQuery] = useState("");
@@ -46,7 +45,6 @@ export default function Page() {
   const ranked: Item[] = me ? rankDeals(deals, me) : deals.map((deal) => ({ deal }));
 
   // Toutes les offres, triées par « Hot » (réactions, vitesse, fraîcheur : lib/hot.ts), celles mises en avant en tête.
-  const hot = new Map(deals.map((d) => [d.id, hotScore(d, d.votes ?? [], loadedAt)]));
   const shown = [...ranked].sort(
     (a, b) =>
       Number(isBoosted(b.deal)) - Number(isBoosted(a.deal)) ||

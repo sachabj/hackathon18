@@ -6,7 +6,7 @@ import type { Point } from "./geo";
 import { removeDealPhoto } from "./photos";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import { fetchDealTrust } from "./trust";
-import type { Deal, DealAudience, DealTrust, Vote } from "./types";
+import type { Deal, DealAudience, DealTrust, DealWithVotes, Vote } from "./types";
 import { normalizeDeal } from "./legacy";
 
 type DbError = { code?: string; message: string };
@@ -89,6 +89,44 @@ export async function fetchReactions(dealId: string): Promise<Reactions> {
     fetchDealState(dealId),
   ]);
   return { state, votes: check(votes) as Vote[], trust: trust ? (trust.get(dealId) ?? { pos: 0, neg: 0 }) : null };
+}
+
+// ---------- Après une réaction : tenir à jour les listes déjà affichées (fil, carte, favoris) ----------
+const REACTIONS_EVENT = "sharewood:reactions";
+export type ReactionsChange = Reactions & { dealId: string };
+
+export function announceReactions(change: ReactionsChange) {
+  window.dispatchEvent(new CustomEvent(REACTIONS_EVENT, { detail: change }));
+}
+
+export function onReactions(listener: (change: ReactionsChange) => void) {
+  const handle = (e: Event) => listener((e as CustomEvent<ReactionsChange>).detail);
+  window.addEventListener(REACTIONS_EVENT, handle);
+  return () => window.removeEventListener(REACTIONS_EVENT, handle);
+}
+
+/** Reporte des réactions relues sur l'offre concernée d'une liste : votes, masses et état (douteuse, retirée). */
+export function applyReactions<T extends DealWithVotes>(deals: T[], { dealId, votes, trust, state }: ReactionsChange): T[] {
+  return deals.map((d) =>
+    d.id !== dealId
+      ? d
+      : {
+          ...d,
+          votes,
+          trust,
+          ...(state && {
+            doubtful_since: state.doubtful_since,
+            reports_reset_at: state.reports_reset_at,
+            archived_at: state.archived_at,
+          }),
+        },
+  );
+}
+
+/** Retire les offres douteuses arrivées à échéance (migration 023 ; pas de tâche planifiée). Sans effet en cas d'erreur. */
+export async function settleDoubtfulDeals() {
+  const { error } = await getSupabase().rpc("settle_doubtful_deals");
+  if (error && error.code !== "PGRST202") console.warn("Offres douteuses non traitées :", error.message);
 }
 
 /**

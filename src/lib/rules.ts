@@ -121,13 +121,21 @@ export function doubtStatus(deal: DealState, votes: Vote[]) {
   return { deadline, saved };
 }
 
-/** Masquée : retirée, terminée, expirée, ou douteuse et arrivée à échéance (avant que la base l'ait enregistré). */
-export function isDealHidden(deal: Deal, votes: Vote[], now = Date.now()) {
-  if (deal.ended_by_merchant || deal.archived_at) return true;
-  if (deal.expires_at && new Date(deal.expires_at).getTime() < now) return true;
+/** Offre terminée : retirée après des signalements, retirée par son auteur ou un commerçant, ou expirée. */
+export type EndReason = "reports" | "removed" | "expired";
+
+/** Pourquoi l'offre est terminée, ou null si elle est toujours en ligne. */
+export function dealEndReason(deal: Deal, votes: Vote[], now = Date.now()): EndReason | null {
+  if (deal.archived_at) return "reports";
+  if (deal.ended_by_merchant) return "removed";
+  if (deal.expires_at && new Date(deal.expires_at).getTime() < now) return "expired";
+  // Douteuse et arrivée à échéance, avant que la base l'ait enregistré.
   const doubt = doubtStatus(deal, votes);
-  return !!doubt && now >= doubt.deadline && doubt.saved < RESCUE_CONFIRMATIONS;
+  return doubt && now >= doubt.deadline && doubt.saved < RESCUE_CONFIRMATIONS ? "reports" : null;
 }
+
+/** Masquée : une offre terminée ne figure plus dans les listes ni sur la carte. */
+export const isDealHidden = (deal: Deal, votes: Vote[], now = Date.now()) => dealEndReason(deal, votes, now) !== null;
 
 // ---------- Niveaux d'activité ----------
 export type ActivityLevel = "tres_actif" | "actif" | "peu_actif" | "inactif";

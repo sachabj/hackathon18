@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 const DealsMap = dynamic(() => import("./DealsMap"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-zinc-100 text-sm text-zinc-500">
+    <div className="flex h-full w-full items-center justify-center bg-[var(--color-paper)] text-sm text-[var(--color-muted)]">
       Chargement de la carte…
     </div>
   ),

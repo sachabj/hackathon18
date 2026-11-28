@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [merchant, setMerchant] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Compte créé mais adresse à confirmer. */
+  const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [referral, setReferral] = useState("");
   /** Lien d'offre partagé à rouvrir après la connexion. */
@@ -40,6 +42,7 @@ export default function LoginPage() {
     if (!isSupabaseConfigured) return setError("Supabase n'est pas encore configuré.");
     setLoading(true);
     setError(null);
+    setInfo(null);
     const supabase = getSupabase();
     const code = mode === "signup" && !merchant ? referral.trim().toUpperCase() : "";
     if (code) {
@@ -55,7 +58,7 @@ export default function LoginPage() {
         return setError("Code parrainage inconnu : vérifie-le ou laisse le champ vide.");
       }
     }
-    const { error } =
+    const { data, error } =
       mode === "login"
         ? await supabase.auth.signInWithPassword({ email, password })
         : await supabase.auth.signUp({
@@ -72,6 +75,12 @@ export default function LoginPage() {
           });
     setLoading(false);
     if (error) return setError(error.message);
+    // Confirmation par email activée : pas encore de session, on l'explique au lieu de rediriger.
+    if (!data.session) {
+      setMode("login");
+      setPassword("");
+      return setInfo("Compte créé : ouvre l'email de confirmation que tu viens de recevoir, puis connecte-toi.");
+    }
     // Après inscription → préférences (étudiant) ou commerce ; après connexion → carte.
     window.location.href = mode === "login" ? next : merchant ? "/commercant" : "/onboarding";
   }
@@ -168,6 +177,11 @@ export default function LoginPage() {
           </label>
         )}
         {error && <p className="text-sm text-red-600">{error}</p>}
+        {info && (
+          <p role="status" className="text-sm font-medium" style={{ color: "var(--color-forest)" }}>
+            {info}
+          </p>
+        )}
         <button disabled={loading} className="sw-btn-primary disabled:opacity-50">
           {loading ? "…" : mode === "login" ? "Se connecter" : "Créer mon compte"}
         </button>
@@ -176,7 +190,10 @@ export default function LoginPage() {
       <button
         className="mt-4 text-sm font-medium"
         style={{ color: "var(--color-forest)" }}
-        onClick={() => setMode(mode === "login" ? "signup" : "login")}
+        onClick={() => {
+          setInfo(null);
+          setMode(mode === "login" ? "signup" : "login");
+        }}
       >
         {mode === "login" ? "Pas de compte ? S'inscrire" : "Déjà un compte ? Se connecter"}
       </button>

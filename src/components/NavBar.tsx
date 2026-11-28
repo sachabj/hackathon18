@@ -52,7 +52,7 @@ export default function NavBar() {
             <li key={l.href}>
               <Link
                 href={l.href}
-                className={`flex flex-col items-center gap-0.5 px-3 py-2 text-xs lg:flex-row lg:gap-2 lg:rounded-full lg:px-4 lg:text-sm ${
+                className={`flex flex-col items-center gap-0.5 px-1.5 py-2 text-xs min-[360px]:px-3 lg:flex-row lg:gap-2 lg:rounded-full lg:px-4 lg:text-sm ${
                   active ? "lg:bg-[var(--color-sage)]" : "lg:hover:bg-[var(--color-paper)]"
                 }`}
                 style={active ? { color: "var(--color-forest)", fontWeight: 500 } : { color: "var(--color-muted)" }}
