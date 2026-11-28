@@ -6,7 +6,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
-⚠️ **Tâche 76 EN COURS (Justin), 28/11 vers 02h45** : défauts D7, D8, D9, D11, D12, D14 puis déploiement. Fichiers touchés : `PublishForm`, `lib/ai/assist`, `api/assist`, `confidentialite`, `account.ts`, `layout`, `RoleGate`, `DealsMapLoader`, `BusinessForm`, `NavBar`, `offerStats`, `useDashboard`/`merchant`, `duplicates`, `login`, migration **025** (réservée). D3, D4, D5, D13 attendent la fin de la tâche 75 (mêmes fichiers).
+⚠️ **Tâche 76 EN COURS (Justin), 28/11 vers 02h45** : tous les défauts ouverts (D3 à D5, D7 à D9, D11 à D14) puis déploiement, la tâche 75 étant poussée. Fichiers touchés : `DealSheet`, `DealCard`, `FavoritesPanel`, `DealsMap`, `useFavorites`, `useDeals`, pages accueil / Recherche / offre / login, `PublishForm`, `lib/ai/assist`, `api/assist`, `confidentialite`, `account.ts`, `layout`, `RoleGate`, `DealsMapLoader`, `BusinessForm`, `NavBar`, `offerStats`, `merchant`, `duplicates`, migration **025** (réservée). **Matteo** : faire un pull avant de retoucher la tâche 75.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
 - **Dernier déploiement : `fe633ae`, 28/11 à 01h54** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo). Les nettoyages de la tâche 74 n'y sont pas (aucun changement de comportement).
