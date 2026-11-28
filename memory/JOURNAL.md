@@ -625,3 +625,8 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 06h20 — Justin (tombola et Avant-Première, tâche 42)
 - Migration **032** (+ `schema.sql`) ; `OfferForm`, `OfferCard`, page commerçant, `DealCard`, `Voucher`, `RewardsPanel`, `merchant.ts`, `rewards.ts`, `rules.ts`, `types.ts`, `en.ts`, confidentialité ; README, mémoire. Offre Burger King : SQL lancé par Justin.
 - Vérifié : tsc, lint, build ; base en mémoire, 12 contrôles (droits, visibilité, tirage). Pas vu à l'écran ; **032 pas lancée sur la vraie base**, non déployé.
+
+### 2026-11-28 — Anne-Lise (diapo 1 du pitch, tâche 15)
+- Question posée (CLAUDE.md) : que faire du contenu chiffré de la diapo 1 (3 cartes « 12 € / kebab à 5 € / pourquoi ») — réponse retenue : diapo plus sobre, sans illustration chiffrée. Diapos 2 à 7 inchangées.
+- `pitch/sharewood.tex` : les 3 cartes de la diapo « 1. INTRODUCTION » remplacées par une phrase sobre centrée (plus de montant ni d'exemple de commerce) ; note d'orateur (`\note{...}`) réécrite dans le même sens.
+- **PDF pas recompilé** : aucun moteur LaTeX (`latexmk`/`pdflatex`) disponible sur ce poste. `pitch/sharewood.pdf` reste donc l'ancienne version jusqu'à une recompilation (`cd pitch && latexmk -pdf sharewood.tex`, ou Overleaf / VS Code + LaTeX Workshop, voir `pitch/README.md`).

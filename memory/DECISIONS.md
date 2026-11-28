@@ -527,6 +527,12 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 ## 2026-11-28 05h50 — Mise en service hors périmètre
 - **Décision** : le but n'est pas, pour l'instant, de mettre l'application en service ; les tâches qui ne servent qu'à cela sont regroupées dans `TASKS.md`, « Mise en service » (S1 à S10), et ne sont pas commencées sans décision.
 - **Choix de Claude, à confirmer** : les fonctions utiles à la démo ou au jury (rappels, alertes, PWA, anglais du parcours, tombola) restent hors de cette catégorie.
+
+## 2026-11-28 — Diapo 1 du pitch sans exemple chiffré (tâche 15)
+- **Décision** : la diapo « 1. INTRODUCTION » perd ses 3 cartes avec exemple concret (« tu paies 12 € ton repas, à deux pas un kebab indépendant à 5 € ») ; remplacées par une phrase sobre centrée, sans montant ni commerce nommé. Diapos 2 à 7 inchangées.
+- **Pourquoi** : demande d'Anne-Lise (questions posées avant de coder) — ne pas mettre d'exemple dans la nouvelle diapo 1.
+- **Limite** : `pitch/sharewood.pdf` n'a pas pu être recompilé (aucun moteur LaTeX sur ce poste) ; à refaire avant la répétition (`latexmk -pdf sharewood.tex`, ou Overleaf).
+- **Qui** : Anne-Lise
 - **Qui** : Justin
 
 ## 2026-11-28 06h10 — Offres des enseignes (tâche 65)
