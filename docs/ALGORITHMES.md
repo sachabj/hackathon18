@@ -251,3 +251,15 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 - La position n'est jamais enregistrée par ces calculs.
 
 Réglages : `supabase/migrations/020_location_rules.sql` et `021_gone_on_site.sql`, **et** `src/lib/arrows.ts` (`ARROWS`, `ARROWS_NO_PLACE`), rayon aussi dans `src/lib/constants.ts` (`NEARBY_M`).
+
+---
+
+## 7. Étudiants aidés et parrainage
+
+**Étudiants aidés** (profil) = nombre de **personnes différentes** (étudiants, hors soi) ayant fait au moins un de ces gestes : confirmer un de mes bons plans (« J'en ai profité »), le mettre en favori, toucher « Y aller » dessus, ouvrir un lien que j'ai partagé, ou ouvrir un lien vers mon offre partagé par quelqu'un d'autre. Une personne ne compte qu'une fois ; « grâce à tes bons plans » (gestes sur mes offres) + « grâce à tes partages » (les autres) = total. Un favori retiré ou une offre supprimée ne compte plus.
+
+Mes « Plus dispo » confirmés (offre archivée) sont affichés **à part** : on ne sait pas qui a évité le déplacement.
+
+**Parrainage** : +100 Flèches au parrain et +50 au filleul à la **première publication ou réaction** du filleul ; au plus 10 parrainages payés par parrain (le filleul reçoit toujours ses 50). Sans série ni plafond quotidien ; ces Flèches comptent pour le grade.
+
+Réglages : `supabase/migrations/022_profile_impact_referral.sql` (`my_impact`, `referral_on_activity`) et `src/lib/community.ts` (`REFERRAL`).

@@ -39,6 +39,10 @@ export default function Page() {
           <li><strong>Email et mot de passe</strong> (le mot de passe est stocké haché par notre hébergeur) : te connecter.</li>
           <li><strong>Pseudo, zones, centres d&apos;intérêt, transports, voyages, budget</strong> : personnaliser tes bons plans.</li>
           <li><strong>Boursier et Carte Sortir (oui / non)</strong>, facultatifs : te proposer seulement les aides auxquelles tu as droit.</li>
+          <li><strong>École ou université</strong>, facultative : compléter ton profil. Toi seul la vois.</li>
+          <li><strong>« Y aller » touché et liens partagés ouverts</strong> (offre, date, comptes concernés) : compter les étudiants que chacun a aidés.</li>
+          <li><strong>Parrainage</strong> : ton code, qui t&apos;a invité ou qui tu as invité, et la date de la première action : verser les Flèches.</li>
+          <li><strong>Messages à l&apos;équipe</strong> (aide, bug) : les traiter.</li>
           <li><strong>Ta localisation</strong>, avec ton accord seulement : détail dans la partie qui suit.</li>
           <li><strong>Ton choix sur la localisation</strong> (accepté ou refusé, date, version du texte) : le respecter et pouvoir le prouver.</li>
           <li><strong>Bons plans publiés</strong>, avec leur lieu et leur photo si tu l&apos;acceptes : les partager.</li>
@@ -72,7 +76,7 @@ export default function Page() {
         </p>
         <p>
           <strong>C&apos;est facultatif.</strong> Sans elle, l&apos;application fonctionne ; seuls les Flèches et le
-          signalement « Plus dispo » des offres placées sur la carte demandent d&apos;être localisé. Tu retires ton accord à tout moment dans Profil, « Ma localisation »
+          signalement « Plus dispo » des offres placées sur la carte demandent d&apos;être localisé. Tu retires ton accord à tout moment dans Profil, « Confidentialité et données », « Ma localisation »
           (commerçant : « Compte et confidentialité ») : plus rien n&apos;est demandé et la position enregistrée est
           effacée. Un lieu déjà publié le reste tant que l&apos;offre existe. Tu peux aussi bloquer la localisation dans
           les réglages du navigateur.
@@ -84,7 +88,8 @@ export default function Page() {
           <li>Les publications sont anonymes : ni ton pseudo ni ton email ne sont montrés aux autres utilisateurs.</li>
           <li>Tes préférences, ton budget, tes réponses sur les aides, ta position et tes favoris ne sont lisibles que par toi.</li>
           <li>Tes bons plans et tes votes portent un identifiant technique, sans ton nom.</li>
-          <li>L&apos;application montre à l&apos;auteur d&apos;un bon plan seulement des totaux (vues, passages, favoris, votes).</li>
+          <li>L&apos;application montre à l&apos;auteur d&apos;un bon plan seulement des totaux (vues, passages, favoris, votes, « Y aller », étudiants aidés).</li>
+          <li>Un lien que tu partages (offre ou parrainage) contient ton code, formé à partir de ton pseudo (ex. WOOD-ALEX26) : la personne qui le reçoit le voit.</li>
           <li>Une photo publiée est accessible à toute personne qui a son lien.</li>
           <li>La fiche d&apos;un commerce est visible par les utilisateurs connectés.</li>
         </ul>
@@ -126,8 +131,8 @@ export default function Page() {
           <li>Saisir la CNIL (cnil.fr) si tu estimes que tes droits ne sont pas respectés.</li>
         </ul>
         <p>
-          Ces actions se trouvent dans « Compte et confidentialité », depuis ton profil (la localisation, directement
-          dans le profil).{PRIVACY_CONTACT && ` Pour toute autre demande : ${PRIVACY_CONTACT}. Réponse sous un mois.`}
+          Ces actions se trouvent dans ton profil, « Confidentialité et données » (commerçant : « Compte et
+          confidentialité »).{PRIVACY_CONTACT && ` Pour toute autre demande : ${PRIVACY_CONTACT}. Réponse sous un mois.`}
         </p>
         <p>Le service est réservé aux personnes d&apos;au moins 15 ans.</p>
       </Block>

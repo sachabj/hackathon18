@@ -476,3 +476,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 01h30 — Justin (diapos en LaTeX, tâche 15)
 - Nouveau dossier `pitch/` (`sharewood.tex`, `sharewood.pdf`, `images/`, `README.md`) ; `.gitignore`, README, mémoire. Aucun code d'application modifié.
 - Vérifié : compilation avec TeX Live 2026 (avec et sans notes), 7 pages relues en image. Pas testé sur Overleaf ni sur un autre poste.
+
+### 2026-11-28 01h26 — Sacha (refonte du profil, tâche 68)
+- Migration `022_profile_impact_referral.sql` (+ `schema.sql`) ; `lib/community.ts`, `lib/share.ts`, `components/profile/` (impact, parrainage, menu, informations, notifications, aide), `ShareButton`, `/offre`, `DealSheet`, connexion (code parrainage), `proxy.ts`, export des données, politique de confidentialité, `seed_arrows.sql` ; README, algorithmes, mémoire.
+- Vérifié : tsc, lint (1 avertissement connu), build ; 130 contrôles sur Postgres local + scénario de démo ; 42 contrôles dans Chrome avec un faux Supabase. **Pas essayé sur la vraie base ni sur téléphone ; non déployé.**

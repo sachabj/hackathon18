@@ -345,3 +345,24 @@ export function ExternalLinkIcon({ className }: IconProps) {
 export function LinkIcon({ className }: IconProps) {
   return <Stroke className={className}><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></Stroke>;
 }
+export function ShareIcon({ className }: IconProps) {
+  return <Stroke className={className}><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5" /></Stroke>;
+}
+export function CopyIcon({ className }: IconProps) {
+  return <Stroke className={className}><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M15 5.5A1.5 1.5 0 0 0 13.5 4h-8A1.5 1.5 0 0 0 4 5.5v8A1.5 1.5 0 0 0 5.5 15" /></Stroke>;
+}
+export function BellIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15L6 16Z" /><path d="M10 20.5a2.2 2.2 0 0 0 4 0" /></Stroke>;
+}
+export function HelpIcon({ className }: IconProps) {
+  return <Stroke className={className}><circle cx="12" cy="12" r="9" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.700" /><path d="M12 17h.01" /></Stroke>;
+}
+export function ShieldIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M12 3 5 6v5c0 4.600 3 8.200 7 10 4-1.800 7-5.400 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></Stroke>;
+}
+export function SlidersIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M4 7h9M17 7h3M4 17h3M11 17h9" /><circle cx="15" cy="7" r="2" /><circle cx="9" cy="17" r="2" /></Stroke>;
+}
+export function HistoryIcon({ className }: IconProps) {
+  return <Stroke className={className}><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5" /><path d="M4 4v4.5h4.5" /><path d="M12 8v4.5l3 1.800" /></Stroke>;
+}

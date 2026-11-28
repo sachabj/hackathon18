@@ -36,7 +36,10 @@ export async function proxy(request: NextRequest) {
 
   const isPublic = PUBLIC_PATHS.some((p) => request.nextUrl.pathname.startsWith(p));
   if (!user && !isPublic) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const login = new URL("/login", request.url);
+    // Lien d'offre partagé : on y revient après la connexion.
+    if (request.nextUrl.pathname === "/offre") login.searchParams.set("suite", `/offre${request.nextUrl.search}`);
+    return NextResponse.redirect(login);
   }
   if (user && isPublic) {
     return NextResponse.redirect(new URL("/", request.url));

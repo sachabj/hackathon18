@@ -7,8 +7,10 @@ import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
 import { LinkedText, OfferLink, RequirementBadges } from "@/components/deal/DealExtras";
 import ReactionBar from "@/components/deal/ReactionBar";
+import ShareButton from "@/components/deal/ShareButton";
 import DealLocationNote from "@/components/location/DealLocationNote";
 import { CalendarIcon, CameraIcon, CloseIcon, NavigationIcon, PinIcon } from "@/components/icons";
+import { recordDirections } from "@/lib/community";
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import { directionsUrl } from "@/lib/directions";
 import { fetchEngagement, recordView, setReaction, type Engagement, type Reaction, type Reactions } from "@/lib/engagement";
@@ -210,17 +212,21 @@ export default function DealSheet({
           </div>
         )}
 
-        {/* Seulement pour une offre placée sur la carte (la fiche n'existe que dans le navigateur). */}
-        {deal.lat !== null && deal.lng !== null && (
-          <a
-            href={directionsUrl({ lat: deal.lat, lng: deal.lng }, navigator.userAgent)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sw-btn-primary mt-3 w-full"
-          >
-            <NavigationIcon className="h-4 w-4" /> Y aller
-          </a>
-        )}
+        {/* « Y aller » seulement pour une offre placée sur la carte (la fiche n'existe que dans le navigateur). */}
+        <div className={`mt-3 grid items-start gap-2 ${deal.lat !== null && deal.lng !== null ? "grid-cols-2" : "grid-cols-1"}`}>
+          {deal.lat !== null && deal.lng !== null && (
+            <a
+              href={directionsUrl({ lat: deal.lat, lng: deal.lng }, navigator.userAgent)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => recordDirections(deal.id)}
+              className="sw-btn-primary w-full"
+            >
+              <NavigationIcon className="h-4 w-4" /> Y aller
+            </a>
+          )}
+          <ShareButton deal={deal} />
+        </div>
 
         {data && (
           <div className="mt-3">

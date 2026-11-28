@@ -3,6 +3,7 @@
 // Historique des Flèches : une ligne par mouvement (hors gains des bons plans listés au-dessus).
 import { useState } from "react";
 import { ARROWS, ARROWS_NO_PLACE, DAILY_PAID_CREATIONS, DAILY_PAID_VOTES, KIND_LABELS, type ArrowLine } from "@/lib/arrows";
+import { REFERRAL } from "@/lib/community";
 import { NEARBY_M } from "@/lib/constants";
 
 const SHOWN = 5;
@@ -27,7 +28,8 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
             <li key={e.id} className="flex items-baseline gap-2 border-b py-2 text-sm" style={{ borderColor: "var(--color-border)" }}>
               <span className="w-14 shrink-0 text-xs text-[var(--color-muted)]">{formatDate(e.created_at)}</span>
               <span className="min-w-0 flex-1 truncate">
-                <span className="font-medium">{KIND_LABELS[e.kind]}</span> · {e.title ?? "offre supprimée"}
+                <span className="font-medium">{KIND_LABELS[e.kind]}</span> ·{" "}
+                {e.kind === "referral" ? "un ami actif" : e.kind === "welcome" ? "code parrainage" : (e.title ?? "offre supprimée")}
               </span>
               <span
                 className="shrink-0 font-medium tabular-nums"
@@ -62,6 +64,7 @@ export default function ArrowHistory({ lines, todayVotes }: { lines: ArrowLine[]
             confirmations, +{ARROWS_NO_PLACE.confirm} « J&apos;en ai profité », +{ARROWS_NO_PLACE.report} « Plus dispo ».
           </li>
           <li>3 jours d&apos;activité d&apos;affilée : gains × 1,5.</li>
+          <li>Parrainage (depuis le Profil) : +{REFERRAL.referrer} par ami qui publie ou réagit.</li>
         </ul>
       </details>
     </section>

@@ -432,3 +432,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Remplace** : la présentation claude.ai comme version de référence.
 - **Limite** : pas d'animations ; le dépôt étant public, le pitch et son texte le sont aussi.
 - **Qui** : Justin
+
+## 2026-11-28 01h — Refonte du profil (tâche 68)
+- **Décisions** : « étudiants aidés » = personnes uniques (les barèmes +2 / +5 disparaissent) ; signalements confirmés affichés à part ; parrainage versé à la première action du filleul, 10 payés au maximum ; « Y aller » et « Partager » dans la fiche seulement ; notifications « bientôt » ; aide enregistrée en base ; école facultative ; données de démo par script (vrais calculs).
+- **Écartés** : compter les actions et les appeler « étudiants » ; chiffres fixes dans l'écran ; +100 dès l'inscription (faux comptes) ; « précisions sur une offre » (trop long avant la démo) ; emoji de la maquette (règle du projet).
+- **Choix techniques** : le code de parrainage signe aussi les liens d'offre ; un lien partagé compte pour la personne qui l'envoie et pour l'auteur de l'offre ; sections dépliables sur une seule page.
+- **Qui** : Sacha (réponses aux questions de cadrage)

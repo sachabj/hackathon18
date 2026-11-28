@@ -15,8 +15,10 @@ export const STREAK_DAYS = 3;
 
 export type ArrowKind = keyof typeof ARROWS;
 
-export const KIND_LABELS: Record<ArrowKind | "spend", string> = {
+export const KIND_LABELS: Record<ArrowKind | "spend" | "referral" | "welcome", string> = {
   spend: "Échange",
+  referral: "Parrainage",
+  welcome: "Bienvenue",
   create: "Bon plan partagé",
   bonus: "Confirmé par 3 étudiants",
   confirm: "Confirmation",
@@ -45,8 +47,8 @@ export function rankFor(total: number) {
 
 export interface ArrowEvent {
   id: string | number;
-  /** "spend" : récompense échangée (montant négatif, migration 017) */
-  kind: ArrowKind | "spend";
+  /** "spend" : récompense échangée (montant négatif, migration 017) ; "referral" / "welcome" : parrainage (022) */
+  kind: ArrowKind | "spend" | "referral" | "welcome";
   amount: number;
   multiplier: number;
   /** false : signalement en attente de deux autres étudiants */

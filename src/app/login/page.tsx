@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GraduationCapIcon, StoreIcon } from "@/components/icons";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
+import { checkReferralCode, REFERRAL } from "@/lib/community";
 import { APP_NAME, PASSWORD_MIN } from "@/lib/constants";
 
 export default function LoginPage() {
@@ -15,6 +16,24 @@ export default function LoginPage() {
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [referral, setReferral] = useState("");
+  /** Lien d'offre partagé à rouvrir après la connexion. */
+  const [next, setNext] = useState("/");
+
+  // Lien de parrainage (`?parrain=`) : inscription avec le code déjà rempli.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("parrain");
+    const suite = params.get("suite");
+    /* eslint-disable react-hooks/set-state-in-effect -- lu dans l'adresse après le montage (page statique) */
+    if (code) {
+      setReferral(code.slice(0, 20).toUpperCase());
+      setMode("signup");
+    }
+    // Seulement une adresse interne connue : pas de redirection vers un autre site.
+    if (suite?.startsWith("/offre?")) setNext(suite);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -22,6 +41,20 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
     const supabase = getSupabase();
+    const code = mode === "signup" && !merchant ? referral.trim().toUpperCase() : "";
+    if (code) {
+      let known: boolean | null;
+      try {
+        known = await checkReferralCode(code);
+      } catch (err) {
+        setLoading(false);
+        return setError((err as Error).message);
+      }
+      if (known === false) {
+        setLoading(false);
+        return setError("Code parrainage inconnu : vérifie-le ou laisse le champ vide.");
+      }
+    }
     const { error } =
       mode === "login"
         ? await supabase.auth.signInWithPassword({ email, password })
@@ -29,13 +62,18 @@ export default function LoginPage() {
             email,
             password,
             options: {
-              data: { username, account_type: merchant ? "merchant" : "student", privacy_accepted: accepted },
+              data: {
+                username,
+                account_type: merchant ? "merchant" : "student",
+                privacy_accepted: accepted,
+                ...(code && { referral_code: code }),
+              },
             },
           });
     setLoading(false);
     if (error) return setError(error.message);
     // Après inscription → préférences (étudiant) ou commerce ; après connexion → carte.
-    window.location.href = mode === "login" ? "/" : merchant ? "/commercant" : "/onboarding";
+    window.location.href = mode === "login" ? next : merchant ? "/commercant" : "/onboarding";
   }
 
   return (
@@ -97,6 +135,20 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {mode === "signup" && !merchant && (
+          <label className="block text-sm text-[var(--color-muted)]">
+            Code parrainage (facultatif) : +{REFERRAL.referee} Flèches à ta première action
+            <input
+              className="sw-field mt-1 uppercase"
+              placeholder="WOOD-ALEX26"
+              maxLength={20}
+              autoCapitalize="characters"
+              autoComplete="off"
+              value={referral}
+              onChange={(e) => setReferral(e.target.value)}
+            />
+          </label>
+        )}
         {mode === "signup" && (
           <label className="flex items-start gap-2 text-sm text-[var(--color-muted)]">
             <input

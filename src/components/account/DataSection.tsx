@@ -10,11 +10,14 @@ export default function DataSection({
   username,
   acceptedAt,
   hasPosition,
+  showUsername = true,
 }: {
   userId: string;
   username: string;
   acceptedAt: string | null;
   hasPosition: boolean;
+  /** Le profil étudiant modifie le pseudo dans « Informations personnelles ». */
+  showUsername?: boolean;
 }) {
   const [name, setName] = useState(username);
   const [stored, setStored] = useState(hasPosition);
@@ -45,16 +48,16 @@ export default function DataSection({
 
   return (
     <Section title="Mes données">
-      <form onSubmit={save} className="space-y-2">
+      {showUsername && <form onSubmit={save} className="space-y-2">
         <label className="block text-sm font-medium">
           Pseudo (visible par toi seul)
           <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} maxLength={40} required />
         </label>
         <Feedback message={pseudo.message} />
         <button disabled={pseudo.busy} className={secondaryClass}>Enregistrer le pseudo</button>
-      </form>
+      </form>}
 
-      <div className="space-y-2 pt-3" style={{ borderTop: "1px solid var(--color-border)" }}>
+      <div className={showUsername ? "space-y-2 pt-3" : "space-y-2"} style={showUsername ? { borderTop: "1px solid var(--color-border)" } : undefined}>
         <p className="text-sm text-[var(--color-muted)]">
           {stored ? "Une position approximative (~100 m) est enregistrée." : "Aucune position enregistrée."}
         </p>

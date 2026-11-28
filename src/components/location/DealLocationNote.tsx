@@ -22,7 +22,7 @@ export default function DealLocationNote({ placed }: { placed: boolean }) {
     <p className="mt-2 text-center text-xs text-[var(--color-muted)]">
       Sans ta position : pas de Flèches, et pas de « Plus dispo ».{" "}
       <button type="button" onClick={() => ensureLocationConsent(true)} className="font-medium underline" style={{ color: "var(--color-forest)" }}>
-        La partager
+        Activer ma position
       </button>
     </p>
   );

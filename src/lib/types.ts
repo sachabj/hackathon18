@@ -136,6 +136,8 @@ export interface Preferences {
   is_scholarship?: boolean | null;
   has_carte_sortir?: boolean | null;
   updated_at: string;
+  /** École ou université, facultative (migration 022) */
+  school?: string | null;
 }
 
 /** Ligne de la table `businesses` (un commerce par compte commerçant). */

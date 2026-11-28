@@ -12,7 +12,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Accueil** : filtres « Pour toi », « Mes favoris » et une puce par catégorie (plusieurs catégories combinables).
 - **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».
 - **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer.
-- **Fiche** : détails, photo, lien vers l'offre et bouton « Y aller » (Apple Plans ou Google Maps).
+- **Fiche** : détails, photo, lien vers l'offre, boutons « Y aller » (Apple Plans ou Google Maps) et « Partager » (le lien ouvre l'offre après connexion).
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
 - **Favoris** pour garder une offre sous la main.
 
@@ -32,7 +32,8 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
 - **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
-- **Profil** : pseudo modifiable, préférences et localisation.
+- **Profil** : grade et Flèches, **étudiants aidés** (chacun compte une fois : confirmation, favori, « Y aller » ou lien partagé ouvert) et menu des réglages (préférences, récompenses, historique, informations, sécurité, confidentialité, aide).
+- **Parrainage** : code et lien à partager ; +100 Flèches au parrain et +50 au filleul, à la première publication ou réaction du filleul (10 parrainages payés au maximum).
 
 ### Espace commerçant
 - Publier, modifier et retirer ses offres officielles ; statistiques.
@@ -48,7 +49,8 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - Le paiement de la mise en avant est **simulé** ; le statut de commerçant n'est pas vérifié.
 - Distances et temps de trajet estimés à vol d'oiseau.
 - La position vient du navigateur : un utilisateur averti peut la falsifier. L'adresse de contact de la politique de confidentialité est fictive.
-- Pas encore là : notifications sur place, rappels de dates limites, filtre « ouvert maintenant ».
+- Pas encore là : notifications (annoncées « bientôt » dans le profil), rappels de dates limites, filtre « ouvert maintenant ».
+- Parrainage et « étudiants aidés » restent gonflables avec de faux comptes (pas de confirmation d'email en démo).
 
 ## Technique
 Next.js 16 · Tailwind 4 · Supabase (comptes, base Postgres avec droits par ligne, stockage) · Leaflet et OpenFreeMap · Gemini ou Claude pour l'assistant · Vercel.

@@ -1,101 +1,72 @@
 "use client";
 
-// En-tête du profil : initiale, pseudo modifiable sur place, ville principale et ancienneté.
-import { useLayoutEffect, useState, type FormEvent } from "react";
-import { EditIcon } from "@/components/icons";
-import { updateUsername } from "@/lib/account";
+// En-tête du profil : initiale, pseudo, ville et ancienneté, puis grade et solde de Flèches.
+import Link from "next/link";
+import { ArrowShotIcon, EditIcon } from "@/components/icons";
+import { rankFor } from "@/lib/arrows";
 import { ZONES } from "@/lib/constants";
+import { useMyArrows } from "@/lib/useMyArrows";
 
 const monthYear = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
 
 export default function ProfileHeader({
-  userId,
   username,
   createdAt,
   homeZoneId,
-  onSaved,
+  onEdit,
 }: {
-  userId: string;
   username: string | null;
   createdAt: string;
   homeZoneId: string | null;
-  /** Relit le profil après l'enregistrement du pseudo. */
-  onSaved: () => void;
+  /** Ouvre « Informations personnelles ». */
+  onEdit: () => void;
 }) {
-  const [editing, setEditing] = useState(false);
-  const [name, setName] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  // Next conserve la page quittée : le champ ouvert se referme.
-  useLayoutEffect(() => () => setEditing(false), []);
-
+  // Sans la migration 016 (Flèches) : ni grade ni solde.
+  const arrows = useMyArrows();
   const shown = username?.trim() || "Mon profil";
   const zone = ZONES.find((z) => z.id === homeZoneId)?.name;
 
-  async function save(e: FormEvent) {
-    e.preventDefault();
-    if (!name.trim()) return setError("Choisis un pseudo.");
-    setBusy(true);
-    setError(null);
-    try {
-      await updateUsername(userId, name.trim());
-      setEditing(false);
-      onSaved();
-    } catch (err) {
-      setError((err as Error).message);
-    }
-    setBusy(false);
-  }
-
   return (
-    <header className="sw-card flex items-center gap-4 p-4">
-      <span
-        aria-hidden
-        className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full font-serif text-3xl"
-        style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}
-      >
-        {shown.charAt(0).toUpperCase()}
-      </span>
-      <div className="min-w-0 flex-1">
-        {editing ? (
-          <form onSubmit={save} className="space-y-2">
-            <input
-              className="sw-field"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              maxLength={40}
-              aria-label="Pseudo (visible par toi seul)"
-              autoFocus
-            />
-            <div className="flex gap-2">
-              <button disabled={busy} className="sw-btn-primary text-sm">Enregistrer</button>
-              <button type="button" onClick={() => setEditing(false)} className="sw-btn-secondary text-sm">Annuler</button>
-            </div>
-          </form>
-        ) : (
+    <header className="sw-card space-y-3 p-4">
+      <div className="flex items-center gap-4">
+        <span
+          aria-hidden
+          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full font-serif text-3xl"
+          style={{ backgroundColor: "var(--color-forest)", color: "var(--color-surface)" }}
+        >
+          {shown.charAt(0).toUpperCase()}
+        </span>
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <h1 className="min-w-0 truncate text-2xl">{shown}</h1>
             <button
               type="button"
-              onClick={() => {
-                setName(username ?? "");
-                setError(null);
-                setEditing(true);
-              }}
-              aria-label="Modifier mon pseudo"
-              title="Modifier mon pseudo"
+              onClick={onEdit}
+              aria-label="Modifier mes informations"
+              title="Modifier mes informations"
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
               style={{ backgroundColor: "var(--color-paper)", color: "var(--color-forest)" }}
             >
               <EditIcon className="h-4 w-4" />
             </button>
           </div>
-        )}
-        {error && <p role="alert" className="mt-1 text-sm text-red-600">{error}</p>}
-        <p className="text-sm text-[var(--color-muted)]">
-          {[zone, `membre depuis ${monthYear(createdAt)}`].filter(Boolean).join(" · ")}
-        </p>
+          <p className="text-sm text-[var(--color-muted)]">
+            {[zone, `membre depuis ${monthYear(createdAt)}`].filter(Boolean).join(" · ")}
+          </p>
+        </div>
       </div>
+      {arrows && (
+        <Link
+          href="/favoris?onglet=recompenses"
+          className="flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-sm font-medium"
+          style={{ backgroundColor: "var(--color-paper)", color: "var(--color-forest)" }}
+        >
+          <span>{rankFor(arrows.total_arrows_earned).rank.label}</span>
+          <span className="flex items-center gap-1 tabular-nums">
+            <ArrowShotIcon className="h-4 w-4" /> {Math.max(0, arrows.current_arrows_balance)} Flèches
+          </span>
+        </Link>
+      )}
     </header>
   );
 }

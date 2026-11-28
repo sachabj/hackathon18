@@ -274,3 +274,7 @@ h1, h2, h3 {
 @media (prefers-reduced-motion: reduce) {
   .sw-success { animation: none; }
 }
+
+/* Sections dépliées du menu du profil : les cartes des réglages y sont à plat. */
+.sw-menu-panel .sw-card { border: 0; background: transparent; box-shadow: none; padding: 0; }
+.sw-menu-panel > .sw-card + .sw-card { border-top: 1px solid var(--color-border); border-radius: 0; padding-top: 1rem; }

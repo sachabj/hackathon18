@@ -25,7 +25,9 @@ _Mis à jour le 27/11 après relecture de tout le code (lint : 1 avertissement c
 - ⏳ **019_golden_badge_text.sql à exécuter** (Sacha) : texte du Badge Doré dans la boutique.
 - **020_location_rules.sql présente sur la vraie base** (sonde en lecture de Justin, 28/11) : Flèches seulement sur place ; obligatoire avant `seed_arrows.sql`. Relancer 020 si 016 ou 018 sont relancées.
 - **021_gone_on_site.sql exécutée** (Justin, 28/11, non vérifiable avec la clé publique) : « Plus dispo » seulement sur place.
-- Prochaine migration : numéro **022** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
+- ⏳ **022_profile_impact_referral.sql à exécuter** (Sacha, après 021) : étudiants aidés, parrainage, école, aide. Relancer 022 si 016 ou 018 sont relancées (elles remplacent la contrainte ou le trigger d'inscription). **Obligatoire avant `seed_arrows.sql`.**
+- Messages « Aide et signaler un bug » : à lire dans Supabase → Table Editor → `support_messages`.
+- Prochaine migration : numéro **023** (vérifier après un pull). Toute modification : fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la faire lancer dans le SQL Editor.
 
 ## Équipe (domaines actuels)
 | Membre | Domaine |
@@ -94,6 +96,10 @@ Lots A, B et C codés par Justin, lot D fait par Matteo.
 - **Justin** : `DealsMap`, `useUserPosition`, `LocationPicker`, `DealSheet`, profil, `layout`, `/compte` modifiés ; `ReactionBar` demande `placed`. **Matteo** : `PublishForm` et `docs/ALGORITHMES.md` modifiés. **Anne-Lise** : `DealCard` (une propriété).
 - **Démo** : loin de Bruz, plus de « Plus dispo » sur les offres de la carte. Les deux offres du scénario sont sans lieu (rien à localiser) ; pour montrer un gain sur place, être à moins de 500 m de l'offre.
 
+### Refonte du profil (tâche 68, Sacha)
+- **Justin** : `profil/page.tsx` réécrit ; `ProfileHeader` affiche grade et Flèches, le crayon ouvre « Informations personnelles » ; `AccountLink` ne sert plus qu'à l'espace commerçant ; `DealSheet`, `DataSection`, `login/page.tsx`, `proxy.ts` modifiés. Diapos à vérifier.
+- **Matteo** : `docs/ALGORITHMES.md` (§ 7), `ArrowHistory`, `globals.css`.
+
 ## 🆕 Améliorations du brainstorming (27/11 au soir) : tâches 49 à 65, toutes libres
 Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les questions de `CLAUDE.md`. « Taille » est une estimation (P petite · M moyenne · G grosse) ; « Domaine » indique qui connaît le code, sans attribution.
 
@@ -113,12 +119,12 @@ Rien n'est codé. Prendre une tâche = mettre `EN COURS (prénom)` et poser les 
 | 60 | **La carte suit la recherche** : n'afficher que les offres trouvées | P | Anne-Lise / Justin | TODO : revient sur le choix « la carte montre toujours toutes les offres » (recherche déplacée) |
 | 61 | **Carte : boutons + et −** pour zoomer, en plus de la molette | P | Justin | À TESTER (Justin) : boutons au-dessus du recentrage, zoom limité au niveau 19 ; essayé avec un faux Supabase |
 | 62 | **Après publication, « Voir sur la carte »** ouvre la carte sur la nouvelle offre | P | Matteo / Justin | TODO : l'offre sans lieu n'a pas de repère (garder l'onglet Recherche) |
-| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | TODO : codée puis retirée (Sacha, 28/11) ; le code reste dans le commit `a75ecf1` |
+| 63 | **Profil : « Tu as aidé N étudiants »** (étudiants venus sur mes offres) | P | Justin | Remplacée par la tâche 68 (« étudiants aidés », personnes uniques) |
 | 64 | **Profil plus complet** | M | Justin / Sacha | À TESTER (Justin / Sacha) : en-tête conservé (pseudo modifiable) ; impact, grade et Flèches, raccourcis retirés (Sacha, 28/11) |
 | 65 | **De vraies offres**, par recherche web ou via une API (source à choisir au moment de prendre la tâche) | G | Justin / Matteo | TODO, si le temps le permet : garder le lien source de chaque offre et la date de vérification ; vérifier le droit de réutiliser la source ; ne pas publier d'offre « officielle » au nom d'un vrai commerce ; ne pas mélanger avec les offres inventées sans les signaler (`reset_demo.sql`, lié à la tâche 12) |
 | 66 | **« J'y suis allé » devient « J'en ai profité »** (boutons, fiche, Ciblés, stats commerçant, confidentialité, info-bulle, README, doc, commentaires) | P | Matteo | FAIT (Matteo) : libellé seulement (vote +1 et passage inchangés) ; historique (JOURNAL, DECISIONS) et anciennes migrations non réécrits |
 | 67 | **Accueil : filtres à la place des onglets** : puces Pour toi · Mes favoris · chaque catégorie (plusieurs catégories combinables) ; remplace les 5 onglets de la tâche 56 (**Sacha**) | P | Matteo | À TESTER (Matteo) : `app/page.tsx` seulement ; pas vu dans le navigateur ; « Mes favoris » ne montre que les offres encore visibles (les expirées restent dans « Ciblés ») |
-| 68 | **Refonte du Profil** : étudiants aidés, parrainage, menu de réglages groupé, boutons « Y aller » / « Partager » dans la fiche (migration **022**) | G | Sacha | EN COURS (Sacha) : touche le profil et `ProfileHeader` (Justin), `DealSheet`, inscription, `proxy.ts` |
+| 68 | **Refonte du Profil** : étudiants aidés, parrainage, menu de réglages groupé, boutons « Y aller » / « Partager » dans la fiche (migration **022**) | G | Sacha | À TESTER (Sacha) : ⏳ **lancer `022_profile_impact_referral.sql`**, puis `seed_arrows.sql` (données de démo de sarah : 42 aidés, 3 amis, ENSAI) ; notifications « bientôt » ; « précisions sur une offre » non faites |
 
 ## 🐞 Défauts relevés à la relecture (à prendre, noter son prénom)
 Relevés en lisant le code, pas encore reproduits dans l'app.
