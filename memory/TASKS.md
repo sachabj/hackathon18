@@ -121,7 +121,7 @@ select
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Défauts
-**Aucun défaut ouvert connu.** (Les corrections D3 à D14 sont à essayer en vrai avec C3.)
+**Aucun défaut ouvert connu.** (Corrections D3 à D14 essayées sur téléphone avec C3.)
 
 ### Cas limites et limites assumées
 - La position vient du navigateur : falsifiable. Des comptes complices peuvent confirmer des offres bidon ou en retirer une (6 signalements en 48 h). Parrainage et « étudiants aidés » sont gonflables.
