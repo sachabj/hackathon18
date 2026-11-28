@@ -77,10 +77,10 @@ Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Reste à lan
 |---|---|---|---|
 | 14 | Rappels de dates limites | M | TODO |
 | 41 | Filtre « Ouvert maintenant » : aucune donnée d'horaires (saisie + migration, ou service externe) | M | TODO, remis à plus tard (Sacha) |
-| 50 | Application en anglais : textes écrits en français dans le code ; à décider : toute l'appli ou les pages principales | G | TODO |
-| 52 | N'importe quelle ville de France à la 1re connexion : zones en base, carte, « Pour toi », publication « Une ville » ; Photon possible ; migration | G | TODO |
+| 50 | Application en anglais : textes écrits en français dans le code ; à décider : toute l'appli ou les pages principales | G | EN COURS (Sacha) : parcours étudiant en anglais, choix FR / EN (profil, connexion) |
+| 52 | N'importe quelle ville de France à la 1re connexion : zones en base, carte, « Pour toi », publication « Une ville » ; Photon possible ; migration | G | EN COURS (Sacha) : recherche de ville (Photon) + grandes villes, principale + 4 autres ; migration **027** réservée |
 | 53 | Nouvelles icônes (« emojis » demandés aussi, mais la règle actuelle est : aucun emoji) | P | TODO (Anne-Lise) |
-| 54 | « Tes aides » valables partout en France (la Carte Sortir est propre à Rennes) ; lié à 52 | M | TODO (Sacha) |
+| 54 | « Tes aides » valables partout en France (la Carte Sortir est propre à Rennes) ; lié à 52 | M | EN COURS (Sacha) : Carte Sortir seulement pour la région rennaise |
 | 59 | Récompense de publication différée (délai et nombre d'étudiants à choisir) ; migration ; aujourd'hui +50 sur place, +20 sans lieu | M | TODO (Sacha) |
 | 70 | **Compétition entre écoles** : classement des écoles (Flèches cumulées ou par membre) ; `preferences.school` est un texte libre → liste d'écoles à prévoir ; RPC d'agrégat (migration) | M | TODO (idée retenue par Matteo, non cadrée) |
 | 71 | **Signaler un contenu** (arnaque, inapproprié, mauvaise info), distinct de « Plus dispo » : motifs, table (migration), seuil de masquage, lecture comme `support_messages` | M | TODO (idée retenue par Matteo, non cadrée) |
@@ -125,7 +125,7 @@ select
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql`.
-- Prochaine migration : **027** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- Migration **027** réservée par Sacha (tâche 52). Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Défauts
