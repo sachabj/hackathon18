@@ -465,3 +465,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 00h52 — Sacha (profil allégé)
 - Retrait d’une partie des ajouts de Justin (tâches 63, 64) : `ImpactCard`, `ArrowsSummary`, `ProfileShortcuts` supprimés ; `app/profil/page.tsx` sur une colonne, en-tête conservé ; README, mémoire.
 - Vérifié : tsc, lint (1 avertissement connu), build ; Chrome avec un faux Supabase à 320, 390 et 1440 px. Non déployé.
+
+### 2026-11-28 — Matteo (libellé « J'en ai profité » non visible)
+- Vérifié : le libellé est bien dans le code de `main` (`ReactionBar.tsx`, commit `e1e59b8`). Le site en ligne date du déploiement de `a75ecf1` (00h39), antérieur : il faut redéployer (poste de Justin). En local : `git pull`, `npm install`, relancer `npm run dev`. Aucun code modifié.
