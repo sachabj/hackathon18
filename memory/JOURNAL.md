@@ -503,3 +503,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 02h — Justin (correctif schema.sql)
 - Le commit `b039747` contenait des marques de conflit dans `supabase/schema.sql` (fusion avec la 023 de Sacha) : retirées, les deux blocs gardés ; schéma rejoué sur Postgres local, 0 échec.
+
+### 2026-11-28 02h15 — Justin (offre Intermarché)
+- Offre confirmée par Justin (10 % en avantage carte, gamme Intermarché) ajoutée à `import_sources.sql` (54 offres) ; description limitée aux faits confirmés. Testé sur Postgres local. Import pas lancé sur la vraie base.

@@ -3,7 +3,7 @@
 //
 //   node scripts/import_sources.mjs                  événements + aides
 //   node scripts/import_sources.mjs --intermarche    + offre étudiante Intermarché sur les magasins proches
-//                                                    (⚠️ seulement après avoir vérifié la page officielle)
+//                                                    (confirmée par Justin le 28/11 : 10 % en avantage carte)
 import { readFileSync, writeFileSync } from "node:fs";
 
 const AGENT = "sharewood-student-project";
@@ -153,9 +153,9 @@ const INTERMARCHE_URL = "https://www.intermarche.com/avantages-fidelite/avantage
 function intermarche() {
   const stores = JSON.parse(readFileSync(new URL("./intermarche_stores.json", import.meta.url), "utf8"));
   return stores.map((s) => ({
-    title: "Étudiants : 10 % sur la carte Intermarché",
+    title: "Étudiants : 10 % en avantage carte chez Intermarché",
     description:
-      "De 18 à 28 ans, étudiant en France : 10 % crédités sur la carte de fidélité pour les produits des marques Intermarché (hors Top Budget, Merci et poids variable), 20 € maximum par mois. Inscription dans « Mon compte > Mes avantages ». Conditions à confirmer en magasin. Lieu : © les contributeurs d'OpenStreetMap.",
+      "Pour les étudiants : 10 % en avantage carte sur les produits de la gamme Intermarché. Conditions d'inscription et plafond sur la page officielle. Lieu : © les contributeurs d'OpenStreetMap.",
     category: "supermarket", subcategory: null, scope: "local",
     zone_id: zoneOf(s), place_name: s.name, lat: s.lat, lng: s.lng, price_level: null, tags: [],
     requirements: ["student_card"], expires_at: null, link_url: INTERMARCHE_URL, source_name: "intermarche.com",
