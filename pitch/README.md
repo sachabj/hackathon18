@@ -1,6 +1,6 @@
 # Diapos du pitch (LaTeX / Beamer)
 
-7 diapos, 3 minutes environ dont une vidéo de 1 minute maximum. Le PDF à présenter : [`sharewood.pdf`](sharewood.pdf).
+6 diapos, 3 minutes environ dont une vidéo de 1 minute maximum. Le PDF à présenter : [`sharewood.pdf`](sharewood.pdf).
 
 ## Modifier dans VS Code
 1. Installer LaTeX : MacTeX (macOS), TeX Live ou MiKTeX (Windows / Linux).
@@ -31,5 +31,5 @@ Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, re
 
 ## À savoir
 - Les captures montrent l'application avec des **offres d'exemple** marquées « (démo) ».
-- Erasmus est une **ambition**, pas une fonction existante ; le tarif de 9,90 € est **envisagé**.
+- Le tarif de 9,90 € est **envisagé** ; la conclusion évoque encore Erasmus comme ouverture (diapo dédiée retirée le 28/11).
 - Travailler à plusieurs : faire `git pull` avant de modifier et prévenir les autres ; en cas de conflit sur le PDF, le recompiler.

@@ -605,3 +605,7 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : dépendance `lucide-react` (ISC) derrière les mêmes noms dans `icons.tsx` ; les 6 dessins de catégorie sont recopiés dans `CategoryIcon` pour le repère de la carte.
 - **Écartés** : emojis en couleur, texte seul.
 - **Qui** : Sacha (tâche notée pour Anne-Lise)
+
+## 2026-11-28 — Pitch sans diapo Erasmus (tâche 15)
+- **Décision** : la diapo « Demain, partout, jusqu'à ton Erasmus » est retirée (6 diapos) ; la carte « Et demain · Jusqu'en Erasmus » de la conclusion est gardée telle quelle (choix de Matteo).
+- **Qui** : Matteo ; Anne-Lise à prévenir

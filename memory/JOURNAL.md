@@ -724,3 +724,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 08h48 — Sacha (nouvelles icônes, tâche 53)
 - Dépendance `lucide-react` (**`npm install` après le pull**) ; `icons.tsx` (27 icônes remplacées, mêmes noms), `CategoryIcon` (6 catégories, aussi sur la carte), tuiles de catégories plus grandes dans les préférences ; mémoire, README. **Anne-Lise** : cette tâche t’était notée, elle est faite.
 - Vérifié : tsc, lint, build ; captures des écrans de choix, de l’accueil et de la carte avec un faux Supabase. Pas essayé sur téléphone ; non déployé.
+
+### 2026-11-28 — Matteo (pitch : 6 diapos)
+- Diapo « Erasmus » retirée (6 diapos ; conclusion inchangée, sa carte « Jusqu'en Erasmus » reste) ; diapo 3 : « 1 · Rechercher », « 2 · Partager », « 3 · Récompenser ». PDF recompilé et vérifié. Fichiers : `pitch/sharewood.tex`, `pitch/sharewood.pdf`, `pitch/README.md`, mémoire.
