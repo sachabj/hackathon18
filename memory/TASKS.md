@@ -58,7 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
-| 50 | Anglais | parcours étudiant et messages d'erreur de la base | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant (politique de confidentialité : S6) | Sacha |
+| 50 | Anglais | EN COURS (Justin) : inscription et espace commerçant ; parcours étudiant et messages d'erreur de la base | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant (politique de confidentialité : S6) | Sacha |
 
 ## 3. 📋 Reste à faire
 
