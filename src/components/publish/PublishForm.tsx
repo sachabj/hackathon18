@@ -770,18 +770,30 @@ function ExistingDeals({
             </p>
             {d.description && <p className="text-xs text-[var(--color-muted)]">{d.description}</p>}
             {d.mine ? (
-              <p className="text-xs font-medium" style={{ color: "var(--color-forest)" }}>
-                {t("C'est ton bon plan : tu peux le modifier depuis « Ciblés », onglet Activité.")}
-              </p>
+              <>
+                <p className="text-xs font-medium" style={{ color: "var(--color-forest)" }}>
+                  {t("C'est ton bon plan : tu peux le modifier depuis « Ciblés », onglet Activité.")}
+                </p>
+                {/* Ligne du bon plan dépliée dans « Ciblés > Activité » (modifier, retirer). */}
+                <Link href={`/favoris?onglet=activite&offre=${d.id}`} className="sw-btn-secondary py-2 text-sm">
+                  {t("Voir mon bon plan")}
+                </Link>
+              </>
             ) : (
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => onConfirm(d.id)}
-                className="sw-btn-primary py-2 text-sm disabled:opacity-50"
-              >
-                <ThumbsUpIcon className="h-4 w-4" /> {t("C'est la même offre")}
-              </button>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => onConfirm(d.id)}
+                  className="sw-btn-primary py-2 text-sm disabled:opacity-50"
+                >
+                  <ThumbsUpIcon className="h-4 w-4" /> {t("C'est la même offre")}
+                </button>
+                {/* Carte centrée sur l'offre, ou sa fiche si elle est sans lieu (page Recherche, `?offre=`). */}
+                <Link href={`/recherche?offre=${d.id}`} className="sw-btn-secondary py-2 text-sm">
+                  {t("Voir l'offre")}
+                </Link>
+              </div>
             )}
           </li>
         ))}

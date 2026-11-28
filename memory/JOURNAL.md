@@ -568,3 +568,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 04h50 — Justin (cœur sur la carte, tâche 77)
 - Cœur des favoris ajouté dans la fenêtre d'un repère (`DealsMap`) et dans la fiche (`DealSheet`) : nouveau `components/deal/FavoriteButton.tsx` ; `useFavorites` prévient toutes ses instances (cœurs, listes, « Ciblés ») à chaque ajout ou retrait. Vérifié : tsc, lint, build, navigateur sans écran (5 contrôles). Pas sur téléphone.
+
+### 2026-11-28 05h05 — Justin (doublons, tâche 78)
+- Doublon trouvé en partageant : « Voir mon bon plan » (Ciblés > Activité, ligne dépliée via `?offre=`, `MyDealCard`) si c'est le sien ; « Voir l'offre » (`/recherche?offre=`) à côté de « C'est la même offre » sinon. `PublishForm` (Matteo), `MyDealCard`, `en.ts` (Sacha). Vérifié : tsc, lint, build, navigateur sans écran (6 contrôles). Pas sur téléphone.

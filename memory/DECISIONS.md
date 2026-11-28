@@ -489,3 +489,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : vidéo filmée automatiquement sur l'application avec des données d'exemple locales, scénario de la diapo 3, sans son (commentée en direct) ; version 16:9 pour la projection.
 - **Écartés** : filmer le vrai site (laisserait de vraies réactions et Flèches) ; version courte à 3 écrans.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 05h — Cœur sur la carte et sortie des doublons (tâches 77, 78)
+- **Décisions** : cœur des favoris dans la fenêtre d'un repère et dans la fiche, synchronisé partout ; doublon en partageant : « Voir mon bon plan » (ligne dépliée dans Ciblés > Activité) ou « Voir l'offre » (carte centrée, fiche si sans lieu), « C'est la même offre » gardé.
+- **Écartés** : cœur dans la fenêtre seulement ; confirmer puis y aller automatiquement.
+- **Qui** : Justin (réponses aux questions de cadrage)

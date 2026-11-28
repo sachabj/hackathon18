@@ -22,7 +22,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 ### Partager et vérifier
 - **Partager en quelques gestes** : le lieu, un titre, une catégorie, et c'est publié (à un endroit précis, dans une ville ou partout) ; le reste est facultatif. Ensuite, « Voir sur la carte » montre l'offre publiée.
 - **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve (30 analyses par jour et par compte).
-- **Doublons** repérés avant la publication.
+- **Doublons** repérés avant la publication : « C'est la même offre » pour la confirmer, « Voir l'offre » pour y aller, ou « Voir mon bon plan » si c'est le sien.
 - **Réactions** « J'en ai profité » et « Plus dispo », annulables, impossibles sur ses propres offres.
 
 ### Faire confiance

@@ -535,6 +535,7 @@ export const EN: Record<string, string> = {
   "Voir l'offre": "See the deal",
   "Voir moins": "Show less",
   "Voir mon offre": "See my deal",
+  "Voir mon bon plan": "See my deal",
   "Voir sur la carte": "See on the map",
   "Voir tous les bons plans": "See all deals",
   "Voir tout ({n})": "Show all ({n})",

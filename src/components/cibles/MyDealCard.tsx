@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CategoryIcon from "@/components/CategoryIcon";
 import { ArrowShotIcon, ChevronDownIcon, EditIcon, ProhibitedIcon, TrashIcon, UndoIcon } from "@/components/icons";
 import { DAILY_PAID_CREATIONS } from "@/lib/arrows";
@@ -55,6 +55,14 @@ export default function MyDealCard({
   const t = useT();
   const [mode, setMode] = useState<"view" | "edit" | "delete">("view");
   const [open, setOpen] = useState(false);
+  const row = useRef<HTMLElement>(null);
+  // `?offre=<id>` (doublon trouvé en partageant) : cette ligne s'ouvre et vient à l'écran.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("offre") !== deal.id) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- lu dans l'adresse après le montage (page statique)
+    setOpen(true);
+    requestAnimationFrame(() => row.current?.scrollIntoView({ behavior: "smooth", block: "center" }));
+  }, [deal.id]);
   const [title, setTitle] = useState(deal.title);
   const [description, setDescription] = useState(deal.description ?? "");
   const [lastDay, setLastDay] = useState(deal.expires_at ? toDay(deal.expires_at) : "");
@@ -177,7 +185,7 @@ export default function MyDealCard({
   const deadline = doubtful ? new Date(new Date(deal.doubtful_since!).getTime() + DOUBT_DAYS * 86_400_000).toISOString() : null;
 
   return (
-    <article className="sw-card">
+    <article ref={row} className="sw-card">
       <h3>
         <button
           type="button"
