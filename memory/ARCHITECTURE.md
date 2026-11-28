@@ -146,7 +146,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ## Base de données (`supabase/schema.sql`)
 - **Modifier la BDD** : créer `supabase/migrations/NNN_description.sql` (numéro suivant) ET reporter le changement dans `schema.sql`, puis demander à l'utilisateur de lancer la migration dans le SQL Editor (Claude ne peut pas : seule la clé publique est disponible). Noter dans TASKS / JOURNAL quelles migrations sont appliquées.
 - ⚠️ Toute nouvelle table ou vue doit avoir son `GRANT ... to authenticated` (pas de droits par défaut sur ce projet), en plus de ses policies RLS.
-- État des migrations sur la vraie base : tenu dans `TASKS.md` uniquement. Vérifié en local le 28/11 : `schema.sql` donne la même base que le schéma d'origine suivi des migrations 002 à 025 (seule différence : l'ancienne valeur `carte_sortir` du type `deal_category`).
+- État des migrations sur la vraie base : section « Vérifications, base et limites » ci-dessous. Vérifié en local le 28/11 : `schema.sql` donne la même base que le schéma d'origine suivi des migrations 002 à 025 (seule différence : l'ancienne valeur `carte_sortir` du type `deal_category`).
 - `supabase/reset_demo.sql` (après 012) : ⚠️ efface les comptes non listés puis crée 20 étudiants (`demo.<prénom>@example.com`), 12 commerçants **fictifs** (`demo.commerce1..12@example.com`) et ~150 bons plans à 15 km de Bruz (14 sourcés, le reste inventé sur des lieux OpenStreetMap, ODbL : titre normal, description « Exemple fictif (démo) … »). Une adresse à garder sans compte est ignorée et listée (⚠️ faute de frappe = vrai compte effacé). Comptes gardés et mot de passe à remplir à la main (jamais sur git ; copie locale `*.local.sql`).
 - **Récompenses (017)** : `rewards` (catalogue de 6, inséré par la migration ; partenaires fictifs « (démo) ») et `user_rewards` (prix payé, code `SW-XXXXXX`, `used_at`), en lecture seule pour l'app. RPC `redeem_reward(id)` (verrou par étudiant, vérifie le solde, dépense et active l'avantage) et `use_reward(id)` (bon commerçant, une fois). **Double compteur** calculé, non stocké : `total_arrows_earned` (gains → rang) et `current_arrows_balance` (gains − dépenses), renvoyés par `my_arrows()`. `profiles.golden_badge` et `early_access_until` non écrivables.
 - `supabase/seed_arrows.sql` (après 016, 017, 020, 022, 023 et `reset_demo.sql`, relançable ; ajoute aussi le profil de sarah : 3 filleuls et 42 comptes `demo.publicNN` sans mot de passe) : historique inventé donnant des rangs différents à six comptes de démo + trois offres scénarisées (3e confirmation, 3e signalement, déjà archivée) ; démo conseillée en `demo.sarah`.
@@ -209,3 +209,57 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ## Tri « Hot » (`src/lib/hot.ts`, liste de Recherche)
 - Hot = (1 + élan + quantité) / (âge en heures + 2)^1,2 · élan = Σ réactions pondérées par leur fraîcheur (demi-vie 24 h ; « J'en ai profité » +1, « Plus dispo » −1,5) · quantité = log2(1 + nb de « J'en ai profité »). Calculé avec les votes déjà chargés (`useDeals`, instant `loadedAt`).
 - Sponsorisés toujours en tête (aucun autre bonus). L'accueil n'est pas concerné : il trie par compatibilité (par date sans profil) ou, pour « Mes favoris », par échéance.
+
+## Vérifications, base et limites (déplacé de `TASKS.md` le 28/11)
+Défauts ouverts : `TASKS.md`, partie 4.
+
+### Contrôles du 28/11 (après la tâche 76)
+| Contrôle | Résultat |
+|---|---|
+| `tsc` (y compris variables et imports inutilisés) | OK |
+| `npm run lint` | OK, aucun avertissement |
+| `npm run build` | OK |
+| Postgres local : `schema.sql` contre schéma d'origine + migrations 002 à 025 | identiques, sauf l'ancienne valeur `carte_sortir` (attendu) |
+| Postgres local : `reset_demo` → `seed_arrows` → `import_sources`, 2 fois | OK |
+| Postgres local : 75 appels de l'app avec les droits d'un utilisateur, 15 contrôles de la 025 | OK |
+| Navigateur sans écran, faux Supabase : 19 contrôles des défauts (390 et 320 px) | OK |
+| Vraie base et téléphone | essai complet par Justin (C3, 28/11) |
+
+### Variables d'environnement (`.env.example`)
+| Variable | Rôle | Obligatoire | Sur Vercel |
+|---|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | base et comptes | oui | oui |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé publique | oui | oui |
+| `GEMINI_API_KEY` | assistant de publication (prioritaire) | non | oui |
+| `GEMINI_MODEL` | modèle Gemini (défaut dans `lib/ai/assist.ts`) | non | non |
+| `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
+
+### Vraie base
+- Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
+```sql
+select
+  exists (select 1 from pg_policies where tablename = 'votes' and policyname = 'retirer son vote') as m013,
+  not exists (select 1 from public.deals where title like '[Exemple]%') as m015,
+  exists (select 1 from public.rewards where id = 'golden' and description like '%Ciblés%') as m019,
+  exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021,
+  to_regprocedure('public.use_ai_quota()') is not null as m025,
+  pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026,
+  to_regprocedure('public.ensure_zone(text,text,float8,float8,int)') is not null as m027;
+```
+- Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
+- `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
+- **Présentes sur la vraie base : 002 à 027** (027 vérifiée par Justin le 28/11 : `ensure_zone` existe). Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
+- Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
+
+### Cas limites et limites assumées
+- La position vient du navigateur : falsifiable. Des comptes complices peuvent confirmer des offres bidon ou en retirer une (6 signalements en 48 h). Parrainage et « étudiants aidés » sont gonflables.
+- Les signalements ne périment pas : 3 anciens suffisent à rendre une offre « Douteux ».
+- **Démo** : loin de Bruz, pas de « Plus dispo » sur les offres de la carte ; pour montrer un gain sur place, être à moins de 500 m.
+- Distances et durées à vol d'oiseau.
+- Villes : le rayon vient de l'emprise de la commune (1,5 à 15 km) ; les offres « Une ville » d'une commune voisine ne sont pas vues. Les noms de villes ajoutées sont visibles par tous (20 nouvelles par compte et par jour).
+
+### Dette technique (signalée, à ne pas toucher avant la démo)
+- Code de secours pour les migrations absentes (`lib/legacy.ts`, replis `PGRST202` ou colonne absente) : à retirer une fois la vraie base confirmée.
+- Seuils écrits en TypeScript et en SQL (identiques au 28/11) : `rules.ts` ↔ 014 / 023, `arrows.ts` ↔ 020 / 023, `community.ts` ↔ 022, 75 m ↔ 005 / 009.
+- `schema.sql` empile les migrations (certaines fonctions redéfinies jusqu'à 4 fois) : correct, mais long à lire.
+- La fonction `my_influence()` reste en base sans être appelée. `PublishForm.tsx` fait près de 800 lignes.

@@ -42,7 +42,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Ordinateur | Navigation en haut, liste et carte côte à côte, colonnes (48) | Justin | vu avec un faux Supabase seulement |
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) | Matteo, Justin | — |
 | Vidéo de démo | `pitch/demo-16x9.mp4` et `demo-telephone.mp4` (40 s, données d'exemple, sans son) ; retournage : `pitch/video/tourner.sh` | Justin | à regarder par l'équipe |
-| Défauts | D3 à D5, D7 à D9, D11 à D14 (76) : voir partie 4 | Justin | vraie base et téléphone |
+| Défauts | D3 à D5, D7 à D9, D11 à D14 (76) | Justin | essayés sur téléphone (C3) |
 | Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone ; **lancer 026** |
 | Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) | Matteo | pas vues dans un navigateur ni sur téléphone |
 
@@ -80,61 +80,10 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 72 | **Alertes** « préviens-moi quand une offre correspond à… » : prototype web = alertes enregistrées, vérification à l'ouverture et en direct (Supabase Realtime), notification du navigateur appli ouverte ; vrai push hors délai | M à G | TODO (idée retenue par Matteo, non cadrée) |
 | 73 | **Manifest (PWA installable)** : « Ajouter à l'écran d'accueil », plein écran, icône ; aucun manifest aujourd'hui ; nécessaire aux notifications sur iPhone | P | TODO (idée retenue par Matteo, non cadrée) |
 
-## 4. 🐞 Bugs, points bloquants et vérifications
+## 4. 🐞 Défauts ouverts
+**Aucun.** Un défaut trouvé s'ajoute ici (numéro D15, D16…, priorité, qui s'en charge), puis disparaît une fois corrigé.
 
-### Contrôles du 28/11 (après la tâche 76)
-| Contrôle | Résultat |
-|---|---|
-| `tsc` (y compris variables et imports inutilisés) | OK |
-| `npm run lint` | OK, aucun avertissement |
-| `npm run build` | OK |
-| Postgres local : `schema.sql` contre schéma d'origine + migrations 002 à 025 | identiques, sauf l'ancienne valeur `carte_sortir` (attendu) |
-| Postgres local : `reset_demo` → `seed_arrows` → `import_sources`, 2 fois | OK |
-| Postgres local : 75 appels de l'app avec les droits d'un utilisateur, 15 contrôles de la 025 | OK |
-| Navigateur sans écran, faux Supabase : 19 contrôles des défauts (390 et 320 px) | OK |
-| **Pas vérifié** | vraie base et téléphone |
-
-### Variables d'environnement (`.env.example`)
-| Variable | Rôle | Obligatoire | Sur Vercel |
-|---|---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | base et comptes | oui | oui |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | clé publique | oui | oui |
-| `GEMINI_API_KEY` | assistant de publication (prioritaire) | non | oui |
-| `GEMINI_MODEL` | modèle Gemini (défaut dans `lib/ai/assist.ts`) | non | non |
-| `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
-
-### Vraie base
-- Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
-```sql
-select
-  exists (select 1 from pg_policies where tablename = 'votes' and policyname = 'retirer son vote') as m013,
-  not exists (select 1 from public.deals where title like '[Exemple]%') as m015,
-  exists (select 1 from public.rewards where id = 'golden' and description like '%Ciblés%') as m019,
-  exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021,
-  to_regprocedure('public.use_ai_quota()') is not null as m025,
-  pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026,
-  to_regprocedure('public.ensure_zone(text,text,float8,float8,int)') is not null as m027;
-```
-- Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
-- `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql` ; depuis la 026, sarah part de 490 : +5 (495), puis +5 au 6e signalement → Robin (500), 350 disponibles après l'échange (en-tête du script corrigé).
-- **Présentes sur la vraie base : 002 à 027** (027 vérifiée par Justin le 28/11 : `ensure_zone` existe). Prochaine : **028** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
-- Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
-
-### Défauts
-**Aucun défaut ouvert connu.** (Corrections D3 à D14 essayées sur téléphone avec C3.)
-
-### Cas limites et limites assumées
-- La position vient du navigateur : falsifiable. Des comptes complices peuvent confirmer des offres bidon ou en retirer une (6 signalements en 48 h). Parrainage et « étudiants aidés » sont gonflables.
-- Les signalements ne périment pas : 3 anciens suffisent à rendre une offre « Douteux ».
-- **Démo** : loin de Bruz, pas de « Plus dispo » sur les offres de la carte ; pour montrer un gain sur place, être à moins de 500 m.
-- Distances et durées à vol d'oiseau.
-- Villes : le rayon vient de l'emprise de la commune (1,5 à 15 km) ; les offres « Une ville » d'une commune voisine ne sont pas vues. Les noms de villes ajoutées sont visibles par tous (20 nouvelles par compte et par jour).
-
-### Dette technique (signalée, à ne pas toucher avant la démo)
-- Code de secours pour les migrations absentes (`lib/legacy.ts`, replis `PGRST202` ou colonne absente) : à retirer une fois la vraie base confirmée.
-- Seuils écrits en TypeScript et en SQL (identiques au 28/11) : `rules.ts` ↔ 014 / 023, `arrows.ts` ↔ 020 / 023, `community.ts` ↔ 022, 75 m ↔ 005 / 009.
-- `schema.sql` empile les migrations (certaines fonctions redéfinies jusqu'à 4 fois) : correct, mais long à lire.
-- La fonction `my_influence()` reste en base sans être appelée. `PublishForm.tsx` fait près de 800 lignes.
+Contrôles, variables d'environnement, état de la vraie base, limites et dette technique : `ARCHITECTURE.md`, « Vérifications, base et limites ».
 
 ---
 

@@ -76,7 +76,7 @@ La clé `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` est facultative (assistant de pu
 ### Base de données
 Dans Supabase → SQL Editor :
 - **projet neuf** : exécuter [`supabase/schema.sql`](supabase/schema.sql) ;
-- **base existante** : exécuter dans l'ordre les fichiers de [`supabase/migrations/`](supabase/migrations/) pas encore appliqués (suivi dans [`memory/TASKS.md`](memory/TASKS.md)) ;
+- **base existante** : exécuter dans l'ordre les fichiers de [`supabase/migrations/`](supabase/migrations/) pas encore appliqués (état et requête de contrôle dans [`memory/ARCHITECTURE.md`](memory/ARCHITECTURE.md), « Vérifications, base et limites ») ;
 - **limites** : la migration `025` borne les titres et l'assistant IA ; la `026` donne le même gain aux deux réactions ;
 - **données de démo** : [`reset_demo.sql`](supabase/reset_demo.sql) (⚠️ **supprime les comptes** non listés en haut du script ; lire ses consignes), puis [`seed_arrows.sql`](supabase/seed_arrows.sql) le jour de la démo ;
 - **vraies informations** : migration `024`, puis [`import_sources.sql`](supabase/import_sources.sql) (régénéré par `node scripts/import_sources.mjs` ; à relancer après `reset_demo.sql`).

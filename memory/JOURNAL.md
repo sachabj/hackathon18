@@ -571,3 +571,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h05 — Justin (doublons, tâche 78)
 - Doublon trouvé en partageant : « Voir mon bon plan » (Ciblés > Activité, ligne dépliée via `?offre=`, `MyDealCard`) si c'est le sien ; « Voir l'offre » (`/recherche?offre=`) à côté de « C'est la même offre » sinon. `PublishForm` (Matteo), `MyDealCard`, `en.ts` (Sacha). Vérifié : tsc, lint, build, navigateur sans écran (6 contrôles). Pas sur téléphone.
+
+### 2026-11-28 05h15 — Justin (TASKS.md recentré)
+- Partie « Bugs, points bloquants et vérifications » déplacée dans `ARCHITECTURE.md` (« Vérifications, base et limites ») : contrôles, variables d'environnement, état de la vraie base et requête de contrôle, limites, dette. `TASKS.md` garde seulement les défauts ouverts (aucun). Liens mis à jour (README, CLAUDE.md).
