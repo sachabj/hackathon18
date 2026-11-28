@@ -699,3 +699,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - `pitch/README.md` : section diapo 3 mise à jour (plus d'autoplay, boutons par téléphone).
 - Aide apportée à Anne-Lise pour installer Adobe Acrobat Reader et recompiler le PDF via Overleaf (archive locale `sharewood-overleaf.zip`, régénérée avec ce changement ; ajoutée au `.gitignore`, jamais committée).
 - **PDF toujours pas recompilé par Claude** (aucun moteur LaTeX sur ce poste) : à recompiler et à vérifier dans Adobe Acrobat Reader que les 3 boutons apparaissent et lancent bien chaque vidéo, avant la répétition (C4).
+
+### 2026-11-28 — Matteo (Flèches de test)
+- Requête SQL fournie pour créditer 300 Flèches à un compte de test (ligne `welcome` dans `arrow_events`) et essayer la boutique ; à lancer dans le SQL Editor, puis à retirer avant la démo (compte dans le classement des écoles). Aucun code modifié.
