@@ -506,3 +506,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 02h15 — Justin (offre Intermarché)
 - Offre confirmée par Justin (10 % en avantage carte, gamme Intermarché) ajoutée à `import_sources.sql` (54 offres) ; description limitée aux faits confirmés. Testé sur Postgres local. Import pas lancé sur la vraie base.
+
+### 2026-11-28 01h54 — Justin (déploiement)
+- `fe633ae` (badge Source officielle, retrait des offres) en ligne sur https://sharewood-ensai.vercel.app. Vérifié : pages publiques et redirections ; connexion et badge non vus.
