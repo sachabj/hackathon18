@@ -637,3 +637,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 06h18 — Justin (déploiement)
 - `bc65a9c` en ligne (tâches 42 et 50 ; un premier déploiement de `ab30417`, juste avant la résolution d'un conflit, ne contenait pas la 50). Vérifié : build, pages publiques, redirection sans compte. Pages connectées non vues.
+
+### 2026-11-28 — Justin (PDF du pitch, correction de la mémoire)
+- `pitch/sharewood.pdf` recompilé (`latexmk` présent sur ce poste), 7 pages ; diapo 1 relue en image, « ques-tion » coupé en fin de ligne (non modifié).
+- `memory/ARCHITECTURE.md` vidé par erreur dans `10f4ea4` (script de Claude) : restauré depuis `bc65a9c`, mention « 032 lancée » appliquée.

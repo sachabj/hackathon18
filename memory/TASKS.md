@@ -57,14 +57,13 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré), vidéo de 40 s (`pitch/demo-16x9.mp4`) | **PDF à recompiler** (`pitch/sharewood.tex` modifié, aucun moteur LaTeX sur ce poste : `cd pitch && latexmk -pdf sharewood.tex`, ou Overleaf) ; répétition (C4) | équipe |
+| 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré), PDF recompilé le 28/11, vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) ; sur la diapo 1, « question » est coupé en fin de ligne | équipe |
 
 ## 3. 📋 Reste à faire
 
 ### 🔴 Critique (deadline : samedi 28/11 à 13h ; gel du code à 11h)
 | # | Action | Qui |
 |---|---|---|
-| C4a | **Recompiler `pitch/sharewood.pdf`** (`.tex` modifié — diapo 1 — aucun moteur LaTeX sur le poste de Claude) : `cd pitch && latexmk -pdf sharewood.tex`, ou Overleaf | équipe |
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 | C6 | **Essayer un paiement** de mise en avant sur le site en ligne avec un compte commerçant (puis « Compte », « Mes paiements ») | Justin |
