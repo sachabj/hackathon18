@@ -22,9 +22,10 @@ Sans installation : sur [Overleaf](https://www.overleaf.com), importer le conten
 Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, retirer le `%` devant `\setbeameroption{show notes on second screen=right}`. Ne pas valider le PDF avec les notes affichées.
 
 ## La vidéo de la diapo 3
-- La diapo 3 montre un téléphone avec une image de la vidéo promo (`images/promo-affiche.jpg`) et un bouton lecture : **un clic sur le téléphone ouvre [`sharewood-promo.mp4`](sharewood-promo.mp4)** dans le lecteur vidéo (59 s, fluide). La passer en plein écran, puis revenir au PDF.
-- Le fichier MP4 doit rester **dans le même dossier que le PDF**. Adobe Acrobat demande l'autorisation d'ouvrir le fichier au premier clic : accepter. Aperçu (macOS) ne suit pas ce lien : ouvrir alors la vidéo à la main. **À essayer sur l'ordinateur de présentation avant la répétition (C4).**
-- Remplace les 3 boucles vidéo intégrées d'Anne-Lise (retirées le 28/11, toujours dans l'historique git ; scripts `pitch/video/tourner3.sh`). Repli : [`demo-16x9.mp4`](demo-16x9.mp4) (ancienne vidéo de 40 s).
+- Le PDF est déposé sur un site : il ne peut ni lire une vidéo ni ouvrir un fichier local. La diapo 3 montre donc un téléphone avec une image de la vidéo, un **QR code** et le **lien YouTube** de la vidéo promo, cliquables.
+- Le lien se règle **une seule fois** en haut de `sharewood.tex` : `\newcommand{\demourl}{https://youtu.be/…}`, puis recompiler. Tant qu'il vaut `A_REMPLACER`, un bandeau rouge s'affiche sur la diapo.
+- Mise en ligne YouTube (titre, description, miniature, réglages) : [`promo/youtube.md`](promo/youtube.md).
+- Remplace les 3 boucles vidéo d'Anne-Lise (retirées le 28/11, toujours dans l'historique git). Repli en présentation : ouvrir [`sharewood-promo.mp4`](sharewood-promo.mp4) à la main.
 
 ## La vidéo promo (format téléphone)
 - [`sharewood-promo.mp4`](sharewood-promo.mp4) : 59 s, 1080 × 1920 capturé en vraie résolution, 60 i/s, sans son (piste muette), données d'exemple (compte « Sarah », offres « (démo) »).

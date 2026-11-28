@@ -15,6 +15,10 @@
 \usepackage{sourceserifpro}          % titres (chargé après : c'est lui la police « romaine »)
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{tikz}
+\usepackage{qrcode}          % QR code de la vidéo de démo (diapo 3)
+% ===== Adresse de la vidéo de démo (YouTube) : remplacer A_REMPLACER par le lien, puis recompiler =====
+\newcommand{\demourl}{https://youtu.be/A_REMPLACER}
+\newcommand{\demourlvide}{https://youtu.be/A_REMPLACER}
 \graphicspath{{images/}}
 
 % --- Notes d'orateur : retirer le « % » pour les afficher à droite de chaque diapo ---
@@ -112,25 +116,32 @@
 \note{Nous avons créé ShareWood pour mettre fin à cette injustice. Les étudiants partagent les offres autour d'eux, et la communauté les vérifie : fini le hasard.}
 \end{frame}
 
-% =============================== 3. DÉMONSTRATION (vidéo promo : un clic ouvre pitch/sharewood-promo.mp4) ===============================
-% Le MP4 doit rester à côté du PDF. Acrobat demande l'autorisation d'ouvrir le fichier au premier clic ;
-% Aperçu (macOS) ne suit pas ce type de lien : ouvrir alors la vidéo à la main.
+% =============================== 3. DÉMONSTRATION (vidéo en ligne : QR code et lien, \demourl en haut du fichier) ===============================
+% Un PDF déposé sur un site ne lit pas de vidéo : la diapo montre une image de la vidéo, un QR code et le lien.
 \begin{frame}[plain]
 \diapo{\fondclair}{
   \ctxt{960}{60}{1728}{80}{forest}{\titre Comment ça marche, concrètement}
-  % Téléphone (écran 484 × 860, proportions de la vidéo 1080 × 1920) avec la vidéo à 23 s
-  \fill[black!92, rounded corners=48\pxu] (706,170) rectangle +(508,884);
+  % Téléphone (écran 484 × 860, proportions de la vidéo) avec la vidéo à 23 s, cliquable
+  \fill[black!92, rounded corners=48\pxu] (420,170) rectangle +(508,884);
   \begin{scope}
-    \clip[rounded corners=36\pxu] (718,182) rectangle +(484,860);
-    \node[anchor=north west, inner sep=0pt] at (718,182) {\includegraphics[width=484\pxu]{promo-affiche}};
+    \clip[rounded corners=36\pxu] (432,182) rectangle +(484,860);
+    \node[anchor=north west, inner sep=0pt] at (432,182) {\includegraphics[width=484\pxu]{promo-affiche}};
   \end{scope}
-  % Bouton lecture
-  \fill[forest, opacity=0.88] (960,612) circle (78);
-  \fill[surface] (936,568) -- (936,656) -- (1012,612) -- cycle;
-  % Zone cliquable : tout le téléphone
-  \node[anchor=north west, inner sep=0pt] at (706,170) {\href{run:sharewood-promo.mp4}{\rule{0pt}{884\pxu}\hspace{508\pxu}}};
+  \fill[forest, opacity=0.88] (674,612) circle (78);
+  \fill[surface] (650,568) -- (650,656) -- (726,612) -- cycle;
+  \node[anchor=north west, inner sep=0pt] at (420,170) {\href{\demourl}{\rule{0pt}{884\pxu}\hspace{508\pxu}}};
+  % QR code et lien
+  \card{1040}{230}{560}{760}{surface}
+  \node[anchor=north, inner sep=0pt] at (1320,290) {\qrcode[hyperlink,height=380\pxu]{\demourl}};
+  \ctxt{1320}{715}{500}{50}{forest}{\titre Voir la démo · 59 s}
+  \ctxt{1320}{790}{500}{30}{muted}{Scanne le QR code ou clique sur le téléphone}
+  \ctxt{1320}{880}{520}{28}{plum}{\href{\demourl}{\urlstyle{same}\expandafter\nolinkurl\expandafter{\demourl}}}
+  % Garde-fou : lien pas encore renseigné
+  \ifx\demourl\demourlvide
+    \ctxt{960}{1000}{1700}{36}{red}{\bfseries LIEN DE LA VIDÉO À RENSEIGNER (\textbackslash demourl en haut de sharewood.tex)}
+  \fi
 }
-\note{Je vous montre comment ça marche concrètement. (Cliquer sur le téléphone : la vidéo s'ouvre dans le lecteur vidéo ; Acrobat demande l'autorisation la première fois. La passer en plein écran, puis revenir au PDF. Elle dure 59 s, sans son.) On crée son profil en quelques gestes ; l'accueil et la carte montrent les bons plans autour de soi ; on cherche « piscine » et on confirme l'offre avec « J'en ai profité » ; on partage un bon plan en le prenant en photo ; et on retrouve ses Flèches et la boutique de récompenses.}
+\note{Voici ShareWood en une minute. (La vidéo est en ligne : cliquer sur le téléphone ou le lien l'ouvre dans le navigateur ; le QR code permet au jury de la revoir. 59 s, sans son.) On crée son profil en quelques gestes ; l'accueil et la carte montrent les bons plans autour de soi ; on cherche « piscine » et on confirme l'offre avec « J'en ai profité » ; on partage un bon plan en le prenant en photo ; et on retrouve ses Flèches et la boutique de récompenses.}
 \end{frame}
 
 % =============================== 4. TROIS PILIERS ===============================

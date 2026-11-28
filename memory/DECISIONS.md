@@ -625,3 +625,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Écartés** : vidéo intégrée au PDF à 12 i/s (saccadée, Acrobat seulement, ~40 Mo) ; garder les 3 étapes en texte.
 - **Remplace** : la diapo 3 à boucles vidéo d'Anne-Lise (décisions « vidéos de la diapo 3 » et « vidéos au clic »).
 - **Qui** : Justin (réponses aux questions de cadrage) ; Anne-Lise à prévenir
+
+## 2026-11-28 11h20 — Vidéo de démo sur YouTube, QR code sur la diapo 3
+- **Décision** : le rendu final est un PDF déposé sur un site et un lien vidéo dans le formulaire : la vidéo promo est mise en ligne sur YouTube en « Non répertoriée » ; la diapo 3 montre une image de la vidéo, un QR code et le lien (cliquables partout). Titre choisi par Justin : « Hackathon 27Nov - ShareWood » ; description et miniature dans `pitch/promo/youtube.md`.
+- **Remplace** : le lien local `run:` vers le MP4 (ne marche pas dans un PDF déposé en ligne).
+- **Écartés** : vidéo hébergée sur le site Vercel (déploiement après le gel) ; lien GitHub (télécharge au lieu de lire).
+- **Qui** : Justin (réponses aux questions de cadrage)

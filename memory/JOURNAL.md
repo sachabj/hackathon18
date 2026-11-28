@@ -757,3 +757,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 11h05 — Justin (diapo 3 : vidéo promo)
 - `pitch/sharewood.tex` : diapo 3 = titre + téléphone (image `images/promo-affiche.jpg`, prise à 23 s) + bouton lecture, zone cliquable qui ouvre `sharewood-promo.mp4` ; note d'orateur réécrite ; paquet `animate` et `\phonevideo` retirés ; 248 images `images/anim*.jpg` supprimées. `pitch/README.md`, mémoire.
 - Vérifié : compilation (6 pages, 0,8 Mo), diapo 3 vue en image, lien « Launch » vers le MP4 présent sur toute la surface du téléphone. **Clic pas essayé dans Acrobat** (à faire sur l'ordinateur de présentation).
+
+### 2026-11-28 11h25 — Justin (diapo 3 avec QR code, YouTube)
+- `pitch/sharewood.tex` : paquet `qrcode`, adresse unique `\demourl` (provisoire `A_REMPLACER`, bandeau rouge tant qu'elle n'est pas renseignée), diapo 3 = téléphone cliquable, QR code, « Voir la démo · 59 s » et lien ; note d'orateur. PDF recompilé (6 pages).
+- Nouveaux `pitch/promo/youtube.md` (titre, description avec chapitres, réglages) et `pitch/promo/miniature.py` → `pitch/sharewood-promo-miniature.jpg` (1280 × 720) ; `pitch/README.md`, mémoire. En attente du lien YouTube.
