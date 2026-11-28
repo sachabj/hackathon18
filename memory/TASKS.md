@@ -58,6 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
+| 80 | Recherche : toucher une offre de la liste ouvre sa fiche (carte centrée derrière) ; « Voir l’offre » en petit lien sous la description | — | EN COURS : touche `DealCard`, `DealExtras`, `DealSheet` (comportement d’Anne-Lise modifié) | Sacha |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré), PDF recompilé le 28/11, vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) ; sur la diapo 1, « question » est coupé en fin de ligne | équipe |
 
 ## 3. 📋 Reste à faire
