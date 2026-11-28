@@ -59,7 +59,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 15 | Pitch | 6 diapos LaTeX (`pitch/`, diapo Erasmus retirée le 28/11), diapo 1 : le paradoxe « Hyperconnectés, mais mal informés » en deux colonnes (Matteo, remplace la version d'Anne-Lise), diapo 3 avec 3 boucles vidéo intégrées au PDF, lancées **au clic** (boutons lecture/pause par téléphone, pas d'autoplay simultané) (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | PDF recompilé le 28/11 vers 8h30 (Matteo, Tectonic) ; diapo 3 à corriger (C3b) ; vérifier le rendu diapo 1 et que les 3 boutons de la diapo 3 apparaissent et lancent bien chaque vidéo **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
+| 15 | Pitch | 6 diapos LaTeX (`pitch/`), PDF recompilé le 28/11 à 11h ; diapo 3 = vidéo promo de 59 s ouverte au clic sur le téléphone (remplace les 3 boucles vidéo) | répétition (C4) ; Anne-Lise à prévenir (sa diapo 3 est remplacée) | équipe |
 
 ## 3. 📋 Reste à faire
 
@@ -68,9 +68,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|
 | C9 | **Remettre la démo dans son état de départ juste avant de présenter** : sur le site, demo.sarah est à 495 Flèches et « Expos gratuites » est déjà confirmée (scénario joué en répétition), et la base a encore toutes les offres inventées. `node scripts/build_demo_sql.mjs` puis lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés) ; sinon, au minimum `seed_arrows.sql` | Justin |
 | C11 | Retirer les 300 Flèches de test données à un compte par Matteo (ligne `welcome` dans `arrow_events`), sinon elles faussent le classement des écoles | Matteo |
-| C3b | **Diapo 3 du pitch** (vue dans le PDF recompilé le 28/11 vers 8h30) : les boutons lecture/pause des 3 vidéos sortent du bas de la page et se chevauchent ; « Une offre en quelques secondes » passe sur 2 lignes et touche le téléphone | Anne-Lise |
-| C4 | **Répéter le pitch** ; ouvrir le PDF avec **Adobe Acrobat Reader installé** et vérifier que les 3 boucles vidéo de la diapo 3 jouent (sinon, lancer `pitch/demo-16x9.mp4` à la place, 40 s sans son : préparer le commentaire) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
-| C13 | EN COURS (Justin) : diapo 3 remplacée par la vidéo promo (lien vers le MP4) | Justin |
+| C4 | **Répéter le pitch** ; sur l'ordinateur de présentation, cliquer sur le téléphone de la diapo 3 : la vidéo promo (`pitch/sharewood-promo.mp4`, 59 s, sans son, à garder à côté du PDF) doit s'ouvrir (Acrobat demande l'autorisation ; sinon l'ouvrir à la main) ; préparer le commentaire ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟢 Bonus

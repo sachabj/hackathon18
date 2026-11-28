@@ -619,3 +619,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : kit de tournage rangé dans `pitch/promo/` (scripts versionnés, images intermédiaires ignorées), vidéo finale `pitch/sharewood-promo.mp4` versionnée ; tournage avec Google Chrome installé plutôt que le Chromium de Playwright.
 - **Choix de Claude, à confirmer** : scène 2 accélérée 1,15× pour rester sous une minute (61,4 s avec le fond de carte chargé, 59,2 s ensuite).
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 11h — Diapo 3 : la vidéo promo
+- **Décision** : la diapo « Comment ça marche, concrètement » montre seulement la vidéo promo, centrée dans un téléphone ; un clic ouvre `pitch/sharewood-promo.mp4` dans le lecteur vidéo (lien `run:`). Les 3 boucles intégrées (paquet `animate`, 248 images) et la macro `\phonevideo` sont retirées ; PDF de 10 Mo à 0,8 Mo.
+- **Écartés** : vidéo intégrée au PDF à 12 i/s (saccadée, Acrobat seulement, ~40 Mo) ; garder les 3 étapes en texte.
+- **Remplace** : la diapo 3 à boucles vidéo d'Anne-Lise (décisions « vidéos de la diapo 3 » et « vidéos au clic »).
+- **Qui** : Justin (réponses aux questions de cadrage) ; Anne-Lise à prévenir

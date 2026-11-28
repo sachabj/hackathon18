@@ -753,3 +753,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 11h — Justin (vidéo promo nette)
 - Cause du flou : le screencast livrait des images de 360 × 640 (taille CSS), agrandies 3 fois au montage. `film6.py` : Chrome lancé avec `--force-device-scale-factor=3` (images en 1080 × 1920) et attente de la première image ; `LISEZMOI.txt`, `pitch/README.md`.
 - Vidéo retournée et remontée : `pitch/sharewood-promo.mp4`, 59,5 s, 10 Mo ; capture à ~32 i/s au lieu de 60 (mouvements un peu moins fluides). Comparaison avant / après vérifiée sur une image agrandie.
+
+### 2026-11-28 11h05 — Justin (diapo 3 : vidéo promo)
+- `pitch/sharewood.tex` : diapo 3 = titre + téléphone (image `images/promo-affiche.jpg`, prise à 23 s) + bouton lecture, zone cliquable qui ouvre `sharewood-promo.mp4` ; note d'orateur réécrite ; paquet `animate` et `\phonevideo` retirés ; 248 images `images/anim*.jpg` supprimées. `pitch/README.md`, mémoire.
+- Vérifié : compilation (6 pages, 0,8 Mo), diapo 3 vue en image, lien « Launch » vers le MP4 présent sur toute la surface du téléphone. **Clic pas essayé dans Acrobat** (à faire sur l'ordinateur de présentation).

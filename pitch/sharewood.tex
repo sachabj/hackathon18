@@ -15,7 +15,6 @@
 \usepackage{sourceserifpro}          % titres (chargé après : c'est lui la police « romaine »)
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{tikz}
-\usepackage{animate}         % boucles vidéo intégrées (diapo 3) ; ne s'anime que dans Adobe Acrobat/Reader
 \graphicspath{{images/}}
 
 % --- Notes d'orateur : retirer le « % » pour les afficher à droite de chaque diapo ---
@@ -51,17 +50,6 @@
   \begin{scope}
     \clip[rounded corners=36\pxu] ({#1+12},{#2+12}) rectangle +(#3,\ph);
     \node[anchor=north west, inner sep=0pt] at ({#1+12},{#2+12}) {\includegraphics[width=#3\pxu]{#4}};
-  \end{scope}}
-% Comme \phone, mais en boucle vidéo (images numérotées #5...#5, de #6 à #7, à #4 im/s).
-% Chaque téléphone a ses propres petits boutons lecture/pause (pas d'autoplay) : on lance chaque
-% vidéo au clic, l'une après l'autre. N'anime qu'ouvert dans Adobe Acrobat/Reader ; les autres
-% lecteurs n'affichent que la première image (ni animation, ni boutons).
-\newcommand{\phonevideo}[7]{%
-  \pgfmathsetmacro{\ph}{#3*2.16410}%
-  \fill[black!92, rounded corners=48\pxu] (#1,#2) rectangle +({#3+24},{\ph+24});
-  \begin{scope}
-    \clip[rounded corners=36\pxu] ({#1+12},{#2+12}) rectangle +(#3,\ph);
-    \node[anchor=north west, inner sep=0pt] at ({#1+12},{#2+12}) {\animategraphics[controls,loop,width=#3\pxu]{#4}{#5}{#6}{#7}};
   \end{scope}}
 % Liste à puces compacte, utilisable dans un \txt.
 \newcommand{\puce}[1]{\hangindent=1.1em\hangafter=1 \makebox[1.1em][l]{\textbullet}#1\par\vspace{0.35em}}
@@ -124,24 +112,25 @@
 \note{Nous avons créé ShareWood pour mettre fin à cette injustice. Les étudiants partagent les offres autour d'eux, et la communauté les vérifie : fini le hasard.}
 \end{frame}
 
-% =============================== 3. DÉMONSTRATION (3 boucles vidéo, Adobe Acrobat/Reader requis) ===============================
+% =============================== 3. DÉMONSTRATION (vidéo promo : un clic ouvre pitch/sharewood-promo.mp4) ===============================
+% Le MP4 doit rester à côté du PDF. Acrobat demande l'autorisation d'ouvrir le fichier au premier clic ;
+% Aperçu (macOS) ne suit pas ce type de lien : ouvrir alors la vidéo à la main.
 \begin{frame}[plain]
 \diapo{\fondclair}{
-  \txt{96}{60}{1728}{80}{forest}{\titre Comment ça marche, concrètement}
-  \card{96}{196}{555}{850}{forest}
-  \ctxt{373}{222}{500}{48}{surface}{\titre 1 · Rechercher}
-  \ctxt{373}{282}{500}{32}{surface}{Carte ou barre de recherche}
-  \phonevideo{211}{350}{300}{8}{animrecherche}{0}{109}
-  \card{683}{196}{555}{850}{plum}
-  \ctxt{960}{222}{500}{48}{surface}{\titre 2 · Partager}
-  \ctxt{960}{282}{500}{32}{surface}{Une offre en quelques secondes}
-  \phonevideo{798}{350}{300}{8}{animpartager}{0}{83}
-  \card{1269}{196}{555}{850}{gold}
-  \ctxt{1546}{222}{500}{48}{ink}{\titre 3 · Récompenser}
-  \ctxt{1546}{282}{500}{32}{ink}{Mes Flèches, mes bons}
-  \phonevideo{1384}{350}{300}{8}{animrecompenses}{0}{53}
+  \ctxt{960}{60}{1728}{80}{forest}{\titre Comment ça marche, concrètement}
+  % Téléphone (écran 484 × 860, proportions de la vidéo 1080 × 1920) avec la vidéo à 23 s
+  \fill[black!92, rounded corners=48\pxu] (706,170) rectangle +(508,884);
+  \begin{scope}
+    \clip[rounded corners=36\pxu] (718,182) rectangle +(484,860);
+    \node[anchor=north west, inner sep=0pt] at (718,182) {\includegraphics[width=484\pxu]{promo-affiche}};
+  \end{scope}
+  % Bouton lecture
+  \fill[forest, opacity=0.88] (960,612) circle (78);
+  \fill[surface] (936,568) -- (936,656) -- (1012,612) -- cycle;
+  % Zone cliquable : tout le téléphone
+  \node[anchor=north west, inner sep=0pt] at (706,170) {\href{run:sharewood-promo.mp4}{\rule{0pt}{884\pxu}\hspace{508\pxu}}};
 }
-\note{Je vous montre comment ça marche concrètement. (Ouvrir ce PDF avec Adobe Acrobat Reader, sinon seule la première image s'affiche, sans les boutons. Chaque téléphone a son propre bouton lecture : cliquer dessus pour lancer sa vidéo, l'une après l'autre, au rythme du discours — pas d'autoplay simultané.) Je clique sur le 1er : je cherche une offre sur la carte ou avec la barre de recherche, je la confirme avec « J'en ai profité » et je la mets en favori. Je clique sur le 2e : je partage un bon plan en quelques secondes. Je clique sur le 3e : mes Flèches gagnées et la boutique de récompenses.}
+\note{Je vous montre comment ça marche concrètement. (Cliquer sur le téléphone : la vidéo s'ouvre dans le lecteur vidéo ; Acrobat demande l'autorisation la première fois. La passer en plein écran, puis revenir au PDF. Elle dure 59 s, sans son.) On crée son profil en quelques gestes ; l'accueil et la carte montrent les bons plans autour de soi ; on cherche « piscine » et on confirme l'offre avec « J'en ai profité » ; on partage un bon plan en le prenant en photo ; et on retrouve ses Flèches et la boutique de récompenses.}
 \end{frame}
 
 % =============================== 4. TROIS PILIERS ===============================

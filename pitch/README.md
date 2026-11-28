@@ -15,19 +15,16 @@ Sans installation : sur [Overleaf](https://www.overleaf.com), importer le conten
 ## Où changer quoi
 - Chaque diapo est un bloc repéré par un commentaire en capitales (`1. INTRODUCTION`, `2. SOLUTION`…).
 - Un texte : `\txt{x}{y}{largeur}{taille}{couleur}{texte}`. Positions en « pixels » sur 1920 × 1080, depuis le coin haut gauche : augmenter `y` descend le texte. Un texte plus long peut sortir de sa carte : vérifier le PDF.
-- Rectangle : `\card{x}{y}{largeur}{hauteur}{couleur}` ; capture fixe : `\phone{x}{y}{largeur}{image}` ; boucle vidéo (diapo 3) : `\phonevideo{x}{y}{largeur}{im/s}{nom}{premier}{dernier}`.
+- Rectangle : `\card{x}{y}{largeur}{hauteur}{couleur}` ; capture fixe : `\phone{x}{y}{largeur}{image}`.
 - Couleurs de l'application définies en haut du fichier.
 
 ## Texte à dire
 Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, retirer le `%` devant `\setbeameroption{show notes on second screen=right}`. Ne pas valider le PDF avec les notes affichées.
 
-## Les 3 vidéos en boucle (diapo 3)
-- Les 3 téléphones de la diapo 3 sont des **boucles vidéo intégrées au PDF** (`\phonevideo`, paquet LaTeX `animate`, images `pitch/images/anim{recherche,partager,recompenses}*.jpg`) : recherche (carte **et** barre de recherche, « J'en ai profité », cœur favori), partage d'un bon plan, page récompenses.
-- **Pas d'autoplay** : chaque téléphone a ses propres petits boutons lecture/pause (▶/❙❙/⏭), affichés sous l'image. On clique sur le 1er quand on en parle, puis le 2e, puis le 3e — au rythme du discours, pas tous en même temps.
-- ⚠️ **Ça ne marche que dans Adobe Acrobat / Adobe Reader.** Dans Preview.app, Chrome, Firefox ou tout autre lecteur, seule la première image de chaque téléphone s'affiche (fixe, sans les boutons). **Avant la répétition (C4) : vérifier que la machine de présentation a Adobe Acrobat Reader installé et que les 3 boutons apparaissent et lancent bien chaque vidéo.**
-- Filmées par Claude sur l'application, avec des **données d'exemple locales** (compte « Sarah », offres « (démo) », boutique de récompenses mockée) : rien n'a été écrit dans la vraie base. Les touchers sont marqués par un rond violet.
-- Repli si Acrobat n'est pas disponible le jour J : [`demo-16x9.mp4`](demo-16x9.mp4) / [`demo-telephone.mp4`](demo-telephone.mp4) (ancienne vidéo de 40 s, parcours différent — accueil/carte/fiche) restent dans le dépôt et peuvent être relancées à la main pendant la diapo 3.
-- Retourner les 3 boucles après un changement d'interface : `bash pitch/video/tourner3.sh` (macOS, Chrome ; pas besoin de `ffmpeg`), puis recompiler le PDF. L'ancienne vidéo seule : `bash pitch/video/tourner.sh` (macOS, Chrome, `ffmpeg`).
+## La vidéo de la diapo 3
+- La diapo 3 montre un téléphone avec une image de la vidéo promo (`images/promo-affiche.jpg`) et un bouton lecture : **un clic sur le téléphone ouvre [`sharewood-promo.mp4`](sharewood-promo.mp4)** dans le lecteur vidéo (59 s, fluide). La passer en plein écran, puis revenir au PDF.
+- Le fichier MP4 doit rester **dans le même dossier que le PDF**. Adobe Acrobat demande l'autorisation d'ouvrir le fichier au premier clic : accepter. Aperçu (macOS) ne suit pas ce lien : ouvrir alors la vidéo à la main. **À essayer sur l'ordinateur de présentation avant la répétition (C4).**
+- Remplace les 3 boucles vidéo intégrées d'Anne-Lise (retirées le 28/11, toujours dans l'historique git ; scripts `pitch/video/tourner3.sh`). Repli : [`demo-16x9.mp4`](demo-16x9.mp4) (ancienne vidéo de 40 s).
 
 ## La vidéo promo (format téléphone)
 - [`sharewood-promo.mp4`](sharewood-promo.mp4) : 59 s, 1080 × 1920 capturé en vraie résolution, 60 i/s, sans son (piste muette), données d'exemple (compte « Sarah », offres « (démo) »).
