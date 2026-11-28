@@ -742,3 +742,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 10h08 — Justin (déploiement et vrai site)
 - `fa25bd5` en ligne (icônes, logo animé et lieu d'études de Sacha, textes traduits). Vérifié : build Vercel, pages publiques.
 - Vrai site parcouru en lecture seule avec demo.sarah (accueil, Recherche, Ciblés et ses 3 onglets, profil, Partager, compte) et demo.commerce1 (offres, statistiques, compte) : aucune erreur JavaScript ni appel en échec. Constat : demo.sarah à 495 Flèches (scénario déjà joué), base pas encore réduite (C9). Seul effet possible : la date de dernière visite (notifications) des deux comptes.
+
+### 2026-11-28 10h45 — Justin (vidéo promo)
+- Kit `sharewood-video-kit` (Téléchargements) déplacé dans `pitch/promo/` ; `film6.py` pointe vers Google Chrome ; `assemble.py` : scène 2 à 1,15× ; `LISEZMOI.txt` complété ; `.gitignore` (images et segments) ; `pitch/README.md`.
+- Tournage sur l'appli à jour avec le faux Supabase du kit : 1 822 images, aucune erreur de page ; montage : `pitch/sharewood-promo.mp4`, 59,2 s, 1080 × 1920, 60 i/s, H.264 + AAC muet, 12 Mo. Planche d'images vérifiée (fond de carte présent). Pas regardée en entier par un humain.

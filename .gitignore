@@ -41,3 +41,9 @@ pitch/build.txt
 # Copie locale temporaire pour Overleaf, jamais committée
 /sharewood-overleaf.zip
 /sharewood-overleaf/
+# Vidéo promo : fichiers produits par le tournage et le montage (pitch/promo)
+/pitch/promo/frames6/
+/pitch/promo/seg/
+/pitch/promo/cards/c*/
+/pitch/promo/tmp_*.mp4
+/pitch/promo/sharewood-promo-final.mp4

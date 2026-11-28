@@ -29,6 +29,11 @@ Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, re
 - Repli si Acrobat n'est pas disponible le jour J : [`demo-16x9.mp4`](demo-16x9.mp4) / [`demo-telephone.mp4`](demo-telephone.mp4) (ancienne vidéo de 40 s, parcours différent — accueil/carte/fiche) restent dans le dépôt et peuvent être relancées à la main pendant la diapo 3.
 - Retourner les 3 boucles après un changement d'interface : `bash pitch/video/tourner3.sh` (macOS, Chrome ; pas besoin de `ffmpeg`), puis recompiler le PDF. L'ancienne vidéo seule : `bash pitch/video/tourner.sh` (macOS, Chrome, `ffmpeg`).
 
+## La vidéo promo (format téléphone)
+- [`sharewood-promo.mp4`](sharewood-promo.mp4) : 59 s, 1080 × 1920, 60 i/s, sans son (piste muette), données d'exemple (compte « Sarah », offres « (démo) »).
+- Parcours : profil en quelques gestes → accueil et carte → recherche « piscine » et « J'en ai profité » → partage d'une offre prise en photo → profil, activité et boutique ; cinq intercalaires (« Un profil qui te ressemble », « Repère les vrais bons plans », « Partage en quelques secondes », « Solidarité récompensée », « ShareWood »).
+- Refaire : kit et marche à suivre dans [`promo/`](promo/) (`LISEZMOI.txt`).
+
 ## À savoir
 - Les captures montrent l'application avec des **offres d'exemple** marquées « (démo) ».
 - Le tarif de 9,90 € n'apparaît plus sur les diapos (diapo 5 : « Le temps ») ; la conclusion évoque encore Erasmus comme ouverture (diapo dédiée retirée le 28/11).

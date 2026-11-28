@@ -614,3 +614,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : seulement des corrections sûres avant 11h (derniers textes traduits) ; l'uniformisation du code (dates, couleurs, classes en double) est notée comme dette et remise après la démo.
 - **Pourquoi** : environ 15 fichiers d'autres membres à toucher juste avant la démo, avec risque de conflits et de régression pour un gain invisible.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 10h45 — Vidéo promo
+- **Décision** : kit de tournage rangé dans `pitch/promo/` (scripts versionnés, images intermédiaires ignorées), vidéo finale `pitch/sharewood-promo.mp4` versionnée ; tournage avec Google Chrome installé plutôt que le Chromium de Playwright.
+- **Choix de Claude, à confirmer** : scène 2 accélérée 1,15× pour rester sous une minute (61,4 s avec le fond de carte chargé, 59,2 s ensuite).
+- **Qui** : Justin (réponses aux questions de cadrage)

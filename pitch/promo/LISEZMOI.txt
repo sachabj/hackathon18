@@ -1,0 +1,71 @@
+Kit de tournage ShareWood (vidéo promo 9:16) — version corrigée du 28/11/2026
+============================================================================
+
+Ce qui a changé par rapport au kit précédent
+--------------------------------------------
+1. film6.py — la session CDP est désormais créée APRÈS la navigation vers
+   /onboarding. Ouverte avant, elle était détachée par la navigation et
+   Page.startScreencast échouait ("Not attached to an active page").
+2. film6.py — qualité du screencast portée de 92 à 96 (JPEG).
+3. film6.py — nouveau temps de carte dans la scène 2 : après l'arrivée sur
+   l'onglet Recherche, la carte respire, on dézoome d'un cran, puis on revient
+   sur sa position (vol animé) avant de taper la recherche.
+   La bulle d'un repère (popup Leaflet) a été écartée volontairement : elle
+   déborde du cadre de 256 px de la carte et chevauche les boutons de zoom.
+4. film6.py — temps morts raccourcis dans les scènes 2, 3 et 4 pour compenser
+   le temps de carte : la vidéo reste sous une minute.
+5. assemble.py — encodage de qualité supérieure : CRF 17, preset slow,
+   aq-mode=3, profil high 4.2, GOP de 2 s, 3 images B.
+6. assemble.py — onboarding accéléré 1,5× (au lieu de 1,3×).
+7. assemble.py — piste audio muette (AAC 96 kb/s) ajoutée : certaines
+   plateformes et lecteurs refusent une vidéo sans flux audio.
+8. cards.py — intercalaires « Repère les vrais bons plans » (carte 2) et
+   « Solidarité récompensée » (carte 4).
+
+Marche à suivre
+---------------
+    node mock.mjs &                     # faux Supabase, port 54399
+    cd <dépôt sharewood>
+    NEXT_PUBLIC_SUPABASE_URL=http://localhost:54399 \
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=demo-anon-key \
+      npx next build && npx next start -p 3123 &
+    cd <ce kit>
+    python3 cards.py                    # intercalaires (une seule fois)
+    python3 film6.py                    # tournage Playwright
+    python3 assemble.py                 # montage -> sharewood-promo-final.mp4
+
+Pièges à connaître
+------------------
+* RELANCER mock.mjs AVANT CHAQUE TOURNAGE. Le faux serveur garde son état en
+  mémoire : après un tournage, le profil est marqué « onboardé », le solde de
+  flèches est passé de 335 à 425 et les préférences sont enregistrées. Un
+  second tournage sans redémarrage échoue dans l'onboarding (bouton « Ciné »
+  introuvable) et affiche de mauvais chiffres.
+* Le fond de carte exige un accès réseau à tiles.openfreemap.org (style
+  vectoriel, polices et tuiles) — et à tile.openstreetmap.org pour le repli
+  raster. Sans eux, la carte reste un aplat crème : les repères et les
+  mouvements s'affichent, pas les rues.
+* Playwright a besoin de WebGL : les options --use-angle=swiftshader et
+  --enable-unsafe-swiftshader sont déjà dans film6.py.
+* affiche.jpg doit se trouver dans le même dossier (film6.py y envoie la photo
+  du formulaire de publication).
+
+Repères de durée (sans le fond de carte, 28/11/2026)
+----------------------------------------------------
+    splash 1,5 s · onboarding 11,2 s · accueil + carte 15,6 s ·
+    partager 8,5 s · profil + récompenses 14,4 s · 5 intercalaires 1,5 s
+    total 58,7 s — 1080 × 1920, 60 i/s, H.264 + AAC muet
+
+Depuis le dépôt (28/11/2026, poste de Justin)
+---------------------------------------------
+Le kit est rangé dans pitch/promo/ ; la vidéo finale est copiée dans pitch/sharewood-promo.mp4.
+    python3 -m venv /tmp/venv && /tmp/venv/bin/pip install playwright pillow
+    node pitch/promo/mock.mjs &
+    NEXT_PUBLIC_SUPABASE_URL=http://localhost:54399 NEXT_PUBLIC_SUPABASE_ANON_KEY=demo-anon-key npm run build
+    npx next start -p 3123 &
+    cd pitch/promo && /tmp/venv/bin/python cards.py && /tmp/venv/bin/python film6.py && /tmp/venv/bin/python assemble.py
+    cp sharewood-promo-final.mp4 ../sharewood-promo.mp4
+    cd ../.. && npm run build          # remettre la vraie configuration
+* film6.py utilise Google Chrome installé (variable CHROME pour un autre chemin) : pas de téléchargement de Chromium.
+* assemble.py : scène 2 accélérée 1,15× ; avec le fond de carte chargé, la vidéo fait 59,2 s.
+
