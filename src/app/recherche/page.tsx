@@ -2,7 +2,7 @@
 
 // Onglet « Recherche ». Carte : Justin · Recherche, filtres et tri Hot : Sacha / Matteo
 // La recherche remplace le fil « Hot » par ses résultats, et la carte n'affiche alors que les offres trouvées (tâche 60) ;
-// elle se centre sur celle qu'on touche dans une liste. `?offre=<id>` (après une publication, tâche 62) montre une offre.
+// toucher une offre d'une liste ouvre sa fiche, et la carte se centre dessus. `?offre=<id>` (après une publication, tâche 62) montre une offre.
 import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
@@ -42,7 +42,7 @@ export default function Page() {
   const searchInput = useRef<HTMLInputElement>(null);
   /** Filtres choisis à la main : ils l'emportent sur ceux déduits de la saisie. */
   const [chosen, setChosen] = useState<Partial<Filters>>({});
-  /** Offre touchée dans une liste : la carte s'y centre et la met en avant. */
+  /** Offre touchée dans une liste (sa fiche s'ouvre) : la carte s'y centre et la met en avant. */
   const [selectedId, setSelectedId] = useState<string | null>(null);
   /** Offre à montrer, lue dans l'adresse (`?offre=`), en attendant le chargement des offres. */
   const [wanted, setWanted] = useState<string | null>(null);

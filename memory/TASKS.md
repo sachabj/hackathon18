@@ -27,9 +27,9 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 |---|---|---|---|
 | Socle | Mémoire et git, stack, déploiement, base et droits (1 à 4) | Justin | en ligne |
 | Accueil | Puces « Pour toi », « Mes favoris » et catégories cumulables, sans formule d'accueil ; puce « Plus proches » (position du moment, sinon enregistrée, sinon ville ; offres sans lieu à la fin, pas de priorité aux offres mises en avant) (26, 39, 67, 79) | Sacha, Matteo | 67 et 79 pas vus dans un navigateur |
-| Recherche | Fautes, pluriels, mots proches, filtres et tri, « pas cher » / « près de moi » ; offre touchée mise en avant sur la carte (34, 36) | Sacha, Anne-Lise | clavier du téléphone |
+| Recherche | Fautes, pluriels, mots proches, filtres et tri, « pas cher » / « près de moi » ; offre touchée dans la liste : fiche ouverte et carte centrée dessus (34, 36, 80) | Sacha, Anne-Lise | clavier du téléphone |
 | Carte | Position avec accord, repères, offres sponsorisées, recentrage, zoom + et − (5, 19, 23, 24, 61) | Justin | téléphone |
-| Cartes et fiche | Fiabilité en couleur, réactions directes, photo, lien, conditions, « Y aller », « Partager », badges Commerçant / Étudiant (28, 30, 35, 37, 38) | Matteo, Justin, Sacha | 35 et 38 pas vus dans un navigateur |
+| Cartes et fiche | Fiabilité en couleur, réactions directes, photo, petit lien sous la description (80), conditions, « Y aller », « Partager », badges Commerçant / Étudiant (28, 30, 35, 37, 38) | Matteo, Justin, Sacha | 35 et 38 pas vus dans un navigateur |
 | Publication | Lieu via Photon, saisie rapide, photo ou texte → formulaire (Gemini ou Claude), photo de preuve, doublons sans IA avec « Voir l'offre » / « Voir mon bon plan » (6, 27, 45, 78) | Matteo, Justin | publication et Gemini essayés (Matteo) ; photo affichée, appareil photo, nouvel écran avec la vraie IA |
 | Réactions et fiabilité | « J'en ai profité » / « Plus dispo », poids des étudiants, tri Hot, sur place à 500 m, « Douteux » puis retrait, jamais sur ses offres (7, 29, 32, 33, 51, 58, 66, 69) | Matteo, Sacha, Justin | 29, 33, 51, 69 |
 | Inscription | Me localiser ou recherche de **n'importe quelle ville de France** (+ 4 villes suivies), transports, voyages, budget, bourse, Carte Sortir (région rennaise seulement), priorités, « Pour toi » (9, 20, 21, 22, 52, 54) | Sacha, Justin | vraie base et téléphone |
@@ -58,7 +58,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 80 | Recherche : toucher une offre de la liste ouvre sa fiche (carte centrée derrière) ; « Voir l’offre » en petit lien sous la description | — | EN COURS : touche `DealCard`, `DealExtras`, `DealSheet` (comportement d’Anne-Lise modifié) | Sacha |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré, texte retravaillé pour ne plus couper « question »), diapo 3 avec 3 boucles vidéo intégrées au PDF (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | **PDF pas recompilé depuis les derniers changements de Claude** (aucun moteur LaTeX sur ce poste) ; vérifier le rendu diapo 1 et que les 3 boucles de la diapo 3 jouent **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
 
 ## 3. 📋 Reste à faire

@@ -55,8 +55,8 @@ export function RequirementBadges({ requirements }: { requirements?: DealRequire
   );
 }
 
-/** Bouton vers le site de l'offre (lien partagé par l'étudiant). Rien si le lien est absent ou non sûr. */
-export function OfferLink({ href, large = false }: { href?: string | null; large?: boolean }) {
+/** Petit lien vers le site de l'offre (partagé par l'étudiant). Rien si le lien est absent ou non sûr. */
+export function OfferLink({ href }: { href?: string | null }) {
   const t = useT();
   const url = safeLink(href);
   if (!url) return null;
@@ -65,12 +65,12 @@ export function OfferLink({ href, large = false }: { href?: string | null; large
       href={url}
       target="_blank"
       rel="noopener noreferrer nofollow"
-      className={large ? "sw-btn-secondary w-full" : "inline-flex items-center gap-1.5 text-sm font-medium"}
-      style={large ? undefined : { color: "var(--color-forest)" }}
+      className="inline-flex max-w-full items-center gap-1 text-sm underline"
+      style={{ color: "var(--color-forest)" }}
     >
-      <ExternalLinkIcon className="h-4 w-4" />
+      <ExternalLinkIcon className="h-3.5 w-3.5 shrink-0" />
       <span className="truncate">
-        {t("Voir l'offre")} <span className="font-normal opacity-80">· {linkHost(url)}</span>
+        {t("Voir l'offre")} · {linkHost(url)}
       </span>
     </a>
   );

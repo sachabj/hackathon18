@@ -676,3 +676,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Après l'enregistrement, build reconfiguré avec les vraies variables d'environnement (`npm run build`) pour ne pas laisser le dépôt pointé vers le faux Supabase ; processus de tournage arrêtés.
 - `pitch/README.md` : section diapo 3 réécrite (boucles vidéo, avertissement Acrobat, repli avec l'ancienne vidéo `demo-16x9.mp4`/`demo-telephone.mp4` conservée, nouvelle commande `tourner3.sh`).
 - **PDF pas recompilé** (aucun moteur LaTeX sur ce poste) : à recompiler et à **ouvrir dans Adobe Acrobat Reader pour vérifier que les 3 boucles jouent** avant la répétition (C4).
+
+### 2026-11-28 07h16 — Sacha (liste de Recherche et lien d’offre, tâche 80)
+- `DealCard` (toucher ouvre la fiche, carte centrée), `DealExtras` / `DealSheet` (petit lien « Voir l’offre » sous la description), commentaire de `recherche/page.tsx` ; README, mémoire. **Anne-Lise** : ton comportement de sélection est conservé, la fiche s’ouvre en plus.
+- Vérifié : tsc, lint, build ; 13 contrôles dans Chrome avec un faux Supabase. Pas essayé sur la vraie base ni sur téléphone ; non déployé.

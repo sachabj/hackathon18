@@ -566,3 +566,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décisions** : puce cumulable (change seulement l'ordre) ; position du moment si l'accord est donné, sinon position enregistrée, sinon centre de la ville d'inscription ; offres sans lieu à la fin ; distance pure, sans priorité aux offres mises en avant.
 - **Choix de Claude, à confirmer** : la position n'est demandée qu'au premier appui (rien au chargement) ; au-delà de 500 m d'imprécision, la position enregistrée ou la ville sert de départ ; version de l'accord (`CONSENT_VERSION`) inchangée pour ne pas redemander l'accord à tous la veille de la démo, l'usage étant ajouté à la politique de confidentialité.
 - **Qui** : Matteo (réponses aux questions de cadrage)
+
+## 2026-11-28 07h — Recherche : la liste ouvre la fiche (tâche 80)
+- **Décisions** : toucher une offre de la liste (fil ou résultats) ouvre sa fiche, la carte se centrant derrière ; « Voir l'offre » devient un petit lien sous la description.
+- **Remplace** : la sélection sur la carte sans ouvrir la fiche (Anne-Lise) et le gros bouton de lien.
+- **Qui** : Sacha (réponses aux questions de cadrage)

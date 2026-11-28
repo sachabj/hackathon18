@@ -239,6 +239,11 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
             <LinkedText text={deal.description} />
           </p>
         )}
+        {deal.link_url && (
+          <p className="mt-1">
+            <OfferLink href={deal.link_url} />
+          </p>
+        )}
         {/* Photo de preuve (Matteo) : miniature, en grand au toucher. */}
         {photo && (
           <button type="button" onClick={() => setZoom(true)} className="mt-2 flex items-center gap-2 text-left">
@@ -283,11 +288,6 @@ export default function DealSheet({ deal, onClose }: { deal: Deal; onClose: () =
           )}
           {deal.expires_at && <span>{t("Jusqu'au {date}", { date: formatDate(deal.expires_at) })}</span>}
         </p>
-        {deal.link_url && (
-          <div className="mt-3">
-            <OfferLink href={deal.link_url} large />
-          </div>
-        )}
         {deal.source_name && (
           <p className="mt-2 text-xs text-[var(--color-muted)]">
             {t("Source : {name}", { name: deal.source_name })}

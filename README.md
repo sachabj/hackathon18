@@ -10,7 +10,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Trouver un bon plan
 - **Accueil** : filtres « Pour toi », « Mes favoris » et une puce par catégorie (plusieurs catégories combinables) ; puce **« Plus proches »** : du plus proche au plus loin de sa position (avec accord), sinon de la ville choisie à l'inscription, offres sans lieu à la fin.
-- **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».
+- **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ». Toucher une offre de la liste ouvre sa fiche et centre la carte dessus.
 - **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer ; pendant une recherche, seulement les offres trouvées.
 - **Fiche** : détails, photo, lien vers l'offre, boutons « Y aller » (Apple Plans ou Google Maps) et « Partager » (le lien ouvre l'offre après connexion).
 - **Partout en France** : à l'inscription, n'importe quelle ville (recherche ou « Me localiser »), plus jusqu'à 4 villes suivies ; la Carte Sortir n'est proposée qu'autour de Rennes.

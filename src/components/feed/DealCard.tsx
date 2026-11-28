@@ -36,7 +36,7 @@ export default function DealCard({
   /** Favori ou non ; le bouton cœur n'est affiché que si ce prop (et onToggleFavorite) est fourni. */
   favorite?: boolean;
   onToggleFavorite?: (dealId: string) => void;
-  /** Fourni (recherche, fil de Recherche) : toucher la carte sélectionne l'offre sur la carte au lieu d'ouvrir sa fiche. */
+  /** Fourni (recherche, fil de Recherche) : toucher la carte ouvre la fiche et centre aussi la carte sur l'offre. */
   onSelect?: (dealId: string) => void;
   /** Cette offre est celle choisie sur la carte (Recherche) : même contour aubergine que son repère. */
   selected?: boolean;
@@ -52,8 +52,11 @@ export default function DealCard({
   const liked = useChanges(favorite);
   // Offre terminée (favori gardé, ou retirée à l'instant) : grisée, sans mise en avant ni réactions.
   const boosted = isBoosted(deal) && !r.ended;
-  // Rien à mettre en avant sur la carte pour une offre sans lieu (zone / nationale) : la fiche s'ouvre comme avant.
-  const touch = () => (onSelect && deal.lat !== null && deal.lng !== null ? onSelect(deal.id) : setOpen(true));
+  // La fiche s'ouvre toujours ; sur Recherche, une offre placée est en plus centrée sur la carte, derrière la fiche.
+  const touch = () => {
+    if (deal.lat !== null && deal.lng !== null) onSelect?.(deal.id);
+    setOpen(true);
+  };
   // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
   useLayoutEffect(() => () => setOpen(false), []);
   const deadline = deal.deadline_at
