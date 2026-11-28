@@ -30,7 +30,7 @@ Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, re
 - Retourner les 3 boucles après un changement d'interface : `bash pitch/video/tourner3.sh` (macOS, Chrome ; pas besoin de `ffmpeg`), puis recompiler le PDF. L'ancienne vidéo seule : `bash pitch/video/tourner.sh` (macOS, Chrome, `ffmpeg`).
 
 ## La vidéo promo (format téléphone)
-- [`sharewood-promo.mp4`](sharewood-promo.mp4) : 59 s, 1080 × 1920, 60 i/s, sans son (piste muette), données d'exemple (compte « Sarah », offres « (démo) »).
+- [`sharewood-promo.mp4`](sharewood-promo.mp4) : 59 s, 1080 × 1920 capturé en vraie résolution, 60 i/s, sans son (piste muette), données d'exemple (compte « Sarah », offres « (démo) »).
 - Parcours : profil en quelques gestes → accueil et carte → recherche « piscine » et « J'en ai profité » → partage d'une offre prise en photo → profil, activité et boutique ; cinq intercalaires (« Un profil qui te ressemble », « Repère les vrais bons plans », « Partage en quelques secondes », « Solidarité récompensée », « ShareWood »).
 - Refaire : kit et marche à suivre dans [`promo/`](promo/) (`LISEZMOI.txt`).
 

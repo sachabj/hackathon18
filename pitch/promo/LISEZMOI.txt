@@ -67,5 +67,7 @@ Le kit est rangé dans pitch/promo/ ; la vidéo finale est copiée dans pitch/sh
     cp sharewood-promo-final.mp4 ../sharewood-promo.mp4
     cd ../.. && npm run build          # remettre la vraie configuration
 * film6.py utilise Google Chrome installé (variable CHROME pour un autre chemin) : pas de téléchargement de Chromium.
+* Netteté : Chrome est lancé avec --force-device-scale-factor=3. Sans ce réglage, le screencast livre des images de
+  360 × 640 (taille CSS) que le montage agrandit 3 fois : vidéo floue. En contrepartie, la capture tombe à ~32 i/s.
 * assemble.py : scène 2 accélérée 1,15× ; avec le fond de carte chargé, la vidéo fait 59,2 s.
 

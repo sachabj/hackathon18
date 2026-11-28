@@ -11,7 +11,9 @@ PH={"features":[{"geometry":{"coordinates":[-1.7468,48.0246]},"properties":{"osm
 K=0.5
 OFF=[0.0]
 with sync_playwright() as p:
-    b=p.chromium.launch(executable_path=os.environ.get("CHROME","/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),args=["--use-angle=swiftshader","--enable-unsafe-swiftshader","--hide-scrollbars"])
+    b=p.chromium.launch(executable_path=os.environ.get("CHROME","/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"),args=["--use-angle=swiftshader","--enable-unsafe-swiftshader","--hide-scrollbars",
+        # sans ce réglage, le screencast livre des images de 360 × 640 (taille CSS), agrandies ensuite 3 fois : vidéo floue
+        "--force-device-scale-factor=3"])
     c=b.new_context(viewport={"width":360,"height":640},device_scale_factor=3,is_mobile=True,has_touch=True,
         geolocation={"latitude":48.0252,"longitude":-1.7466},permissions=["geolocation"],locale="fr-FR")
     c.add_init_script(TAP)
@@ -61,7 +63,11 @@ with sync_playwright() as p:
     cdp.send("Page.startScreencast",{"format":"jpeg","quality":96,"maxWidth":1080,"maxHeight":1920,"everyNthFrame":1})
     rec["on"]=True
     pg.wait_for_selector(".sw-splash",timeout=10000)
-    rwait(200); OFF[0]=frames[-1][1]-time.time()
+    rwait(200)
+    for _ in range(60):  # en 1080 × 1920, la première image arrive un peu plus tard
+        if frames: break
+        rwait(50)
+    OFF[0]=frames[-1][1]-time.time()
     pg.wait_for_function("!document.querySelector('.sw-splash')",timeout=10000)
     mark("splash_end")
     pg.wait_for_selector("h1",timeout=15000)

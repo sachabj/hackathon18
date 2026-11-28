@@ -749,3 +749,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (rappel des paramètres de la fiabilité et du tri Hot, sans code)
 - Fiche de révision pour le jury : formules et constantes de `rules.ts`, `hot.ts` et de la migration 014, revérifiées dans le code (identiques à `docs/ALGORITHMES.md`) et exemples recalculés. Constat : le poids d'un étudiant plafonne en pratique à 1,95 (borne de 2 jamais atteinte) ; il faudrait un exposant d'environ 0,5 pour qu'une offre de 2 jours très confirmée passe devant une offre neuve. Aucun code modifié.
+
+### 2026-11-28 11h — Justin (vidéo promo nette)
+- Cause du flou : le screencast livrait des images de 360 × 640 (taille CSS), agrandies 3 fois au montage. `film6.py` : Chrome lancé avec `--force-device-scale-factor=3` (images en 1080 × 1920) et attente de la première image ; `LISEZMOI.txt`, `pitch/README.md`.
+- Vidéo retournée et remontée : `pitch/sharewood-promo.mp4`, 59,5 s, 10 Mo ; capture à ~32 i/s au lieu de 60 (mouvements un peu moins fluides). Comparaison avant / après vérifiée sur une image agrandie.
