@@ -37,3 +37,7 @@ pitch/*.vrb
 pitch/*.out
 pitch/*.synctex.gz
 pitch/build.txt
+
+# Copie locale temporaire pour Overleaf, jamais committée
+/sharewood-overleaf.zip
+/sharewood-overleaf/
