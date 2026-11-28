@@ -2,6 +2,7 @@
 
 - **Fichier** : `pitch/sharewood-promo.mp4` (59 s, 1080 × 1920)
 - **Miniature** : `pitch/sharewood-promo-miniature.jpg` (1280 × 720 ; refaire : `cd pitch/promo && python3 miniature.py <image accueil> <image boutique> ../sharewood-promo-miniature.jpg`)
+- **En ligne** : https://youtube.com/shorts/NvxBMh5c1zU (non répertoriée, mise en ligne par Justin le 28/11)
 - **Titre** : Hackathon 27Nov - ShareWood
 - **Visibilité** : Non répertoriée (« Privée » empêcherait le jury de la voir)
 - **Public** : Non, elle n'est pas conçue pour les enfants

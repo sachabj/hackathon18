@@ -761,3 +761,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 11h25 — Justin (diapo 3 avec QR code, YouTube)
 - `pitch/sharewood.tex` : paquet `qrcode`, adresse unique `\demourl` (provisoire `A_REMPLACER`, bandeau rouge tant qu'elle n'est pas renseignée), diapo 3 = téléphone cliquable, QR code, « Voir la démo · 59 s » et lien ; note d'orateur. PDF recompilé (6 pages).
 - Nouveaux `pitch/promo/youtube.md` (titre, description avec chapitres, réglages) et `pitch/promo/miniature.py` → `pitch/sharewood-promo-miniature.jpg` (1280 × 720) ; `pitch/README.md`, mémoire. En attente du lien YouTube.
+
+### 2026-11-28 11h30 — Justin (lien YouTube dans le pitch)
+- Vidéo mise en ligne par Justin : https://youtube.com/shorts/NvxBMh5c1zU (accessible sans compte, vérifié). `\demourl` renseigné (sans `?feature=share`), adresse affichée sans « https:// » (`xstring` ; « :// » ne marche pas, le « : » est actif en français). PDF recompilé : QR code décodé = le lien, 3 zones cliquables vers YouTube. `README.md` (lien pour le jury), `pitch/README.md`, `youtube.md`, mémoire.

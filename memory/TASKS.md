@@ -44,7 +44,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Commerçant | Offres, retrait, statistiques, offres d'étudiants voisines ; mise en avant payée à l'écran (9,90 €, simulé) avec reçu et « Mes paiements » (13) | Justin | paiement essayé sur le site (Justin, 28/11) ; reste à voir sur téléphone |
 | Ordinateur | Navigation en haut, liste et carte côte à côte, colonnes (48) | Justin | vu avec un faux Supabase seulement |
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) ; check global du 28/11 à 10h (contrôles, 28 écrans, vrai site avec les comptes de démo) | Matteo, Justin | — |
-| Vidéo de démo | `pitch/demo-16x9.mp4` et `demo-telephone.mp4` (40 s, données d'exemple, sans son) ; retournage : `pitch/video/tourner.sh` ; **vidéo promo 9:16 de 59 s** `pitch/sharewood-promo.mp4` (kit `pitch/promo/`, 28/11 à 10h45) | Justin | à regarder par l'équipe |
+| Vidéo de démo | `pitch/demo-16x9.mp4` et `demo-telephone.mp4` (40 s, données d'exemple, sans son) ; retournage : `pitch/video/tourner.sh` ; **vidéo promo 9:16 de 59 s** `pitch/sharewood-promo.mp4` (kit `pitch/promo/`, 28/11 à 10h45), en ligne sur YouTube : https://youtube.com/shorts/NvxBMh5c1zU | Justin | à regarder par l'équipe |
 | Données de démo | Sur la vraie base : 20 étudiants, 12 commerces fictifs, ~150 offres, Flèches de démo ; prix des 14 offres sourcées revérifiés le 28/11 vers 6h, aucun écart (12) | Justin | — |
 | Vraies offres | 54 offres importées (événements, aides, Intermarché) et offre Burger King (`import_burgerking.sql`, lancé), badge « Source officielle » ; aucune offre étudiante officielle trouvée pour McDonald's, Carrefour, Super U, Auchan (65) | Justin | voir l'offre Burger King sur le site |
 | Tombola, Avant-Première | Tirage par SQL (`draw_raffle`), résultat sur le ticket ; offre flash du commerçant visible 1 h avant par les détenteurs (42) | Justin | offre flash et tirage essayés sur le site (Justin, 28/11) |
@@ -59,7 +59,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 15 | Pitch | 6 diapos LaTeX (`pitch/`) ; diapo 3 = image de la vidéo promo, QR code et lien YouTube (le lien local `run:` ne marchait pas, PDF déposé sur un site) | lien YouTube à renseigner (C14) ; répétition (C4) ; Anne-Lise à prévenir (sa diapo 3 est remplacée) | équipe |
+| 15 | Pitch | 6 diapos LaTeX (`pitch/`) ; diapo 3 = image de la vidéo promo, QR code et lien YouTube https://youtube.com/shorts/NvxBMh5c1zU (vérifiés : QR décodé, liens du PDF) ; PDF recompilé le 28/11 à 11h30 | répétition (C4) ; déposer `pitch/sharewood.pdf` et le lien YouTube sur le site de rendu ; Anne-Lise à prévenir (sa diapo 3 est remplacée) | équipe |
 
 ## 3. 📋 Reste à faire
 
@@ -69,7 +69,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C9 | **Remettre la démo dans son état de départ juste avant de présenter** : sur le site, demo.sarah est à 495 Flèches et « Expos gratuites » est déjà confirmée (scénario joué en répétition), et la base a encore toutes les offres inventées. `node scripts/build_demo_sql.mjs` puis lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés) ; sinon, au minimum `seed_arrows.sql` | Justin |
 | C11 | Retirer les 300 Flèches de test données à un compte par Matteo (ligne `welcome` dans `arrow_events`), sinon elles faussent le classement des écoles | Matteo |
 | C4 | **Répéter le pitch** ; diapo 3 : cliquer sur le téléphone ou le lien ouvre la vidéo sur YouTube (sinon ouvrir `pitch/sharewood-promo.mp4` à la main) ; préparer le commentaire (vidéo sans son) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
-| C14 | **Mettre la vidéo promo sur YouTube** en « Non répertoriée » (titre, description, miniature : `pitch/promo/youtube.md`), puis donner le lien : il va dans le formulaire de rendu et dans `\demourl` en haut de `pitch/sharewood.tex` (recompiler ; bandeau rouge sur la diapo 3 tant qu'il manque) | Justin |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟢 Bonus

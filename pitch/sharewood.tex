@@ -16,8 +16,9 @@
 \renewcommand{\familydefault}{\sfdefault}
 \usepackage{tikz}
 \usepackage{qrcode}          % QR code de la vidéo de démo (diapo 3)
+\usepackage{xstring}         % adresse affichée sans « https:// »
 % ===== Adresse de la vidéo de démo (YouTube) : remplacer A_REMPLACER par le lien, puis recompiler =====
-\newcommand{\demourl}{https://youtu.be/A_REMPLACER}
+\newcommand{\demourl}{https://youtube.com/shorts/NvxBMh5c1zU}
 \newcommand{\demourlvide}{https://youtu.be/A_REMPLACER}
 \graphicspath{{images/}}
 
@@ -135,7 +136,7 @@
   \node[anchor=north, inner sep=0pt] at (1320,290) {\qrcode[hyperlink,height=380\pxu]{\demourl}};
   \ctxt{1320}{715}{500}{50}{forest}{\titre Voir la démo · 59 s}
   \ctxt{1320}{790}{500}{30}{muted}{Scanne le QR code ou clique sur le téléphone}
-  \ctxt{1320}{880}{520}{28}{plum}{\href{\demourl}{\urlstyle{same}\expandafter\nolinkurl\expandafter{\demourl}}}
+  \ctxt{1320}{880}{520}{28}{plum}{\StrBehind{\demourl}{//}[\demourlcourt]\href{\demourl}{\urlstyle{same}\expandafter\nolinkurl\expandafter{\demourlcourt}}}
   % Garde-fou : lien pas encore renseigné
   \ifx\demourl\demourlvide
     \ctxt{960}{1000}{1700}{36}{red}{\bfseries LIEN DE LA VIDÉO À RENSEIGNER (\textbackslash demourl en haut de sharewood.tex)}

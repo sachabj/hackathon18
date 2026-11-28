@@ -92,7 +92,7 @@ Pour la démo, désactiver « Confirm email » (Authentication → Sign In / Pro
 À la demande seulement (le déploiement au push est coupé par `vercel.json`, pour préserver le quota Vercel) : on teste en local, puis on déploie sur https://sharewood-ensai.vercel.app en suivant [la procédure](memory/ARCHITECTURE.md). Les variables d'environnement se règlent sur Vercel ; après un changement, redéployer.
 
 ## Pour en savoir plus
-- [Diapos du pitch (LaTeX)](pitch/) et [vidéo de démo](pitch/demo-16x9.mp4) (40 s, sans son, données d'exemple)
+- **[Vidéo de démo (59 s, sans son)](https://youtube.com/shorts/NvxBMh5c1zU)** et [diapos du pitch (LaTeX)](pitch/) ; données d'exemple
 - [Algorithmes de classement et de fiabilité](docs/ALGORITHMES.md)
 - [Architecture et conventions](memory/ARCHITECTURE.md)
 - [Vision, décisions et tâches](memory/)

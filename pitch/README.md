@@ -23,7 +23,7 @@ Dans chaque diapo, bloc `\note{...}`. Pour les afficher à droite des diapos, re
 
 ## La vidéo de la diapo 3
 - Le PDF est déposé sur un site : il ne peut ni lire une vidéo ni ouvrir un fichier local. La diapo 3 montre donc un téléphone avec une image de la vidéo, un **QR code** et le **lien YouTube** de la vidéo promo, cliquables.
-- Le lien se règle **une seule fois** en haut de `sharewood.tex` : `\newcommand{\demourl}{https://youtu.be/…}`, puis recompiler. Tant qu'il vaut `A_REMPLACER`, un bandeau rouge s'affiche sur la diapo.
+- Lien de la vidéo : **https://youtube.com/shorts/NvxBMh5c1zU** (aussi dans le formulaire de rendu). Il se règle **une seule fois** en haut de `sharewood.tex` (`\demourl`), puis recompiler ; s'il vaut `A_REMPLACER`, un bandeau rouge s'affiche sur la diapo.
 - Mise en ligne YouTube (titre, description, miniature, réglages) : [`promo/youtube.md`](promo/youtube.md).
 - Remplace les 3 boucles vidéo d'Anne-Lise (retirées le 28/11, toujours dans l'historique git). Repli en présentation : ouvrir [`sharewood-promo.mp4`](sharewood-promo.mp4) à la main.
 
