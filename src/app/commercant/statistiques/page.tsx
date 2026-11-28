@@ -5,29 +5,31 @@ import MerchantPage from "@/components/merchant/MerchantPage";
 import OfferChart from "@/components/merchant/OfferChart";
 import { METRICS, summarize, type Metric } from "@/lib/offerStats";
 import { useDashboard } from "@/lib/useDashboard";
+import { useT } from "@/lib/i18n";
 
 export default function Page() {
+  const t = useT();
   const { data, error } = useDashboard();
   const summary = data ? summarize(data.offers, data.stats, data.fetchedAt) : null;
   const noReaction = summary && Object.values(summary.totals).every((v) => v === 0);
 
   return (
-    <MerchantPage title="Statistiques" business={data ? data.business : undefined} error={error}>
+    <MerchantPage title={t("Statistiques")} business={data ? data.business : undefined} error={error}>
       {summary && summary.rows.length === 0 && (
-        <p className="mt-4 text-sm text-[var(--color-muted)]">Publie une première offre pour voir ses statistiques.</p>
+        <p className="mt-4 text-sm text-[var(--color-muted)]">{t("Publie une première offre pour voir ses statistiques.")}</p>
       )}
       {summary && summary.rows.length > 0 && (
         <>
           <dl className="mt-4 grid grid-cols-2 gap-2 lg:grid-cols-5">
             {[
-              { label: "Offres en ligne", value: `${summary.online} / ${summary.rows.length}`, Icon: null },
+              { label: t("Offres en ligne"), value: `${summary.online} / ${summary.rows.length}`, Icon: null },
               {
-                label: "Confirmations (« J’en ai profité »)",
+                label: t("Confirmations (« J’en ai profité »)"),
                 value: summary.trust === null ? "—" : `${summary.trust} %`,
                 Icon: null,
               },
               ...(Object.keys(METRICS) as Metric[]).map((m) => ({
-                label: METRICS[m].label,
+                label: t(METRICS[m].label),
                 value: String(summary.totals[m]),
                 Icon: METRICS[m].Icon,
               })),
@@ -42,10 +44,10 @@ export default function Page() {
           </dl>
 
           <section className="mt-6">
-            <h2 className="mb-2 text-lg">Comparaison des offres</h2>
+            <h2 className="mb-2 text-lg">{t("Comparaison des offres")}</h2>
             {noReaction ? (
               <p className="text-sm text-[var(--color-muted)]">
-                Aucune réaction pour le moment : les votes et les favoris des étudiants apparaîtront ici.
+                {t("Aucune réaction pour le moment : les votes et les favoris des étudiants apparaîtront ici.")}
               </p>
             ) : (
               <OfferChart rows={summary.rows} />
@@ -53,17 +55,17 @@ export default function Page() {
           </section>
 
           <details className="mt-6">
-            <summary className="cursor-pointer text-sm font-medium" style={{ color: "var(--color-forest)" }}>Voir le tableau détaillé</summary>
+            <summary className="cursor-pointer text-sm font-medium" style={{ color: "var(--color-forest)" }}>{t("Voir le tableau détaillé")}</summary>
             <table className="mt-2 w-full text-sm">
               <thead>
                 <tr className="border-b text-left text-xs text-[var(--color-muted)]" style={{ borderColor: "var(--color-border)" }}>
-                  <th className="py-1 font-medium">Offre</th>
+                  <th className="py-1 font-medium">{t("Offre")}</th>
                   {(Object.keys(METRICS) as Metric[]).map((m) => {
                     const Icon = METRICS[m].Icon;
                     return (
-                      <th key={m} className="py-1 text-right font-medium" title={METRICS[m].label}>
+                      <th key={m} className="py-1 text-right font-medium" title={t(METRICS[m].label)}>
                         <Icon className="ml-auto h-3.5 w-3.5" />
-                        <span className="sr-only">{METRICS[m].label}</span>
+                        <span className="sr-only">{t(METRICS[m].label)}</span>
                       </th>
                     );
                   })}

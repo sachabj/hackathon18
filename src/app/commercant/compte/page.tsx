@@ -8,22 +8,24 @@ import PaymentHistory from "@/components/merchant/PaymentHistory";
 import { CATEGORIES } from "@/lib/constants";
 import { useDashboard } from "@/lib/useDashboard";
 import { useZones, zoneById } from "@/lib/zones";
+import { useT } from "@/lib/i18n";
 
 export default function Page() {
+  const t = useT();
   const { data, error } = useDashboard();
   useZones();
   const business = data?.business;
 
   return (
     <>
-      <MerchantPage title="Mon compte" business={data ? data.business : undefined} error={error}>
+      <MerchantPage title={t("Mon compte")} business={data ? data.business : undefined} error={error}>
         {business && (
           <dl className="sw-card mt-4 divide-y divide-[var(--color-border)]">
             {[
-              ["Commerce", business.name],
-              ["Activité", CATEGORIES[business.category].label],
-              ["Adresse", business.address ?? "Non renseignée"],
-              ["Zone", zoneById(business.zone_id)?.name ?? "—"],
+              [t("Commerce"), business.name],
+              [t("Activité"), t(CATEGORIES[business.category].label)],
+              [t("Adresse"), business.address ?? t("Non renseignée")],
+              [t("Zone"), zoneById(business.zone_id)?.name ?? "—"],
             ].map(([label, value]) => (
               <div key={label} className="flex gap-3 p-3 text-sm">
                 <dt className="w-24 shrink-0 text-[var(--color-muted)]">{label}</dt>

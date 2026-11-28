@@ -7,9 +7,10 @@ import { isBoosted } from "@/lib/merchant";
 import { isEarlyAccess } from "@/lib/rules";
 import type { Deal, OfferStats } from "@/lib/types";
 import PaymentDialog from "./PaymentDialog";
+import { dateLocale, useT } from "@/lib/i18n";
 
 const formatDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+  new Date(iso).toLocaleDateString(dateLocale(), { day: "numeric", month: "long" });
 
 const actionClass = "flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium disabled:opacity-50";
 
@@ -30,6 +31,7 @@ export default function OfferCard({
   /** La mise en avant vient d'être payée : relire les offres. */
   onPaid: () => void;
 }) {
+  const t = useT();
   const [paying, setPaying] = useState(false);
   const [now] = useState(() => Date.now());
   const expired = !!offer.expires_at && new Date(offer.expires_at).getTime() < now;
@@ -50,30 +52,30 @@ export default function OfferCard({
               : { backgroundColor: "var(--color-border)", color: "var(--color-muted)" }
           }
         >
-          {online ? (offer.doubtful_since ? "Douteux" : "En ligne") : expired ? "Expirée" : offer.ended_by_merchant ? "Retirée" : "Archivée"}
+          {online ? (offer.doubtful_since ? t("Douteux") : t("En ligne")) : expired ? t("Expirée") : offer.ended_by_merchant ? t("Retirée") : t("Archivée")}
         </span>
       </div>
       <p className="text-sm text-[var(--color-muted)]">
-        {offer.expires_at && `Jusqu'au ${formatDate(offer.expires_at)}`}
+        {offer.expires_at && t("Jusqu'au {date}", { date: formatDate(offer.expires_at) })}
       </p>
       {online && isEarlyAccess(offer, now) && (
         <p className="mt-1 text-sm font-medium" style={{ color: "var(--color-aubergine)" }}>
-          Avant-Première jusqu&apos;à{" "}
-          {new Date(offer.early_until!).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+          {t("Avant-Première jusqu'à")}{" "}
+          {new Date(offer.early_until!).toLocaleTimeString(dateLocale(), { hour: "2-digit", minute: "2-digit" })}
         </p>
       )}
       {boosted && (
         <p className="mt-1 flex items-center gap-1 text-sm font-medium" style={{ color: "#92700c" }}>
-          <StarIcon className="h-4 w-4" filled /> Mise en avant jusqu&apos;au {formatDate(offer.boosted_until!)}
+          <StarIcon className="h-4 w-4" filled />{" "}{t("Mise en avant jusqu'au")}{" "}{formatDate(offer.boosted_until!)}
         </p>
       )}
 
       <dl className="mt-2 grid grid-cols-3 gap-2 text-center">
         {(
           [
-            [ThumbsUpIcon, "Confirmations", stats?.confirmations],
-            [ThumbsDownIcon, "Signalements", stats?.reports],
-            [HeartIcon, "Favoris", stats?.favorites],
+            [ThumbsUpIcon, t("Confirmations"), stats?.confirmations],
+            [ThumbsDownIcon, t("Signalements"), stats?.reports],
+            [HeartIcon, t("Favoris"), stats?.favorites],
           ] as const
         ).map(([Icon, label, value]) => (
           <div key={label} className="rounded-xl py-1.5" style={{ backgroundColor: "var(--color-paper)" }}>
@@ -88,11 +90,11 @@ export default function OfferCard({
       <div className="mt-3 flex flex-wrap gap-2">
         {online && (
           <button type="button" disabled={busy} onClick={() => setPaying(true)} className={actionClass} style={{ borderColor: "#d4a017", color: "#92700c" }}>
-            <StarIcon className="h-4 w-4" /> {boosted ? "Prolonger" : "Mettre en avant"}
+            <StarIcon className="h-4 w-4" /> {boosted ? t("Prolonger") : t("Mettre en avant")}
           </button>
         )}
         <button type="button" disabled={busy} onClick={onEdit} className={actionClass} style={{ borderColor: "var(--color-border)" }}>
-          <EditIcon className="h-4 w-4" /> Modifier
+          <EditIcon className="h-4 w-4" />{" "}{t("Modifier")}
         </button>
         <button
           type="button"
@@ -103,11 +105,11 @@ export default function OfferCard({
         >
           {offer.ended_by_merchant ? (
             <>
-              <UndoIcon className="h-4 w-4" /> Remettre en ligne
+              <UndoIcon className="h-4 w-4" />{" "}{t("Remettre en ligne")}
             </>
           ) : (
             <>
-              <ProhibitedIcon className="h-4 w-4" /> N&apos;existe plus
+              <ProhibitedIcon className="h-4 w-4" />{" "}{t("N'existe plus")}
             </>
           )}
         </button>

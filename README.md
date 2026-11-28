@@ -56,7 +56,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - Le paiement de la mise en avant est **simulé** ; le statut de commerçant n'est pas vérifié.
 - Distances et temps de trajet estimés à vol d'oiseau.
 - La position vient du navigateur : un utilisateur averti peut la falsifier. L'adresse de contact de la politique de confidentialité est fictive.
-- En anglais, restent en français : l'assistant de préférences, l'espace commerçant et la politique de confidentialité.
+- En anglais, seule la politique de confidentialité reste en français.
 - Pas encore là : notifications quand l'appli est fermée, rappels de dates limites, filtre « ouvert maintenant ».
 - Parrainage et « étudiants aidés » restent gonflables avec de faux comptes (pas de confirmation d'email en démo).
 

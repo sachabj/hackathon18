@@ -1,6 +1,9 @@
+"use client";
+
 import { StoreIcon } from "@/components/icons";
 import type { Business } from "@/lib/types";
 import BusinessForm from "./BusinessForm";
+import { useT } from "@/lib/i18n";
 
 /** Cadre commun des pages commerçant : titre, chargement, erreur et création du commerce. */
 export default function MerchantPage({
@@ -15,6 +18,7 @@ export default function MerchantPage({
   error: string | null;
   children: React.ReactNode;
 }) {
+  const t = useT();
   return (
     <div className="mx-auto w-full max-w-md px-4 py-6 lg:max-w-5xl">
       <p className="flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
@@ -23,16 +27,16 @@ export default function MerchantPage({
             <StoreIcon className="h-4 w-4" /> {business.name}
           </>
         ) : (
-          "Espace commerçant"
+          t("Espace commerçant")
         )}
       </p>
-      <h1 className="text-2xl">{business === null ? "Mon commerce" : title}</h1>
+      <h1 className="text-2xl">{business === null ? t("Mon commerce") : title}</h1>
       {error && (
         <p role="alert" className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}
         </p>
       )}
-      {business === undefined && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">Chargement…</p>}
+      {business === undefined && !error && <p className="mt-4 text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>}
       {business === null && (
         <div className="mt-4 lg:max-w-2xl">
           {/* Rechargement complet : tous les écrans doivent voir le nouveau commerce. */}

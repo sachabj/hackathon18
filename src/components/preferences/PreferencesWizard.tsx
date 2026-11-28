@@ -36,6 +36,7 @@ import { preferenceRows } from "@/components/profile/PreferencesSummary";
 import CitySearch from "@/components/zones/CitySearch";
 import { carteSortirArea, cityAt, ensureZone, useZones, zoneAround, zoneById } from "@/lib/zones";
 import ChoiceTile from "./ChoiceTile";
+import { useT } from "@/lib/i18n";
 
 /** Villes suivies en plus de la ville principale. */
 const MAX_OTHER_ZONES = 4;
@@ -71,6 +72,7 @@ const toggle = <T,>(list: T[], item: T) =>
 const keys = <K extends string>(record: Record<K, unknown>) => Object.keys(record) as K[];
 
 export default function PreferencesWizard() {
+  const t = useT();
   const router = useRouter();
   const { deals } = useDeals();
   const [step, setStep] = useState(0);
@@ -121,8 +123,8 @@ export default function PreferencesWizard() {
   }
 
   async function locate() {
-    if (!navigator.geolocation) return setGpsMessage("Ton navigateur ne permet pas la localisation.");
-    if (!(await ensureLocationConsent(true))) return setGpsMessage("Position non partagée : cherche ta ville ci-dessous.");
+    if (!navigator.geolocation) return setGpsMessage(t("Ton navigateur ne permet pas la localisation."));
+    if (!(await ensureLocationConsent(true))) return setGpsMessage(t("Position non partagée : cherche ta ville ci-dessous."));
     setLocating(true);
     setGpsMessage(null);
     navigator.geolocation.getCurrentPosition(
@@ -138,13 +140,13 @@ export default function PreferencesWizard() {
           if (!zone) {
             const city = await cityAt(position);
             if (!city) {
-              setGpsMessage("Aucune ville de France trouvée ici : cherche la tienne ci-dessous.");
+              setGpsMessage(t("Aucune ville de France trouvée ici : cherche la tienne ci-dessous."));
               return;
             }
             zone = await ensureZone(city);
           }
           chooseHome(zone.id, position);
-          setGpsMessage(`Trouvé : ${zone.name}, à ${formatDistance(distanceKm(position, zone))} du centre.`);
+          setGpsMessage(t("Trouvé : {name}, à {distance} du centre.", { name: zone.name, distance: formatDistance(distanceKm(position, zone)) }));
         } catch (e) {
           setGpsMessage((e as Error).message);
         } finally {
@@ -153,7 +155,7 @@ export default function PreferencesWizard() {
       },
       () => {
         setLocating(false);
-        setGpsMessage("Localisation impossible : cherche ta ville ci-dessous.");
+        setGpsMessage(t("Localisation impossible : cherche ta ville ci-dessous."));
       },
       { timeout: 10000 },
     );
@@ -196,7 +198,7 @@ export default function PreferencesWizard() {
           type="button"
           onClick={() => setStep(step - 1)}
           disabled={step === 0 || single}
-          aria-label="Étape précédente"
+          aria-label={t("Étape précédente")}
           className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-muted)] disabled:invisible"
         >
           <ArrowLeftIcon className="h-5 w-5" />
@@ -218,7 +220,7 @@ export default function PreferencesWizard() {
           <button
             type="button"
             onClick={() => router.push(single ? "/profil" : "/")}
-            aria-label="Fermer sans enregistrer"
+            aria-label={t("Fermer sans enregistrer")}
             className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-muted)]"
           >
             <CloseIcon className="h-5 w-5" />
@@ -228,8 +230,8 @@ export default function PreferencesWizard() {
         )}
       </div>
 
-      <h1 className="mt-5">{current.title}</h1>
-      <p className="mt-1 text-sm text-[var(--color-muted)]">{current.subtitle}</p>
+      <h1 className="mt-5">{t(current.title)}</h1>
+      <p className="mt-1 text-sm text-[var(--color-muted)]">{t(current.subtitle)}</p>
 
       <div className="mt-5">
         {current.id === "zone" && (
@@ -240,12 +242,10 @@ export default function PreferencesWizard() {
               disabled={locating}
               className="sw-btn-secondary w-full disabled:opacity-50"
             >
-              <PinIcon className="h-4 w-4" /> {locating ? "Recherche…" : "Me localiser"}
+              <PinIcon className="h-4 w-4" /> {locating ? t("Recherche…") : t("Me localiser")}
             </button>
             <LocationNotice>
-              Facultatif : envoyée chiffrée, arrondie à environ 100 m, enregistrée avec ton profil et lisible par toi
-              seul. Pour trouver ta commune, elle est envoyée à Photon arrondie à environ 1 km. Choisir une ville
-              dans la recherche l&apos;efface.
+              {t("Facultatif : envoyée chiffrée, arrondie à environ 100 m, enregistrée avec ton profil et lisible par toi seul. Pour trouver ta commune, elle est envoyée à Photon arrondie à environ 1 km. Choisir une ville dans la recherche l'efface.")}
             </LocationNotice>
             {gpsMessage && (
               <p role="status" className="text-sm text-[var(--color-muted)]">
@@ -256,11 +256,11 @@ export default function PreferencesWizard() {
               <p className="flex items-center gap-2 rounded-2xl border-2 p-3 font-medium" style={{ borderColor: "var(--color-forest)", backgroundColor: "var(--color-sage)", color: "var(--color-forest)" }}>
                 <PinIcon className="h-5 w-5 shrink-0" />
                 <span className="flex-1">{zoneById(me.homeZoneId)?.name ?? me.homeZoneId}</span>
-                <span className="text-xs font-normal">Ville principale</span>
+                <span className="text-xs font-normal">{t("Ville principale")}</span>
               </p>
             )}
             <CitySearch
-              label={me.homeZoneId ? "Changer de ville" : "Ta ville ou ton campus"}
+              label={me.homeZoneId ? t("Changer de ville") : t("Ta ville ou ton campus")}
               exclude={me.homeZoneId ? [me.homeZoneId] : []}
               // Une seule liste de raccourcis à l'écran : celle des villes à ajouter, une fois la ville choisie.
               suggestions={!me.homeZoneId}
@@ -268,7 +268,7 @@ export default function PreferencesWizard() {
             />
             {me.homeZoneId && (
               <div className="space-y-2 border-t pt-4" style={{ borderColor: "var(--color-border)" }}>
-                <p className="text-sm font-medium">Aussi des bons plans de :</p>
+                <p className="text-sm font-medium">{t("Aussi des bons plans de :")}</p>
                 {others.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {others.map((id) => (
@@ -276,7 +276,7 @@ export default function PreferencesWizard() {
                         key={id}
                         type="button"
                         onClick={() => update({ zoneIds: me.zoneIds.filter((z) => z !== id) })}
-                        aria-label={`Retirer ${zoneById(id)?.name ?? id}`}
+                        aria-label={t("Retirer {name}", { name: zoneById(id)?.name ?? id })}
                         className="flex items-center gap-1 rounded-full border-2 border-[var(--color-forest)] bg-[var(--color-sage)] px-3 py-1.5 text-sm font-medium text-[var(--color-forest)]"
                       >
                         {zoneById(id)?.name ?? id} <CloseIcon className="h-3.5 w-3.5" />
@@ -286,12 +286,12 @@ export default function PreferencesWizard() {
                 )}
                 {others.length < MAX_OTHER_ZONES ? (
                   <CitySearch
-                    label={`Ajouter une ville (${others.length} sur ${MAX_OTHER_ZONES})`}
+                    label={t("Ajouter une ville ({n} sur {max})", { n: others.length, max: MAX_OTHER_ZONES })}
                     exclude={me.zoneIds}
                     onChoose={(zone) => !me.zoneIds.includes(zone.id) && update({ zoneIds: [...me.zoneIds, zone.id] })}
                   />
                 ) : (
-                  <p className="text-xs text-[var(--color-muted)]">{MAX_OTHER_ZONES} villes au maximum : retires-en une pour en ajouter.</p>
+                  <p className="text-xs text-[var(--color-muted)]">{MAX_OTHER_ZONES}{" "}{t("villes au maximum : retires-en une pour en ajouter.")}</p>
                 )}
               </div>
             )}
@@ -306,7 +306,7 @@ export default function PreferencesWizard() {
                 <ChoiceTile
                   key={m}
                   icon={<Icon className="h-7 w-7" />}
-                  label={label}
+                  label={t(label)}
                   selected={me.transportModes.includes(m)}
                   onClick={() => update({ transportModes: toggle(me.transportModes, m) })}
                 />
@@ -324,8 +324,8 @@ export default function PreferencesWizard() {
                   <ChoiceTile
                     key={v}
                     icon={<Icon className="h-7 w-7" />}
-                    label={label}
-                    hint={hint}
+                    label={t(label)}
+                    hint={t(hint)}
                     selected={me.homeVisits === v}
                     onClick={() => update({ homeVisits: me.homeVisits === v ? null : v })}
                   />
@@ -335,7 +335,7 @@ export default function PreferencesWizard() {
             {isTraveler(me) && (
               <fieldset>
                 <legend className="mb-2 flex items-center gap-1.5 text-sm font-medium">
-                  <SuitcaseIcon className="h-4 w-4" /> Avec quoi ? (plusieurs choix possibles)
+                  <SuitcaseIcon className="h-4 w-4" />{" "}{t("Avec quoi ? (plusieurs choix possibles)")}
                 </legend>
                 <div className="grid grid-cols-4 gap-2">
                   {TRAVEL_MODES.map((m) => {
@@ -344,7 +344,7 @@ export default function PreferencesWizard() {
                       <ChoiceTile
                         key={m}
                         icon={<Icon className="h-7 w-7" />}
-                        label={m === "carpool" ? "Covoit’" : label}
+                        label={m === "carpool" ? t("Covoit’") : t(label)}
                         selected={me.travelModes.includes(m)}
                         onClick={() => update({ travelModes: toggle(me.travelModes, m) })}
                       />
@@ -365,8 +365,8 @@ export default function PreferencesWizard() {
                   key={b}
                   row
                   icon={<Icon className="h-7 w-7" />}
-                  label={label}
-                  hint={hint}
+                  label={t(label)}
+                  hint={t(hint)}
                   selected={me.budget === b}
                   onClick={() => update({ budget: b })}
                 />
@@ -379,8 +379,8 @@ export default function PreferencesWizard() {
           <div className="space-y-5">
             {(
               [
-                { key: "isScholar", question: "Tu es boursier ?" },
-                { key: "hasCarteSortir", question: "Tu as la Carte Sortir, ou tu y as droit ?" },
+                { key: "isScholar", question: t("Tu es boursier ?") },
+                { key: "hasCarteSortir", question: t("Tu as la Carte Sortir, ou tu y as droit ?") },
               ] as const
             ).filter((q) => q.key !== "hasCarteSortir" || sortir).map(({ key, question }) => (
               <fieldset key={key}>
@@ -391,7 +391,7 @@ export default function PreferencesWizard() {
                       key={String(value)}
                       row
                       icon={value ? <CheckIcon className="h-5 w-5" /> : <CloseIcon className="h-5 w-5" />}
-                      label={value ? "Oui" : "Non"}
+                      label={value ? t("Oui") : t("Non")}
                       selected={me[key] === value}
                       onClick={() => update({ [key]: me[key] === value ? null : value })}
                     />
@@ -400,9 +400,9 @@ export default function PreferencesWizard() {
               </fieldset>
             ))}
             {sortir && <p className="text-xs text-[var(--color-muted)]">
-              La Carte Sortir est un dispositif de Rennes Métropole, sous conditions de ressources.{" "}
+              {t("La Carte Sortir est un dispositif de Rennes Métropole, sous conditions de ressources.")}{" "}
               <a href={CARTE_SORTIR_URL} target="_blank" rel="noreferrer" className="underline">
-                Se renseigner
+                {t("Se renseigner")}
               </a>
             </p>}
           </div>
@@ -416,7 +416,7 @@ export default function PreferencesWizard() {
                 <ChoiceTile
                   key={c}
                   icon={<CategoryIcon category={c} size={32} />}
-                  label={CATEGORIES[c].label}
+                  label={t(CATEGORIES[c].label)}
                   selected={rank >= 0}
                   badge={rank >= 0 && rank < 3 ? rank + 1 : undefined}
                   onClick={() => update({ categories: toggle(me.categories, c) })}
@@ -434,7 +434,7 @@ export default function PreferencesWizard() {
                 <ChoiceTile
                   key={a}
                   icon={<Icon className="h-7 w-7" />}
-                  label={label}
+                  label={t(label)}
                   selected={me.activities.includes(a)}
                   onClick={() => update({ activities: toggle(me.activities, a) })}
                 />
@@ -453,8 +453,8 @@ export default function PreferencesWizard() {
                 className="flex w-full items-start gap-3 p-3 text-left"
                 style={{ borderColor: "var(--color-border)" }}
               >
-                <dt className="w-24 shrink-0 text-sm text-[var(--color-muted)]">{row.label}</dt>
-                <dd className="flex-1 text-sm font-medium">{row.value || "Non renseigné"}</dd>
+                <dt className="w-24 shrink-0 text-sm text-[var(--color-muted)]">{t(row.label)}</dt>
+                <dd className="flex-1 text-sm font-medium">{row.value ? row.value.split(" · ").map((v) => t(v)).join(" · ") : t("Non renseigné")}</dd>
                 <span aria-hidden className="text-[var(--color-muted)]">
                   ›
                 </span>
@@ -474,7 +474,7 @@ export default function PreferencesWizard() {
               {error}{" "}
               {!user && (
                 <Link href="/" className="font-semibold underline">
-                  Retour à l&apos;accueil
+                  {t("Retour à l'accueil")}
                 </Link>
               )}
             </p>
@@ -487,8 +487,7 @@ export default function PreferencesWizard() {
             >
               <TargetIcon className="h-4 w-4 shrink-0" />
               {user?.name && last ? `${user.name}, ` : ""}
-              {matches} bon{matches > 1 ? "s" : ""} plan{matches > 1 ? "s" : ""} correspond
-              {matches > 1 ? "ent" : ""} à ton profil
+              {t(matches > 1 ? "{n} bons plans correspondent à ton profil" : "{n} bon plan correspond à ton profil", { n: matches })}
             </p>
           )}
           <button
@@ -498,14 +497,14 @@ export default function PreferencesWizard() {
             className="sw-btn-primary w-full disabled:opacity-40"
           >
             {saving
-              ? "Enregistrement…"
+              ? t("Enregistrement…")
               : single
-                ? "Enregistrer"
+                ? t("Enregistrer")
                 : last
-                  ? "Voir mes bons plans"
+                  ? t("Voir mes bons plans")
                   : skippable
-                    ? "Passer"
-                    : "Continuer"}
+                    ? t("Passer")
+                    : t("Continuer")}
           </button>
         </div>
       </div>

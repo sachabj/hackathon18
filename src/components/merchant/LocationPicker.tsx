@@ -10,6 +10,7 @@ import BaseMap from "@/components/map/BaseMap";
 import { PinIcon } from "@/components/icons";
 import { MAP_CENTER } from "@/lib/constants";
 import type { Point } from "@/lib/geo";
+import { useT } from "@/lib/i18n";
 
 const STORE_SVG =
   '<svg viewBox="0 0 48 48" width="20" height="20" fill="none" stroke="#FAF9F5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h5l4.5 20h21l4-14H12"/><circle cx="17" cy="36" r="2.5"/><circle cx="32" cy="36" r="2.5"/></svg>';
@@ -38,6 +39,7 @@ export default function LocationPicker({
   value: Point | null;
   onChange: (p: Point) => void;
 }) {
+  const t = useT();
   const [map, setMap] = useState<L.Map | null>(null);
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +57,7 @@ export default function LocationPicker({
   async function locate() {
     setError(null);
     if (!(await ensureLocationConsent(true))) {
-      return setError("Position non partagée : touche la carte à l'emplacement du commerce.");
+      return setError(t("Position non partagée : touche la carte à l'emplacement du commerce."));
     }
     navigator.geolocation?.getCurrentPosition(
       ({ coords }) => {
@@ -63,7 +65,7 @@ export default function LocationPicker({
         onChange(point);
         map?.setView([point.lat, point.lng], 18);
       },
-      () => setError("Localisation impossible : touche la carte à l'emplacement du commerce."),
+      () => setError(t("Localisation impossible : touche la carte à l'emplacement du commerce.")),
       { enableHighAccuracy: true, timeout: 10_000 },
     );
   }
@@ -80,14 +82,14 @@ export default function LocationPicker({
           >
             <BaseMap />
             <ClickToPlace onChange={onChange} />
-            {value && <Marker position={[value.lat, value.lng]} icon={PIN} title="Mon commerce" />}
+            {value && <Marker position={[value.lat, value.lng]} icon={PIN} title={t("Mon commerce")} />}
           </MapContainer>
         )}
       </div>
       <button type="button" onClick={locate} className="flex items-center gap-1.5 text-sm font-medium" style={{ color: "var(--color-forest)" }}>
-        <PinIcon className="h-4 w-4" /> Je suis dans mon commerce : utiliser ma position
+        <PinIcon className="h-4 w-4" />{" "}{t("Je suis dans mon commerce : utiliser ma position")}
       </button>
-      <LocationNotice>Envoyée chiffrée. Le point choisi devient l&apos;emplacement public de ton commerce.</LocationNotice>
+      <LocationNotice>{t("Envoyée chiffrée. Le point choisi devient l'emplacement public de ton commerce.")}</LocationNotice>
       {error && (
         <p role="alert" className="text-sm text-red-600">
           {error}

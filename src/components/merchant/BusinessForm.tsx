@@ -7,6 +7,7 @@ import type { Point } from "@/lib/geo";
 import { BUSINESS_CATEGORIES, registerBusiness } from "@/lib/merchant";
 import type { DealCategory } from "@/lib/types";
 import { buttonClass, inputClass } from "./styles";
+import { useT } from "@/lib/i18n";
 
 const LocationPicker = dynamic(() => import("./LocationPicker"), {
   ssr: false,
@@ -15,6 +16,7 @@ const LocationPicker = dynamic(() => import("./LocationPicker"), {
 
 /** Première visite d'un commerçant : décrire son commerce. */
 export default function BusinessForm({ onDone }: { onDone: () => void }) {
+  const t = useT();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [category, setCategory] = useState<DealCategory>("restaurant");
@@ -24,7 +26,7 @@ export default function BusinessForm({ onDone }: { onDone: () => void }) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!position) return setError("Place ton commerce sur la carte.");
+    if (!position) return setError(t("Place ton commerce sur la carte."));
     setSaving(true);
     setError(null);
     try {
@@ -39,28 +41,28 @@ export default function BusinessForm({ onDone }: { onDone: () => void }) {
   return (
     <form onSubmit={submit} className="space-y-4">
       <p className="text-sm text-[var(--color-muted)]">
-        Décris ton commerce pour publier des offres officielles. L&apos;emplacement ne pourra plus être modifié.
+        {t("Décris ton commerce pour publier des offres officielles. L'emplacement ne pourra plus être modifié.")}
       </p>
       <label className="block text-sm font-medium">
-        Nom du commerce
+        {t("Nom du commerce")}
         <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} minLength={2} maxLength={80} required />
       </label>
       <label className="block text-sm font-medium">
-        Adresse <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
+        {t("Adresse")}{" "}<span className="font-normal text-[var(--color-muted)]">{t("(facultatif)")}</span>
         <input className={inputClass} value={address} onChange={(e) => setAddress(e.target.value)} maxLength={200} />
       </label>
       <label className="block text-sm font-medium">
-        Activité
+        {t("Activité")}
         <select className={inputClass} value={category} onChange={(e) => setCategory(e.target.value as DealCategory)}>
           {BUSINESS_CATEGORIES.map((c) => (
             <option key={c} value={c}>
-              {CATEGORIES[c].label}
+              {t(CATEGORIES[c].label)}
             </option>
           ))}
         </select>
       </label>
       <div>
-        <p className="mb-1 text-sm font-medium">Emplacement : touche la carte</p>
+        <p className="mb-1 text-sm font-medium">{t("Emplacement : touche la carte")}</p>
         <LocationPicker value={position} onChange={setPosition} />
       </div>
       {error && (
@@ -69,7 +71,7 @@ export default function BusinessForm({ onDone }: { onDone: () => void }) {
         </p>
       )}
       <button disabled={saving} className={buttonClass}>
-        {saving ? "Enregistrement…" : "Créer mon espace commerçant"}
+        {saving ? t("Enregistrement…") : t("Créer mon espace commerçant")}
       </button>
     </form>
   );

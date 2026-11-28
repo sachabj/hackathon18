@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { METRICS, type Metric, type summarize } from "@/lib/offerStats";
+import { useT } from "@/lib/i18n";
 
 type Row = ReturnType<typeof summarize>["rows"][number];
 
 /** Barres horizontales : une mesure à la fois, offres classées de la plus forte à la plus faible. */
 export default function OfferChart({ rows }: { rows: Row[] }) {
+  const t = useT();
   const [metric, setMetric] = useState<Metric>("favorites");
   const [active, setActive] = useState<string | null>(null);
   const sorted = [...rows].sort((a, b) => b[metric] - a[metric]);
@@ -24,7 +26,7 @@ export default function OfferChart({ rows }: { rows: Row[] }) {
             className="rounded-full py-2"
             style={metric === m ? { backgroundColor: "var(--color-surface)", color: "var(--color-ink)", boxShadow: "0 1px 3px rgb(0 0 0 / 0.1)" } : { color: "var(--color-muted)" }}
           >
-            {METRICS[m].label}
+            {t(METRICS[m].label)}
           </button>
         ))}
       </div>
@@ -43,7 +45,7 @@ export default function OfferChart({ rows }: { rows: Row[] }) {
               <span className="flex items-baseline justify-between gap-2 text-sm">
                 <span className="truncate text-[var(--color-ink)]">
                   {r.offer.title}
-                  {!r.online && <span className="text-[var(--color-muted)]"> · hors ligne</span>}
+                  {!r.online && <span className="text-[var(--color-muted)]">{" "}{t("· hors ligne")}</span>}
                 </span>
                 <span className="font-medium tabular-nums">{r[metric]}</span>
               </span>
@@ -57,7 +59,7 @@ export default function OfferChart({ rows }: { rows: Row[] }) {
               {active === r.offer.id && (
                 <span className="mt-1 block text-xs text-[var(--color-muted)]">
                   {(Object.keys(METRICS) as Metric[])
-                    .map((m) => `${r[m]} ${METRICS[m].label.toLowerCase()}`)
+                    .map((m) => `${r[m]} ${t(METRICS[m].label).toLowerCase()}`)
                     .join(" · ")}
                 </span>
               )}

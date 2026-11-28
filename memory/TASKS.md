@@ -33,7 +33,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Publication | Lieu via Photon, saisie rapide, photo ou texte → formulaire (Gemini ou Claude), photo de preuve, doublons sans IA avec « Voir l'offre » / « Voir mon bon plan » (6, 27, 45, 78) | Matteo, Justin | publication et Gemini essayés (Matteo) ; photo affichée, appareil photo, nouvel écran avec la vraie IA |
 | Réactions et fiabilité | « J'en ai profité » / « Plus dispo », poids des étudiants, tri Hot, sur place à 500 m, « Douteux » puis retrait, jamais sur ses offres (7, 29, 32, 33, 51, 58, 66, 69) | Matteo, Sacha, Justin | 29, 33, 51, 69 |
 | Inscription | Me localiser ou recherche de **n'importe quelle ville de France** (+ 4 villes suivies), transports, voyages, budget, bourse, Carte Sortir (région rennaise seulement), priorités, « Pour toi » (9, 20, 21, 22, 52, 54) | Sacha, Justin | vraie base et téléphone |
-| Langue | Français / anglais : parcours étudiant traduit (connexion, navigation, accueil, recherche, carte, fiche, publication, Ciblés, profil, localisation) ; choix au profil et sur la connexion, retenu sur l'appareil (50) | Sacha | téléphone |
+| Langue | Français / anglais : parcours étudiant, assistant de préférences, espace commerçant et messages d'erreur de la base ; choix au profil et sur la connexion, retenu sur l'appareil ; seule la politique de confidentialité reste en français (50, S6) | Sacha, Justin | téléphone ; changement de langue côté commerçant |
 | Favoris | Par catégorie, dans « Ciblés » (8) ; cœur aussi dans la fenêtre d'un repère et la fiche, synchronisé partout (77) | Anne-Lise | vraie base |
 | Ciblés | Flèches, grades, activité, mes bons plans, boutique et bons à QR code ; aucun accès limité (10, 17b, 42, 43, 44, 46, 47) | Sacha | testé en local seulement |
 | Écoles | Compétition entre écoles : école choisie dans une liste, classement dans « Ciblés » (70) | Justin | 028 et écoles de démo lancées ; à voir sur téléphone |
@@ -58,7 +58,6 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré), vidéo de 40 s (`pitch/demo-16x9.mp4`) | **PDF à recompiler** (`pitch/sharewood.tex` modifié, aucun moteur LaTeX sur ce poste : `cd pitch && latexmk -pdf sharewood.tex`, ou Overleaf) ; répétition (C4) | équipe |
-| 50 | Anglais | EN COURS (Justin) : inscription et espace commerçant ; parcours étudiant et messages d'erreur de la base | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant (politique de confidentialité : S6) | Sacha |
 
 ## 3. 📋 Reste à faire
 

@@ -130,7 +130,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
 ```
 
 ## Conventions de code
-- **Langue (tâche 50)** : textes écrits en français dans `t("…")` / `tr("…")`, traduits par `src/lib/en.ts` ; variables `{n}`. Changer de langue recharge la page. Restent en français : assistant de préférences, espace commerçant, politique de confidentialité.
+- **Langue (tâche 50)** : textes écrits en français dans `t("…")` / `tr("…")`, traduits par `src/lib/en.ts` ; variables `{n}`. Changer de langue recharge la page. Reste en français : la politique de confidentialité.
 - Message écrit par la base (`raise exception`) montré à un étudiant : `dbMessage(error.message)` (`lib/i18n.ts`) + traduction dans `en.ts`.
 - **Villes (tâche 52)** : toute ville choisie devient une ligne de `zones` via la RPC `ensure_zone(nom, département, lat, lng, rayon)` (027 : id « lyon-69 », existante si même nom à moins de 10 km, 20 nouvelles par compte et par jour). `ZONES` (constants) ne sert plus qu'aux 3 villes de la démo et aux raccourcis.
 - **Écrans** : téléphone par défaut ; ordinateur à partir de `lg:` (1024 px). `NavBar` passe en haut (hauteur 4 rem, marges de `main` dans `globals.css`, classes `.sw-nav` / `.sw-main`) et les en-têtes de page (logo + Flèches) sont masqués (`lg:hidden`). Recherche : liste à gauche (défile), carte à droite sur `100dvh - 4rem`. Accueil et Favoris en grille ; Partager, Profil, Compte, préférences en colonne `lg:max-w-2xl` ; fiches centrées.

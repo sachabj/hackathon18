@@ -10,15 +10,17 @@ import { buttonClass } from "@/components/merchant/styles";
 import { PlusIcon, ProhibitedIcon, UndoIcon } from "@/components/icons";
 import { publishOffer, setNearbyDealEnded, setOfferEnded, updateOffer } from "@/lib/merchant";
 import { useDashboard } from "@/lib/useDashboard";
+import { useT } from "@/lib/i18n";
 
 export default function Page() {
+  const t = useT();
   const { data, error, busy, act, reload } = useDashboard();
   /** "new" = formulaire de création ouvert ; sinon id de l'offre en cours de modification. */
   const [editing, setEditing] = useState<string | null>(null);
   const business = data?.business;
 
   return (
-    <MerchantPage title="Mes offres" business={data ? data.business : undefined} error={error}>
+    <MerchantPage title={t("Mes offres")} business={data ? data.business : undefined} error={error}>
       {data && business && (
         <>
           <VoucherCheck />
@@ -35,12 +37,12 @@ export default function Page() {
               />
             ) : (
               <button type="button" onClick={() => setEditing("new")} className={`${buttonClass} flex items-center justify-center gap-1.5`}>
-                <PlusIcon className="h-4 w-4" /> Publier une offre officielle
+                <PlusIcon className="h-4 w-4" />{" "}{t("Publier une offre officielle")}
               </button>
             )}
           </div>
 
-          {data.offers.length === 0 && <p className="mt-4 text-sm text-[var(--color-muted)]">Aucune offre pour le moment.</p>}
+          {data.offers.length === 0 && <p className="mt-4 text-sm text-[var(--color-muted)]">{t("Aucune offre pour le moment.")}</p>}
           <ul className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
             {data.offers.map((offer) => (
               <li key={offer.id}>
@@ -70,11 +72,11 @@ export default function Page() {
           </ul>
 
           <section className="mt-8">
-            <h2 className="text-lg">Signalés près de chez moi</h2>
+            <h2 className="text-lg">{t("Signalés près de chez moi")}</h2>
             <p className="mt-1 text-sm text-[var(--color-muted)]">
-              Bons plans publiés par des étudiants à moins de 75 m, dans ma catégorie. Retire ceux qui n&apos;existent plus.
+              {t("Bons plans publiés par des étudiants à moins de 75 m, dans ma catégorie. Retire ceux qui n'existent plus.")}
             </p>
-            {data.nearby.length === 0 && <p className="mt-2 text-sm text-[var(--color-muted)]">Aucun signalement.</p>}
+            {data.nearby.length === 0 && <p className="mt-2 text-sm text-[var(--color-muted)]">{t("Aucun signalement.")}</p>}
             <ul className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-2">
               {data.nearby.map((deal) => (
                 <li key={deal.id} className="sw-card p-3">
@@ -89,11 +91,11 @@ export default function Page() {
                   >
                     {deal.ended_by_merchant ? (
                       <>
-                        <UndoIcon className="h-4 w-4" /> Annuler le retrait
+                        <UndoIcon className="h-4 w-4" />{" "}{t("Annuler le retrait")}
                       </>
                     ) : (
                       <>
-                        <ProhibitedIcon className="h-4 w-4" /> N&apos;existe plus
+                        <ProhibitedIcon className="h-4 w-4" />{" "}{t("N'existe plus")}
                       </>
                     )}
                   </button>

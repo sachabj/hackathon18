@@ -11,10 +11,10 @@ import {
 } from "@/lib/constants";
 import { isTraveler, type StudentProfile } from "@/lib/matching";
 import { carteSortirArea, useZones, zoneById } from "@/lib/zones";
-import { useT } from "@/lib/i18n";
+import { tr, useT } from "@/lib/i18n";
 
 const yesNo = (value: boolean | null, label: string) =>
-  value === null ? "" : `${label} : ${value ? "oui" : "non"}`;
+  value === null ? "" : tr(value ? "{label} : oui" : "{label} : non", { label: tr(label) });
 
 /** Une ligne par étape du parcours (`step` = id de l'étape) : récapitulatif et profil. */
 export function preferenceRows(me: StudentProfile) {
@@ -25,7 +25,7 @@ export function preferenceRows(me: StudentProfile) {
       value: [...me.zoneIds]
         .sort((a, b) => Number(b === me.homeZoneId) - Number(a === me.homeZoneId))
         .map((id) => zoneById(id)?.name ?? id)
-        .map((name, i) => (i === 0 && me.homeZoneId ? `${name} (principale)` : name))
+        .map((name, i) => (i === 0 && me.homeZoneId ? tr("{name} (principale)", { name }) : name))
         .join(" · "),
     },
     {

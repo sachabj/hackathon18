@@ -630,3 +630,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Question posée (CLAUDE.md) : que faire du contenu chiffré de la diapo 1 (3 cartes « 12 € / kebab à 5 € / pourquoi ») — réponse retenue : diapo plus sobre, sans illustration chiffrée. Diapos 2 à 7 inchangées.
 - `pitch/sharewood.tex` : les 3 cartes de la diapo « 1. INTRODUCTION » remplacées par une phrase sobre centrée (plus de montant ni d'exemple de commerce) ; note d'orateur (`\note{...}`) réécrite dans le même sens.
 - **PDF pas recompilé** : aucun moteur LaTeX (`latexmk`/`pdflatex`) disponible sur ce poste. `pitch/sharewood.pdf` reste donc l'ancienne version jusqu'à une recompilation (`cd pitch && latexmk -pdf sharewood.tex`, ou Overleaf / VS Code + LaTeX Workshop, voir `pitch/README.md`).
+
+### 2026-11-28 06h35 — Justin (anglais : inscription et commerçant, tâche 50)
+- Assistant de préférences, espace commerçant (paiement, bons, statistiques), récapitulatif des préférences et lien « Compte » passés par `t()` ; erreurs de `lib/merchant` traduites ; environ 140 textes ajoutés à `en.ts`. Fichiers de Sacha touchés. 032 lancée par Justin (vérifiée par sonde).
+- Vérifié : tsc, lint, build ; navigateur sans écran en anglais (offres, formulaire, paiement, statistiques, compte, 8 étapes de l'inscription). Pas vu en français à l'écran ni sur téléphone.

@@ -4,6 +4,7 @@ import type { Point } from "./geo";
 import { zoneAround } from "./zones";
 import { getSupabase } from "./supabase/client";
 import type { BoostPayment, Business, Deal, DealCategory, OfferStats } from "./types";
+import { dbMessage, dateLocale } from "./i18n";
 
 /** Catégories possibles pour un commerce (même liste que la contrainte SQL). */
 export const BUSINESS_CATEGORIES: DealCategory[] = ["restaurant", "supermarket", "activity", "sport"];
@@ -32,7 +33,7 @@ function check<T>(result: { data: T; error: { code?: string; message: string } |
   if (["PGRST205", "PGRST202", "42P01"].includes(error.code ?? "")) {
     throw new Error("La base de données n'est pas à jour : lancer supabase/migrations/005_merchant.sql.");
   }
-  throw new Error(error.message);
+  throw new Error(dbMessage(error.message));
 }
 
 export async function fetchDashboard(): Promise<Dashboard> {
@@ -121,13 +122,13 @@ export async function setNearbyDealEnded(dealId: string, ended: boolean) {
 
 // ---------- Mise en avant payante (paiement simulé, migration 031) ----------
 export const formatPrice = (cents: number) =>
-  (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
+  (cents / 100).toLocaleString(dateLocale(), { style: "currency", currency: "EUR" });
 
 function paymentError(error: { code?: string; message: string }) {
   return new Error(
     ["PGRST202", "PGRST205", "42P01"].includes(error.code ?? "")
       ? "La base de données n'est pas à jour : lancer supabase/migrations/031_boost_payments.sql."
-      : error.message,
+      : dbMessage(error.message),
   );
 }
 
@@ -157,7 +158,7 @@ export interface Voucher {
 
 function voucherError(error: { code?: string; message: string }) {
   return new Error(
-    error.code === "PGRST202" ? "La base de données n'est pas à jour : lancer supabase/migrations/030_voucher_check.sql." : error.message,
+    error.code === "PGRST202" ? "La base de données n'est pas à jour : lancer supabase/migrations/030_voucher_check.sql." : dbMessage(error.message),
   );
 }
 

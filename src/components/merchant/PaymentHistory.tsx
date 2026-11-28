@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { fetchPayments, formatPrice } from "@/lib/merchant";
 import type { BoostPayment } from "@/lib/types";
 import Receipt, { formatDay } from "./Receipt";
+import { useT } from "@/lib/i18n";
 
 export default function PaymentHistory() {
+  const t = useT();
   const [payments, setPayments] = useState<BoostPayment[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,14 +29,14 @@ export default function PaymentHistory() {
 
   return (
     <section className="mt-6">
-      <h2 className="text-lg">Mes paiements</h2>
+      <h2 className="text-lg">{t("Mes paiements")}</h2>
       {error && (
         <p role="alert" className="mt-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">
           {error}
         </p>
       )}
-      {!payments && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">Chargement…</p>}
-      {payments?.length === 0 && <p className="mt-2 text-sm text-[var(--color-muted)]">Aucun paiement pour le moment.</p>}
+      {!payments && !error && <p className="mt-2 text-sm text-[var(--color-muted)]">{t("Chargement…")}</p>}
+      {payments?.length === 0 && <p className="mt-2 text-sm text-[var(--color-muted)]">{t("Aucun paiement pour le moment.")}</p>}
       <ul className="mt-2 space-y-2">
         {payments?.map((payment) => (
           <li key={payment.id}>

@@ -5,6 +5,7 @@ import { CATEGORIES, PRICE_LEVELS, TITLE_MAX } from "@/lib/constants";
 import { BUSINESS_CATEGORIES, type OfferInput } from "@/lib/merchant";
 import type { Deal, DealCategory } from "@/lib/types";
 import { buttonClass, inputClass } from "./styles";
+import { useT } from "@/lib/i18n";
 
 /** Date ISO → valeur d'un champ date (jour local). */
 const toDay = (iso: string) => new Date(iso).toLocaleDateString("sv-SE");
@@ -21,6 +22,7 @@ export default function OfferForm({
   onSubmit: (input: OfferInput, flash: boolean) => Promise<void>;
   onCancel: () => void;
 }) {
+  const t = useT();
   const [title, setTitle] = useState(offer?.title ?? "");
   const [description, setDescription] = useState(offer?.description ?? "");
   const [category, setCategory] = useState<DealCategory>(offer?.category ?? defaultCategory);
@@ -56,49 +58,49 @@ export default function OfferForm({
 
   return (
     <form onSubmit={submit} className="sw-card space-y-3 p-3" style={{ borderColor: "var(--color-forest)", borderWidth: 2 }}>
-      <h3 className="font-medium">{offer ? "Modifier l'offre" : "Nouvelle offre officielle"}</h3>
+      <h3 className="font-medium">{offer ? t("Modifier l'offre") : t("Nouvelle offre officielle")}</h3>
       <label className="block text-sm font-medium">
-        Titre
-        <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Menu étudiant à 6,50 €" maxLength={TITLE_MAX} required />
+        {t("Titre")}
+        <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("Menu étudiant à 6,50 €")} maxLength={TITLE_MAX} required />
       </label>
       <label className="block text-sm font-medium">
-        Détails <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
+        {t("Détails")}{" "}<span className="font-normal text-[var(--color-muted)]">{t("(facultatif)")}</span>
         <textarea className={inputClass} rows={2} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={500} />
       </label>
       <label className="block text-sm font-medium">
-        Catégorie
+        {t("Catégorie")}
         <select className={inputClass} value={category} onChange={(e) => setCategory(e.target.value as DealCategory)}>
           {BUSINESS_CATEGORIES.map((c) => (
             <option key={c} value={c}>
-              {CATEGORIES[c].label}
+              {t(CATEGORIES[c].label)}
             </option>
           ))}
         </select>
       </label>
       <div>
         <label className="block text-sm font-medium">
-          Gamme de prix
+          {t("Gamme de prix")}
           <select className={inputClass} value={priceLevel} onChange={(e) => setPriceLevel(e.target.value)}>
-            <option value="">Non précisée</option>
+            <option value="">{t("Non précisée")}</option>
             {PRICE_LEVELS.map((p) => (
               <option key={p.value} value={p.value}>
-                {p.label}
+                {t(p.label)}
               </option>
             ))}
           </select>
         </label>
       </div>
       <label className="block text-sm font-medium">
-        Dernier jour <span className="font-normal text-[var(--color-muted)]">(facultatif)</span>
+        {t("Dernier jour")}{" "}<span className="font-normal text-[var(--color-muted)]">{t("(facultatif)")}</span>
         <input type="date" className={inputClass} value={lastDay} min={toDay(new Date().toISOString())} onChange={(e) => setLastDay(e.target.value)} />
       </label>
       {!offer && (
         <label className="flex items-start gap-2 text-sm">
           <input type="checkbox" className="mt-1" checked={flash} onChange={(e) => setFlash(e.target.checked)} />
           <span>
-            <span className="font-medium">Offre flash</span>
+            <span className="font-medium">{t("Offre flash")}</span>
             <span className="block text-[var(--color-muted)]">
-              Pendant 1 h, seuls les étudiants qui ont l&apos;Accès Avant-Première la voient.
+              {t("Pendant 1 h, seuls les étudiants qui ont l'Accès Avant-Première la voient.")}
             </span>
           </span>
         </label>
@@ -109,10 +111,10 @@ export default function OfferForm({
         </p>
       )}
       <button disabled={saving} className={buttonClass}>
-        {saving ? "Enregistrement…" : offer ? "Enregistrer" : "Publier l'offre"}
+        {saving ? t("Enregistrement…") : offer ? t("Enregistrer") : t("Publier l'offre")}
       </button>
       <button type="button" onClick={onCancel} className="w-full py-1 text-sm font-medium text-[var(--color-muted)]">
-        Annuler
+        {t("Annuler")}
       </button>
     </form>
   );
