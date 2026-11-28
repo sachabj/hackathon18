@@ -1,5 +1,6 @@
 // Impact communautaire et parrainage (migration 022). Les totaux et les Flèches sont calculés par la base.
 // Sans la migration, les lectures renvoient null (rien n'est affiché) et les enregistrements sont ignorés.
+import { dbMessage } from "./i18n";
 import { getSupabase } from "./supabase/client";
 
 /** Montants affichés ; la base applique les mêmes (migration 022). */
@@ -79,7 +80,7 @@ export async function sendSupportMessage(kind: "bug" | "help", message: string) 
   throw new Error(
     error.code === "PGRST205" || error.code === "42P01"
       ? "La base de données n'est pas à jour : lancer supabase/migrations/022_profile_impact_referral.sql."
-      : error.message,
+      : dbMessage(error.message),
   );
 }
 

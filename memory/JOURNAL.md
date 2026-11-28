@@ -606,3 +606,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 05h50 — Justin (catégorie « Mise en service »)
 - `TASKS.md` : nouvelle partie « Mise en service » (S1 à S10) ; lignes périmées corrigées (026, 027, 029 déjà lancées, 71 déplacée dans « Déjà fait »). Sonde en lecture : 031 présente sur la vraie base ; déploiement encore à faire (C6). Aucun code modifié.
+
+### 2026-11-28 06h — Justin (erreurs de la base en anglais, tâche 50)
+- `dbMessage()` (`lib/i18n.ts`), utilisé par `engagement`, `rewards`, `zones`, `community` (aide), `reports` ; 14 traductions dans `en.ts` (domaine de Sacha). Les messages de l'espace commerçant restent en français.
+- Vérifié : tsc, lint, build ; chaque message étudiant des migrations a sa traduction. Pas vu à l'écran.

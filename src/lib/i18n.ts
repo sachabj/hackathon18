@@ -41,6 +41,12 @@ function translate(lang: Lang, fr: string, vars?: Vars) {
 /** Traduction hors composant (messages calculés après le chargement : notifications, raisons…). */
 export const tr = (fr: string, vars?: Vars) => translate(getLang(), fr, vars);
 
+/** Message d'erreur écrit par la base (en français) ; un message inconnu est rendu tel quel. */
+export function dbMessage(message: string) {
+  const missing = /^Flèches insuffisantes : il t'en manque (\d+)\.$/.exec(message);
+  return missing ? tr("Flèches insuffisantes : il t'en manque {n}.", { n: missing[1] }) : tr(message);
+}
+
 /** Langue courante ; « fr » pendant le rendu serveur puis l'hydratation (pas de décalage). */
 export function useLang(): Lang {
   return useSyncExternalStore(

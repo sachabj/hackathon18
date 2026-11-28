@@ -1,5 +1,6 @@
 // Villes (zones) : les trois de la démo plus toutes celles choisies par les étudiants (migration 027).
 // Responsable : Sacha (tâche 52).
+import { dbMessage } from "./i18n";
 import { useEffect, useSyncExternalStore } from "react";
 import { ZONES } from "./constants";
 import { distanceKm, type Point } from "./geo";
@@ -160,7 +161,7 @@ export async function ensureZone(city: City): Promise<Zone> {
     throw new Error(
       error.code === "PGRST202"
         ? "La base de données n'est pas à jour : lancer supabase/migrations/027_any_city.sql."
-        : error.message,
+        : dbMessage(error.message),
     );
   }
   const zone = fromRow(data as Row);

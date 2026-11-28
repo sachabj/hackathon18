@@ -1,4 +1,5 @@
 // Boutique de récompenses. Prix, solde et bons sont gérés par la base (supabase/migrations/017_rewards.sql).
+import { dbMessage } from "./i18n";
 import { announce } from "./arrows";
 import { getSupabase } from "./supabase/client";
 
@@ -56,7 +57,7 @@ export async function fetchShop() {
 
 export async function redeemReward(rewardId: string) {
   const { data, error } = await getSupabase().rpc("redeem_reward", { p_reward_id: rewardId });
-  if (error) throw new Error(error.message);
+  if (error) throw new Error(dbMessage(error.message));
   announce(); // le solde a changé
   return data as UserReward;
 }

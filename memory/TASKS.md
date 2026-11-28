@@ -58,7 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | 65 | Vraies offres | 54 offres importées sur la vraie base (événements, aides, Intermarché), badge « Source officielle » | Burger King, McDonald's, Carrefour, Super U, Auchan non publiés (offres non confirmées) | Justin |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), vidéo de 40 s (`pitch/demo-16x9.mp4`) | répétition (C4) | équipe |
 | 42 | Récompenses | boutique, échanges, bons validés par le commerçant (« Valider un bon », migration 030) | « Avant-Première » sans offre flash ; aucun tirage de tombola | Sacha |
-| 50 | Anglais | EN COURS (Justin) : messages d’erreur de la base ; parcours étudiant | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant, messages d'erreur de la base (politique de confidentialité : S6) | Sacha |
+| 50 | Anglais | parcours étudiant et messages d'erreur de la base | restent en français : assistant de préférences (sauf la recherche de ville), espace commerçant (politique de confidentialité : S6) | Sacha |
 
 ## 3. 📋 Reste à faire
 

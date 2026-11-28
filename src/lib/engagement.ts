@@ -8,7 +8,7 @@ import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 import { fetchDealTrust } from "./trust";
 import type { Deal, DealAudience, DealTrust, DealWithVotes, Vote } from "./types";
 import { normalizeDeal } from "./legacy";
-import { tr } from "./i18n";
+import { dbMessage, tr } from "./i18n";
 
 type DbError = { code?: string; message: string };
 
@@ -19,7 +19,7 @@ function check<T>(result: { data: T; error: DbError | null }): T {
   if (["PGRST205", "PGRST202", "42P01"].includes(error.code ?? "")) {
     throw new Error("La base de données n'est pas à jour : lancer supabase/migrations/007_engagement.sql.");
   }
-  throw new Error(error.message);
+  throw new Error(dbMessage(error.message));
 }
 
 export async function currentUserId() {
@@ -148,7 +148,7 @@ export async function vote(dealId: string, value: 1 | -1, position: Point | null
     return announce(position ? { ...(notice ?? { title: tr("Réaction enregistrée") }), secure: true } : notice);
   }
   // Sans la migration 016 (fonction absente) : vote simple, sans Flèches.
-  if (error.code !== "PGRST202") throw new Error(error.message);
+  if (error.code !== "PGRST202") throw new Error(dbMessage(error.message));
   check(await supabase.from("votes").upsert({ deal_id: dealId, value }, { onConflict: "deal_id,user_id" }));
 }
 

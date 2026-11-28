@@ -3,6 +3,7 @@
 // Signaler un bon plan (tâche 71) : motif + description, distinct de « Plus dispo » (qui mesure la disponibilité).
 // L'offre signalée est masquée pour la personne qui signale, partout (accueil, recherche, carte, favoris).
 // Table `deal_reports` (migration 029) ; secours sur l'appareil si elle manque, pour que l'offre reste masquée.
+import { dbMessage } from "./i18n";
 import { currentUserId } from "./engagement";
 import { getSupabase, isSupabaseConfigured } from "./supabase/client";
 
@@ -69,7 +70,7 @@ export async function reportDeal(dealId: string, reason: ReportReason, details: 
   // 23505 : déjà signalé par ce compte, c'est bien enregistré.
   if (!error || error.code === "23505") return { sent: true };
   // Limite du jour atteinte (message de la base) : on le montre tel quel.
-  if (error.code === "P0001") throw new Error(error.message);
+  if (error.code === "P0001") throw new Error(dbMessage(error.message));
   return { sent: false };
 }
 
