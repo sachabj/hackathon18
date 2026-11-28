@@ -610,3 +610,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 06h — Justin (erreurs de la base en anglais, tâche 50)
 - `dbMessage()` (`lib/i18n.ts`), utilisé par `engagement`, `rewards`, `zones`, `community` (aide), `reports` ; 14 traductions dans `en.ts` (domaine de Sacha). Les messages de l'espace commerçant restent en français.
 - Vérifié : tsc, lint, build ; chaque message étudiant des migrations a sa traduction. Pas vu à l'écran.
+
+### 2026-11-28 06h05 — Justin (prix des offres sourcées, tâche 12)
+- Les 14 offres sourcées de `reset_demo.sql` comparées à leurs sources : **aucun écart**, rien à corriger ni à relancer. Pages officielles lues : Crous (repas à 1 €, horaires), Grand Logis, Arvor, musée des Beaux-Arts, STAR (3 offres), Pass'Sport, DSE. Via la recherche web (pages non lisibles par script) : Cinéville Bruz, Carte Avantage Jeune, TER BreizhGo ; date du 15/10 du Pass'Sport confirmée sur education.gouv.fr d'après la recherche.
+- Non retrouvé sur la page : « plat + 2 périphériques avec Izly » (composition du repas Crous). Aucun code modifié.
