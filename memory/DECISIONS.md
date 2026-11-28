@@ -586,3 +586,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Pourquoi** : demande d'Anne-Lise — les 3 vidéos démarrant toutes en même temps à l'ouverture du PDF rendaient la diapo illisible pendant l'oral.
 - **Limite inchangée** : toujours seulement dans Adobe Acrobat / Adobe Reader (voir la décision du même jour sur les vidéos de la diapo 3) ; sans Acrobat, la 1ère image fixe s'affiche, sans boutons.
 - **Qui** : Anne-Lise
+
+## 2026-11-28 — Diapo 1 du pitch : le paradoxe (tâche 15)
+- **Décision** : la diapo 1 ouvre sur « Hyperconnectés, mais mal informés » en deux colonnes opposées, sans montant ni commerce nommé (comme la version d'Anne-Lise qu'elle remplace) ; la note d'orateur est le texte de Matteo, sans présentation de l'équipe (les noms restent écrits en haut de la diapo).
+- **Écartés** : trois cartes de constats ; version minimaliste (titre et phrase seuls).
+- **Qui** : Matteo (réponses aux questions de cadrage) ; Anne-Lise à prévenir

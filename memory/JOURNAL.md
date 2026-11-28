@@ -702,3 +702,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (Flèches de test)
 - Requête SQL fournie pour créditer 300 Flèches à un compte de test (ligne `welcome` dans `arrow_events`) et essayer la boutique ; à lancer dans le SQL Editor, puis à retirer avant la démo (compte dans le classement des écoles). Aucun code modifié.
+
+### 2026-11-28 — Matteo (diapo 1 du pitch)
+- Diapo « 1. INTRODUCTION » remplacée : titre « Hyperconnectés, mais mal informés. », deux cartes face à face (« Ce que nous sommes » / « Ce qui se passe ») séparées par ≠, phrase en or « Rater un bon plan, c'est payer plus cher sans même le savoir. » ; bandeau (logo, nom, équipe) inchangé ; note d'orateur = texte de Matteo mot pour mot.
+- Fichier : `pitch/sharewood.tex`. **PDF pas recompilé** (aucun moteur LaTeX sur ce poste).

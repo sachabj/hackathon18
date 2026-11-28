@@ -58,7 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
-| 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 sobre (sans exemple chiffré, texte retravaillé pour ne plus couper « question »), diapo 3 avec 3 boucles vidéo intégrées au PDF, lancées **au clic** (boutons lecture/pause par téléphone, pas d'autoplay simultané) (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | **PDF pas recompilé depuis les derniers changements de Claude** (aucun moteur LaTeX sur ce poste) ; vérifier le rendu diapo 1 et que les 3 boutons de la diapo 3 apparaissent et lancent bien chaque vidéo **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
+| 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 : le paradoxe « Hyperconnectés, mais mal informés » en deux colonnes (Matteo, remplace la version d'Anne-Lise), diapo 3 avec 3 boucles vidéo intégrées au PDF, lancées **au clic** (boutons lecture/pause par téléphone, pas d'autoplay simultané) (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | **PDF pas recompilé depuis les derniers changements de Claude** (aucun moteur LaTeX sur ce poste) ; vérifier le rendu diapo 1 et que les 3 boutons de la diapo 3 apparaissent et lancent bien chaque vidéo **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
 
 ## 3. 📋 Reste à faire
 
@@ -66,7 +66,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | # | Action | Qui |
 |---|---|---|
 | C9 | Appliquer la réduction des offres inventées : `node scripts/build_demo_sql.mjs`, lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés), puis contrôler le site | Justin |
-| C3b | Recompiler `pitch/sharewood.pdf` (changements diapos 1 et 3 non recompilés par Claude, pas de moteur LaTeX sur son poste) | équipe |
+| C3b | Recompiler `pitch/sharewood.pdf` (changements diapos 1 et 3 non recompilés par Claude, pas de moteur LaTeX sur son poste) ; diapo 1 refaite par Matteo : vérifier que les textes tiennent dans les deux cartes | équipe |
 | C4 | **Répéter le pitch** ; ouvrir le PDF avec **Adobe Acrobat Reader installé** et vérifier que les 3 boucles vidéo de la diapo 3 jouent (sinon, lancer `pitch/demo-16x9.mp4` à la place, 40 s sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
