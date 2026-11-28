@@ -467,3 +467,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix techniques** : un événement de navigateur transmet les réactions aux listes affichées ; sans la 025, l'assistant reste sans limite ; une autre erreur du compteur bloque l'analyse.
 - **Écartés** : cacher les favoris terminés ; limite gardée en mémoire du serveur ; titres à 80 ; réordonner le fil sous le doigt.
 - **Qui** : Justin (réponses aux questions de cadrage) ; ordre du fil inchangé : choix de Claude, à confirmer
+
+## 2026-11-28 03h45 — Tâches importantes (11, 55, 57, 60, 62)
+- **Décisions** : Justin prend les 5 tâches (dont celles de Sacha et Matteo) ; même gain pour les deux réactions : +10 sur place, +3 sans lieu ; position simulée limitée à la notification (la réaction utilise la vraie position) ; après publication d'une offre sans lieu, sa fiche s'ouvre.
+- **Choix de Claude, à confirmer** : pendant une recherche, la carte se recadre sur les résultats ; simulation rangée dans un groupe « Démonstration » du profil ; la notification se ferme après la réaction.
+- **Écartés** : position simulée valable pour les Flèches (triche possible) ; +5 / +5 sans lieu ; garder la page Recherche telle quelle après publication.
+- **Qui** : Justin (réponses aux questions de cadrage)

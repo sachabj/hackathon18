@@ -1,11 +1,12 @@
 "use client";
 
 // Onglet « Recherche ». Carte : Justin · Recherche, filtres et tri Hot : Sacha / Matteo
-// La recherche (déplacée depuis l'Accueil) remplace le fil « Hot » par ses résultats ; la carte,
-// elle, montre toujours toutes les offres localisées et se centre sur celle qu'on touche dans une liste.
+// La recherche remplace le fil « Hot » par ses résultats, et la carte n'affiche alors que les offres trouvées (tâche 60) ;
+// elle se centre sur celle qu'on touche dans une liste. `?offre=<id>` (après une publication, tâche 62) montre une offre.
 import ArrowBadge from "@/components/arrows/ArrowBadge";
 import Link from "next/link";
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import DealSheet from "@/components/deal/DealSheet";
 import DealCard from "@/components/feed/DealCard";
 import SearchFilters from "@/components/feed/SearchFilters";
 import DealsMap from "@/components/map/DealsMapLoader";
@@ -40,6 +41,20 @@ export default function Page() {
   const [chosen, setChosen] = useState<Partial<Filters>>({});
   /** Offre touchée dans une liste : la carte s'y centre et la met en avant. */
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  /** Offre à montrer, lue dans l'adresse (`?offre=`), en attendant le chargement des offres. */
+  const [wanted, setWanted] = useState<string | null>(null);
+  /** Offre sans lieu demandée par l'adresse : sa fiche est ouverte. */
+  const [sheet, setSheet] = useState<DealWithVotes | null>(null);
+
+  // Relu à chaque arrivée sur la page (Next la conserve) ; la fiche ouverte est refermée en partant.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- lu dans l'adresse après le montage (page statique)
+    setWanted(new URLSearchParams(window.location.search).get("offre"));
+    return () => {
+      setWanted(null);
+      setSheet(null);
+    };
+  }, []);
 
   const me = profile?.onboarded ? toStudentProfile(profile, preferences) : null;
   const ranked: Item[] = me ? rankDeals(deals, me) : deals.map((deal) => ({ deal }));
@@ -51,9 +66,6 @@ export default function Page() {
       (hot.get(b.deal.id) ?? 0) - (hot.get(a.deal.id) ?? 0) ||
       b.deal.created_at.localeCompare(a.deal.created_at),
   );
-  // La carte montre toujours toutes les offres localisées, pour comparer les distances en cliquant dans une liste.
-  const mapDeals = shown.map((r) => r.deal).filter((d) => d.scope === "local");
-
   const searching = queryWords(query).length > 0;
 
   // « pizza pas cher » : « pizza » est cherché, « pas cher » active le filtre de prix.
@@ -85,8 +97,24 @@ export default function Page() {
     close: withTravel(applyFilters(matched.close, filters, origin)),
   };
   const found = results ? results.exact.length + results.close.length : 0;
+  // Sur la carte : les offres localisées du fil, ou seulement celles trouvées pendant une recherche (tâche 60).
+  const mapDeals = (results ? [...results.exact, ...results.close] : shown)
+    .map((r) => r.deal)
+    .filter((d) => d.scope === "local" && d.lat !== null && d.lng !== null);
   const hiddenCount = matched ? matched.exact.length + matched.close.length - found : 0;
   const busy = loading || loadingProfile;
+
+  // Offre demandée par l'adresse : repère choisi sur la carte, ou fiche si elle est sans lieu. Au retour sur la page,
+  // la liste encore affichée peut précéder la publication : on attend que l'offre y apparaisse.
+  useEffect(() => {
+    const deal = wanted ? deals.find((d) => d.id === wanted) : undefined;
+    if (!deal) return;
+    /* eslint-disable react-hooks/set-state-in-effect -- action unique à l'arrivée des offres */
+    setWanted(null);
+    if (deal.lat !== null && deal.lng !== null) setSelectedId(deal.id);
+    else setSheet(deal);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, [wanted, deals]);
   // Tâche 75 : cartes en cascade au chargement, en passant du fil à la recherche et à chaque changement de filtre.
   const cascade = useCascade<HTMLElement>(`${busy}|${query.trim() === ""}|${JSON.stringify(chosen)}`);
 
@@ -201,8 +229,9 @@ export default function Page() {
       </div>
 
       <div className="h-[40dvh] min-h-64 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-auto lg:min-h-0">
-        <DealsMap deals={mapDeals} homeZoneId={me?.homeZoneId} savedPosition={me?.position} selectedId={selectedId} />
+        <DealsMap deals={mapDeals} homeZoneId={me?.homeZoneId} savedPosition={me?.position} selectedId={selectedId} fitResults={!!results} />
       </div>
+      {sheet && <DealSheet deal={sheet} onClose={() => setSheet(null)} />}
 
       <section ref={cascade} className="px-4 py-4 lg:relative lg:col-start-1 lg:row-start-2 lg:overflow-y-auto lg:pt-1">
         {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
@@ -220,6 +249,7 @@ export default function Page() {
                   onReset={filtering ? () => setChosen(defaults) : undefined}
                 />
                 <p role="status" className="text-sm text-[var(--color-muted)]">
+                  {found > 0 && `Sur la carte : ${mapDeals.length > 0 ? `${mapDeals.length} offre${mapDeals.length > 1 ? "s" : ""} trouvée${mapDeals.length > 1 ? "s" : ""}` : "aucune (offres sans lieu précis)"}. `}
                   {found === 0 && hiddenCount > 0
                     ? `Aucun résultat avec ces filtres (${hiddenCount} sans eux).`
                     : results.exact.length > 0

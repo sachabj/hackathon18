@@ -40,7 +40,8 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Commerçant | Offres, retrait, statistiques, mise en avant, offres d'étudiants voisines (13) | Justin | vraie base |
 | Ordinateur | Navigation en haut, liste et carte côte à côte, colonnes (48) | Justin | vu avec un faux Supabase seulement |
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) | Matteo, Justin | — |
-| Défauts | D3 à D5, D7 à D9, D11 à D14 (76) : voir partie 4 | Justin | vraie base et téléphone ; migration 025 |
+| Défauts | D3 à D5, D7 à D9, D11 à D14 (76) : voir partie 4 | Justin | vraie base et téléphone |
+| Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone ; **lancer 026** |
 
 Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67), 63 (par 68). Défauts corrigés avant la revue : D1 (vote sur son offre), D2 (copie locale du script de démo), D6 (lecteurs d'écran), D10 (tuile choisie).
 
@@ -61,6 +62,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | # | Action | Qui |
 |---|---|---|
 | C0 | Lancer `025_limits.sql` | FAIT (Justin, 28/11) |
+| C0b | **Lancer `026_same_reaction_gain.sql`** (+10 / +3 pour les deux réactions ; sans elle, l'appli affiche +10 alors que la base verse encore +15 / +5) | Justin |
 | C1 | **Préparer la vraie base**, dans cet ordre : `reset_demo.local.sql` (⚠️ efface les comptes non listés), `seed_arrows.sql` (le jour de la démo), `import_sources.sql` | Justin |
 | C2 | Vérifier les migrations 013, 015, 019, 021 et 025 | FAIT (Justin, 28/11) : toutes présentes |
 | C3 | **Essai complet en ligne, sur téléphone** : inscription, accueil, recherche, carte, publication avec photo, réactions, Flèches, boutique, profil, lien partagé, espace commerçant | tous |
@@ -68,13 +70,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟠 Important
-| # | Tâche | Taille | Statut |
-|---|---|---|---|
-| 11 | Notification sur place simulée (« toujours dispo ? ») et « Simuler ma position » dans le profil ; la réaction part avec la vraie position (pas de Flèches simulées) | M | EN COURS (Justin, à la place de Matteo) |
-| 55 | « Licence de sport » → « Sport » : libellé seulement (identifiant `sport` inchangé), README et doc | P | EN COURS (Justin, à la place de Sacha) |
-| 57 | Même gain « Plus dispo » et « J'en ai profité » : +10 sur place, +3 sans lieu (migration **026**, réservée), `lib/arrows.ts`, doc | P | EN COURS (Justin, à la place de Sacha) |
-| 60 | La carte n'affiche que les offres trouvées par la recherche (revient sur « toujours toutes les offres ») | P | EN COURS (Justin) |
-| 62 | Après publication, « Voir sur la carte » ouvre la nouvelle offre ; sans lieu : « Voir mon offre » ouvre sa fiche | P | EN COURS (Justin) |
+Toutes faites (11, 55, 57, 60, 62 : Justin, 28/11 ; voir partie 1). Reste à lancer la migration 026 (C0b).
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |
@@ -116,7 +112,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | `ANTHROPIC_API_KEY` | assistant si pas de clé Gemini | non | non |
 
 ### Vraie base
-- **Toutes présentes** : 002 à 025 (013, 015, 019, 021 et 025 vérifiées par Justin avec la requête ci-dessous, 28/11).
+- **Présentes** : 002 à 025 (013, 015, 019, 021 et 025 vérifiées par Justin, 28/11). **À lancer : 026** (C0b).
 - Requête de contrôle (SQL Editor, lecture seule ; `false` → lancer le fichier correspondant) :
 ```sql
 select
@@ -124,11 +120,12 @@ select
   not exists (select 1 from public.deals where title like '[Exemple]%') as m015,
   exists (select 1 from public.rewards where id = 'golden' and description like '%Ciblés%') as m019,
   exists (select 1 from pg_trigger where tgname = 'votes_presence') as m021,
-  to_regprocedure('public.use_ai_quota()') is not null as m025;
+  to_regprocedure('public.use_ai_quota()') is not null as m025,
+  pg_get_functiondef('public.arrow_on_vote()'::regprocedure) not like '%else 15 end%' as m026;
 ```
 - Relancer 018 si 009 ou 016 sont relancées ; 020 si 016 ou 018 ; 022 si 016 ou 018 ; 023 si 016, 018 ou 020.
 - `import_sources.sql` : à relancer après chaque `reset_demo.sql`. `seed_arrows.sql` demande 016, 017, 020, 022, 023 et `reset_demo.sql`.
-- Prochaine migration : **026** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor.
+- Prochaine migration : **027** (vérifier après un pull). Fichier dans `supabase/migrations/` + `schema.sql` + GRANT, puis la lancer dans le SQL Editor. Relancer 026 si 020 ou 023 sont relancées.
 - Messages « Aide et signaler un bug » : Supabase → Table Editor → `support_messages`.
 
 ### Défauts

@@ -1,13 +1,13 @@
 // « Les Flèches » côté navigateur : barème affiché, rangs, lecture et messages de gain.
-// Les Flèches sont calculées par la base (supabase/migrations/020_location_rules.sql) : garder le barème identique.
+// Les Flèches sont calculées par la base (migrations 020, puis 026 pour les réactions) : garder le barème identique.
 import { NEARBY_M } from "./constants";
 import { currentPosition } from "./location";
 import { getSupabase } from "./supabase/client";
 
 /** Offre placée sur la carte : il faut être sur place (position partagée à 500 m au plus). */
-export const ARROWS = { create: 50, bonus: 30, confirm: 10, report: 15 } as const;
+export const ARROWS = { create: 50, bonus: 30, confirm: 10, report: 10 } as const;
 /** Offre sans lieu précis : rien à vérifier, donc bien moins. */
-export const ARROWS_NO_PLACE = { create: 20, bonus: 10, confirm: 3, report: 5 } as const;
+export const ARROWS_NO_PLACE = { create: 20, bonus: 10, confirm: 3, report: 3 } as const;
 export const arrowsFor = (placed: boolean) => (placed ? ARROWS : ARROWS_NO_PLACE);
 export const DAILY_PAID_VOTES = 5;
 export const DAILY_PAID_CREATIONS = 3;

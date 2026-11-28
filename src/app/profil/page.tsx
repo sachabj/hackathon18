@@ -2,7 +2,6 @@
 
 // Profil étudiant (Justin, Sacha) : identité, étudiants aidés, parrainage, puis menu des réglages.
 // Mes bons plans, favoris et récompenses sont dans « Ciblés ».
-// TODO Tâche 11 (Matteo) : bouton « 📍 Simuler ma position ».
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useState } from "react";
 import DataSection from "@/components/account/DataSection";
@@ -10,7 +9,7 @@ import DeleteSection from "@/components/account/DeleteSection";
 import SecuritySection from "@/components/account/SecuritySection";
 import LocationSetting from "@/components/location/LocationSetting";
 import LogoutButton from "@/components/LogoutButton";
-import { BellIcon, HistoryIcon, LockClosedIcon, ShieldIcon, SlidersIcon, TargetIcon, TicketIcon, UserIcon, HelpIcon } from "@/components/icons";
+import { BellIcon, HistoryIcon, LockClosedIcon, PinIcon, ShieldIcon, SlidersIcon, TargetIcon, TicketIcon, UserIcon, HelpIcon } from "@/components/icons";
 import HelpPanel from "@/components/profile/HelpPanel";
 import ImpactCard from "@/components/profile/ImpactCard";
 import NotificationsPanel from "@/components/profile/NotificationsPanel";
@@ -18,6 +17,7 @@ import PersonalInfo from "@/components/profile/PersonalInfo";
 import PreferencesSummary from "@/components/profile/PreferencesSummary";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ReferralCard from "@/components/profile/ReferralCard";
+import SimulateVisit from "@/components/profile/SimulateVisit";
 import { MenuGroup, MenuLink, MenuSection } from "@/components/profile/SettingsMenu";
 import { fetchAccountInfo } from "@/lib/account";
 import { ZONES } from "@/lib/constants";
@@ -26,7 +26,7 @@ import { fetchMyPreferences } from "@/lib/preferences";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 type Account = Awaited<ReturnType<typeof fetchMyPreferences>> & { info: Awaited<ReturnType<typeof fetchAccountInfo>> };
-type SectionId = "preferences" | "infos" | "securite" | "donnees" | "notifications" | "aide";
+type SectionId = "preferences" | "infos" | "securite" | "donnees" | "notifications" | "aide" | "simulation";
 
 export default function Page() {
   const [account, setAccount] = useState<Account | null>(null);
@@ -117,6 +117,12 @@ export default function Page() {
               <LocationSetting onChange={reload} />
               <DataSection key={String(account.info.hasPosition)} {...account.info} showUsername={false} />
               <DeleteSection />
+            </MenuSection>
+          </MenuGroup>
+
+          <MenuGroup title="Démonstration">
+            <MenuSection id="simulation" {...section} Icon={PinIcon} title="Simuler ma position" hint="Recevoir la notification « toujours dispo ? » devant une offre">
+              <SimulateVisit />
             </MenuSection>
           </MenuGroup>
 

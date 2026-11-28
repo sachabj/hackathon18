@@ -70,7 +70,7 @@ Associe chaque catégorie existante dans le code à son icône (adapte les clés
 | Bourses et aides | `#E6DFF0` | `#4B2A63` | `<circle cx="24" cy="24" r="16"/><path d="M30 17.5a8.5 8.5 0 1 0 0 13"/><path d="M15 22h11"/><path d="M15 26.5h11"/>` |
 | Transports | `#1E3A2F` | `#FAF9F5` | `<rect x="10" y="7" width="28" height="28" rx="5"/><path d="M10 21h28"/><path d="M15 35v5"/><path d="M33 35v5"/><path d="M17 28h.01"/><path d="M31 28h.01"/>` |
 | Activités | `#4B2A63` | `#FAF9F5` | `<path d="M21 7l3.2 9.3 9.3 3.2-9.3 3.2L21 32l-3.2-9.3-9.3-3.2 9.3-3.2z"/><path d="M35 28l1.7 4.3 4.3 1.7-4.3 1.7L35 40l-1.7-4.3-4.3-1.7 4.3-1.7z"/>` |
-| Licence de sport | `#CFE3CA` | `#1E3A2F` | `<circle cx="24" cy="24" r="16"/><path d="M24 8v32"/><path d="M8 24h32"/><path d="M13 12.5c5.5 6.5 5.5 16.5 0 23"/><path d="M35 12.5c-5.5 6.5-5.5 16.5 0 23"/>` |
+| Sport | `#CFE3CA` | `#1E3A2F` | `<circle cx="24" cy="24" r="16"/><path d="M24 8v32"/><path d="M8 24h32"/><path d="M13 12.5c5.5 6.5 5.5 16.5 0 23"/><path d="M35 12.5c-5.5 6.5-5.5 16.5 0 23"/>` |
 
 Affiche ce `CategoryIcon` partout où une catégorie apparaît : sur chaque carte d'offre (en haut à gauche, à côté du titre), dans les filtres de catégories, et sur la carte (marqueurs) s'il y en a une. Ajoute un `aria-label` avec le nom de la catégorie.
 

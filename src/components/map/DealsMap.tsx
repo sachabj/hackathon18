@@ -63,6 +63,7 @@ export default function DealsMap({
   homeZoneId,
   savedPosition,
   selectedId,
+  fitResults = false,
 }: {
   deals: DealWithVotes[];
   /** Zone choisie à l'inscription : localisation de repli tant que le GPS n'a pas répondu (ou s'il est refusé). */
@@ -71,6 +72,8 @@ export default function DealsMap({
   savedPosition?: { lat: number; lng: number } | null;
   /** Offre choisie dans une liste (recherche, fil) : la carte s'y centre et la met en avant. */
   selectedId?: string | null;
+  /** Recherche en cours : la carte se recadre sur les offres affichées (tâche 60). */
+  fitResults?: boolean;
 }) {
   const [map, setMap] = useState<L.Map | null>(null);
   const { position, error, retry, consent } = useUserPosition();
@@ -148,6 +151,20 @@ export default function DealsMap({
     setCentered(false);
     map.flyTo([target.lat, target.lng], Math.max(map.getZoom(), SELECT_ZOOM), { duration: 0.6 });
   }, [map, selectedId, deals]);
+
+  // Résultats d'une recherche : cadrer sur eux à chaque changement de la liste (pas quand seuls les votes changent).
+  const placedIds = deals.flatMap((d) => (d.lat !== null && d.lng !== null ? [d.id] : [])).join(",");
+  useEffect(() => {
+    if (!map || !fitResults || !placedIds) return;
+    const points = deals.flatMap((d) => (d.lat !== null && d.lng !== null ? [L.latLng(d.lat, d.lng)] : []));
+    viewTaken.current = true;
+    flownTo.current = null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- la vue quitte la position de l'étudiant
+    setCentered(false);
+    map.fitBounds(L.latLngBounds(points), { padding: [48, 48], maxZoom: SELECT_ZOOM, animate: false });
+    // `deals` lu au moment du changement de liste seulement.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, fitResults, placedIds]);
 
   /** Niveau de zoom courant : un bouton est grisé quand on ne peut plus aller plus loin. */
   const [zoom, setZoom] = useState<number | null>(null);

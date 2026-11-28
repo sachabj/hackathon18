@@ -110,6 +110,8 @@ export default function PublishForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<null | "published" | "confirmed">(null);
+  /** Offre publiée ou confirmée : « Voir sur la carte » l'ouvre (tâche 62). */
+  const [doneDeal, setDoneDeal] = useState<{ id: string; placed: boolean } | null>(null);
   /** Photo analysée par l'IA, jointe au bon plan comme preuve. */
   const [proofPhoto, setProofPhoto] = useState<{ data: string; preview: string } | null>(null);
   // La photo n'est publiée que sur accord explicite (confidentialité).
@@ -234,6 +236,7 @@ export default function PublishForm() {
     setAtPlace(null);
     setSimilar(null);
     setDone(null);
+    setDoneDeal(null);
   }
 
   /** Bon plan localisé : rattaché à la zone la plus proche si le lieu est dans les environs. */
@@ -294,6 +297,7 @@ export default function PublishForm() {
       setSubmitting(false);
     }
     setSimilar(null);
+    setDoneDeal({ id: dealId, placed: scope === "local" });
     setDone("confirmed");
   }
 
@@ -344,6 +348,7 @@ export default function PublishForm() {
     setSubmitting(false);
     if (error) return setError(`Publication impossible : ${error.message}`);
     setSimilar(null);
+    setDoneDeal(data ? { id: data.id as string, placed: row.lat != null } : null);
     setDone("published");
     // La publication est faite ; les Flèches ne la retardent pas.
     if (data) rewardCreation(data.id, row.lat != null).catch((e) => console.warn("Flèches non annoncées :", e));
@@ -370,8 +375,8 @@ export default function PublishForm() {
           </p>
         )}
         <div className="mt-8 flex w-full flex-col gap-3">
-          <Link href="/recherche" className="sw-btn-primary">
-            Voir sur la carte
+          <Link href={doneDeal ? `/recherche?offre=${doneDeal.id}` : "/recherche"} className="sw-btn-primary">
+            {!doneDeal || doneDeal.placed ? "Voir sur la carte" : done === "confirmed" ? "Voir l'offre" : "Voir mon offre"}
           </Link>
           <button type="button" onClick={reset} className="sw-btn-secondary">
             Partager un autre bon plan

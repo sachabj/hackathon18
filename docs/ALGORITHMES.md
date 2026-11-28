@@ -47,7 +47,7 @@ Une offre n'apparaît ni sur l'accueil, ni sur la carte, ni dans la recherche si
 | **Accueil, « Mes favoris »** | Échéance la plus proche d'abord (date limite, puis fin de l'offre), les offres sans date à la fin. |
 | **Accueil, puces de catégorie** | Ne changent pas l'ordre : elles gardent seulement les offres des catégories choisies (plusieurs possibles). |
 | **Recherche, avec des mots saisis** | Résultats exacts, puis « résultats proches ». Dans chaque groupe : sponsorisées → **pertinence** (2.5) → compatibilité. Le tri choisi dans les filtres (« Les plus proches », « Les moins chers ») remplace cet ordre. |
-| **Recherche, sans saisie** (fil sous la carte) | Sponsorisées → **score « Hot »** (2.4) → plus récentes. |
+| **Recherche, sans saisie** (fil sous la carte ; la carte montre toutes les offres localisées, et seulement les résultats pendant une recherche) | Sponsorisées → **score « Hot »** (2.4) → plus récentes. |
 
 La **fiabilité** (section 3) ne change pas l'ordre : elle sert à la couleur du badge. Seul le nombre de signalements peut faire disparaître une offre (retrait, section 1).
 
@@ -250,14 +250,14 @@ Les poids nécessitent la migration `014_voter_weights.sql`. Sans elle, l'applic
 | Publier un bon plan | +50, **sur place** | +20 |
 | 3 confirmations reçues (si la publication a rapporté) | +30 | +10 |
 | « J'en ai profité » | +10, **sur place** | +3 |
-| « Plus dispo » (versées au retrait de l'offre) | +15, **sur place** | +5 |
+| « Plus dispo » (versées au retrait de l'offre) | +10, **sur place** | +3 |
 
 - **Sur place** : position partagée à **500 m** au plus du lieu (distance à vol d'oiseau). Une position imprécise à plus de 500 m compte comme absente. Sinon : la publication et « J'en ai profité » sont enregistrés sans Flèches, et « Plus dispo » est **refusé** sur une offre de la carte.
 - Publication : la vérification se fait dans les 15 minutes qui suivent, une seule fois.
 - Série de 3 jours ou plus : gains × 1,5 (arrondi). Au plus 5 votes et 3 publications récompensés par jour.
 - La position n'est jamais enregistrée par ces calculs.
 
-Réglages : `supabase/migrations/020_location_rules.sql` et `021_gone_on_site.sql`, **et** `src/lib/arrows.ts` (`ARROWS`, `ARROWS_NO_PLACE`), rayon aussi dans `src/lib/constants.ts` (`NEARBY_M`).
+Réglages : `supabase/migrations/020_location_rules.sql`, `021_gone_on_site.sql` et `026_same_reaction_gain.sql` (montants des réactions), **et** `src/lib/arrows.ts` (`ARROWS`, `ARROWS_NO_PLACE`), rayon aussi dans `src/lib/constants.ts` (`NEARBY_M`).
 
 ---
 

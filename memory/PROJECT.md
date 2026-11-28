@@ -16,7 +16,7 @@ Un utilisateur peut **signaler** des offres et/ou **être informé** des offres 
 | 🛒 Grandes surfaces | paquets de pâtes en promo à Intermarché | carte |
 | 🚆 Transports : avion / train / bus / covoiturage | carte Avantage SNCF, covoit' Bruz→Rennes | fil (souvent sans lieu) |
 | 🎓 Bourses & aides | éligibilité CROUS | fil |
-| ⚽ Licence de sport | licence à prix réduit | carte ou fil |
+| ⚽ Sport | licence ou salle à prix réduit | carte ou fil |
 | 🎬 Activités | ciné, piscine… | carte |
 
 **Conditions** (pas des catégories) : carte étudiante, **Carte Sortir** (Rennes Métropole), boursiers, moins de 26 ans — badges sur l'offre. Une offre peut avoir un **lien** (« Voir l'offre »).

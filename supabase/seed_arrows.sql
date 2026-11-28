@@ -96,7 +96,7 @@ begin
 
   for p in
     select * from (values
-      -- adresse, créations (50), bonus (30), confirmations (10), signalements (15), jours de série
+      -- adresse, créations (50), bonus (30), confirmations (10), signalements (10), jours de série
       ('demo.lea@example.com',   10, 2, 12, 0, 5),
       ('demo.hugo@example.com',   8, 0,  9, 2, 1),
       ('demo.ines@example.com',   4, 0,  8, 2, 3),
@@ -133,7 +133,7 @@ begin
       end if;
       insert into public.arrow_events (user_id, deal_id, kind, base, amount, created_at)
       select uid, deal, k, b, b, now() - make_interval(days => day_back, mins => i)
-      from (select case k when 'create' then 50 when 'bonus' then 30 when 'confirm' then 10 else 15 end as b) x;
+      from (select case k when 'create' then 50 when 'bonus' then 30 when 'confirm' then 10 else 10 end as b) x;
       insert into public.activity_days (user_id, day)
         values (uid, public.arrow_day(now()) - day_back) on conflict do nothing;
     end loop;
@@ -141,7 +141,7 @@ begin
 
   -- Signalements déjà faits sur l'offre à retirer en direct : en attente du retrait.
   insert into public.arrow_events (user_id, deal_id, kind, base, amount, paid, created_at)
-  select a.id, report_deal, 'report', 5, 5, false, now() - interval '2 days'
+  select a.id, report_deal, 'report', 3, 3, false, now() - interval '2 days'
   from auth.users a where a.email in ('demo.lea@example.com', 'demo.ines@example.com');
 
   -- Deux bons de demo.lea : un déjà utilisé, un à présenter.

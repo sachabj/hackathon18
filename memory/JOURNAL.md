@@ -537,3 +537,12 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 02h57 — Justin (déploiement)
 - `11275a3` (tâches 74, 75 et 76) en ligne sur https://sharewood-ensai.vercel.app. Vérifié : pages publiques, redirections sans compte, couleur du navigateur et ligne de confidentialité sur la limite IA. Connexion et pages connectées non vues.
+
+### 2026-11-28 03h45 — Justin (tâches importantes 11, 55, 57, 60, 62)
+- 11 : « Simuler ma position » (profil, groupe « Démonstration », `components/profile/SimulateVisit.tsx`) → notification « Tu es près de… : toujours dispo ? » (`components/location/NearbyPrompt.tsx` dans le layout, `lib/nearby.ts`) ; réaction normale avec la vraie position.
+- 55 : « Licence de sport » → « Sport » (`constants.ts`, design, PROJECT).
+- 57 : +10 sur place et +3 sans lieu pour les deux réactions : migration **026** (`026_same_reaction_gain.sql`, reportée dans `schema.sql`), `lib/arrows.ts`, `seed_arrows.sql`, doc. **Pas encore lancée sur la vraie base.**
+- 60 : pendant une recherche, la carte n'affiche que les offres trouvées et se recadre sur elles (`recherche/page.tsx`, `DealsMap` : `fitResults`).
+- 62 : après publication, « Voir sur la carte » (`/recherche?offre=<id>`) choisit l'offre ; sans lieu, « Voir mon offre » ouvre sa fiche (`PublishForm`, `recherche/page.tsx`).
+- Fichiers d'autres membres touchés : `profil/page.tsx` (Sacha), `PublishForm` (Matteo), `arrows.ts` (Sacha).
+- Vérifié : tsc, lint, build ; Postgres local (026 : gains 10 / 3, schéma = migrations, démo rejouée, 75 appels) ; navigateur sans écran avec faux Supabase : 12 contrôles des tâches + 19 des défauts. Pas sur la vraie base ni sur téléphone.

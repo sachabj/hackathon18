@@ -11,14 +11,14 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 ### Trouver un bon plan
 - **Accueil** : filtres « Pour toi », « Mes favoris » et une puce par catégorie (plusieurs catégories combinables).
 - **Recherche** : tolère les fautes, les pluriels et les mots proches ; filtres prix, temps de trajet et conditions ; comprend « gratuit », « pas cher » ou « près de moi ».
-- **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer.
+- **Carte** : bons plans autour de soi, offres qui marchent en ce moment en premier, boutons + et − pour zoomer ; pendant une recherche, seulement les offres trouvées.
 - **Fiche** : détails, photo, lien vers l'offre, boutons « Y aller » (Apple Plans ou Google Maps) et « Partager » (le lien ouvre l'offre après connexion).
 - **Personnalisation** : à l'inscription (localisation, transports, budget, priorités, voyages, bourse, Carte Sortir), modifiable ensuite.
 - **Favoris** pour garder une offre sous la main ; une offre terminée y reste, marquée « Terminée ».
 - **Sources officielles** : événements gratuits ou étudiants (OpenAgenda) et aides aux étudiants (Aides Jeunes), signalés par un badge, avec leur lien et la date de vérification.
 
 ### Partager et vérifier
-- **Partager en quelques gestes** : le lieu, un titre, une catégorie, et c'est publié (à un endroit précis, dans une ville ou partout) ; le reste est facultatif.
+- **Partager en quelques gestes** : le lieu, un titre, une catégorie, et c'est publié (à un endroit précis, dans une ville ou partout) ; le reste est facultatif. Ensuite, « Voir sur la carte » montre l'offre publiée.
 - **Photo → formulaire** : l'IA remplit les champs dès que l'offre est prise en photo (ou à partir d'un texte) ; la photo peut servir de preuve (30 analyses par jour et par compte).
 - **Doublons** repérés avant la publication.
 - **Réactions** « J'en ai profité » et « Plus dispo », annulables, impossibles sur ses propres offres.
@@ -31,6 +31,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 
 ### Récompenses
 - **Les Flèches** : points gagnés en partageant (3 publications récompensées par jour) et en vérifiant, séries de jours, grades Éclaireur, Chasseur de bons plans et Robin des Étudiants.
+- **Notification sur place (démo)** : « Simuler ma position » dans le profil affiche « Tu es près de… : toujours dispo ? » devant l'offre choisie ; la réaction suit les règles habituelles.
 - **Sur place** : pour une offre placée sur la carte, il faut partager sa position à moins de 500 m pour gagner des Flèches (publication, réaction) et pour la signaler « Plus dispo » ; une offre sans lieu rapporte bien moins.
 - **Page « Ciblés »** : favoris, activité (mes bons plans avec leur audience et leurs Flèches, historique) et boutique de récompenses avec bons à QR code.
 - **Profil** : grade et Flèches, **étudiants aidés** (chacun compte une fois : confirmation, favori, « Y aller » ou lien partagé ouvert) et menu des réglages (préférences, récompenses, historique, informations, sécurité, confidentialité, aide).
@@ -50,7 +51,7 @@ Pensée pour le **téléphone**, et adaptée à l'**ordinateur** : navigation en
 - Le paiement de la mise en avant est **simulé** ; le statut de commerçant n'est pas vérifié.
 - Distances et temps de trajet estimés à vol d'oiseau.
 - La position vient du navigateur : un utilisateur averti peut la falsifier. L'adresse de contact de la politique de confidentialité est fictive.
-- Pas encore là : notifications (annoncées « bientôt » dans le profil), rappels de dates limites, filtre « ouvert maintenant ».
+- Pas encore là : vraies notifications (seule la notification sur place est simulée), rappels de dates limites, filtre « ouvert maintenant ».
 - Parrainage et « étudiants aidés » restent gonflables avec de faux comptes (pas de confirmation d'email en démo).
 
 ## Technique
@@ -73,7 +74,7 @@ La clé `GEMINI_API_KEY` ou `ANTHROPIC_API_KEY` est facultative (assistant de pu
 Dans Supabase → SQL Editor :
 - **projet neuf** : exécuter [`supabase/schema.sql`](supabase/schema.sql) ;
 - **base existante** : exécuter dans l'ordre les fichiers de [`supabase/migrations/`](supabase/migrations/) pas encore appliqués (suivi dans [`memory/TASKS.md`](memory/TASKS.md)) ;
-- **limites** : la migration `025` borne les titres et l'assistant IA (sans elle, l'application fonctionne sans ces limites) ;
+- **limites** : la migration `025` borne les titres et l'assistant IA ; la `026` donne le même gain aux deux réactions ;
 - **données de démo** : [`reset_demo.sql`](supabase/reset_demo.sql) (⚠️ **supprime les comptes** non listés en haut du script ; lire ses consignes), puis [`seed_arrows.sql`](supabase/seed_arrows.sql) le jour de la démo ;
 - **vraies informations** : migration `024`, puis [`import_sources.sql`](supabase/import_sources.sql) (régénéré par `node scripts/import_sources.mjs` ; à relancer après `reset_demo.sql`).
 

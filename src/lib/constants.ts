@@ -61,7 +61,7 @@ export const CATEGORIES: Record<DealCategory, { label: string; color: string }> 
   supermarket: { label: "Grandes surfaces", color: "#1E3A2F" },
   transport: { label: "Transports", color: "#1E3A2F" },
   scholarship: { label: "Bourses & aides", color: "#E6DFF0" },
-  sport: { label: "Licence de sport", color: "#CFE3CA" },
+  sport: { label: "Sport", color: "#CFE3CA" },
   activity: { label: "Activités", color: "#4B2A63" },
 };
 
