@@ -12,6 +12,7 @@ import { APP_NAME, CATEGORIES } from "@/lib/constants";
 import { rankDeals, toStudentProfile, type Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
 import type { DealCategory, DealWithVotes } from "@/lib/types";
+import { useCascade } from "@/lib/motion";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
@@ -69,6 +70,8 @@ export default function Page() {
         : "Touche le cœur d'une offre pour la retrouver ici."
       : "Aucun bon plan dans ces catégories pour le moment.";
   const busy = loading || loadingProfile;
+  // Tâche 75 : cartes en cascade au chargement et à chaque changement de filtre.
+  const cascade = useCascade<HTMLDivElement>(`${busy}|${scope}|${categories.join(",")}`);
 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col md:max-w-3xl lg:max-w-6xl lg:pb-8">
@@ -118,7 +121,7 @@ export default function Page() {
             ))}
           </div>
 
-          <div role="region" aria-label="Bons plans" className="space-y-3 pt-3">
+          <div ref={cascade} role="region" aria-label="Bons plans" className="space-y-3 pt-3">
             {busy ? (
               <p className="text-sm text-[var(--color-muted)]">Chargement des bons plans…</p>
             ) : (
@@ -136,7 +139,7 @@ export default function Page() {
                   ) : (
                     <ul className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 [&>li>article]:h-full">
                       {items.map(({ deal, match }) => (
-                        <li key={deal.id}>
+                        <li key={deal.id} data-cascade>
                           <DealCard deal={deal} match={match} favorite={isFavorite(deal.id)} onToggleFavorite={toggleFavorite} />
                         </li>
                       ))}

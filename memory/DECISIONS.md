@@ -455,3 +455,9 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : `memory/TASKS.md` reste le seul fichier de tâches, réorganisé en « Déjà fait / En cours / Reste à faire / Bugs et vérifications » ; nettoyage sans changement de comportement ; rangement limité à 3 composants ; ancien jeu `seed_demo.sql` supprimé ; diapo 2 du pitch alignée sur la règle « Douteux ».
 - **Écartés** : second `TASKS.md` à la racine ou déplacement du fichier ; grande réorganisation des dossiers (travail en parallèle) ; correction des défauts pendant la revue (signalés seulement) ; retrait du code de secours des migrations avant confirmation de la vraie base.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 — Micro-animations (tâche 75)
+- **Décision** : réaction (rebond, compteur, fiabilité en fondu, « +N » qui vole vers le solde, en plus du message existant), fiche qui monte du bas et se ferme en glissant la poignée, cartes en cascade au chargement et aux filtres (accueil, Recherche, favoris), cœur avec anneau. Courtes (≤ 0,75 s), coupées si le système demande moins d'animations.
+- **Choix techniques** : CSS (`globals.css`) et Web Animations API, sans bibliothèque ; la cascade rejoue l'animation sans remonter les cartes (leurs réactions locales sont gardées) ; la pastille part du dernier endroit touché.
+- **Écartés** : remplacer le message de gain ; éclats autour du cœur (moins calme que le guide de design) ; cascade au chargement seulement.
+- **Qui** : Matteo (réponses aux questions de cadrage)

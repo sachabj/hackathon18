@@ -13,6 +13,7 @@ import { CalendarIcon, HeartIcon, PinIcon, SparklesIcon } from "@/components/ico
 import { CATEGORIES, ZONES } from "@/lib/constants";
 import type { Match } from "@/lib/matching";
 import { isBoosted } from "@/lib/merchant";
+import { useChanges } from "@/lib/motion";
 import type { DealWithVotes } from "@/lib/types";
 import { useDealReactions } from "@/lib/useDealReactions";
 
@@ -43,6 +44,7 @@ export default function DealCard({
     CATEGORIES[deal.category].label;
   const r = useDealReactions(deal);
   const [open, setOpen] = useState(false);
+  const liked = useChanges(favorite);
   // Rien à mettre en avant sur la carte pour une offre sans lieu (zone / nationale) : la fiche s'ouvre comme avant.
   const touch = () => (onSelect && deal.lat !== null && deal.lng !== null ? onSelect(deal.id) : setOpen(true));
   // La fiche se referme quand la page est quittée (Next la conserve en mémoire).
@@ -80,7 +82,10 @@ export default function DealCard({
             style={{ color: favorite ? "var(--color-aubergine)" : "var(--color-border)" }}
             title={favorite ? "Retirer des favoris" : "Ajouter aux favoris"}
           >
-            <HeartIcon className="h-5 w-5" filled={favorite} />
+            {/* Tâche 75 : le cœur grossit et lâche un anneau quand il devient favori. */}
+            <span key={liked.count} className={`block ${liked.count > 0 && favorite ? "sw-heart-pop rounded-full" : ""}`}>
+              <HeartIcon className="h-5 w-5" filled={favorite} />
+            </span>
             <span className="sr-only">{favorite ? "Retirer des favoris" : "Ajouter aux favoris"}</span>
           </button>
         )}

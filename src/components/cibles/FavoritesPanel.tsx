@@ -8,6 +8,7 @@ import DealCard from "@/components/feed/DealCard";
 import { ChevronDownIcon } from "@/components/icons";
 import { CATEGORIES } from "@/lib/constants";
 import { normalizeDeal } from "@/lib/legacy";
+import { useCascade } from "@/lib/motion";
 import { withTrust } from "@/lib/trust";
 import { getSupabase, isSupabaseConfigured } from "@/lib/supabase/client";
 import type { Deal, DealCategory, DealWithVotes } from "@/lib/types";
@@ -97,10 +98,12 @@ export default function FavoritesPanel() {
     .filter((g) => g.deals.length > 0);
 
   const busy = loadingFavorites || loading;
+  // Tâche 75 : cartes en cascade à l'arrivée.
+  const cascade = useCascade<HTMLDivElement>(String(busy));
   const total = deals.length;
 
   return (
-    <div>
+    <div ref={cascade}>
       <p role="status" className="text-sm text-[var(--color-muted)]">
         {error ? (
           <span className="text-red-600">Impossible de charger les favoris : {error}</span>
@@ -137,7 +140,7 @@ export default function FavoritesPanel() {
                 {!isCollapsed && (
                   <ul id={panelId} className="grid grid-cols-1 gap-3 p-3 md:grid-cols-2 [&>li>article]:h-full" style={{ borderTop: "1px solid var(--color-border)" }}>
                     {deals.map((deal) => (
-                      <li key={deal.id}>
+                      <li key={deal.id} data-cascade>
                         <DealCard deal={deal} favorite onToggleFavorite={toggleFavorite} />
                       </li>
                     ))}

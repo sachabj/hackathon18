@@ -24,6 +24,7 @@ import {
   type SearchFilters as Filters,
 } from "@/lib/searchFilters";
 import type { DealWithVotes } from "@/lib/types";
+import { useCascade } from "@/lib/motion";
 import { useDeals } from "@/lib/useDeals";
 import { useFavorites } from "@/lib/useFavorites";
 import { usePreferences } from "@/lib/usePreferences";
@@ -88,6 +89,8 @@ export default function Page() {
   const found = results ? results.exact.length + results.close.length : 0;
   const hiddenCount = matched ? matched.exact.length + matched.close.length - found : 0;
   const busy = loading || loadingProfile;
+  // Tâche 75 : cartes en cascade au chargement, en passant du fil à la recherche et à chaque changement de filtre.
+  const cascade = useCascade<HTMLElement>(`${busy}|${query.trim() === ""}|${JSON.stringify(chosen)}`);
 
   /** Les résultats s'affichent déjà pendant la saisie : valider ferme le clavier pour les voir. */
   function submitSearch(e: FormEvent<HTMLFormElement>) {
@@ -118,7 +121,7 @@ export default function Page() {
   const list = (items: Item[]) => (
     <ul className="space-y-3">
       {items.map(({ deal, match }) => (
-        <li key={deal.id}>
+        <li key={deal.id} data-cascade>
           <DealCard
             deal={deal}
             match={match}
@@ -203,7 +206,7 @@ export default function Page() {
         <DealsMap deals={mapDeals} homeZoneId={me?.homeZoneId} savedPosition={me?.position} selectedId={selectedId} />
       </div>
 
-      <section className="px-4 py-4 lg:relative lg:col-start-1 lg:row-start-2 lg:overflow-y-auto lg:pt-1">
+      <section ref={cascade} className="px-4 py-4 lg:relative lg:col-start-1 lg:row-start-2 lg:overflow-y-auto lg:pt-1">
         {error && <p className="text-sm text-red-600">Impossible de charger les bons plans : {error}</p>}
         {!error &&
           (results ? (

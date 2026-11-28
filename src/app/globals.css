@@ -275,6 +275,91 @@ h1, h2, h3 {
   .sw-success { animation: none; }
 }
 
+/* ---------- Micro-animations (tâche 75) ---------- */
+/* Bouton de réaction choisi : petit rebond du contenu. */
+.sw-pop {
+  animation: sw-pop 0.4s cubic-bezier(0.2, 1.5, 0.4, 1);
+}
+@keyframes sw-pop {
+  0% { transform: scale(0.9); }
+  55% { transform: scale(1.1); }
+  100% { transform: none; }
+}
+/* Compteur qui défile vers sa nouvelle valeur (vers le haut si elle augmente). */
+.sw-roll-up { display: inline-block; animation: sw-roll-up 0.28s ease-out; }
+.sw-roll-down { display: inline-block; animation: sw-roll-down 0.28s ease-out; }
+@keyframes sw-roll-up {
+  from { opacity: 0; transform: translateY(70%); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes sw-roll-down {
+  from { opacity: 0; transform: translateY(-70%); }
+  to { opacity: 1; transform: none; }
+}
+/* Badge de fiabilité : couleur en fondu, petit rebond quand le niveau change. */
+.sw-trust {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.sw-trust-pop {
+  animation: sw-trust-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+@keyframes sw-trust-pop {
+  0% { transform: scale(0.85); }
+  60% { transform: scale(1.08); }
+  100% { transform: none; }
+}
+/* Cœur des favoris : il grossit, se remplit, et un anneau aubergine s'élargit puis disparaît. */
+.sw-heart-pop {
+  position: relative;
+  display: inline-block;
+  animation: sw-heart-pop 0.45s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+.sw-heart-pop::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  border: 2px solid var(--color-aubergine);
+  animation: sw-heart-ring 0.55s ease-out 0.05s both;
+  pointer-events: none;
+}
+@keyframes sw-heart-pop {
+  0% { transform: scale(0.6); }
+  50% { transform: scale(1.3); }
+  100% { transform: none; }
+}
+@keyframes sw-heart-ring {
+  from { opacity: 0.8; transform: scale(0.4); }
+  to { opacity: 0; transform: scale(1.9); }
+}
+/* Fiche d'un bon plan : fond en fondu ; sur téléphone, elle monte du bas ; sur ordinateur, fondu et léger zoom. */
+.sw-fade-in {
+  animation: sw-fade-in 0.22s ease-out;
+}
+@keyframes sw-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.sw-sheet-in {
+  animation: sw-sheet-up 0.32s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+@keyframes sw-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+@media (min-width: 1024px) {
+  .sw-sheet-in { animation: sw-sheet-zoom 0.22s ease-out; }
+}
+@keyframes sw-sheet-zoom {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sw-pop, .sw-roll-up, .sw-roll-down, .sw-trust-pop, .sw-heart-pop, .sw-heart-pop::after,
+  .sw-fade-in, .sw-sheet-in { animation: none; }
+  .sw-trust { transition: none; }
+}
+
 /* Sections dépliées du menu du profil : les cartes des réglages y sont à plat. */
 .sw-menu-panel .sw-card { border: 0; background: transparent; box-shadow: none; padding: 0; }
 .sw-menu-panel > .sw-card + .sw-card { border-top: 1px solid var(--color-border); border-radius: 0; padding-top: 1rem; }

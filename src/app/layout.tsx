@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import ArrowFlight from "@/components/arrows/ArrowFlight";
 import ArrowToast from "@/components/arrows/ArrowToast";
 import LocationConsentDialog from "@/components/location/LocationConsentDialog";
 import NavBar from "@/components/NavBar";
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <NavBar />
         <ArrowToast />
+        <ArrowFlight />
         <LocationConsentDialog />
       </body>
     </html>

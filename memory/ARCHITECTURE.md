@@ -54,6 +54,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── legacy.ts                 # normalizeDeal : ancienne catégorie carte_sortir → Activités + condition (avant 012)
     │   ├── rules.ts                  # règles métier : fiabilité, retrait des offres, niveaux d'activité
     │   ├── rewards.ts                # boutique : catalogue, échanges, bons
+    │   ├── motion.ts                 # micro-animations (tâche 75) : useCascade (cartes `[data-cascade]`), useChanges (rejouer à chaque changement), prefersReducedMotion
     │   ├── arrows.ts                 # Flèches : barème affiché, grades, messages de gain, vérification des publications (+ useMyArrows.ts)
     │   ├── useDealReactions.ts       # réagir en un geste depuis une carte (vote + passage, relecture des votes et masses)
     │   ├── useCurrentUserId.ts       # id de l'utilisateur connecté (session locale)
@@ -97,7 +98,7 @@ Puis noter le commit et l'heure dans `TASKS.md` (« Dernier déploiement »). An
     │   ├── LogoutButton.tsx          # déconnexion (page profil)
     │   ├── account/                  # AccountLink, SecuritySection, DataSection, DeleteSection
     │   ├── deal/ReactionBar.tsx      # boutons « J'en ai profité (n) » / « Plus dispo (n) » (carte, fiche, fenêtre de la carte) ; QuickReactions = version autonome
-    │   ├── arrows/                   # ArrowBadge (en-têtes), ArrowToast (layout), ArrowsCard (page « Ciblés »)
+    │   ├── arrows/                   # ArrowFlight (layout, tâche 75 : pastille « +N » qui vole vers `[data-arrow-target]` si `ArrowNotice.gain`), ArrowBadge (en-têtes), ArrowToast (layout), ArrowsCard (page « Ciblés »)
     │   ├── feed/SearchFilters.tsx    # filtres des résultats de la page Recherche (Sacha)
     │   ├── feed/DealCard.tsx         # (tâches 35, 37, 38 : épurée — ligne 1 icône + titre (avec l'avantage) + fiabilité + cœur, ligne 2 pleine largeur lieu · distance, fiabilité, cœur, auteur, conditions, échéance, réactions ; le reste dans la fiche)  carte d'un bon plan dans le fil (bouton cœur favori optionnel : props `favorite` / `onToggleFavorite`, icône `HeartIcon` ; prop optionnel `onSelect(dealId)` : si l'offre a un lieu, toucher la carte la sélectionne sur `DealsMap` au lieu d'ouvrir sa fiche — utilisé par Recherche seulement ; prop `selected` : contour aubergine, même couleur que le repère choisi sur la carte). Offre sponsorisée : cadre doré **et** étiquette « Sponsorisé » (icône `SparklesIcon`), indépendante du surlignage de sélection.
     │   ├── deal/DealSheet.tsx        # fiche d'un bon plan : fiabilité, votes, « J'en ai profité » (ouverte depuis le fil et la carte)

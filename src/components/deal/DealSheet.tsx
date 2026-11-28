@@ -1,7 +1,8 @@
 "use client";
 
 // Fiche d'un bon plan : détail, fiabilité, votes et « J'en ai profité » (Justin).
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 import { createPortal } from "react-dom";
 import AuthorBadge from "@/components/AuthorBadge";
 import CategoryIcon from "@/components/CategoryIcon";
@@ -70,11 +71,53 @@ export default function DealSheet({
     };
   }, [deal]);
 
+  // Tâche 75 : la fiche redescend (téléphone) ou s'efface (ordinateur) avant d'être fermée.
+  const panel = useRef<HTMLDivElement>(null);
+  const backdrop = useRef<HTMLDivElement>(null);
+  const closing = useRef(false);
+  const close = useCallback(() => {
+    if (closing.current) return;
+    closing.current = true;
+    const el = panel.current;
+    if (!el || prefersReducedMotion() || typeof el.animate !== "function") return onClose();
+    const wide = window.matchMedia("(min-width: 1024px)").matches;
+    const from = getComputedStyle(el).transform;
+    const start = from === "none" ? "translateY(0)" : from;
+    const frames = wide
+      ? [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(8px) scale(0.96)" }]
+      : [{ transform: start }, { transform: "translateY(100%)" }];
+    backdrop.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 220, fill: "forwards" });
+    el.animate(frames, { duration: wide ? 160 : 220, easing: "ease-in", fill: "forwards" }).finished.then(onClose, onClose);
+  }, [onClose]);
+
+  // Glisser la poignée vers le bas (téléphone) : au-delà de 100 px ou d'un geste rapide, la fiche se ferme.
+  const drag = useRef<{ y: number; t: number; dy: number } | null>(null);
+  const onDragStart = (e: React.PointerEvent) => {
+    drag.current = { y: e.clientY, t: e.timeStamp, dy: 0 };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    if (panel.current) panel.current.style.transition = "none";
+  };
+  const onDragMove = (e: React.PointerEvent) => {
+    if (!drag.current || !panel.current) return;
+    drag.current.dy = Math.max(0, e.clientY - drag.current.y);
+    panel.current.style.transform = `translateY(${drag.current.dy}px)`;
+  };
+  const onDragEnd = (e: React.PointerEvent) => {
+    const d = drag.current;
+    drag.current = null;
+    const el = panel.current;
+    if (!d || !el) return;
+    const speed = d.dy / Math.max(1, e.timeStamp - d.t);
+    if (d.dy > 100 || (d.dy > 30 && speed > 0.6)) return close();
+    el.style.transition = "transform 0.2s ease-out";
+    el.style.transform = "";
+  };
+
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && close();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  }, [close]);
 
   async function act(action: () => Promise<void>) {
     setBusy(true);
@@ -113,22 +156,36 @@ export default function DealSheet({
   }
   // Dans <body> : la fiche doit passer au-dessus de la carte, de l'en-tête et de la barre du bas.
   return createPortal(
-    <div className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/40 lg:items-center lg:p-6" onClick={onClose}>
+    <div className="fixed inset-0 z-[2000] flex items-end justify-center lg:items-center lg:p-6" onClick={close}>
+      <div ref={backdrop} aria-hidden className="sw-fade-in absolute inset-0 bg-black/40" />
       <div
+        ref={panel}
         role="dialog"
         aria-modal="true"
         aria-label={deal.title}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-3xl p-4 pb-6 lg:rounded-3xl lg:max-w-lg"
+        className="sw-sheet-in relative max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-3xl p-4 pb-6 pt-0 lg:rounded-3xl lg:max-w-lg lg:pt-4"
         style={{ backgroundColor: "var(--color-surface)" }}
       >
+        {/* Poignée (téléphone) : la faire glisser vers le bas ferme la fiche. */}
+        <div
+          aria-hidden
+          onPointerDown={onDragStart}
+          onPointerMove={onDragMove}
+          onPointerUp={onDragEnd}
+          onPointerCancel={onDragEnd}
+          className="sticky top-0 z-10 -mx-4 flex cursor-grab touch-none justify-center pb-2 pt-2.5 lg:hidden"
+          style={{ backgroundColor: "var(--color-surface)" }}
+        >
+          <span className="h-1.5 w-10 rounded-full" style={{ backgroundColor: "var(--color-border)" }} />
+        </div>
         <div className="flex items-start justify-between gap-2">
           <p className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-muted)]">
             <CategoryIcon category={deal.category} size={22} /> {category.label}
           </p>
           <button
             type="button"
-            onClick={onClose}
+            onClick={close}
             aria-label="Fermer"
             className="-mt-1 flex h-9 w-9 items-center justify-center rounded-full"
             style={{ backgroundColor: "var(--color-paper)" }}

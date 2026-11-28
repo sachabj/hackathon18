@@ -149,6 +149,8 @@ export interface ArrowNotice {
   detail?: string;
   /** La position vient d'être partagée : le message rappelle comment elle est protégée. */
   secure?: boolean;
+  /** Flèches gagnées à l'instant : une pastille « +N » s'envole vers le solde (tâche 75). */
+  gain?: number;
 }
 
 const NEEDS_POSITION = "Sans ta position (Profil, « Ma localisation »), pas de Flèches sur une offre placée.";
@@ -161,6 +163,7 @@ export function outcomeNotice(o: ArrowOutcome): ArrowNotice | null {
       return {
         title: `+${o.amount} Flèches`,
         detail: detail(o.kind === "confirm" ? "Offre confirmée" : "Signalement corroboré, offre retirée"),
+        gain: o.amount,
       };
     case "pending":
       return {
@@ -202,7 +205,7 @@ const LIMIT_REACHED = `Tes ${DAILY_PAID_CREATIONS} publications récompensées d
 function creationNotice(amount: number, multiplier: number, refusal: string): ArrowNotice {
   return amount === 0
     ? { title: "Bon plan publié, sans Flèches", detail: refusal }
-    : { title: `+${amount} Flèches`, detail: `Bon plan partagé${multiplier > 1 ? " · série : gains × 1,5" : ""}` };
+    : { title: `+${amount} Flèches`, detail: `Bon plan partagé${multiplier > 1 ? " · série : gains × 1,5" : ""}`, gain: amount };
 }
 
 /** Annonce les Flèches de la dernière publication, déjà décidées par la base. */

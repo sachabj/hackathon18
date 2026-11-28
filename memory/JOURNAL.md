@@ -523,3 +523,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 
 ### 2026-11-28 — Matteo (pistes d'animations, sans code)
 - Inventaire des animations existantes (`globals.css` : repère choisi, position, toast des Flèches, succès de publication) et propositions de micro-animations. Aucun code modifié.
+
+### 2026-11-28 — Matteo (micro-animations, tâche 75)
+- Nouveaux `src/lib/motion.ts`, `components/arrows/ArrowFlight.tsx` (monté dans `layout.tsx`) ; `ReactionBar` (bouton `ReactionButton` : rebond, compteur qui défile), `TrustBadge` (fondu de couleur, rebond), `DealSheet` (montée du bas, sortie animée, poignée à glisser ; ordinateur : fondu et zoom), `DealCard` (cœur), `app/page.tsx`, `app/recherche/page.tsx`, `cibles/FavoritesPanel.tsx` (cascade), `ArrowBadge` (`data-arrow-target`), `lib/arrows.ts` (champ `gain`), `globals.css` ; TASKS, ARCHITECTURE, DECISIONS.
+- Vérifié : tsc + lint + build. **Pas vu dans le navigateur ni sur téléphone** (aucun navigateur dans cette session) ; sans migration.
