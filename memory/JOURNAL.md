@@ -520,3 +520,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - Corrigé : avertissement lint de `LogoutButton`, commentaires périmés, commentaire de `.env.example`, plafonds de l'aide pris dans `lib/arrows`, diapo 2 du pitch (PDF recompilé), documents (ARCHITECTURE, ALGORITHMES, PROJECT, DESIGN, README).
 - `TASKS.md` réécrit en 4 parties : déjà fait, en cours, reste à faire, bugs et vérifications (nouveaux défauts D12 à D14).
 - Vérifié : tsc, lint (0 avertissement), build, `npm audit`, knip ; Postgres local : `schema.sql` = migrations, scripts de démo rejoués 2 fois, 75 appels de l'app avec droits utilisateur. Pas vu dans un navigateur ni sur la vraie base.
+
+### 2026-11-28 — Matteo (pistes d'animations, sans code)
+- Inventaire des animations existantes (`globals.css` : repère choisi, position, toast des Flèches, succès de publication) et propositions de micro-animations. Aucun code modifié.
