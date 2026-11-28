@@ -473,3 +473,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Choix de Claude, à confirmer** : pendant une recherche, la carte se recadre sur les résultats ; simulation rangée dans un groupe « Démonstration » du profil ; la notification se ferme après la réaction.
 - **Écartés** : position simulée valable pour les Flèches (triche possible) ; +5 / +5 sans lieu ; garder la page Recherche telle quelle après publication.
 - **Qui** : Justin (réponses aux questions de cadrage)
+
+## 2026-11-28 04h — Règle : TASKS.md à jour à chaque requête
+- **Décision** : à la fin de chaque requête, `memory/TASKS.md` reflète l'état réel : fait, en cours, reste à faire (y compris les étapes à lancer par l'utilisateur), lignes périmées corrigées (`CLAUDE.md`, section 2).
+- **Pourquoi** : suivre en équipe ce qui reste à faire avant la démo sans relire le journal.
+- **Qui** : Justin

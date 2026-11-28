@@ -546,3 +546,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 - 62 : après publication, « Voir sur la carte » (`/recherche?offre=<id>`) choisit l'offre ; sans lieu, « Voir mon offre » ouvre sa fiche (`PublishForm`, `recherche/page.tsx`).
 - Fichiers d'autres membres touchés : `profil/page.tsx` (Sacha), `PublishForm` (Matteo), `arrows.ts` (Sacha).
 - Vérifié : tsc, lint, build ; Postgres local (026 : gains 10 / 3, schéma = migrations, démo rejouée, 75 appels) ; navigateur sans écran avec faux Supabase : 12 contrôles des tâches + 19 des défauts. Pas sur la vraie base ni sur téléphone.
+
+### 2026-11-28 04h — Justin (règle TASKS.md)
+- `CLAUDE.md` : `TASKS.md` doit être mis à jour à chaque requête (fait, en cours, reste à faire, étapes critiques, dernier déploiement). Aucun code modifié.
