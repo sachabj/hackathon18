@@ -70,6 +70,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 | C11 | Retirer les 300 Flèches de test données à un compte par Matteo (ligne `welcome` dans `arrow_events`), sinon elles faussent le classement des écoles | Matteo |
 | C3b | **Diapo 3 du pitch** (vue dans le PDF recompilé le 28/11 vers 8h30) : les boutons lecture/pause des 3 vidéos sortent du bas de la page et se chevauchent ; « Une offre en quelques secondes » passe sur 2 lignes et touche le téléphone | Anne-Lise |
 | C4 | **Répéter le pitch** ; ouvrir le PDF avec **Adobe Acrobat Reader installé** et vérifier que les 3 boucles vidéo de la diapo 3 jouent (sinon, lancer `pitch/demo-16x9.mp4` à la place, 40 s sans son : préparer le commentaire) ; **préparer les réponses aux questions probables du jury** (prix de la mise en avant absent de la diapo 5, différence avec Dealabs / UNiDAYS, démarrage à vide, triche et faux comptes, part d'offres réelles) | équipe |
+| C12 | EN COURS (Justin) : vidéo promo 9:16 tournée avec le kit `pitch/promo/` → `pitch/sharewood-promo.mp4` | Justin |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 
 ### 🟢 Bonus
