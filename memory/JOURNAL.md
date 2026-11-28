@@ -746,3 +746,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 10h45 — Justin (vidéo promo)
 - Kit `sharewood-video-kit` (Téléchargements) déplacé dans `pitch/promo/` ; `film6.py` pointe vers Google Chrome ; `assemble.py` : scène 2 à 1,15× ; `LISEZMOI.txt` complété ; `.gitignore` (images et segments) ; `pitch/README.md`.
 - Tournage sur l'appli à jour avec le faux Supabase du kit : 1 822 images, aucune erreur de page ; montage : `pitch/sharewood-promo.mp4`, 59,2 s, 1080 × 1920, 60 i/s, H.264 + AAC muet, 12 Mo. Planche d'images vérifiée (fond de carte présent). Pas regardée en entier par un humain.
+
+### 2026-11-28 — Matteo (rappel des paramètres de la fiabilité et du tri Hot, sans code)
+- Fiche de révision pour le jury : formules et constantes de `rules.ts`, `hot.ts` et de la migration 014, revérifiées dans le code (identiques à `docs/ALGORITHMES.md`) et exemples recalculés. Constat : le poids d'un étudiant plafonne en pratique à 1,95 (borne de 2 jamais atteinte) ; il faudrait un exposant d'environ 0,5 pour qu'une offre de 2 jours très confirmée passe devant une offre neuve. Aucun code modifié.
