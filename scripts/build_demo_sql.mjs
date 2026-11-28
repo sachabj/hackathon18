@@ -1,4 +1,4 @@
-// Réunit en un seul fichier les quatre scripts qui remettent la démo à zéro :
+// Réunit en un seul fichier les cinq scripts qui remettent la démo à zéro :
 //   node scripts/build_demo_sql.mjs   →   supabase/demo_complet.local.sql (jamais sur git)
 // Les comptes à garder et le mot de passe de démo sont repris de supabase/reset_demo.local.sql.
 import { readFileSync, writeFileSync } from "node:fs";
@@ -32,6 +32,7 @@ for (const block of [KEEP, PASSWORD]) {
 
 const parts = [
   ["reset_demo.sql", reset],
+  ["reduce_demo.sql", read("reduce_demo.sql")],
   ...["import_sources.sql", "import_burgerking.sql", "seed_arrows.sql"].map((name) => [name, read(name)]),
 ];
 

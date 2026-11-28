@@ -48,7 +48,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Données de démo | Sur la vraie base : 20 étudiants, 12 commerces fictifs, ~150 offres, Flèches de démo ; prix des 14 offres sourcées revérifiés le 28/11 vers 6h, aucun écart (12) | Justin | — |
 | Vraies offres | 54 offres importées (événements, aides, Intermarché) et offre Burger King (`import_burgerking.sql`, lancé), badge « Source officielle » ; aucune offre étudiante officielle trouvée pour McDonald's, Carrefour, Super U, Auchan (65) | Justin | voir l'offre Burger King sur le site |
 | Tombola, Avant-Première | Tirage par SQL (`draw_raffle`), résultat sur le ticket ; offre flash du commerçant visible 1 h avant par les détenteurs (42) | Justin | offre flash et tirage essayés sur le site (Justin, 28/11) |
-| Reset démo | `node scripts/build_demo_sql.mjs` : un seul fichier SQL pour remettre la démo à zéro | Justin | pas lancé sur la vraie base |
+| Reset démo | `node scripts/build_demo_sql.mjs` : un seul fichier SQL pour remettre la démo à zéro, offres inventées réduites à 38 sur 107 (`reduce_demo.sql`) | Justin | pas lancé sur la vraie base |
 | Défauts | D3 à D5, D7 à D9, D11 à D14 (76) | Justin | essayés sur téléphone (C3) |
 | Tâches importantes | Notification sur place simulée (11), « Sport » (55), même gain des réactions (57, migration **026**), carte qui suit la recherche (60), offre publiée montrée (62) | Justin | vraie base et téléphone |
 | Animations | Micro-animations des réactions, de la fiche, des listes et des favoris (75) | Matteo | pas vues dans un navigateur ni sur téléphone |
@@ -65,6 +65,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ### 🔴 Critique (deadline : samedi 28/11 à 13h ; gel du code à 11h)
 | # | Action | Qui |
 |---|---|---|
+| C9 | Appliquer la réduction des offres inventées : `node scripts/build_demo_sql.mjs`, lancer `demo_complet.local.sql` (⚠️ reset : vérifier avant la liste des comptes gardés), puis contrôler le site | Justin |
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
 

@@ -651,3 +651,7 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 — Justin (reset de la démo en un fichier)
 - Nouveau `scripts/build_demo_sql.mjs` ; README, mémoire. `supabase/demo_complet.local.sql` généré sur le poste de Justin (ignoré par git).
 - Vérifié sur une base en mémoire : `schema.sql` puis le fichier combiné, deux passages. **Pas lancé sur la vraie base.**
+
+### 2026-11-28 — Justin (moins d'offres inventées)
+- Nouveau `supabase/reduce_demo.sql`, inclus par `scripts/build_demo_sql.mjs` après le reset ; README, mémoire. `demo_complet.local.sql` régénéré.
+- Base de test : 107 offres dont 38 inventées (avant : 206 dont 137) ; Flèches des six comptes de démo, covoiturage « Douteux », 12 commerçants et 2 offres sponsorisées inchangés ; une ligne d'historique de plus sans offre liée. **Pas lancé sur la vraie base.**

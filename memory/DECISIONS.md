@@ -549,3 +549,8 @@ Format : `## AAAA-MM-JJ HHhMM — Titre` · Décision · Pourquoi · Alternative
 - **Décision** : un script réunit les quatre fichiers de données ; seuls les comptes gardés et le mot de passe viennent de la copie locale, le reste de la version à jour.
 - **Écartés** : fichier unique pour un projet neuf ; fichier combiné versionné (il contiendrait le mot de passe).
 - **Qui** : Justin
+
+## 2026-11-28 — Moins d'offres inventées dans la démo
+- **Décision** : réduire plutôt que tout supprimer : 38 offres inventées gardées (14 de commerces fictifs, 24 « étudiants ») contre 137 ; mention « Exemple fictif » conservée.
+- **Écartés** : tout supprimer (restaurants et sport presque vides) ; retirer la mention « (démo) » (fausses offres présentées comme vraies).
+- **Qui** : Justin ; choix des offres gardées : Claude, à confirmer
