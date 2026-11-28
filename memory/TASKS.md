@@ -7,7 +7,7 @@ Statuts : `TODO` · `EN COURS (prénom)` · `À TESTER` (codé, pas essayé sur 
 **Avant de coder** : mettre `EN COURS (prénom)` ici et pousser ; poser les questions prévues par `CLAUDE.md`.
 
 ## 🚀 Mise en ligne (à la demande, voir `CLAUDE.md`)
-- **Dernier déploiement : `032885a`, 28/11 à 05h39** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + validation des bons par le commerçant (42), notifications dans l'appli ouverte (68), signalement de contenu (Matteo, 71).
+- **Dernier déploiement : `0dceeef`, 28/11 à 05h57** (Justin) → **https://sharewood-ensai.vercel.app** (site à utiliser pour la démo) : + paiement simulé de la mise en avant avec reçus (13), messages d'erreur de la base en anglais (50).
 - Ancien site `hackathon18-t1lb` : figé sur `4b716f5`.
 
 ## Équipe (domaines)
@@ -41,7 +41,7 @@ Présent dans le code au 28/11 ; types, lint et build passent. La colonne « À 
 | Notifications | Dans l'appli ouverte : « Bons plans à proximité » (150 m, réglable), « mes offres confirmées » à l'ouverture ; interrupteurs du profil actifs (68) | Justin | à voir sur téléphone |
 | Profil | Étudiants aidés, parrainage, menu des réglages, localisation retirable, aide et bug (49, 64, 68) | Sacha, Justin | vraie base |
 | Compte | Mot de passe, appareils, export, suppression, politique de confidentialité (17a) | Sacha | vraie base |
-| Commerçant | Offres, retrait, statistiques, offres d'étudiants voisines ; mise en avant payée à l'écran (9,90 €, simulé) avec reçu et « Mes paiements » (13) | Justin | 031 lancée ; **déployer**, puis vraie base et téléphone |
+| Commerçant | Offres, retrait, statistiques, offres d'étudiants voisines ; mise en avant payée à l'écran (9,90 €, simulé) avec reçu et « Mes paiements » (13) | Justin | en ligne ; vraie base et téléphone |
 | Ordinateur | Navigation en haut, liste et carte côte à côte, colonnes (48) | Justin | vu avec un faux Supabase seulement |
 | Documentation | `docs/ALGORITHMES.md` (40), `README.md`, revue du dépôt (74) | Matteo, Justin | — |
 | Vidéo de démo | `pitch/demo-16x9.mp4` et `demo-telephone.mp4` (40 s, données d'exemple, sans son) ; retournage : `pitch/video/tourner.sh` | Justin | à regarder par l'équipe |
@@ -67,7 +67,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 |---|---|---|
 | C4 | **Répéter le pitch** avec la vidéo (`pitch/demo-16x9.mp4`, 40 s, sans son : préparer le commentaire) | équipe |
 | C5 | Gel du code à 11h, dernier déploiement | Justin |
-| C6 | **Déployer la mise en avant (13)** : 031 déjà lancée, donc « Mettre en avant » échoue sur le site en ligne tant qu'il n'est pas redéployé ; essayer ensuite un paiement avec un compte commerçant | Justin |
+| C6 | **Essayer un paiement** de mise en avant sur le site en ligne avec un compte commerçant (puis « Compte », « Mes paiements ») | Justin |
 
 ### 🟢 Bonus
 | # | Tâche | Taille | Statut |

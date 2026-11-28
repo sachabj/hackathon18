@@ -614,3 +614,6 @@ Format : `### AAAA-MM-JJ HHhMM — Prénom` puis puces : ce qui a été fait, fi
 ### 2026-11-28 06h05 — Justin (prix des offres sourcées, tâche 12)
 - Les 14 offres sourcées de `reset_demo.sql` comparées à leurs sources : **aucun écart**, rien à corriger ni à relancer. Pages officielles lues : Crous (repas à 1 €, horaires), Grand Logis, Arvor, musée des Beaux-Arts, STAR (3 offres), Pass'Sport, DSE. Via la recherche web (pages non lisibles par script) : Cinéville Bruz, Carte Avantage Jeune, TER BreizhGo ; date du 15/10 du Pass'Sport confirmée sur education.gouv.fr d'après la recherche.
 - Non retrouvé sur la page : « plat + 2 périphériques avec Izly » (composition du repas Crous). Aucun code modifié.
+
+### 2026-11-28 05h57 — Justin (déploiement)
+- `0dceeef` en ligne (paiement de la mise en avant, erreurs en anglais ; 031 déjà lancée). Vérifié : build Vercel « Ready », pages publiques, redirections sans compte, confidentialité à jour. Pages connectées non vues.
