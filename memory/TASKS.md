@@ -58,6 +58,7 @@ Tâches remplacées : 16 (dans 26), 18 (par 30), 25 et 31 (puis 67), 56 (par 67)
 ## 2. 🟡 En cours / Partiel
 | # | Sujet | Ce qui existe | Ce qui manque | Qui |
 |---|---|---|---|---|
+| 82 | Logo animé à l’ouverture de l’appli (0,5 s) | — | EN COURS : touche `layout.tsx`, `RoleGate`, `globals.css` | Sacha |
 | 15 | Pitch | 7 diapos LaTeX (`pitch/`), diapo 1 : le paradoxe « Hyperconnectés, mais mal informés » en deux colonnes (Matteo, remplace la version d'Anne-Lise), diapo 3 avec 3 boucles vidéo intégrées au PDF, lancées **au clic** (boutons lecture/pause par téléphone, pas d'autoplay simultané) (téléphones agrandis, recherche carte+barre / partager / récompenses, `\phonevideo`, paquet `animate`), ancienne vidéo de 40 s (`pitch/demo-16x9.mp4`) gardée en repli | PDF recompilé le 28/11 vers 8h30 (Matteo, Tectonic) ; diapo 3 à corriger (C3b) ; vérifier le rendu diapo 1 et que les 3 boutons de la diapo 3 apparaissent et lancent bien chaque vidéo **dans Adobe Acrobat Reader** ; répétition (C4) | équipe |
 
 ## 3. 📋 Reste à faire
